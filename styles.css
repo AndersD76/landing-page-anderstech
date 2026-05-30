@@ -169,7 +169,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .hero-meta .mrow { font-family: var(--ff-mono); font-size: 11.5px; letter-spacing: .14em; color: var(--on-navy-mute); text-transform: uppercase; display: flex; align-items: center; gap: 9px; }
 .hero-meta .mrow::before { content: ""; width: 18px; height: 1px; background: var(--line-navy); }
 
-.hero h1 { color: #fff; font-size: clamp(44px, 7vw, 104px); font-weight: 500; line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+.hero h1 { color: #fff; font-size: clamp(44px, 6.2vw, 96px); font-weight: 500; line-height: .98; letter-spacing: -.04em; }
 .hero h1 .blk { display: block; }
 .hero h1 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.4px rgba(255,255,255,.55); }
 .hero h1 .red { color: var(--red); }
