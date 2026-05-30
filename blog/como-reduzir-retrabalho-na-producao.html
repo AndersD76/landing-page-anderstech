@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Como Reduzir Retrabalho na Produção — Anders Tech</title>
+<meta name="description" content="Guia prático para reduzir retrabalho na produção industrial. Conheça 6 métodos comprovados, fórmulas de medição e análise de causa raiz para eliminar desperdícios." />
+<meta name="keywords" content="retrabalho produção, reduzir retrabalho, gestão qualidade, ISO 9001, controle de processos, não conformidade, consultoria qualidade" />
+<meta name="author" content="Anders Tech" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://anderstech.net/blog/como-reduzir-retrabalho-na-producao.html" />
+<meta property="og:title" content="Como Reduzir Retrabalho na Produção — Anders Tech" />
+<meta property="og:description" content="Guia prático com 6 métodos comprovados para reduzir retrabalho na produção industrial. Fórmulas, benchmarks e análise de causa raiz." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://anderstech.net/blog/como-reduzir-retrabalho-na-producao.html" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:site_name" content="Anders Tech" />
+<link rel="icon" href="/assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Como Reduzir Retrabalho na Produção",
+  "description": "Guia prático para reduzir retrabalho na produção industrial. 6 métodos comprovados, fórmulas de medição e análise de causa raiz.",
+  "author": {
+    "@type": "Organization",
+    "name": "Anders Tech",
+    "url": "https://anderstech.net"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Anders Tech",
+    "url": "https://anderstech.net"
+  },
+  "datePublished": "2026-05-30",
+  "dateModified": "2026-05-30",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://anderstech.net/blog/como-reduzir-retrabalho-na-producao.html"
+  },
+  "keywords": ["retrabalho", "produção industrial", "gestão da qualidade", "ISO 9001", "não conformidade", "controle de processos"],
+  "articleSection": "Gestão da Qualidade",
+  "inLanguage": "pt-BR",
+  "wordCount": 1400
+}
+</script>
+<style>
+/* ---------------- TOKENS ---------------- */
+:root {
+  --navy:      #203864;
+  --navy-700:  #2b4a82;
+  --navy-800:  #1a2f55;
+  --navy-900:  #12233f;
+  --navy-950:  #0b1730;
+  --red:       #FE0000;
+  --red-600:   #d80a0a;
+  --paper:     #F4F6FA;
+  --paper-2:   #FBFCFE;
+  --white:     #FFFFFF;
+
+  --ink:       #16233f;
+  --ink-soft:  #46577a;
+  --ink-mute:  #8190ac;
+  --line:      rgba(32,56,100,.14);
+  --line-soft: rgba(32,56,100,.08);
+
+  --on-navy:      #ffffff;
+  --on-navy-soft: #b9c8e4;
+  --on-navy-mute: #7589ad;
+
+  --ff-display: "Space Grotesk", system-ui, sans-serif;
+  --ff-body:    "Inter", system-ui, -apple-system, sans-serif;
+  --ff-mono:    "Space Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+/* ---------------- RESET ---------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--red); color: #fff; }
+
+/* ---------------- NAV ---------------- */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--navy);
+  color: var(--on-navy);
+  padding: 0 clamp(22px, 5vw, 80px);
+}
+.site-nav .nav-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.site-nav .brand {
+  font-family: var(--ff-display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--on-navy);
+}
+.site-nav .brand b {
+  font-weight: 700;
+}
+.site-nav .back-link {
+  font-family: var(--ff-mono);
+  font-size: 0.82rem;
+  color: var(--on-navy-soft);
+  letter-spacing: 0.04em;
+  transition: color 0.2s var(--ease);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.site-nav .back-link:hover {
+  color: var(--white);
+}
+.site-nav .back-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------------- ARTICLE HEADER ---------------- */
+.article-header {
+  background: var(--navy);
+  color: var(--on-navy);
+  padding: clamp(48px, 8vw, 96px) clamp(22px, 5vw, 80px) clamp(40px, 6vw, 72px);
+}
+.article-header .wrap {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.article-meta {
+  font-family: var(--ff-mono);
+  font-size: 0.78rem;
+  color: var(--on-navy-mute);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.article-meta .tag {
+  background: rgba(254,0,0,.15);
+  color: var(--red);
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+.article-header h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: var(--white);
+}
+.article-header .subtitle {
+  margin-top: 16px;
+  font-size: 1.08rem;
+  color: var(--on-navy-soft);
+  line-height: 1.6;
+}
+
+/* ---------------- ARTICLE BODY ---------------- */
+.article-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(36px, 6vw, 64px) clamp(22px, 5vw, 80px);
+}
+.article-body h2 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin-top: 48px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+.article-body h2:first-child {
+  margin-top: 0;
+}
+.article-body p {
+  margin-bottom: 18px;
+  font-size: 1.02rem;
+  color: var(--ink);
+}
+.article-body strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+.article-body ul,
+.article-body ol {
+  margin-bottom: 18px;
+  padding-left: 24px;
+}
+.article-body li {
+  margin-bottom: 8px;
+  font-size: 1.02rem;
+  list-style: disc;
+}
+.article-body ol li {
+  list-style: decimal;
+}
+
+/* highlight box */
+.highlight-box {
+  background: var(--paper-2);
+  border-left: 4px solid var(--red);
+  padding: 20px 24px;
+  margin: 28px 0;
+  border-radius: 0 6px 6px 0;
+}
+.highlight-box p {
+  margin-bottom: 0;
+  font-size: 0.96rem;
+}
+.highlight-box .formula {
+  font-family: var(--ff-mono);
+  font-size: 0.88rem;
+  color: var(--navy);
+  background: var(--white);
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-top: 10px;
+  border: 1px solid var(--line);
+}
+
+/* numbered method cards */
+.method-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 20px 0;
+  transition: border-color 0.2s var(--ease);
+}
+.method-card:hover {
+  border-color: var(--red);
+}
+.method-card .method-num {
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.method-card h3 {
+  font-family: var(--ff-display);
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.method-card p {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 0;
+}
+
+/* case box */
+.case-box {
+  background: var(--navy);
+  color: var(--on-navy);
+  border-radius: 8px;
+  padding: 28px 32px;
+  margin: 36px 0;
+}
+.case-box .case-label {
+  font-family: var(--ff-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.case-box p {
+  color: var(--on-navy-soft);
+  font-size: 0.96rem;
+  margin-bottom: 0;
+}
+.case-box strong {
+  color: var(--white);
+}
+
+/* ---------------- CTA SECTION ---------------- */
+.cta-section {
+  background: var(--navy);
+  padding: clamp(48px, 8vw, 80px) clamp(22px, 5vw, 80px);
+  text-align: center;
+}
+.cta-section .wrap {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.cta-section h2 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.cta-section p {
+  font-size: 1.02rem;
+  color: var(--on-navy-soft);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.btn-red {
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--ff-display);
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding: 14px 36px;
+  border-radius: 6px;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.btn-red:hover {
+  background: var(--red-600);
+  transform: translateY(-1px);
+}
+
+/* ---------------- FOOTER ---------------- */
+.site-footer {
+  background: var(--navy-950);
+  color: var(--on-navy-mute);
+  text-align: center;
+  padding: 28px clamp(22px, 5vw, 80px);
+  font-family: var(--ff-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+}
+.site-footer a {
+  color: var(--on-navy-soft);
+  transition: color 0.2s;
+}
+.site-footer a:hover {
+  color: var(--white);
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 600px) {
+  .article-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .method-card {
+    padding: 18px 20px;
+  }
+  .case-box {
+    padding: 22px 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="brand">anders<b>tech</b></a>
+    <a href="/" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Voltar
+    </a>
+  </div>
+</header>
+
+<!-- ============ ARTICLE HEADER ============ -->
+<div class="article-header">
+  <div class="wrap">
+    <div class="article-meta">
+      <span class="tag">Qualidade</span>
+      <span>30 Mai 2026</span>
+      <span>8 min de leitura</span>
+    </div>
+    <h1>Como Reduzir Retrabalho na Produção</h1>
+    <p class="subtitle">Custos ocultos, ferramentas de análise e 6 métodos práticos para eliminar o retrabalho que drena a rentabilidade da sua operação.</p>
+  </div>
+</div>
+
+<!-- ============ ARTICLE BODY ============ -->
+<main class="article-body">
+
+<h2>O que o retrabalho realmente custa</h2>
+
+<p>Retrabalho é toda atividade que precisa ser executada mais de uma vez porque não atingiu o resultado esperado na primeira tentativa. Em ambientes industriais, é uma das formas mais traiçoeiras de desperdício -- porque seus custos reais são sistematicamente subestimados.</p>
+
+<p>O custo direto é o mais visível: material desperdiçado, horas-máquina perdidas e mão de obra duplicada. Mas a conta real vai muito além. Os <strong>custos ocultos do retrabalho</strong> incluem:</p>
+
+<ul>
+  <li><strong>Atraso em entregas:</strong> reprocessar uma peça empurra toda a fila de produção. Pedidos são reprogramados, prazos estourados e o cliente sente no bolso e na confiança.</li>
+  <li><strong>Desgaste da equipe:</strong> refazer tarefas repetidamente corrói a moral do time. Operadores que convivem com retrabalho crônico perdem engajamento -- e os melhores profissionais vão embora primeiro.</li>
+  <li><strong>Perda de confiança do cliente:</strong> quando o retrabalho escapa e chega ao cliente final como defeito, o dano à reputação é exponencialmente maior que o custo da peça em si.</li>
+  <li><strong>Sobrecarga de supervisão:</strong> gestores gastam tempo apagando incêndios ao invés de melhorar processos. O ciclo se retroalimenta.</li>
+</ul>
+
+<p>Estudos setoriais indicam que o retrabalho pode consumir de <strong>5% a 30% do custo total de produção</strong>, dependendo do setor e da maturidade do sistema de gestão. Em empresas sem controle estruturado, não é incomum que esse número ultrapasse os 20%.</p>
+
+<h2>Como medir a taxa de retrabalho</h2>
+
+<p>Não se pode melhorar o que não se mede. O primeiro passo para reduzir retrabalho é estabelecer um indicador claro e rastreável. A fórmula mais utilizada é:</p>
+
+<div class="highlight-box">
+  <p><strong>Taxa de Retrabalho (%)</strong></p>
+  <span class="formula">Taxa = (Unidades Retrabalhadas / Total Produzido) x 100</span>
+</div>
+
+<p>Para que o indicador seja útil, é fundamental definir o que conta como "unidade retrabalhada". Incluir apenas as rejeições formais subestima o problema. Considere também: ajustes em processo, reinspeções, devoluções internas entre setores e qualquer operação repetida que não estava prevista no roteiro padrão.</p>
+
+<p><strong>Benchmarks de referência por setor:</strong></p>
+
+<ul>
+  <li><strong>Metalúrgica e usinagem:</strong> empresas com ISO 9001 consolidada operam abaixo de 2%. Sem sistema de gestão, a faixa típica é de 5% a 12%.</li>
+  <li><strong>Construção civil:</strong> taxas de 8% a 15% são comuns em obras sem padronização. Empresas com PBQP-H nível A conseguem manter abaixo de 5%.</li>
+  <li><strong>Indústria alimentícia:</strong> entre 1% e 5%, dependendo da complexidade do produto e do nível de automação.</li>
+  <li><strong>Manufatura geral:</strong> a referência de classe mundial é abaixo de 1%. Muitas empresas brasileiras operam entre 3% e 10%.</li>
+</ul>
+
+<h2>Análise de causa raiz: por que o retrabalho persiste</h2>
+
+<p>Medir o retrabalho sem entender suas causas é como tratar a febre sem investigar a infecção. Duas ferramentas são particularmente eficazes nessa análise:</p>
+
+<p><strong>5 Porquês:</strong> a técnica consiste em perguntar "por quê?" repetidamente até chegar à causa raiz. Um exemplo prático: "Por que a peça saiu fora de dimensão?" -- "Porque o operador ajustou a máquina incorretamente." -- "Por que ajustou incorretamente?" -- "Porque não existe instrução de trabalho para esse setup." -- "Por que não existe instrução?" -- "Porque o processo nunca foi padronizado." A causa raiz não é o operador -- é a ausência de padronização.</p>
+
+<p><strong>Diagrama de Ishikawa (Espinha de Peixe):</strong> organiza as possíveis causas em categorias -- Máquina, Método, Mão de obra, Material, Meio ambiente e Medição (os 6M). Essa estrutura evita a armadilha de atribuir o retrabalho sempre ao operador, quando frequentemente a raiz está no método, no material ou na medição inadequada.</p>
+
+<p>Na prática, a maioria dos problemas de retrabalho recorrente se concentra em três origens: <strong>falta de padronização</strong>, <strong>treinamento insuficiente</strong> e <strong>ausência de controles em processo</strong>. Resolver essas três frentes elimina a maior parte das ocorrências.</p>
+
+<h2>6 métodos práticos para reduzir retrabalho</h2>
+
+<div class="method-card">
+  <div class="method-num">Método 01</div>
+  <h3>Padronizar procedimentos (POP / IT)</h3>
+  <p>Procedimentos Operacionais Padrão e Instruções de Trabalho documentam a maneira correta de executar cada operação. Sem eles, cada operador trabalha do seu jeito -- e "do seu jeito" é a principal fonte de variação. O POP não precisa ser um documento burocrático: pode ser um guia visual de uma página fixado no posto de trabalho. O importante é que exista, que seja claro e que reflita a prática real.</p>
+</div>
+
+<div class="method-card">
+  <div class="method-num">Método 02</div>
+  <h3>Treinamento e matriz de competências</h3>
+  <p>A matriz de competências mapeia quais habilidades cada colaborador domina e onde existem lacunas. Treinamentos direcionados a partir dessa matriz são muito mais eficazes que treinamentos genéricos. O objetivo é garantir que cada pessoa no chão de fábrica tenha competência comprovada para executar as operações designadas -- e que haja backup para posições críticas.</p>
+</div>
+
+<div class="method-card">
+  <div class="method-num">Método 03</div>
+  <h3>Controles visuais no chão de fábrica</h3>
+  <p>Sinalizações, cartões kanban, indicadores de cores, quadros de acompanhamento em tempo real. O controle visual torna os desvios imediatamente perceptíveis -- antes que gerem retrabalho. Quando o operador consegue ver que algo está saindo do padrão no momento em que acontece, a correção é imediata e o custo é mínimo.</p>
+</div>
+
+<div class="method-card">
+  <div class="method-num">Método 04</div>
+  <h3>Inspeção de primeiro artigo</h3>
+  <p>Antes de rodar um lote inteiro, inspecionar rigorosamente a primeira peça. Se a primeira peça está correta, o setup está correto. Se não está, corrige-se antes de multiplicar o defeito por centenas ou milhares de unidades. É uma prática simples que evita retrabalho em escala -- e que ainda assim é negligenciada em muitas operações.</p>
+</div>
+
+<div class="method-card">
+  <div class="method-num">Método 05</div>
+  <h3>Controle estatístico de processo (CEP)</h3>
+  <p>O CEP monitora variáveis críticas durante a produção e identifica tendências antes que os limites de especificação sejam ultrapassados. Cartas de controle para dimensões, peso, temperatura ou qualquer parâmetro mensurável permitem intervenção preventiva. A peça não precisa ser rejeitada para gerar ação -- basta que a tendência indique desvio.</p>
+</div>
+
+<div class="method-card">
+  <div class="method-num">Método 06</div>
+  <h3>Ciclo de feedback com sistema de NC</h3>
+  <p>Um sistema estruturado de Não Conformidade e Ação Corretiva (NC/AC) fecha o ciclo: registra a ocorrência, investiga a causa, define a ação corretiva, verifica a eficácia e retroalimenta o processo. Sem esse ciclo, os mesmos erros se repetem indefinidamente. O registro sistematizado também gera dados para priorizar onde agir primeiro -- e comprovar a evolução ao longo do tempo.</p>
+</div>
+
+<h2>Caso real: 400% acima da meta</h2>
+
+<div class="case-box">
+  <div class="case-label">Case Anders Tech</div>
+  <p>Em um projeto de diagnóstico recente, a Anders Tech analisou mais de <strong>25 mil mensagens</strong> de comunicação operacional de uma empresa industrial. O resultado revelou uma <strong>taxa de retrabalho superior a 400% da meta estabelecida</strong>. Os dados mostraram que as principais causas estavam concentradas em falhas de comunicação entre setores, ausência de instruções de trabalho atualizadas e falta de critérios claros de aprovação. Com esses dados mapeados, foi possível construir um plano de ação priorizado por impacto, atacando primeiro as causas com maior volume de ocorrências.</p>
+</div>
+
+<h2>Tecnologia como aliada: dashboards e monitoramento em tempo real</h2>
+
+<p>Dados de retrabalho perdem valor quando ficam trancados em planilhas que ninguém atualiza. A tecnologia entra como habilitadora de visibilidade: <strong>dashboards de produção</strong> que consolidam indicadores em tempo real, alertas automáticos quando a taxa de retrabalho ultrapassa limites definidos e rastreabilidade que conecta cada ocorrência à sua causa.</p>
+
+<p>O monitoramento em tempo real transforma dados operacionais em capacidade de reação. Quando a equipe de gestão consegue visualizar tendências semanais, diárias ou até por turno, a distância entre o problema e a ação corretiva encurta drasticamente. Além disso, a digitalização dos registros de NC elimina a subnotificação -- um dos maiores obstáculos para a melhoria real.</p>
+
+<h2>Quick wins versus mudanças estruturais</h2>
+
+<p>Nem toda ação contra o retrabalho exige meses de implantação. Algumas intervenções geram retorno imediato:</p>
+
+<ul>
+  <li><strong>Quick wins (semanas):</strong> inspeção de primeiro artigo, controles visuais no posto de trabalho, reuniões diárias de 10 minutos sobre não conformidades do dia anterior.</li>
+  <li><strong>Médio prazo (1 a 3 meses):</strong> padronização dos procedimentos críticos, treinamento direcionado com base na matriz de competências, implantação de registro digital de NC.</li>
+  <li><strong>Longo prazo (3 a 12 meses):</strong> CEP sistematizado, cultura de melhoria contínua, integração de dados de qualidade com dashboards de gestão, certificação ISO 9001.</li>
+</ul>
+
+<p>A combinação é o que funciona. Quick wins geram credibilidade e engajamento para sustentar as mudanças estruturais que realmente transformam o patamar de qualidade da operação.</p>
+
+<h2>A abordagem Anders Tech: dados primeiro, depois plano de ação</h2>
+
+<p>Na Anders Tech, acreditamos que toda intervenção em qualidade precisa começar com dados. Antes de recomendar qualquer ferramenta ou metodologia, mapeamos a situação real: onde está o retrabalho, qual o volume, quais as causas recorrentes, quanto custa.</p>
+
+<p>Esse diagnóstico baseado em dados evita o erro clássico de implantar soluções genéricas que não atacam o problema real. Com o mapa de ocorrências em mãos, priorizamos as ações por impacto financeiro e facilidade de implantação -- garantindo que os primeiros resultados apareçam rápido e que o investimento se pague no curto prazo.</p>
+
+<p>Reduzir retrabalho não é um projeto isolado. É o resultado de um sistema de gestão da qualidade que funciona -- com processos padronizados, pessoas treinadas, dados visíveis e um ciclo de melhoria que não para. E esse sistema não precisa ser complicado. Precisa ser consistente.</p>
+
+</main>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="wrap">
+    <h2>Quer saber mais? Fale com a Anders Tech</h2>
+    <p>Diagnóstico baseado em dados para identificar onde o retrabalho está custando mais -- e um plano de ação para eliminá-lo.</p>
+    <a href="/#contato" class="btn-red">Agendar Conversa</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <p>Anders Tech &mdash; CNPJ 42.073.716/0001-80 &middot; <a href="/">anderstech.net</a></p>
+</footer>
+
+</body>
+</html>

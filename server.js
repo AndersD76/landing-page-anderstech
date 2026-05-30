@@ -130,6 +130,11 @@ app.post('/api/contact', async (req, res) => {
 });
 
 app.use((req, res) => {
+  const blogMatch = req.path.match(/^\/blog\/(.+?)$/);
+  if (blogMatch) {
+    const file = join(__dirname, 'blog', blogMatch[1] + '.html');
+    return res.sendFile(file, err => { if (err) res.sendFile(join(__dirname, 'index.html')); });
+  }
   res.sendFile(join(__dirname, 'index.html'));
 });
 

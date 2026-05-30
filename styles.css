@@ -272,6 +272,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
    ============================================================ */
 .cases { background: var(--paper); }
 .cases-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+.cases-grid .case:last-child:nth-child(odd) { grid-column: 1 / -1; max-width: calc(50% - 12px); }
 .case { background: var(--paper-2); border: 1px solid var(--line); overflow: hidden; transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
 .case:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -30px rgba(18,33,64,.4); }
 .media { position: relative; overflow: hidden; background: var(--navy-900); }
