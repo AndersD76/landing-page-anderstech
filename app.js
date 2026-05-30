@@ -155,13 +155,19 @@
   var toast = $("#toast"), toastMsg = $("#toastMsg"), tt;
   function showToast(msg) { if (toastMsg) toastMsg.textContent = msg; toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("show"); }, 4200); }
 
-  /* ---- contact form -> mailto prefilled ---- */
+  /* ---- contact form -> API POST ---- */
   var form = $("#contactForm");
   if (form) {
+    var submitBtn = $("button[type=submit]", form);
+    var btnText = submitBtn ? submitBtn.innerHTML : "";
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var d = new FormData(form);
       var g = function (k) { return (d.get(k) || "").toString().trim(); };
+
+      if (g("website")) return;
+
       var firstInvalid = null;
       $$("[required]", form).forEach(function (f) {
         var ok = f.value && f.value.trim();
@@ -169,14 +175,44 @@
         if (!ok && !firstInvalid) firstInvalid = f;
       });
       if (firstInvalid) { firstInvalid.focus(); showToast("Preencha os campos obrigatórios."); return; }
-      var subject = "Contato site — " + g("empresa") + " (" + g("interesse") + ")";
-      var body = [
-        "Nome: " + g("nome"), "Empresa: " + g("empresa"), "Email: " + g("email"),
-        "Telefone: " + (g("telefone") || "—"), "Interesse: " + g("interesse"),
-        "", "Mensagem:", (g("mensagem") || "—")
-      ].join("\n");
-      showToast("Abrindo seu app de email…");
-      window.location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Enviando...</span>";
+
+      var params = new URLSearchParams(window.location.search);
+      var payload = {
+        nome: g("nome"), empresa: g("empresa"), email: g("email"),
+        telefone: g("telefone"), interesse: g("interesse"), mensagem: g("mensagem"),
+        source: "site_form",
+        utm_source: params.get("utm_source") || "",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || ""
+      };
+
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        if (result.ok) {
+          showToast("Mensagem enviada! Entraremos em contato.");
+          form.reset();
+          setTimeout(function () {
+            window.open(waUrl("Oi, sou " + payload.nome + (payload.empresa ? " da " + payload.empresa : "") + ". Acabei de preencher o formulário no site."), "_blank", "noopener");
+          }, 1200);
+        } else {
+          throw new Error(result.data.error || "Erro");
+        }
+      })
+      .catch(function () {
+        showToast("Erro ao enviar. Tente via WhatsApp.");
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = btnText;
+      });
     });
   }
 })();
