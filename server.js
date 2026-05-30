@@ -77,7 +77,7 @@ app.post('/api/contact', async (req, res) => {
     return res.status(429).json({ error: 'Muitas tentativas. Aguarde um minuto.' });
   }
 
-  const { nome, empresa, email, telefone, interesse, mensagem, source, utm_source, utm_medium, utm_campaign, website } = req.body;
+  const { nome, empresa, email, telefone, interesse, mensagem, source, utm_source, utm_medium, utm_campaign, website, roiData } = req.body;
 
   if (website) return res.json({ ok: true });
 
@@ -95,7 +95,8 @@ app.post('/api/contact', async (req, res) => {
       `;
       leadId = result[0]?.id;
       if (leadId) {
-        await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${leadId}, 'form_submit', ${JSON.stringify({ source, interesse })}::jsonb)`;
+        const eventPayload = roiData ? { source, interesse, roiData } : { source, interesse };
+        await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${leadId}, 'form_submit', ${JSON.stringify(eventPayload)}::jsonb)`;
       }
     }
 
@@ -117,6 +118,17 @@ app.post('/api/contact', async (req, res) => {
           ``,
           `Mensagem:`,
           mensagem || '(sem mensagem)',
+          ...(roiData ? [
+            ``,
+            `DADOS DA CALCULADORA ROI:`,
+            `Faturamento: R$ ${(roiData.faturamento || 0).toLocaleString('pt-BR')}`,
+            `Funcionarios: ${roiData.funcionarios || '—'}`,
+            `Setor: ${roiData.setor || '—'}`,
+            `Motivacao: ${roiData.motivacao || '—'}`,
+            `Investimento estimado: R$ ${(roiData.investMin || 0).toLocaleString('pt-BR')} a R$ ${(roiData.investMax || 0).toLocaleString('pt-BR')}`,
+            `Economia projetada (24m): R$ ${(roiData.savings24 || 0).toLocaleString('pt-BR')}`,
+            `ROI projetado: ${roiData.roi || 0}%`,
+          ] : []),
         ].join('\n'),
       });
     }
@@ -130,10 +142,15 @@ app.post('/api/contact', async (req, res) => {
 });
 
 app.use((req, res) => {
-  const blogMatch = req.path.match(/^\/blog\/(.+?)$/);
+  const clean = req.path.replace(/\/$/, '') || '/';
+  const blogMatch = clean.match(/^\/blog\/(.+)$/);
   if (blogMatch) {
     const file = join(__dirname, 'blog', blogMatch[1] + '.html');
     return res.sendFile(file, err => { if (err) res.sendFile(join(__dirname, 'index.html')); });
+  }
+  if (clean !== '/') {
+    const page = join(__dirname, 'pages', clean.slice(1) + '.html');
+    return res.sendFile(page, err => { if (err) res.sendFile(join(__dirname, 'index.html')); });
   }
   res.sendFile(join(__dirname, 'index.html'));
 });

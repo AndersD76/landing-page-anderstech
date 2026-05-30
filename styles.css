@@ -382,7 +382,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .footer-big .fb-word { font-family: var(--ff-display); font-weight: 700; font-size: clamp(56px,13vw,180px); line-height: .82; letter-spacing: -.05em; color: #fff; display: flex; align-items: baseline; gap: .1em; }
 .footer-big .fb-word b { color: var(--red); }
 .footer-big .fb-tag { font-family: var(--ff-mono); font-size: clamp(11px,1.1vw,13px); letter-spacing: .2em; text-transform: uppercase; color: var(--on-navy-mute); margin-top: 22px; }
-.footer-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.5fr 1fr 1.3fr; gap: clamp(30px,5vw,70px); padding-block: clamp(44px,5vw,64px); }
+.footer-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.3fr; gap: clamp(24px,4vw,56px); padding-block: clamp(44px,5vw,64px); }
 .footer-brand p { font-size: 14.5px; color: var(--on-navy-mute); max-width: 34ch; }
 .footer-brand .cnpj { margin-top: 18px; font-family: var(--ff-mono); font-size: 12px; letter-spacing: .04em; color: var(--on-navy-mute); }
 .footer-col h4 { color: #fff; font-family: var(--ff-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 400; margin-bottom: 22px; }
@@ -430,7 +430,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
   .diff-grid, .contato-grid { grid-template-columns: 1fr; }
   .sobre-grid { grid-template-columns: 1fr; }
   .sobre-fig { max-width: 420px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 640px) {
   .cases-grid, .form-grid, .blog-grid { grid-template-columns: 1fr; }
