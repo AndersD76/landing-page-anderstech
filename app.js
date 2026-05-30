@@ -1,0 +1,182 @@
+/* ============================================================
+   ANDERS TECH — Engineering Editorial · interactions
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---- CONFIG: troque pelos dados reais ---- */
+  var CONFIG = {
+    whatsapp: "5554999648368",
+    email: "danielanders76@gmail.com",
+    waGreeting: "Olá! Vim pelo site da Anders Tech e gostaria de falar sobre gestão da qualidade / certificação."
+  };
+
+  var $  = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+
+  /* ---- WhatsApp ---- */
+  function waUrl(msg) { return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(msg || CONFIG.waGreeting); }
+  $$("[data-wa]").forEach(function (el) {
+    el.addEventListener("click", function (e) { e.preventDefault(); window.open(waUrl(), "_blank", "noopener"); });
+  });
+
+  /* ---- build the data-as-art bits ---- */
+  // timeline: 18 months, rising trend, last stretch flagged red (overshoot)
+  var tl = $("#timeline");
+  if (tl) {
+    var heights = [22,30,26,38,34,46,42,55,50,62,58,70,66,80,76,90,96,100];
+    heights.forEach(function (h, i) {
+      var b = document.createElement("i");
+      b.dataset.h = h;
+      if (i >= 13) b.classList.add("on");
+      tl.appendChild(b);
+    });
+  }
+  // dotfield: 25 x 5 grid, scatter "hot" cells
+  var df = $("#dotfield");
+  if (df) {
+    for (var i = 0; i < 125; i++) {
+      var d = document.createElement("i");
+      if (Math.random() < 0.16) d.classList.add("hot");
+      d.dataset.i = i;
+      df.appendChild(d);
+    }
+  }
+
+  /* ---- marquee: duplicate for seamless loop ---- */
+  var track = $("#trustTrack");
+  if (track) track.innerHTML += track.innerHTML;
+
+  /* ---- counters ---- */
+  function animateCount(el) {
+    var target = parseFloat(el.dataset.count || "0");
+    var divide = parseFloat(el.dataset.divide || "1");
+    var suffix = el.dataset.suffix || "";
+    var final = target / divide;
+    var dur = 1400, start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(final * eased);
+      el.textContent = val.toLocaleString("pt-BR") + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---- animate a container's data viz when it enters ---- */
+  function playViz(scope) {
+    $$("[data-count]", scope).forEach(function (el) { if (!el._done) { el._done = 1; animateCount(el); } });
+    $$("[data-bar]", scope).forEach(function (el) { if (!el._done) { el._done = 1; setTimeout(function () { el.style.width = el.dataset.bar + "%"; }, 120); } });
+    $$("#timeline i", scope).forEach(function (el, i) {
+      if (el._done) return; el._done = 1;
+      setTimeout(function () { el.style.height = el.dataset.h + "%"; el.style.transform = "scaleY(1)"; }, 60 * i);
+    });
+    $$("#dotfield i", scope).forEach(function (el, i) {
+      if (el._done) return; el._done = 1;
+      setTimeout(function () { el.style.transform = "rotate(45deg) scale(1)"; }, 6 * i);
+    });
+  }
+
+  /* ---- reveal + viz trigger ---- */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      playViz(en.target);
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.16, rootMargin: "0px 0px -50px 0px" });
+  $$(".reveal").forEach(function (el) { io.observe(el); });
+
+  // console / hero readout may not be .reveal-wrapped for their viz — observe explicitly
+  ["#console", ".readout"].forEach(function (sel) { var n = $(sel); if (n) io.observe(n); });
+
+  // stagger within grids
+  $$(".serv-list, .cases-grid, .blog-grid, .opt").forEach(function (grid) {
+    $$(":scope > .reveal", grid).forEach(function (el, i) { el.style.transitionDelay = Math.min(i * 80, 320) + "ms"; });
+  });
+
+  /* ---- nav solid + scroll progress + parallax + blueprint dark ---- */
+  var nav = $("#nav"), progress = $("#progress"), blueprint = $("#blueprint"), coordBL = $("#coordBL");
+  var parallax = $$("[data-parallax]");
+  // mark dark sections
+  var darkSel = ".hero,.trust,.diff,.contato,.footer";
+  var darkRects = $$(darkSel);
+
+  function onScroll() {
+    var y = window.scrollY || 0;
+    nav.classList.toggle("solid", y > 10);
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
+    // parallax
+    parallax.forEach(function (el) {
+      var sp = parseFloat(el.dataset.parallax || "0.05");
+      el.style.transform = "translateY(-50%) rotate(45deg) translate3d(0," + (y * sp) + "px,0)";
+    });
+    // blueprint over dark?
+    var topY = 40, dark = false;
+    for (var i = 0; i < darkRects.length; i++) {
+      var r = darkRects[i].getBoundingClientRect();
+      if (r.top <= topY && r.bottom > topY) { dark = true; break; }
+    }
+    blueprint.classList.toggle("on-dark", dark);
+    blueprint.style.borderColor = dark ? "rgba(255,255,255,.16)" : "rgba(32,56,100,.14)";
+    if (coordBL) coordBL.style.color = dark ? "rgba(255,255,255,.4)" : "";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  onScroll();
+
+  /* ---- mobile menu ---- */
+  var toggle = $("#navToggle"), menu = $("#mobileMenu");
+  if (toggle && menu) {
+    toggle.addEventListener("click", function () {
+      var open = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+      document.body.style.overflow = open ? "hidden" : "";
+    });
+    $$("a", menu).forEach(function (a) {
+      a.addEventListener("click", function () { menu.classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); document.body.style.overflow = ""; });
+    });
+  }
+
+  /* ---- image fallback (branded gradient if a photo fails) ---- */
+  $$("img[data-fallback]").forEach(function (img) {
+    img.addEventListener("error", function () {
+      img.style.opacity = "0";
+      var p = img.parentElement;
+      if (p) p.style.background = "repeating-linear-gradient(135deg, rgba(255,255,255,.05) 0 2px, transparent 2px 22px), linear-gradient(160deg,#2b4a82,#0b1730)";
+    });
+  });
+
+  /* ---- toast ---- */
+  var toast = $("#toast"), toastMsg = $("#toastMsg"), tt;
+  function showToast(msg) { if (toastMsg) toastMsg.textContent = msg; toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("show"); }, 4200); }
+
+  /* ---- contact form -> mailto prefilled ---- */
+  var form = $("#contactForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var d = new FormData(form);
+      var g = function (k) { return (d.get(k) || "").toString().trim(); };
+      var firstInvalid = null;
+      $$("[required]", form).forEach(function (f) {
+        var ok = f.value && f.value.trim();
+        f.style.borderBottomColor = ok ? "" : "var(--red)";
+        if (!ok && !firstInvalid) firstInvalid = f;
+      });
+      if (firstInvalid) { firstInvalid.focus(); showToast("Preencha os campos obrigatórios."); return; }
+      var subject = "Contato site — " + g("empresa") + " (" + g("interesse") + ")";
+      var body = [
+        "Nome: " + g("nome"), "Empresa: " + g("empresa"), "Email: " + g("email"),
+        "Telefone: " + (g("telefone") || "—"), "Interesse: " + g("interesse"),
+        "", "Mensagem:", (g("mensagem") || "—")
+      ].join("\n");
+      showToast("Abrindo seu app de email…");
+      window.location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  }
+})();
