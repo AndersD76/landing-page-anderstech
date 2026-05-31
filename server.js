@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { neon } from '@neondatabase/serverless';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -15,15 +15,7 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-
-const transporter = process.env.SMTP_USER
-  ? nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.office365.com',
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: false,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    })
-  : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 async function initDB() {
   if (!sql) return;
@@ -100,36 +92,38 @@ app.post('/api/contact', async (req, res) => {
       }
     }
 
-    if (transporter) {
-      await transporter.sendMail({
-        from: process.env.SMTP_USER,
+    if (resend) {
+      const emailBody = [
+        `NOVO LEAD #${leadId || '—'}`,
+        `━━━━━━━━━━━━━━━━━━━━━━`,
+        `Nome: ${nome}`,
+        `Empresa: ${empresa || '—'}`,
+        `Email: ${email || '—'}`,
+        `Telefone: ${telefone || '—'}`,
+        `Interesse: ${interesse || '—'}`,
+        `Fonte: ${source || 'site_form'}`,
+        `UTM: ${utm_source || '—'} / ${utm_medium || '—'} / ${utm_campaign || '—'}`,
+        ``,
+        `Mensagem:`,
+        mensagem || '(sem mensagem)',
+        ...(roiData ? [
+          ``,
+          `DADOS DA CALCULADORA ROI:`,
+          `Faturamento: R$ ${roiData.faturamento || 0}`,
+          `Funcionários: ${roiData.funcionarios || '—'}`,
+          `Setor: ${roiData.setor || '—'}`,
+          `Motivação: ${roiData.motivacao || '—'}`,
+          `Investimento estimado: R$ ${roiData.investMin || 0} a R$ ${roiData.investMax || 0}`,
+          `Economia projetada (24m): R$ ${roiData.savings24 || 0}`,
+          `ROI projetado: ${roiData.roi || 0}%`,
+        ] : []),
+      ].join('\n');
+
+      await resend.emails.send({
+        from: 'Anders Tech <noreply@anderstech.net>',
         to: process.env.NOTIFY_EMAIL || 'danielanders76@gmail.com',
         subject: `[Anders Tech] Novo lead: ${nome}${empresa ? ` — ${empresa}` : ''}`,
-        text: [
-          `NOVO LEAD #${leadId || '—'}`,
-          `━━━━━━━━━━━━━━━━━━━━━━`,
-          `Nome: ${nome}`,
-          `Empresa: ${empresa || '—'}`,
-          `Email: ${email || '—'}`,
-          `Telefone: ${telefone || '—'}`,
-          `Interesse: ${interesse || '—'}`,
-          `Fonte: ${source || 'site_form'}`,
-          `UTM: ${utm_source || '—'} / ${utm_medium || '—'} / ${utm_campaign || '—'}`,
-          ``,
-          `Mensagem:`,
-          mensagem || '(sem mensagem)',
-          ...(roiData ? [
-            ``,
-            `DADOS DA CALCULADORA ROI:`,
-            `Faturamento: R$ ${(roiData.faturamento || 0).toLocaleString('pt-BR')}`,
-            `Funcionarios: ${roiData.funcionarios || '—'}`,
-            `Setor: ${roiData.setor || '—'}`,
-            `Motivacao: ${roiData.motivacao || '—'}`,
-            `Investimento estimado: R$ ${(roiData.investMin || 0).toLocaleString('pt-BR')} a R$ ${(roiData.investMax || 0).toLocaleString('pt-BR')}`,
-            `Economia projetada (24m): R$ ${(roiData.savings24 || 0).toLocaleString('pt-BR')}`,
-            `ROI projetado: ${roiData.roi || 0}%`,
-          ] : []),
-        ].join('\n'),
+        text: emailBody,
       });
     }
 
