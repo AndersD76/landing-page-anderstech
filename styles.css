@@ -403,7 +403,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 /* ============================================================
    WHATSAPP FAB
    ============================================================ */
-.wa-fab { position: fixed; right: calc(var(--edge) + 14px); bottom: calc(var(--edge) + 14px); z-index: 85; width: 58px; height: 58px; background: #25D366; display: grid; place-items: center; color: #fff; box-shadow: 0 14px 32px rgba(37,211,102,.42); transition: transform .35s var(--ease); transform: rotate(45deg); }
+.wa-fab { position: fixed; right: calc(var(--edge) + 14px); bottom: calc(var(--edge) + 40px); z-index: 85; width: 58px; height: 58px; background: #25D366; display: grid; place-items: center; color: #fff; box-shadow: 0 14px 32px rgba(37,211,102,.42); transition: transform .35s var(--ease); transform: rotate(45deg); }
 .wa-fab svg { width: 28px; height: 28px; transform: rotate(-45deg); }
 .wa-fab:hover { transform: rotate(45deg) scale(1.08); }
 .wa-fab::before { content: ""; position: absolute; inset: 0; border: 1.5px solid #25D366; animation: waring 2.4s ease-out infinite; }
