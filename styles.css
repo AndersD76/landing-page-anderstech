@@ -62,7 +62,7 @@ input, select, textarea { font: inherit; }
 h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.04; letter-spacing: -.025em; color: var(--navy); }
 
 /* ---------------- BLUEPRINT FRAME (fixed) ---------------- */
-.blueprint { position: fixed; inset: var(--edge); z-index: 70; pointer-events: none; border: 1px solid var(--line); mix-blend-mode: multiply; }
+.blueprint { position: fixed; inset: var(--edge); z-index: 70; pointer-events: none; border: 1px solid var(--line); mix-blend-mode: multiply; top: calc(var(--edge) + 70px); }
 .blueprint.on-dark { mix-blend-mode: normal; }
 .bp-tick { position: absolute; width: 11px; height: 11px; }
 .bp-tick::before, .bp-tick::after { content: ""; position: absolute; background: var(--red); }
