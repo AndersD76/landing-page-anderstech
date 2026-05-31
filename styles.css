@@ -134,7 +134,8 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .nav-links a { font-size: 15.5px; font-weight: 500; color: var(--on-navy-soft); padding: 9px 15px; border-radius: 2px; position: relative; transition: color .2s; }
 .nav.solid .nav-links a { color: var(--ink-soft); }
 .nav-links a::after { content: ""; position: absolute; left: 15px; right: 15px; bottom: 6px; height: 1px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
-.nav-links a:hover { color: var(--navy); } .nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a:hover { color: #fff; } .nav-links a:hover::after { transform: scaleX(1); }
+.nav.solid .nav-links a:hover { color: var(--navy); }
 .nav-cta { display: flex; align-items: center; gap: 12px; }
 .nav-toggle { display: none; width: 44px; height: 44px; align-items: center; justify-content: center; color: #fff; transition: color .35s; }
 .nav.solid .nav-toggle { color: var(--navy); }
