@@ -233,6 +233,9 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
 
 app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '') || '/';
+  if (clean === '/blog') {
+    return res.sendFile(join(__dirname, 'blog', 'index.html'));
+  }
   const blogMatch = clean.match(/^\/blog\/(.+)$/);
   if (blogMatch) {
     const file = join(__dirname, 'blog', blogMatch[1] + '.html');

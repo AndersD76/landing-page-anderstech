@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog e Recursos — Anders Tech | Gestão da Qualidade</title>
+<meta name="description" content="Artigos, guias e ferramentas sobre ISO 9001, PBQP-H, otimização de processos e gestão da qualidade para indústrias.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<style>
+:root{--navy:#203864;--navy-950:#0b1730;--red:#FE0000;--paper:#F4F6FA;--paper-2:#FBFCFE;--ink:#16233f;--ink-soft:#46577a;--ink-mute:#8190ac;--line:rgba(32,56,100,.14);--on-navy:#fff;--on-navy-soft:#b9c8e4;--on-navy-mute:#7589ad;--ff-display:"Space Grotesk",system-ui,sans-serif;--ff-body:"Inter",system-ui,sans-serif;--ff-mono:"Space Mono",ui-monospace,monospace;--ease:cubic-bezier(.22,.61,.36,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0}
+body{font-family:var(--ff-body);background:var(--paper);color:var(--ink);line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1100px;margin:0 auto;padding:0 clamp(22px,5vw,80px)}
+.nav{position:sticky;top:0;z-index:80;background:rgba(251,252,254,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:16px 0}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:13px}
+.brand img{width:44px;height:44px;object-fit:contain}
+.brand .wm{font-family:var(--ff-display);font-weight:700;font-size:24px;letter-spacing:-.04em;color:var(--navy)}
+.brand .wm b{color:var(--red)}
+.back{font-family:var(--ff-mono);font-size:13px;color:var(--ink-mute);letter-spacing:.06em}
+.back:hover{color:var(--navy)}
+.hero{background:var(--navy-950);color:var(--on-navy);padding:clamp(80px,10vw,120px) 0 clamp(50px,6vw,70px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:64px 64px;opacity:.5}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-family:var(--ff-display);font-size:clamp(32px,5vw,52px);font-weight:600;letter-spacing:-.03em;line-height:1.1}
+.hero p{color:var(--on-navy-soft);font-size:17px;margin-top:16px;max-width:50ch}
+.tag{display:inline-flex;align-items:center;gap:9px;font-family:var(--ff-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:18px}
+.tag::before{content:"";width:7px;height:7px;background:var(--red);transform:rotate(45deg)}
+
+.section{padding:clamp(60px,8vw,100px) 0}
+.section h2{font-family:var(--ff-display);font-size:clamp(24px,3vw,36px);font-weight:600;color:var(--navy);margin-bottom:10px;letter-spacing:-.02em}
+.section .sub{color:var(--ink-soft);font-size:15px;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{background:var(--paper-2);border:1px solid var(--line);padding:28px 24px;transition:transform .4s var(--ease),box-shadow .4s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -20px rgba(18,33,64,.3)}
+.card .cat{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.card h3{font-family:var(--ff-display);font-size:18px;font-weight:600;color:var(--navy);line-height:1.25;margin-bottom:10px;flex:1}
+.card p{color:var(--ink-soft);font-size:14px;line-height:1.6;margin-bottom:14px}
+.card .go{font-family:var(--ff-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-mute);transition:color .3s}
+.card:hover .go{color:var(--red)}
+.divider{border:0;height:1px;background:var(--line);margin:10px 0}
+.section-label{font-family:var(--ff-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:"";width:7px;height:7px;background:var(--red);transform:rotate(45deg)}
+.footer{background:var(--navy-950);color:var(--on-navy-mute);padding:32px 0;text-align:center;font-size:13px}
+.footer a{color:var(--on-navy-soft)}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a href="/" class="brand"><img src="/assets/logo-symbol.png" alt="Anders Tech"><span class="wm">anders<b>tech</b></span></a>
+  <a href="/" class="back">← Voltar ao site</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <span class="tag">Conteúdo &amp; Recursos</span>
+  <h1>Tudo sobre gestão da qualidade</h1>
+  <p>Artigos, guias, ferramentas e páginas de referência para quem quer certificação, conformidade e processos que funcionam.</p>
+</div></section>
+
+<section class="section"><div class="wrap">
+  <span class="section-label">Artigos do Blog</span>
+  <div class="grid">
+    <a href="/blog/quanto-custa-certificacao-iso-9001" class="card">
+      <span class="cat">Certificação</span>
+      <h3>Quanto custa a certificação ISO 9001?</h3>
+      <p>Investimento, retorno e o que considerar antes de iniciar o processo.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/blog/pbqp-h-o-que-e-para-que-serve" class="card">
+      <span class="cat">Construção</span>
+      <h3>PBQP-H: o que é e para que serve?</h3>
+      <p>Guia sobre o programa de qualidade para a construção civil.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/blog/iso-9001-vale-a-pena-para-metalurgica" class="card">
+      <span class="cat">Metalurgia</span>
+      <h3>ISO 9001 vale a pena para metalúrgica?</h3>
+      <p>Análise prática dos benefícios para o setor metalúrgico.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/blog/como-reduzir-retrabalho-na-producao" class="card">
+      <span class="cat">Processos</span>
+      <h3>Como reduzir retrabalho na produção</h3>
+      <p>Métodos práticos para eliminar desperdício no chão de fábrica.</p>
+      <span class="go">Ler →</span>
+    </a>
+  </div>
+
+  <hr class="divider" style="margin:50px 0">
+
+  <span class="section-label">Ferramentas</span>
+  <div class="grid">
+    <a href="/calculadora-roi-certificacao" class="card">
+      <span class="cat">Interativo</span>
+      <h3>Calculadora ROI — Certificação ISO 9001</h3>
+      <p>Estime o investimento e o retorno da certificação para sua empresa.</p>
+      <span class="go">Calcular →</span>
+    </a>
+    <a href="/checklist-iso-9001" class="card">
+      <span class="cat">Download</span>
+      <h3>Checklist Diagnóstico ISO 9001 — 47 pontos</h3>
+      <p>Avalie se sua empresa está pronta para a certificação.</p>
+      <span class="go">Baixar →</span>
+    </a>
+  </div>
+
+  <hr class="divider" style="margin:50px 0">
+
+  <span class="section-label">Guias de Decisão</span>
+  <div class="grid">
+    <a href="/iso-9001-vale-a-pena" class="card">
+      <span class="cat">Decisão</span>
+      <h3>ISO 9001 vale a pena?</h3>
+      <p>Análise honesta de quando compensa e quando não.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/quanto-custa-certificacao-iso" class="card">
+      <span class="cat">Investimento</span>
+      <h3>Quanto custa a certificação ISO?</h3>
+      <p>Guia completo com faixas de investimento por porte.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/quanto-tempo-implantar-iso-9001" class="card">
+      <span class="cat">Prazo</span>
+      <h3>Quanto tempo leva para implantar a ISO 9001?</h3>
+      <p>Cronograma realista fase a fase.</p>
+      <span class="go">Ler →</span>
+    </a>
+    <a href="/diferenca-iso-9001-vs-bpm" class="card">
+      <span class="cat">Comparação</span>
+      <h3>ISO 9001 vs BPM: qual a diferença?</h3>
+      <p>Quando usar cada um — e quando usar os dois.</p>
+      <span class="go">Ler →</span>
+    </a>
+  </div>
+
+  <hr class="divider" style="margin:50px 0">
+
+  <span class="section-label">Por Setor</span>
+  <div class="grid">
+    <a href="/iso-9001-metalurgica" class="card"><span class="cat">Setor</span><h3>ISO 9001 para Metalúrgicas</h3><span class="go">Ver →</span></a>
+    <a href="/iso-9001-industria-alimenticia" class="card"><span class="cat">Setor</span><h3>ISO 9001 para Indústria Alimentícia</h3><span class="go">Ver →</span></a>
+    <a href="/iso-9001-cooperativa-agricola" class="card"><span class="cat">Setor</span><h3>ISO 9001 para Cooperativas Agrícolas</h3><span class="go">Ver →</span></a>
+    <a href="/iso-9001-construtora" class="card"><span class="cat">Setor</span><h3>ISO 9001 para Construtoras</h3><span class="go">Ver →</span></a>
+    <a href="/pbqp-h-construtora-residencial" class="card"><span class="cat">PBQP-H</span><h3>PBQP-H para Construtora Residencial</h3><span class="go">Ver →</span></a>
+    <a href="/pbqp-h-construtora-grande-porte" class="card"><span class="cat">PBQP-H</span><h3>PBQP-H para Construtora Grande Porte</h3><span class="go">Ver →</span></a>
+  </div>
+
+  <hr class="divider" style="margin:50px 0">
+
+  <span class="section-label">Por Região</span>
+  <div class="grid">
+    <a href="/consultoria-iso-9001-passo-fundo" class="card"><span class="cat">Cidade</span><h3>Consultoria ISO 9001 em Passo Fundo</h3><span class="go">Ver →</span></a>
+    <a href="/consultoria-iso-9001-erechim" class="card"><span class="cat">Cidade</span><h3>Consultoria ISO 9001 em Erechim</h3><span class="go">Ver →</span></a>
+    <a href="/consultoria-iso-9001-caxias-do-sul" class="card"><span class="cat">Cidade</span><h3>Consultoria ISO 9001 em Caxias do Sul</h3><span class="go">Ver →</span></a>
+    <a href="/consultoria-iso-9001-porto-alegre" class="card"><span class="cat">Cidade</span><h3>Consultoria ISO 9001 em Porto Alegre</h3><span class="go">Ver →</span></a>
+    <a href="/consultoria-iso-9001-bento-goncalves" class="card"><span class="cat">Cidade</span><h3>Consultoria ISO 9001 em Bento Gonçalves</h3><span class="go">Ver →</span></a>
+  </div>
+</div></section>
+
+<footer class="footer"><div class="wrap">
+  Anders Tech · CNPJ 42.073.716/0001-80 · <a href="/">anderstech.net</a>
+</div></footer>
+</body>
+</html>
