@@ -5,6 +5,7 @@ import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -93,38 +94,26 @@ app.post('/api/contact', async (req, res) => {
     }
 
     if (resend) {
-      const emailBody = [
-        `NOVO LEAD #${leadId || '—'}`,
-        `━━━━━━━━━━━━━━━━━━━━━━`,
-        `Nome: ${nome}`,
-        `Empresa: ${empresa || '—'}`,
-        `Email: ${email || '—'}`,
-        `Telefone: ${telefone || '—'}`,
-        `Interesse: ${interesse || '—'}`,
-        `Fonte: ${source || 'site_form'}`,
-        `UTM: ${utm_source || '—'} / ${utm_medium || '—'} / ${utm_campaign || '—'}`,
-        ``,
-        `Mensagem:`,
-        mensagem || '(sem mensagem)',
-        ...(roiData ? [
-          ``,
-          `DADOS DA CALCULADORA ROI:`,
-          `Faturamento: R$ ${roiData.faturamento || 0}`,
-          `Funcionários: ${roiData.funcionarios || '—'}`,
-          `Setor: ${roiData.setor || '—'}`,
-          `Motivação: ${roiData.motivacao || '—'}`,
-          `Investimento estimado: R$ ${roiData.investMin || 0} a R$ ${roiData.investMax || 0}`,
-          `Economia projetada (24m): R$ ${roiData.savings24 || 0}`,
-          `ROI projetado: ${roiData.roi || 0}%`,
-        ] : []),
-      ].join('\n');
-
       await resend.emails.send({
         from: 'Anders Tech <noreply@anderstech.net>',
         to: process.env.NOTIFY_EMAIL || 'danielanders76@gmail.com',
         subject: `[Anders Tech] Novo lead: ${nome}${empresa ? ` — ${empresa}` : ''}`,
-        text: emailBody,
+        html: notifyNewLead({ nome, empresa, email, telefone, interesse, mensagem, source, leadId, roiData }),
       });
+
+      if (email) {
+        const isChecklist = source === 'lead_magnet_checklist';
+        await resend.emails.send({
+          from: 'Daniel Anders · Anders Tech <noreply@anderstech.net>',
+          to: email,
+          subject: isChecklist
+            ? `${nome.split(' ')[0]}, seu Checklist ISO 9001 está aqui`
+            : `${nome.split(' ')[0]}, recebemos sua mensagem — Anders Tech`,
+          html: isChecklist
+            ? checklistDelivery({ nome })
+            : autoReplyContact({ nome, interesse }),
+        });
+      }
     }
 
     console.log(`Lead #${leadId}: ${nome} (${interesse})`);
