@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anders Tech · Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#1a1a2e;min-height:100vh}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif}
+
+/* Auth screen */
+#auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.auth-box{background:#fff;border-radius:12px;padding:48px 40px;box-shadow:0 2px 16px rgba(0,0,0,.08);text-align:center;max-width:400px;width:90%}
+.auth-box h2{color:#203864;margin-bottom:8px;font-size:1.5rem}
+.auth-box p{color:#666;margin-bottom:24px;font-size:.9rem}
+.auth-box input{width:100%;padding:12px 16px;border:1px solid #d0d5dd;border-radius:8px;font-size:1rem;margin-bottom:16px;font-family:'Inter',sans-serif}
+.auth-box input:focus{outline:none;border-color:#203864;box-shadow:0 0 0 3px rgba(32,56,100,.1)}
+.auth-box button{width:100%;padding:12px;background:#203864;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.auth-box button:hover{background:#2a4a7f}
+.auth-error{color:#dc2626;font-size:.85rem;margin-top:8px;display:none}
+
+/* Main app */
+#app{display:none}
+header{background:#203864;color:#fff;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:1.25rem;font-weight:700}
+header .header-actions{display:flex;align-items:center;gap:16px}
+header .header-actions span{font-size:.85rem;opacity:.7}
+header button{background:rgba(255,255,255,.15);color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem;font-family:'Inter',sans-serif}
+header button:hover{background:rgba(255,255,255,.25)}
+
+/* Stats */
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:24px 32px}
+.stat-card{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.stat-card .stat-label{font-size:.8rem;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat-card .stat-value{font-size:1.75rem;font-weight:700;color:#203864;font-family:'Space Grotesk',sans-serif}
+.stat-card .stat-sub{font-size:.8rem;color:#888;margin-top:4px}
+
+/* Filters */
+.filters-bar{padding:0 32px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.filters-bar select,.filters-bar input[type="text"]{padding:8px 12px;border:1px solid #d0d5dd;border-radius:6px;font-size:.9rem;font-family:'Inter',sans-serif;background:#fff;min-width:140px}
+.filters-bar select:focus,.filters-bar input:focus{outline:none;border-color:#203864}
+.filters-bar .spacer{flex:1}
+.btn{padding:8px 16px;border:none;border-radius:6px;font-size:.85rem;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500}
+.btn-outline{background:#fff;color:#203864;border:1px solid #203864}
+.btn-outline:hover{background:#203864;color:#fff}
+.btn-primary{background:#203864;color:#fff}
+.btn-primary:hover{background:#2a4a7f}
+
+/* Table */
+.table-wrap{padding:0 32px 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+thead{background:#f8f9fb}
+th{text-align:left;padding:12px 16px;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#666;font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:#203864}
+th .sort-icon{margin-left:4px;font-size:.7rem;opacity:.4}
+th.sorted .sort-icon{opacity:1;color:#203864}
+td{padding:12px 16px;font-size:.9rem;border-top:1px solid #f0f0f5;vertical-align:top}
+tr.lead-row{cursor:pointer;transition:background .15s}
+tr.lead-row:hover{background:#f8f9fb}
+
+/* Status badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;font-weight:600;text-transform:capitalize}
+.badge-novo{background:#dbeafe;color:#1d4ed8}
+.badge-contatado{background:#fef3c7;color:#b45309}
+.badge-qualificado{background:#d1fae5;color:#047857}
+.badge-perdido{background:#e5e7eb;color:#6b7280}
+.badge-convertido{background:#ede9fe;color:#6d28d9}
+
+/* Expanded row */
+tr.lead-detail{display:none}
+tr.lead-detail.open{display:table-row}
+tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:800px}
+.detail-field label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;display:block;margin-bottom:2px}
+.detail-field span{font-size:.9rem;color:#1a1a2e}
+.detail-events{margin-top:16px;border-top:1px solid #e5e7eb;padding-top:16px}
+.detail-events h4{font-size:.85rem;color:#666;margin-bottom:8px}
+.event-item{font-size:.8rem;color:#555;padding:4px 0;border-bottom:1px solid #f0f0f5}
+.event-item:last-child{border-bottom:none}
+
+/* Detail actions */
+.detail-actions{margin-top:16px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.detail-actions label{font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;display:block;margin-bottom:4px}
+.detail-actions select,.detail-actions input,.detail-actions textarea{padding:8px 12px;border:1px solid #d0d5dd;border-radius:6px;font-size:.85rem;font-family:'Inter',sans-serif}
+.detail-actions textarea{min-width:300px;min-height:60px;resize:vertical}
+.detail-actions .btn{align-self:flex-end}
+
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;color:#888}
+.empty-state h3{margin-bottom:8px;color:#666}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:#203864;color:#fff;padding:12px 20px;border-radius:8px;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(100px);opacity:0;transition:all .3s ease;z-index:1000}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:#dc2626}
+
+/* Loading */
+.loading{text-align:center;padding:40px;color:#888}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #d0d5dd;border-top-color:#203864;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Responsive */
+@media(max-width:768px){
+  header{padding:12px 16px;flex-direction:column;gap:8px;text-align:center}
+  .stats-bar{padding:16px;grid-template-columns:1fr 1fr}
+  .filters-bar{padding:0 16px 12px}
+  .table-wrap{padding:0 16px 16px}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-actions{flex-direction:column}
+  .detail-actions textarea{min-width:auto;width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- Auth Screen -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <h2>Anders Tech</h2>
+    <p>Painel administrativo</p>
+    <input type="password" id="auth-key" placeholder="Chave de acesso" autocomplete="off">
+    <button onclick="doLogin()">Entrar</button>
+    <div class="auth-error" id="auth-error">Chave inválida. Tente novamente.</div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="app">
+  <header>
+    <h1>Anders Tech &middot; Admin</h1>
+    <div class="header-actions">
+      <span id="last-refresh"></span>
+      <button onclick="loadAll()">&#8635; Atualizar</button>
+      <button onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">Total de leads</div>
+      <div class="stat-value" id="stat-total">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Leads este m&ecirc;s</div>
+      <div class="stat-value" id="stat-month">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Lead mais recente</div>
+      <div class="stat-value" id="stat-recent" style="font-size:1.1rem">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Por fonte</div>
+      <div class="stat-value" id="stat-sources" style="font-size:.85rem;line-height:1.6">-</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <input type="text" id="filter-search" placeholder="Buscar nome ou empresa..." oninput="applyFilters()">
+    <select id="filter-status" onchange="applyFilters()">
+      <option value="">Todos os status</option>
+      <option value="novo">Novo</option>
+      <option value="contatado">Contatado</option>
+      <option value="qualificado">Qualificado</option>
+      <option value="convertido">Convertido</option>
+      <option value="perdido">Perdido</option>
+    </select>
+    <select id="filter-interesse" onchange="applyFilters()">
+      <option value="">Todos os interesses</option>
+    </select>
+    <select id="filter-source" onchange="applyFilters()">
+      <option value="">Todas as fontes</option>
+    </select>
+    <div class="spacer"></div>
+    <button class="btn btn-outline" onclick="exportCSV()">&#128229; Exportar CSV</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="id" onclick="sortBy('id')"># <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="created_at" onclick="sortBy('created_at')">Data <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="nome" onclick="sortBy('nome')">Nome <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="empresa" onclick="sortBy('empresa')">Empresa <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="interesse" onclick="sortBy('interesse')">Interesse <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="source" onclick="sortBy('source')">Fonte <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="status" onclick="sortBy('status')">Status <span class="sort-icon">&#9650;</span></th>
+        </tr>
+      </thead>
+      <tbody id="leads-body">
+        <tr><td colspan="7" class="loading"><div class="spinner"></div><br>Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──
+let adminKey = localStorage.getItem('adminKey') || '';
+let allLeads = [];
+let filteredLeads = [];
+let sortField = 'id';
+let sortDir = 'desc';
+let expandedId = null;
+let refreshTimer = null;
+
+// ── Auth ──
+function doLogin() {
+  const key = document.getElementById('auth-key').value.trim();
+  if (!key) return;
+  adminKey = key;
+  localStorage.setItem('adminKey', key);
+  checkAuth();
+}
+
+function doLogout() {
+  adminKey = '';
+  localStorage.removeItem('adminKey');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('auth-key').value = '';
+  document.getElementById('auth-error').style.display = 'none';
+  if (refreshTimer) clearInterval(refreshTimer);
+}
+
+async function checkAuth() {
+  try {
+    const res = await apiFetch('/api/admin/stats');
+    if (res.ok) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadAll();
+      refreshTimer = setInterval(loadAll, 60000);
+    } else {
+      document.getElementById('auth-error').style.display = 'block';
+      adminKey = '';
+      localStorage.removeItem('adminKey');
+    }
+  } catch (e) {
+    document.getElementById('auth-error').textContent = 'Erro de conexão com o servidor.';
+    document.getElementById('auth-error').style.display = 'block';
+  }
+}
+
+// ── API ──
+function apiFetch(url, opts = {}) {
+  const headers = opts.headers || {};
+  if (adminKey) headers['Authorization'] = 'Bearer ' + adminKey;
+  return fetch(url, { ...opts, headers });
+}
+
+async function apiJSON(url, opts = {}) {
+  const res = await apiFetch(url, opts);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+// ── Load All ──
+async function loadAll() {
+  try {
+    const [stats, leads] = await Promise.all([
+      apiJSON('/api/admin/stats'),
+      apiJSON('/api/admin/leads')
+    ]);
+    renderStats(stats);
+    allLeads = leads;
+    populateFilterOptions();
+    applyFilters();
+    document.getElementById('last-refresh').textContent = 'Atualizado: ' + new Date().toLocaleTimeString('pt-BR');
+  } catch (e) {
+    showToast('Erro ao carregar dados: ' + e.message, true);
+  }
+}
+
+// ── Stats ──
+function renderStats(s) {
+  document.getElementById('stat-total').textContent = s.total || 0;
+  document.getElementById('stat-month').textContent = s.this_month || 0;
+
+  if (s.latest) {
+    document.getElementById('stat-recent').textContent = timeAgo(s.latest);
+  } else {
+    document.getElementById('stat-recent').textContent = 'Nenhum';
+  }
+
+  if (s.by_source && s.by_source.length) {
+    document.getElementById('stat-sources').innerHTML = s.by_source
+      .map(x => '<div>' + esc(x.source || 'direto') + ': <strong>' + x.count + '</strong></div>')
+      .join('');
+  } else {
+    document.getElementById('stat-sources').textContent = 'Sem dados';
+  }
+}
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Agora mesmo';
+  if (mins < 60) return mins + ' min atrás';
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return hours + 'h atrás';
+  const days = Math.floor(hours / 24);
+  if (days < 30) return days + 'd atrás';
+  return Math.floor(days / 30) + ' meses atrás';
+}
+
+// ── Filters ──
+function populateFilterOptions() {
+  const interesses = [...new Set(allLeads.map(l => l.interesse).filter(Boolean))].sort();
+  const sources = [...new Set(allLeads.map(l => l.source).filter(Boolean))].sort();
+
+  const selInt = document.getElementById('filter-interesse');
+  const curInt = selInt.value;
+  selInt.innerHTML = '<option value="">Todos os interesses</option>' +
+    interesses.map(i => '<option value="' + esc(i) + '">' + esc(i) + '</option>').join('');
+  selInt.value = curInt;
+
+  const selSrc = document.getElementById('filter-source');
+  const curSrc = selSrc.value;
+  selSrc.innerHTML = '<option value="">Todas as fontes</option>' +
+    sources.map(s => '<option value="' + esc(s) + '">' + esc(s) + '</option>').join('');
+  selSrc.value = curSrc;
+}
+
+function applyFilters() {
+  const search = document.getElementById('filter-search').value.toLowerCase().trim();
+  const status = document.getElementById('filter-status').value;
+  const interesse = document.getElementById('filter-interesse').value;
+  const source = document.getElementById('filter-source').value;
+
+  filteredLeads = allLeads.filter(l => {
+    if (status && l.status !== status) return false;
+    if (interesse && l.interesse !== interesse) return false;
+    if (source && l.source !== source) return false;
+    if (search) {
+      const hay = ((l.nome || '') + ' ' + (l.empresa || '')).toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  sortLeads();
+  renderTable();
+}
+
+// ── Sort ──
+function sortBy(field) {
+  if (sortField === field) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortField = field;
+    sortDir = field === 'id' || field === 'created_at' ? 'desc' : 'asc';
+  }
+
+  document.querySelectorAll('th').forEach(th => {
+    th.classList.remove('sorted');
+    const icon = th.querySelector('.sort-icon');
+    if (icon) icon.innerHTML = '&#9650;';
+  });
+  const th = document.querySelector('th[data-sort="' + field + '"]');
+  if (th) {
+    th.classList.add('sorted');
+    th.querySelector('.sort-icon').innerHTML = sortDir === 'asc' ? '&#9650;' : '&#9660;';
+  }
+
+  sortLeads();
+  renderTable();
+}
+
+function sortLeads() {
+  filteredLeads.sort((a, b) => {
+    let va = a[sortField] || '';
+    let vb = b[sortField] || '';
+    if (sortField === 'id') { va = Number(va); vb = Number(vb); }
+    if (sortField === 'created_at') { va = new Date(va).getTime(); vb = new Date(vb).getTime(); }
+    if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+// ── Render Table ──
+function renderTable() {
+  const tbody = document.getElementById('leads-body');
+
+  if (!filteredLeads.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><h3>Nenhum lead encontrado</h3><p>Ajuste os filtros ou aguarde novos leads.</p></td></tr>';
+    return;
+  }
+
+  let html = '';
+  filteredLeads.forEach(l => {
+    const isOpen = expandedId === l.id;
+    html += '<tr class="lead-row' + (isOpen ? ' open' : '') + '" onclick="toggleDetail(' + l.id + ')">';
+    html += '<td>' + l.id + '</td>';
+    html += '<td>' + formatDate(l.created_at) + '</td>';
+    html += '<td><strong>' + esc(l.nome || '') + '</strong></td>';
+    html += '<td>' + esc(l.empresa || '—') + '</td>';
+    html += '<td>' + esc(l.interesse || '—') + '</td>';
+    html += '<td>' + esc(l.source || '—') + '</td>';
+    html += '<td><span class="badge badge-' + (l.status || 'novo') + '">' + esc(l.status || 'novo') + '</span></td>';
+    html += '</tr>';
+
+    html += '<tr class="lead-detail' + (isOpen ? ' open' : '') + '" id="detail-' + l.id + '">';
+    html += '<td colspan="7"><div id="detail-content-' + l.id + '">';
+    if (isOpen) html += renderDetailContent(l);
+    html += '</div></td></tr>';
+  });
+
+  tbody.innerHTML = html;
+}
+
+function renderDetailContent(l) {
+  let h = '<div class="detail-grid">';
+  h += field('Email', l.email);
+  h += field('Telefone', l.telefone);
+  h += field('Mensagem', l.mensagem);
+  h += field('Fonte', l.source);
+  h += field('UTM Source', l.utm_source);
+  h += field('UTM Medium', l.utm_medium);
+  h += field('UTM Campaign', l.utm_campaign);
+  h += field('Criado em', l.created_at ? new Date(l.created_at).toLocaleString('pt-BR') : '—');
+  h += field('Atualizado em', l.updated_at ? new Date(l.updated_at).toLocaleString('pt-BR') : '—');
+  h += field('Notas', l.notes);
+  h += '</div>';
+
+  h += '<div class="detail-actions">';
+  h += '<div><label>Alterar status</label>';
+  h += '<select id="status-sel-' + l.id + '" onchange="updateStatus(' + l.id + ')">';
+  ['novo','contatado','qualificado','convertido','perdido'].forEach(s => {
+    h += '<option value="' + s + '"' + (l.status === s ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
+  });
+  h += '</select></div>';
+  h += '<div><label>Adicionar nota</label>';
+  h += '<textarea id="note-input-' + l.id + '" placeholder="Escreva uma nota...">' + esc(l.notes || '') + '</textarea></div>';
+  h += '<button class="btn btn-primary" onclick="event.stopPropagation(); saveNote(' + l.id + ')">Salvar nota</button>';
+  h += '</div>';
+
+  if (l.events && l.events.length) {
+    h += '<div class="detail-events"><h4>Eventos (' + l.events.length + ')</h4>';
+    l.events.forEach(ev => {
+      h += '<div class="event-item"><strong>' + esc(ev.event_type) + '</strong> — ';
+      h += new Date(ev.created_at).toLocaleString('pt-BR');
+      if (ev.payload) h += ' — <code>' + esc(JSON.stringify(ev.payload)) + '</code>';
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+
+  return h;
+}
+
+function field(label, value) {
+  return '<div class="detail-field"><label>' + label + '</label><span>' + esc(value || '—') + '</span></div>';
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('pt-BR') + ' ' + dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+// ── Toggle Detail ──
+async function toggleDetail(id) {
+  if (expandedId === id) {
+    expandedId = null;
+    renderTable();
+    return;
+  }
+
+  expandedId = id;
+
+  // Fetch full lead with events
+  try {
+    const lead = await apiJSON('/api/admin/leads/' + id);
+    // Update local data
+    const idx = allLeads.findIndex(l => l.id === id);
+    if (idx >= 0) allLeads[idx] = { ...allLeads[idx], ...lead };
+    const fidx = filteredLeads.findIndex(l => l.id === id);
+    if (fidx >= 0) filteredLeads[fidx] = { ...filteredLeads[fidx], ...lead };
+    renderTable();
+  } catch (e) {
+    showToast('Erro ao carregar detalhes', true);
+    renderTable();
+  }
+}
+
+// ── Actions ──
+async function updateStatus(id) {
+  event.stopPropagation();
+  const sel = document.getElementById('status-sel-' + id);
+  const newStatus = sel.value;
+
+  try {
+    await apiFetch('/api/admin/leads/' + id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    const idx = allLeads.findIndex(l => l.id === id);
+    if (idx >= 0) allLeads[idx].status = newStatus;
+    const fidx = filteredLeads.findIndex(l => l.id === id);
+    if (fidx >= 0) filteredLeads[fidx].status = newStatus;
+
+    showToast('Status atualizado para "' + newStatus + '"');
+    renderTable();
+  } catch (e) {
+    showToast('Erro ao atualizar status', true);
+  }
+}
+
+async function saveNote(id) {
+  const textarea = document.getElementById('note-input-' + id);
+  const notes = textarea.value.trim();
+
+  try {
+    await apiFetch('/api/admin/leads/' + id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ notes })
+    });
+
+    const idx = allLeads.findIndex(l => l.id === id);
+    if (idx >= 0) allLeads[idx].notes = notes;
+    const fidx = filteredLeads.findIndex(l => l.id === id);
+    if (fidx >= 0) filteredLeads[fidx].notes = notes;
+
+    showToast('Nota salva com sucesso');
+  } catch (e) {
+    showToast('Erro ao salvar nota', true);
+  }
+}
+
+// ── Export CSV ──
+function exportCSV() {
+  if (!filteredLeads.length) { showToast('Nenhum lead para exportar', true); return; }
+
+  const headers = ['ID','Data','Nome','Empresa','Email','Telefone','Interesse','Fonte','Status','UTM Source','UTM Medium','UTM Campaign','Notas'];
+  const rows = filteredLeads.map(l => [
+    l.id,
+    l.created_at ? new Date(l.created_at).toLocaleString('pt-BR') : '',
+    l.nome || '',
+    l.empresa || '',
+    l.email || '',
+    l.telefone || '',
+    l.interesse || '',
+    l.source || '',
+    l.status || '',
+    l.utm_source || '',
+    l.utm_medium || '',
+    l.utm_campaign || '',
+    (l.notes || '').replace(/\n/g, ' ')
+  ]);
+
+  let csv = '﻿'; // BOM for Excel
+  csv += headers.map(csvEsc).join(';') + '\n';
+  rows.forEach(r => { csv += r.map(csvEsc).join(';') + '\n'; });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'leads-anderstech-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV exportado com ' + filteredLeads.length + ' leads');
+}
+
+function csvEsc(val) {
+  const s = String(val == null ? '' : val);
+  if (s.includes(';') || s.includes('"') || s.includes('\n')) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+// ── Helpers ──
+function esc(s) {
+  if (s == null) return '';
+  const d = document.createElement('div');
+  d.textContent = String(s);
+  return d.innerHTML;
+}
+
+function showToast(msg, isError) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => { t.className = 'toast'; }, 3500);
+}
+
+// ── Init ──
+if (adminKey) {
+  checkAuth();
+} else {
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+// Enter key on auth input
+document.getElementById('auth-key').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>

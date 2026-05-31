@@ -141,6 +141,113 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+// ── Admin auth middleware ──
+function adminAuth(req, res, next) {
+  const key = process.env.ADMIN_KEY;
+  if (!key) return next(); // dev mode: no key required
+  const auth = req.headers.authorization;
+  if (!auth || auth !== 'Bearer ' + key) {
+    return res.status(401).json({ error: 'Não autorizado' });
+  }
+  next();
+}
+
+// ── Admin: serve panel ──
+app.get('/admin', (req, res) => res.sendFile(join(__dirname, 'admin', 'index.html')));
+
+// ── Admin API routes ──
+app.get('/api/admin/stats', adminAuth, async (req, res) => {
+  if (!sql) return res.json({ total: 0, this_month: 0, latest: null, by_source: [], by_interesse: [], by_status: [] });
+  try {
+    const [totalR, monthR, latestR, sourceR, interesseR, statusR] = await Promise.all([
+      sql`SELECT COUNT(*)::int AS count FROM leads`,
+      sql`SELECT COUNT(*)::int AS count FROM leads WHERE created_at >= date_trunc('month', NOW())`,
+      sql`SELECT created_at FROM leads ORDER BY created_at DESC LIMIT 1`,
+      sql`SELECT COALESCE(source, 'direto') AS source, COUNT(*)::int AS count FROM leads GROUP BY source ORDER BY count DESC`,
+      sql`SELECT COALESCE(interesse, 'não informado') AS interesse, COUNT(*)::int AS count FROM leads GROUP BY interesse ORDER BY count DESC`,
+      sql`SELECT COALESCE(status, 'novo') AS status, COUNT(*)::int AS count FROM leads GROUP BY status ORDER BY count DESC`,
+    ]);
+    res.json({
+      total: totalR[0]?.count || 0,
+      this_month: monthR[0]?.count || 0,
+      latest: latestR[0]?.created_at || null,
+      by_source: sourceR,
+      by_interesse: interesseR,
+      by_status: statusR,
+    });
+  } catch (err) {
+    console.error('Admin stats error:', err);
+    res.status(500).json({ error: 'Erro ao buscar estatísticas' });
+  }
+});
+
+app.get('/api/admin/leads', adminAuth, async (req, res) => {
+  if (!sql) return res.json([]);
+  try {
+    const { status, interesse, source } = req.query;
+    let leads;
+    if (status && interesse) {
+      leads = await sql`SELECT * FROM leads WHERE status = ${status} AND interesse = ${interesse} ORDER BY created_at DESC`;
+    } else if (status) {
+      leads = await sql`SELECT * FROM leads WHERE status = ${status} ORDER BY created_at DESC`;
+    } else if (interesse) {
+      leads = await sql`SELECT * FROM leads WHERE interesse = ${interesse} ORDER BY created_at DESC`;
+    } else if (source) {
+      leads = await sql`SELECT * FROM leads WHERE source = ${source} ORDER BY created_at DESC`;
+    } else {
+      leads = await sql`SELECT * FROM leads ORDER BY created_at DESC`;
+    }
+    res.json(leads);
+  } catch (err) {
+    console.error('Admin leads error:', err);
+    res.status(500).json({ error: 'Erro ao buscar leads' });
+  }
+});
+
+app.get('/api/admin/leads/:id', adminAuth, async (req, res) => {
+  if (!sql) return res.status(404).json({ error: 'Lead não encontrado' });
+  try {
+    const id = parseInt(req.params.id, 10);
+    const [leads, events] = await Promise.all([
+      sql`SELECT * FROM leads WHERE id = ${id}`,
+      sql`SELECT * FROM lead_events WHERE lead_id = ${id} ORDER BY created_at DESC`,
+    ]);
+    if (!leads.length) return res.status(404).json({ error: 'Lead não encontrado' });
+    res.json({ ...leads[0], events });
+  } catch (err) {
+    console.error('Admin lead detail error:', err);
+    res.status(500).json({ error: 'Erro ao buscar lead' });
+  }
+});
+
+app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
+  if (!sql) return res.status(404).json({ error: 'Banco de dados não configurado' });
+  try {
+    const id = parseInt(req.params.id, 10);
+    const { status, notes } = req.body;
+    const updates = [];
+
+    if (status !== undefined) {
+      await sql`UPDATE leads SET status = ${status}, updated_at = NOW() WHERE id = ${id}`;
+      updates.push('status');
+      await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'status_change', ${JSON.stringify({ status })}::jsonb)`;
+    }
+    if (notes !== undefined) {
+      await sql`UPDATE leads SET notes = ${notes}, updated_at = NOW() WHERE id = ${id}`;
+      updates.push('notes');
+      await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'note_update', ${JSON.stringify({ notes: notes.slice(0, 200) })}::jsonb)`;
+    }
+
+    if (!updates.length) return res.status(400).json({ error: 'Nenhum campo para atualizar' });
+
+    const updated = await sql`SELECT * FROM leads WHERE id = ${id}`;
+    res.json(updated[0] || { ok: true });
+  } catch (err) {
+    console.error('Admin lead update error:', err);
+    res.status(500).json({ error: 'Erro ao atualizar lead' });
+  }
+});
+
 app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '') || '/';
   const blogMatch = clean.match(/^\/blog\/(.+)$/);
