@@ -2,7 +2,7 @@
   var NAV = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
     + '<a href="/" class="brand" aria-label="Anders Tech">'
     + '<img src="/assets/logo-symbol.png" alt="Anders Tech" class="logo-img" style="width:44px;height:44px;object-fit:contain">'
-    + '<span class="wm">anders<b>tech</b><small>GESTÃO COM TECNOLOGIA</small></span></a>'
+    + '<span class="wm">anders<b>tech</b></span></a>'
     + '<nav class="nav-links" aria-label="Principal">'
     + '<a href="/#servicos">Serviços</a>'
     + '<a href="/#diferencial">Diferencial</a>'
