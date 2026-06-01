@@ -1,7 +1,7 @@
 (function(){
   var NAV = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
     + '<a href="/" class="brand" aria-label="Anders Tech">'
-    + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:80px;width:auto;object-fit:contain"></a>'
+    + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:140px;width:auto;object-fit:contain"></a>'
     + '<nav class="nav-links" aria-label="Principal">'
     + '<a href="/#servicos">Serviços</a>'
     + '<a href="/#diferencial">Diferencial</a>'
