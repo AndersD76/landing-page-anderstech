@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anders Tech · Portal do Cliente</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',sans-serif;
+  background:#203864;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif}
+
+.login-card{
+  background:#fff;
+  border-radius:14px;
+  padding:48px 40px 40px;
+  box-shadow:0 8px 32px rgba(0,0,0,.25);
+  text-align:center;
+  max-width:420px;
+  width:100%;
+}
+.login-card .logo{
+  height:60px;
+  margin-bottom:32px;
+}
+.login-card h2{
+  color:#203864;
+  font-size:1.5rem;
+  margin-bottom:8px;
+}
+.login-card .subtitle{
+  color:#666;
+  font-size:.9rem;
+  margin-bottom:28px;
+}
+
+.form-group{
+  text-align:left;
+  margin-bottom:16px;
+}
+.form-group label{
+  display:block;
+  font-size:.8rem;
+  font-weight:600;
+  color:#444;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:6px;
+}
+.form-group input{
+  width:100%;
+  padding:12px 16px;
+  border:1px solid #d0d5dd;
+  border-radius:8px;
+  font-size:1rem;
+  font-family:'Inter',sans-serif;
+  transition:border-color .2s, box-shadow .2s;
+}
+.form-group input:focus{
+  outline:none;
+  border-color:#203864;
+  box-shadow:0 0 0 3px rgba(32,56,100,.12);
+}
+
+.btn-entrar{
+  width:100%;
+  padding:14px;
+  background:#FE0000;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  margin-top:8px;
+  transition:background .2s, transform .1s;
+}
+.btn-entrar:hover{
+  background:#d50000;
+}
+.btn-entrar:active{
+  transform:scale(.98);
+}
+.btn-entrar:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.error-msg{
+  color:#dc2626;
+  font-size:.85rem;
+  margin-top:12px;
+  display:none;
+  background:#fef2f2;
+  border:1px solid #fecaca;
+  border-radius:6px;
+  padding:10px 14px;
+  text-align:left;
+}
+.error-msg.visible{
+  display:block;
+}
+
+.back-link{
+  display:inline-block;
+  margin-top:24px;
+  color:rgba(255,255,255,.7);
+  text-decoration:none;
+  font-size:.9rem;
+  transition:color .2s;
+}
+.back-link:hover{
+  color:#fff;
+}
+
+/* Loading spinner */
+.spinner{
+  display:inline-block;
+  width:18px;
+  height:18px;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .6s linear infinite;
+  vertical-align:middle;
+  margin-right:8px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div style="text-align:center;">
+  <div class="login-card">
+    <img src="/assets/logo-horizontal-white.png" alt="Anders Tech" class="logo" style="display:none;">
+    <!-- Fallback if logo doesn't load on white bg — show navy version or text -->
+    <div class="logo-fallback" style="margin-bottom:32px;">
+      <img src="/assets/logo-horizontal-white.png" alt="Anders Tech" style="height:60px;filter:brightness(0) saturate(100%) invert(17%) sepia(40%) saturate(1200%) hue-rotate(193deg);"
+           onerror="this.parentElement.innerHTML='<h1 style=&quot;color:#203864;font-size:1.8rem;&quot;>Anders Tech</h1>'">
+    </div>
+
+    <h2>Portal do Cliente</h2>
+    <p class="subtitle">Acesse suas informações de projeto</p>
+
+    <form id="login-form" autocomplete="on">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" name="password" placeholder="Digite sua senha" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-entrar" id="btn-submit">Entrar</button>
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+  </div>
+
+  <a href="https://anderstech.net" class="back-link">&larr; Voltar para anderstech.net</a>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('login-form');
+  const btnSubmit = document.getElementById('btn-submit');
+  const errorMsg = document.getElementById('error-msg');
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('visible');
+  }
+
+  function hideError() {
+    errorMsg.classList.remove('visible');
+  }
+
+  function setLoading(loading) {
+    if (loading) {
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = '<span class="spinner"></span>Entrando...';
+    } else {
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Entrar';
+    }
+  }
+
+  // Check if already authenticated
+  async function checkAuth() {
+    try {
+      const res = await fetch('/portal/api/me', { credentials: 'same-origin' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.role === 'admin') {
+          window.location.href = '/portal/admin';
+        } else if (data.role === 'cliente') {
+          window.location.href = '/portal/cliente';
+        }
+      }
+    } catch (e) {
+      // Not logged in — stay on login page
+    }
+  }
+
+  checkAuth();
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideError();
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+      showError('Preencha todos os campos.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('/portal/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showError(data.detail || data.message || 'E-mail ou senha incorretos.');
+        setLoading(false);
+        return;
+      }
+
+      if (data.role === 'admin') {
+        window.location.href = '/portal/admin';
+      } else if (data.role === 'cliente') {
+        window.location.href = '/portal/cliente';
+      } else {
+        window.location.href = '/portal/cliente';
+      }
+    } catch (err) {
+      showError('Erro de conexão. Tente novamente.');
+      setLoading(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>

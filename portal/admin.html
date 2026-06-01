@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anders Tech · Portal Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#1a1a2e;min-height:100vh;overflow:hidden}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif}
+a{color:#203864;text-decoration:none}
+
+/* ── Layout Shell ── */
+.app-layout{display:flex;height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{width:240px;background:#203864;color:#fff;display:flex;flex-direction:column;flex-shrink:0;transition:width .2s}
+.sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo h2{font-size:1.1rem;font-weight:700;letter-spacing:-.3px}
+.sidebar-logo span{font-size:.7rem;opacity:.5;display:block;margin-top:2px}
+.sidebar-nav{flex:1;padding:12px 0}
+.sidebar-nav a{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:.9rem;color:rgba(255,255,255,.7);transition:all .15s;cursor:pointer;border-left:3px solid transparent}
+.sidebar-nav a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.sidebar-nav a.active{color:#fff;background:rgba(255,255,255,.1);border-left-color:#5b9bd5}
+.sidebar-nav a svg{width:18px;height:18px;flex-shrink:0;opacity:.7}
+.sidebar-nav a.active svg{opacity:1}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);font-size:.8rem;opacity:.5}
+
+/* ── Top Bar ── */
+.topbar{height:56px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}
+.topbar h1{font-size:1.1rem;font-weight:600;color:#203864}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-right .user-info{font-size:.85rem;color:#666}
+.topbar-right .user-info strong{color:#203864}
+
+/* ── Main Content ── */
+.main-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-content{flex:1;overflow-y:auto;padding:24px 28px 40px}
+
+/* ── Section Views ── */
+.section-view{display:none}
+.section-view.active{display:block}
+
+/* ── Stat Cards ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.stat-card .stat-label{font-size:.75rem;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat-card .stat-value{font-size:1.75rem;font-weight:700;color:#203864;font-family:'Space Grotesk',sans-serif}
+.stat-card .stat-sub{font-size:.78rem;color:#888;margin-top:4px}
+
+/* ── Section Header ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-header h2{font-size:1.25rem;color:#203864}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:none;border-radius:7px;font-size:.85rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s}
+.btn-primary{background:#203864;color:#fff}
+.btn-primary:hover{background:#2a4a7f}
+.btn-secondary{background:#e5e7eb;color:#374151}
+.btn-secondary:hover{background:#d1d5db}
+.btn-outline{background:#fff;color:#203864;border:1px solid #203864}
+.btn-outline:hover{background:#203864;color:#fff}
+.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.btn-danger:hover{background:#dc2626;color:#fff}
+.btn-sm{padding:6px 12px;font-size:.78rem}
+.btn-icon{padding:6px 8px;background:none;border:1px solid #d0d5dd;border-radius:6px;cursor:pointer;color:#666}
+.btn-icon:hover{background:#f0f0f5;color:#203864}
+
+/* ── Filters Bar ── */
+.filters-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
+.filters-bar select,
+.filters-bar input[type="text"],
+.filters-bar input[type="date"]{padding:8px 12px;border:1px solid #d0d5dd;border-radius:6px;font-size:.85rem;font-family:'Inter',sans-serif;background:#fff}
+.filters-bar select:focus,
+.filters-bar input:focus{outline:none;border-color:#203864;box-shadow:0 0 0 3px rgba(32,56,100,.08)}
+.filters-bar .spacer{flex:1}
+
+/* ── Tables ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+thead{background:#f8f9fb}
+th{text-align:left;padding:11px 16px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:#888;font-weight:600;white-space:nowrap}
+td{padding:11px 16px;font-size:.87rem;border-top:1px solid #f0f0f5;vertical-align:middle}
+tr:hover{background:#fafbfc}
+.table-empty{text-align:center;padding:40px;color:#999;font-size:.9rem}
+
+/* ── Badges ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.72rem;font-weight:600}
+.badge-ativo{background:#d1fae5;color:#047857}
+.badge-inativo{background:#e5e7eb;color:#6b7280}
+.badge-pendente{background:#fef3c7;color:#b45309}
+.badge-pago{background:#d1fae5;color:#047857}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid #f0f0f5}
+.modal-header h3{font-size:1.1rem;color:#203864}
+.modal-close{background:none;border:none;font-size:1.4rem;color:#999;cursor:pointer;padding:4px 8px;line-height:1}
+.modal-close:hover{color:#333}
+.modal-body{padding:20px 24px}
+.modal-footer{padding:16px 24px 20px;border-top:1px solid #f0f0f5;display:flex;justify-content:flex-end;gap:10px}
+
+/* ── Forms ── */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.form-group input,
+.form-group select,
+.form-group textarea{width:100%;padding:10px 14px;border:1px solid #d0d5dd;border-radius:7px;font-size:.9rem;font-family:'Inter',sans-serif;transition:border-color .15s}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{outline:none;border-color:#203864;box-shadow:0 0 0 3px rgba(32,56,100,.08)}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── Ata Viewer ── */
+.ata-viewer{background:#fff;border-radius:10px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.ata-viewer h3{color:#203864;margin-bottom:16px;font-size:1.15rem}
+.ata-section{margin-bottom:20px}
+.ata-section h4{font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:6px}
+.ata-section p,.ata-section ul{font-size:.9rem;line-height:1.7;color:#333}
+.ata-section ul{padding-left:20px}
+.ata-actions{display:flex;gap:10px;margin-bottom:20px}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;right:24px;background:#203864;color:#fff;padding:12px 20px;border-radius:8px;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(100px);opacity:0;transition:all .3s ease;z-index:2000}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error{background:#dc2626}
+.toast.success{background:#047857}
+
+/* ── Loading ── */
+.loading{text-align:center;padding:40px;color:#888}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid #d0d5dd;border-top-color:#203864;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Dashboard Panels ── */
+.dash-panels{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.dash-panel{background:#fff;border-radius:10px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.dash-panel h3{font-size:.9rem;color:#203864;margin-bottom:12px;font-weight:600}
+.dash-panel table{box-shadow:none;border-radius:0}
+.dash-panel table th{font-size:.7rem}
+.dash-panel table td{font-size:.82rem;padding:8px 12px}
+
+/* ── Expand Detail Row ── */
+tr.detail-row{display:none}
+tr.detail-row.open{display:table-row}
+tr.detail-row td{background:#f8f9fb;padding:20px 24px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.detail-field label{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#999;display:block;margin-bottom:3px}
+.detail-field span{font-size:.87rem;color:#1a1a2e}
+.detail-summary{margin-top:16px;display:flex;gap:24px;border-top:1px solid #e5e7eb;padding-top:16px}
+.detail-summary-item h4{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#999;margin-bottom:4px}
+.detail-summary-item span{font-size:1rem;font-weight:600;color:#203864;font-family:'Space Grotesk',sans-serif}
+
+/* ── Responsive ── */
+@media(max-width:1024px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .dash-panels{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .sidebar{position:fixed;left:-240px;z-index:100;height:100vh}
+  .sidebar.open{left:0}
+  .stats-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .main-content{padding:16px}
+  .topbar{padding:0 16px}
+  .detail-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- ════════ Sidebar ════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <h2>Anders Tech</h2>
+      <span>Portal Admin</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a data-section="dashboard" class="active" onclick="switchSection('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a data-section="clientes" onclick="switchSection('clientes')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Clientes
+      </a>
+      <a data-section="eventos" onclick="switchSection('eventos')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Eventos
+      </a>
+      <a data-section="pagamentos" onclick="switchSection('pagamentos')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Pagamentos
+      </a>
+      <a data-section="atas" onclick="switchSection('atas')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Atas
+      </a>
+      <a onclick="doLogout()" style="margin-top:auto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sair
+      </a>
+    </nav>
+    <div class="sidebar-footer">v1.0</div>
+  </aside>
+
+  <!-- ════════ Main Area ════════ -->
+  <div class="main-wrap">
+    <!-- Top Bar -->
+    <div class="topbar">
+      <h1 id="topbar-title">Dashboard</h1>
+      <div class="topbar-right">
+        <span class="user-info">Logado como <strong>Daniel</strong></span>
+        <button class="btn btn-sm btn-secondary" onclick="loadCurrentSection()">&#8635; Atualizar</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="main-content">
+
+      <!-- ════ DASHBOARD ════ -->
+      <div class="section-view active" id="sec-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Clientes</div>
+            <div class="stat-value" id="stat-clientes">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Horas Este M&ecirc;s</div>
+            <div class="stat-value" id="stat-horas">-</div>
+            <div class="stat-sub" id="stat-horas-sub"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Receita Total</div>
+            <div class="stat-value" id="stat-receita">-</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">A Receber</div>
+            <div class="stat-value" id="stat-areceber">-</div>
+          </div>
+        </div>
+        <div class="dash-panels">
+          <div class="dash-panel">
+            <h3>Eventos Recentes</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Data</th><th>Cliente</th><th>Tipo</th><th>Horas</th></tr></thead>
+                <tbody id="dash-eventos-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="dash-panel">
+            <h3>Pagamentos Recentes</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Data</th><th>Cliente</th><th>Valor</th><th>M&eacute;todo</th></tr></thead>
+                <tbody id="dash-pagamentos-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ CLIENTES ════ -->
+      <div class="section-view" id="sec-clientes">
+        <div class="section-header">
+          <h2>Clientes</h2>
+          <button class="btn btn-primary" onclick="openModal('cliente')">+ Novo Cliente</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Nome</th><th>Empresa</th><th>Email</th><th>Telefone</th><th>Status</th><th>A&ccedil;&otilde;es</th>
+            </tr></thead>
+            <tbody id="clientes-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ════ EVENTOS ════ -->
+      <div class="section-view" id="sec-eventos">
+        <div class="section-header">
+          <h2>Eventos (Horas)</h2>
+          <button class="btn btn-primary" onclick="openModal('evento')">+ Novo Evento</button>
+        </div>
+        <div class="filters-bar">
+          <select id="filter-evento-cliente" onchange="loadEventos()">
+            <option value="">Todos os clientes</option>
+          </select>
+          <input type="date" id="filter-evento-de" onchange="loadEventos()" title="Data inicial">
+          <input type="date" id="filter-evento-ate" onchange="loadEventos()" title="Data final">
+          <span class="spacer"></span>
+          <span id="eventos-total-horas" style="font-size:.85rem;color:#666"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Data</th><th>Cliente</th><th>Tipo</th><th>Descri&ccedil;&atilde;o</th><th>Horas</th><th>Valor</th><th>A&ccedil;&otilde;es</th>
+            </tr></thead>
+            <tbody id="eventos-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ════ PAGAMENTOS ════ -->
+      <div class="section-view" id="sec-pagamentos">
+        <div class="section-header">
+          <h2>Pagamentos</h2>
+          <button class="btn btn-primary" onclick="openModal('pagamento')">+ Novo Pagamento</button>
+        </div>
+        <div class="filters-bar">
+          <select id="filter-pag-cliente" onchange="loadPagamentos()">
+            <option value="">Todos os clientes</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Data</th><th>Cliente</th><th>Valor</th><th>M&eacute;todo</th><th>Observa&ccedil;&otilde;es</th><th>A&ccedil;&otilde;es</th>
+            </tr></thead>
+            <tbody id="pagamentos-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ════ ATAS ════ -->
+      <div class="section-view" id="sec-atas">
+        <div class="section-header">
+          <h2>Atas de Reuni&atilde;o</h2>
+          <button class="btn btn-primary" onclick="openModal('ata')">+ Nova Ata</button>
+        </div>
+        <div id="ata-list-view">
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Data</th><th>Cliente</th><th>T&iacute;tulo</th><th>Evento</th><th>A&ccedil;&otilde;es</th>
+              </tr></thead>
+              <tbody id="atas-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="ata-detail-view" style="display:none">
+          <div class="ata-actions">
+            <button class="btn btn-secondary" onclick="closeAtaDetail()">&larr; Voltar</button>
+            <button class="btn btn-outline" onclick="editAtaDetail()">Editar</button>
+            <button class="btn btn-primary" onclick="gerarPdfAta()">Gerar PDF</button>
+          </div>
+          <div class="ata-viewer" id="ata-viewer-content"></div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /main-wrap -->
+</div><!-- /app-layout -->
+
+<!-- ════════ MODAL ════════ -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOverlay(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Novo</h3>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" id="modal-save" onclick="saveModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   Portal Admin — Anders Tech
+   Vanilla JS — All API calls to /portal/api/*
+   ══════════════════════════════════════════ */
+
+const API = '/portal/api';
+let currentSection = 'dashboard';
+let clientesCache = [];
+let contratosCache = [];
+let currentModalType = null;
+let currentEditId = null;
+let currentAtaId = null;
+
+// ── Helpers ──
+
+function fmt(val) {
+  if (val == null) return '-';
+  return Number(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function fmtDate(str) {
+  if (!str) return '-';
+  const d = new Date(str);
+  if (isNaN(d)) return str;
+  return d.toLocaleDateString('pt-BR');
+}
+
+function fmtDateInput(str) {
+  if (!str) return '';
+  const d = new Date(str);
+  if (isNaN(d)) return str;
+  return d.toISOString().split('T')[0];
+}
+
+function tipoLabel(tipo) {
+  const map = {
+    consultoria: 'Consultoria',
+    auditoria: 'Auditoria',
+    treinamento: 'Treinamento',
+    diagnostico: 'Diagnóstico',
+    reuniao: 'Reunião'
+  };
+  return map[tipo] || tipo || '-';
+}
+
+function metodoLabel(m) {
+  const map = { pix: 'PIX', boleto: 'Boleto', transferencia: 'Transferência', cartao: 'Cartão' };
+  return map[m] || m || '-';
+}
+
+function esc(s) {
+  if (!s) return '';
+  const el = document.createElement('span');
+  el.textContent = s;
+  return el.innerHTML;
+}
+
+function clienteNome(id) {
+  const c = clientesCache.find(x => x.id === id);
+  return c ? (c.empresa || c.nome) : '-';
+}
+
+// ── Toast ──
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ── API Fetch ──
+
+async function apiFetch(path, opts) {
+  const res = await fetch(API + path, {
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json' },
+    ...opts
+  });
+  if (res.status === 401) {
+    window.location.href = '/portal';
+    return null;
+  }
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || err.message || 'Erro ' + res.status);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+// ── Auth ──
+
+async function checkAuth() {
+  try {
+    const data = await apiFetch('/dashboard');
+    if (data) renderDashboard(data);
+  } catch {
+    window.location.href = '/portal';
+  }
+}
+
+async function doLogout() {
+  try {
+    await fetch('/portal/logout', { method: 'POST', credentials: 'same-origin' });
+  } catch {}
+  window.location.href = '/portal';
+}
+
+// ── Section Switching ──
+
+function switchSection(name) {
+  currentSection = name;
+  document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a[data-section]').forEach(a => {
+    a.classList.toggle('active', a.dataset.section === name);
+  });
+  const titles = {
+    dashboard: 'Dashboard',
+    clientes: 'Clientes',
+    eventos: 'Eventos (Horas)',
+    pagamentos: 'Pagamentos',
+    atas: 'Atas de Reunião'
+  };
+  document.getElementById('topbar-title').textContent = titles[name] || name;
+  loadCurrentSection();
+}
+
+function loadCurrentSection() {
+  switch (currentSection) {
+    case 'dashboard': loadDashboard(); break;
+    case 'clientes': loadClientes(); break;
+    case 'eventos': loadEventos(); break;
+    case 'pagamentos': loadPagamentos(); break;
+    case 'atas': loadAtas(); break;
+  }
+}
+
+// ── DASHBOARD ──
+
+async function loadDashboard() {
+  try {
+    const data = await apiFetch('/dashboard');
+    if (data) renderDashboard(data);
+  } catch (e) {
+    showToast('Erro ao carregar dashboard: ' + e.message, 'error');
+  }
+}
+
+function renderDashboard(data) {
+  document.getElementById('stat-clientes').textContent = data.total_clientes ?? '-';
+  document.getElementById('stat-horas').textContent = data.horas_mes != null ? data.horas_mes.toFixed(1) + 'h' : '-';
+  document.getElementById('stat-horas-sub').textContent = data.horas_mes_label || '';
+  document.getElementById('stat-receita').textContent = data.receita_total != null ? fmt(data.receita_total) : '-';
+  document.getElementById('stat-areceber').textContent = data.a_receber != null ? fmt(data.a_receber) : '-';
+
+  // Recent events
+  const eb = document.getElementById('dash-eventos-body');
+  if (data.eventos_recentes && data.eventos_recentes.length) {
+    eb.innerHTML = data.eventos_recentes.slice(0, 10).map(e =>
+      `<tr><td>${fmtDate(e.data)}</td><td>${esc(e.cliente_nome || clienteNome(e.cliente_id))}</td><td>${tipoLabel(e.tipo)}</td><td>${e.horas ?? '-'}h</td></tr>`
+    ).join('');
+  } else {
+    eb.innerHTML = '<tr><td colspan="4" class="table-empty">Nenhum evento recente</td></tr>';
+  }
+
+  // Recent payments
+  const pb = document.getElementById('dash-pagamentos-body');
+  if (data.pagamentos_recentes && data.pagamentos_recentes.length) {
+    pb.innerHTML = data.pagamentos_recentes.slice(0, 5).map(p =>
+      `<tr><td>${fmtDate(p.data)}</td><td>${esc(p.cliente_nome || clienteNome(p.cliente_id))}</td><td>${fmt(p.valor)}</td><td>${metodoLabel(p.metodo)}</td></tr>`
+    ).join('');
+  } else {
+    pb.innerHTML = '<tr><td colspan="4" class="table-empty">Nenhum pagamento recente</td></tr>';
+  }
+}
+
+// ── CLIENTES ──
+
+async function loadClientes() {
+  try {
+    const data = await apiFetch('/clientes');
+    clientesCache = data || [];
+    renderClientes();
+    populateClienteFilters();
+  } catch (e) {
+    showToast('Erro ao carregar clientes: ' + e.message, 'error');
+  }
+}
+
+function renderClientes() {
+  const tb = document.getElementById('clientes-body');
+  if (!clientesCache.length) {
+    tb.innerHTML = '<tr><td colspan="6" class="table-empty">Nenhum cliente cadastrado</td></tr>';
+    return;
+  }
+  tb.innerHTML = clientesCache.map(c => `
+    <tr style="cursor:pointer" onclick="toggleClienteDetail(${c.id}, this)">
+      <td>${esc(c.nome)}</td>
+      <td>${esc(c.empresa || '-')}</td>
+      <td>${esc(c.email || '-')}</td>
+      <td>${esc(c.telefone || '-')}</td>
+      <td><span class="badge badge-${c.status === 'inativo' ? 'inativo' : 'ativo'}">${c.status === 'inativo' ? 'Inativo' : 'Ativo'}</span></td>
+      <td>
+        <button class="btn-icon btn-sm" onclick="event.stopPropagation();editCliente(${c.id})" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" onclick="event.stopPropagation();toggleClienteStatus(${c.id})" title="${c.status === 'inativo' ? 'Ativar' : 'Desativar'}">
+          ${c.status === 'inativo' ? '&#10003;' : '&#10007;'}
+        </button>
+      </td>
+    </tr>
+    <tr class="detail-row" id="detail-${c.id}">
+      <td colspan="6">
+        <div class="detail-grid">
+          <div class="detail-field"><label>CNPJ</label><span>${esc(c.cnpj || '-')}</span></div>
+          <div class="detail-field"><label>Email</label><span>${esc(c.email || '-')}</span></div>
+          <div class="detail-field"><label>Telefone</label><span>${esc(c.telefone || '-')}</span></div>
+        </div>
+        <div class="detail-summary" id="detail-summary-${c.id}">
+          <div class="detail-summary-item"><h4>Eventos</h4><span id="detail-eventos-${c.id}">-</span></div>
+          <div class="detail-summary-item"><h4>Horas</h4><span id="detail-horas-${c.id}">-</span></div>
+          <div class="detail-summary-item"><h4>Total Faturado</h4><span id="detail-faturado-${c.id}">-</span></div>
+          <div class="detail-summary-item"><h4>Pagamentos</h4><span id="detail-pagamentos-${c.id}">-</span></div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function toggleClienteDetail(id, row) {
+  const detail = document.getElementById('detail-' + id);
+  if (detail.classList.contains('open')) {
+    detail.classList.remove('open');
+    return;
+  }
+  document.querySelectorAll('.detail-row.open').forEach(el => el.classList.remove('open'));
+  detail.classList.add('open');
+
+  try {
+    const data = await apiFetch('/clientes/' + id + '/resumo');
+    if (data) {
+      document.getElementById('detail-eventos-' + id).textContent = data.total_eventos ?? '-';
+      document.getElementById('detail-horas-' + id).textContent = data.total_horas != null ? data.total_horas.toFixed(1) + 'h' : '-';
+      document.getElementById('detail-faturado-' + id).textContent = data.total_faturado != null ? fmt(data.total_faturado) : '-';
+      document.getElementById('detail-pagamentos-' + id).textContent = data.total_pagamentos != null ? fmt(data.total_pagamentos) : '-';
+    }
+  } catch {}
+}
+
+async function editCliente(id) {
+  const c = clientesCache.find(x => x.id === id);
+  if (!c) return;
+  currentEditId = id;
+  openModal('cliente', c);
+}
+
+async function toggleClienteStatus(id) {
+  const c = clientesCache.find(x => x.id === id);
+  if (!c) return;
+  const newStatus = c.status === 'inativo' ? 'ativo' : 'inativo';
+  try {
+    await apiFetch('/clientes/' + id, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: newStatus })
+    });
+    showToast('Cliente ' + (newStatus === 'ativo' ? 'ativado' : 'desativado'), 'success');
+    loadClientes();
+  } catch (e) {
+    showToast('Erro: ' + e.message, 'error');
+  }
+}
+
+// ── EVENTOS ──
+
+async function loadEventos() {
+  try {
+    const params = new URLSearchParams();
+    const cid = document.getElementById('filter-evento-cliente').value;
+    const de = document.getElementById('filter-evento-de').value;
+    const ate = document.getElementById('filter-evento-ate').value;
+    if (cid) params.set('cliente_id', cid);
+    if (de) params.set('data_de', de);
+    if (ate) params.set('data_ate', ate);
+    const qs = params.toString();
+    const data = await apiFetch('/eventos' + (qs ? '?' + qs : ''));
+    renderEventos(data || []);
+  } catch (e) {
+    showToast('Erro ao carregar eventos: ' + e.message, 'error');
+  }
+}
+
+function renderEventos(eventos) {
+  const tb = document.getElementById('eventos-body');
+  if (!eventos.length) {
+    tb.innerHTML = '<tr><td colspan="7" class="table-empty">Nenhum evento encontrado</td></tr>';
+    document.getElementById('eventos-total-horas').textContent = '';
+    return;
+  }
+  const totalH = eventos.reduce((s, e) => s + (e.horas || 0), 0);
+  const totalV = eventos.reduce((s, e) => s + ((e.horas || 0) * (e.valor_hora || 0)), 0);
+  document.getElementById('eventos-total-horas').textContent = `Total: ${totalH.toFixed(1)}h · ${fmt(totalV)}`;
+
+  tb.innerHTML = eventos.map(e => `
+    <tr>
+      <td>${fmtDate(e.data)}</td>
+      <td>${esc(e.cliente_nome || clienteNome(e.cliente_id))}</td>
+      <td>${tipoLabel(e.tipo)}</td>
+      <td>${esc(e.descricao || '-')}</td>
+      <td>${e.horas ?? '-'}</td>
+      <td>${fmt((e.horas || 0) * (e.valor_hora || 0))}</td>
+      <td>
+        <button class="btn-icon btn-sm" onclick="editEvento(${e.id})" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" onclick="deleteEvento(${e.id})" title="Excluir">&#128465;</button>
+        <button class="btn btn-sm btn-outline" onclick="gerarAtaFromEvento(${e.id})">Gerar Ata</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+let eventosCache = [];
+async function editEvento(id) {
+  try {
+    const e = await apiFetch('/eventos/' + id);
+    if (e) { currentEditId = id; openModal('evento', e); }
+  } catch (err) { showToast('Erro: ' + err.message, 'error'); }
+}
+
+async function deleteEvento(id) {
+  if (!confirm('Excluir este evento?')) return;
+  try {
+    await apiFetch('/eventos/' + id, { method: 'DELETE' });
+    showToast('Evento excluído', 'success');
+    loadEventos();
+  } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+async function gerarAtaFromEvento(eventoId) {
+  currentEditId = null;
+  openModal('ata', { evento_id: eventoId });
+}
+
+// ── PAGAMENTOS ──
+
+async function loadPagamentos() {
+  try {
+    const params = new URLSearchParams();
+    const cid = document.getElementById('filter-pag-cliente').value;
+    if (cid) params.set('cliente_id', cid);
+    const qs = params.toString();
+    const data = await apiFetch('/pagamentos' + (qs ? '?' + qs : ''));
+    renderPagamentos(data || []);
+  } catch (e) {
+    showToast('Erro ao carregar pagamentos: ' + e.message, 'error');
+  }
+}
+
+function renderPagamentos(pagamentos) {
+  const tb = document.getElementById('pagamentos-body');
+  if (!pagamentos.length) {
+    tb.innerHTML = '<tr><td colspan="6" class="table-empty">Nenhum pagamento encontrado</td></tr>';
+    return;
+  }
+  tb.innerHTML = pagamentos.map(p => `
+    <tr>
+      <td>${fmtDate(p.data)}</td>
+      <td>${esc(p.cliente_nome || clienteNome(p.cliente_id))}</td>
+      <td>${fmt(p.valor)}</td>
+      <td>${metodoLabel(p.metodo)}</td>
+      <td>${esc(p.observacoes || '-')}</td>
+      <td>
+        <button class="btn-icon btn-sm" onclick="editPagamento(${p.id})" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" onclick="deletePagamento(${p.id})" title="Excluir">&#128465;</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function editPagamento(id) {
+  try {
+    const p = await apiFetch('/pagamentos/' + id);
+    if (p) { currentEditId = id; openModal('pagamento', p); }
+  } catch (err) { showToast('Erro: ' + err.message, 'error'); }
+}
+
+async function deletePagamento(id) {
+  if (!confirm('Excluir este pagamento?')) return;
+  try {
+    await apiFetch('/pagamentos/' + id, { method: 'DELETE' });
+    showToast('Pagamento excluído', 'success');
+    loadPagamentos();
+  } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+// ── ATAS ──
+
+async function loadAtas() {
+  try {
+    const data = await apiFetch('/atas');
+    renderAtas(data || []);
+  } catch (e) {
+    showToast('Erro ao carregar atas: ' + e.message, 'error');
+  }
+}
+
+function renderAtas(atas) {
+  const tb = document.getElementById('atas-body');
+  if (!atas.length) {
+    tb.innerHTML = '<tr><td colspan="5" class="table-empty">Nenhuma ata encontrada</td></tr>';
+    return;
+  }
+  tb.innerHTML = atas.map(a => `
+    <tr>
+      <td>${fmtDate(a.data || a.created_at)}</td>
+      <td>${esc(a.cliente_nome || clienteNome(a.cliente_id))}</td>
+      <td>${esc(a.titulo)}</td>
+      <td>${esc(a.evento_descricao || '-')}</td>
+      <td>
+        <button class="btn btn-sm btn-outline" onclick="viewAta(${a.id})">Ver</button>
+        <button class="btn btn-sm btn-primary" onclick="gerarPdfAtaById(${a.id})">PDF</button>
+        <button class="btn-icon btn-sm" onclick="deleteAta(${a.id})" title="Excluir">&#128465;</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function viewAta(id) {
+  try {
+    const a = await apiFetch('/atas/' + id);
+    if (!a) return;
+    currentAtaId = id;
+    document.getElementById('ata-list-view').style.display = 'none';
+    document.getElementById('ata-detail-view').style.display = 'block';
+
+    const viewer = document.getElementById('ata-viewer-content');
+    viewer.innerHTML = `
+      <h3>${esc(a.titulo)}</h3>
+      <p style="color:#888;font-size:.85rem;margin-bottom:20px">${fmtDate(a.data || a.created_at)} &mdash; ${esc(a.cliente_nome || '')}</p>
+      ${a.participantes ? `<div class="ata-section"><h4>Participantes</h4><p>${esc(a.participantes)}</p></div>` : ''}
+      ${a.pauta ? `<div class="ata-section"><h4>Pauta</h4><p>${esc(a.pauta).replace(/\n/g, '<br>')}</p></div>` : ''}
+      ${a.discussao ? `<div class="ata-section"><h4>Discuss&atilde;o</h4><p>${esc(a.discussao).replace(/\n/g, '<br>')}</p></div>` : ''}
+      ${a.decisoes ? `<div class="ata-section"><h4>Decis&otilde;es</h4><p>${esc(a.decisoes).replace(/\n/g, '<br>')}</p></div>` : ''}
+      ${a.proximos_passos ? `<div class="ata-section"><h4>Pr&oacute;ximos Passos</h4><p>${esc(a.proximos_passos).replace(/\n/g, '<br>')}</p></div>` : ''}
+    `;
+  } catch (e) {
+    showToast('Erro ao carregar ata: ' + e.message, 'error');
+  }
+}
+
+function closeAtaDetail() {
+  document.getElementById('ata-list-view').style.display = 'block';
+  document.getElementById('ata-detail-view').style.display = 'none';
+  currentAtaId = null;
+}
+
+function editAtaDetail() {
+  if (!currentAtaId) return;
+  apiFetch('/atas/' + currentAtaId).then(a => {
+    if (a) { currentEditId = currentAtaId; openModal('ata', a); }
+  }).catch(e => showToast('Erro: ' + e.message, 'error'));
+}
+
+function gerarPdfAta() {
+  if (!currentAtaId) return;
+  gerarPdfAtaById(currentAtaId);
+}
+
+function gerarPdfAtaById(id) {
+  window.open(API + '/atas/' + id + '/pdf', '_blank');
+}
+
+async function deleteAta(id) {
+  if (!confirm('Excluir esta ata?')) return;
+  try {
+    await apiFetch('/atas/' + id, { method: 'DELETE' });
+    showToast('Ata excluída', 'success');
+    loadAtas();
+  } catch (e) { showToast('Erro: ' + e.message, 'error'); }
+}
+
+// ── Client Filters ──
+
+function populateClienteFilters() {
+  const selectors = [
+    document.getElementById('filter-evento-cliente'),
+    document.getElementById('filter-pag-cliente')
+  ];
+  selectors.forEach(sel => {
+    const val = sel.value;
+    const opts = '<option value="">Todos os clientes</option>' +
+      clientesCache.filter(c => c.status !== 'inativo').map(c =>
+        `<option value="${c.id}">${esc(c.empresa || c.nome)}</option>`
+      ).join('');
+    sel.innerHTML = opts;
+    sel.value = val;
+  });
+}
+
+// ── MODAL SYSTEM ──
+
+function openModal(type, data) {
+  currentModalType = type;
+  if (!data) currentEditId = null;
+  const overlay = document.getElementById('modal-overlay');
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+
+  switch (type) {
+    case 'cliente':
+      title.textContent = currentEditId ? 'Editar Cliente' : 'Novo Cliente';
+      body.innerHTML = `
+        <div class="form-group"><label>Nome *</label><input type="text" id="f-nome" value="${esc(data?.nome || '')}"></div>
+        <div class="form-group"><label>Empresa</label><input type="text" id="f-empresa" value="${esc(data?.empresa || '')}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" id="f-email" value="${esc(data?.email || '')}"></div>
+          <div class="form-group"><label>Telefone</label><input type="text" id="f-telefone" value="${esc(data?.telefone || '')}"></div>
+        </div>
+        <div class="form-group"><label>CNPJ</label><input type="text" id="f-cnpj" value="${esc(data?.cnpj || '')}"></div>
+      `;
+      break;
+
+    case 'evento':
+      title.textContent = currentEditId ? 'Editar Evento' : 'Novo Evento';
+      body.innerHTML = `
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cliente *</label>
+            <select id="f-cliente_id">
+              <option value="">Selecione...</option>
+              ${clientesCache.filter(c => c.status !== 'inativo').map(c =>
+                `<option value="${c.id}" ${data?.cliente_id == c.id ? 'selected' : ''}>${esc(c.empresa || c.nome)}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data *</label>
+            <input type="date" id="f-data" value="${fmtDateInput(data?.data || '')}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo *</label>
+            <select id="f-tipo">
+              <option value="">Selecione...</option>
+              <option value="consultoria" ${data?.tipo === 'consultoria' ? 'selected' : ''}>Consultoria</option>
+              <option value="auditoria" ${data?.tipo === 'auditoria' ? 'selected' : ''}>Auditoria</option>
+              <option value="treinamento" ${data?.tipo === 'treinamento' ? 'selected' : ''}>Treinamento</option>
+              <option value="diagnostico" ${data?.tipo === 'diagnostico' ? 'selected' : ''}>Diagnóstico</option>
+              <option value="reuniao" ${data?.tipo === 'reuniao' ? 'selected' : ''}>Reunião</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contrato</label>
+            <select id="f-contrato_id">
+              <option value="">Nenhum</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Descri&ccedil;&atilde;o *</label><input type="text" id="f-descricao" value="${esc(data?.descricao || '')}"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Horas *</label><input type="number" step="0.5" min="0" id="f-horas" value="${data?.horas ?? ''}"></div>
+          <div class="form-group"><label>Valor/Hora (R$)</label><input type="number" step="0.01" min="0" id="f-valor_hora" value="${data?.valor_hora ?? ''}"></div>
+        </div>
+        <div class="form-group"><label>Observa&ccedil;&otilde;es</label><textarea id="f-observacoes">${esc(data?.observacoes || '')}</textarea></div>
+      `;
+      // Load contracts for selected client
+      const cSel = document.getElementById('f-cliente_id');
+      cSel.addEventListener('change', () => loadContratosForSelect(cSel.value, data?.contrato_id));
+      if (data?.cliente_id) loadContratosForSelect(data.cliente_id, data?.contrato_id);
+      break;
+
+    case 'pagamento':
+      title.textContent = currentEditId ? 'Editar Pagamento' : 'Novo Pagamento';
+      body.innerHTML = `
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cliente *</label>
+            <select id="f-cliente_id">
+              <option value="">Selecione...</option>
+              ${clientesCache.filter(c => c.status !== 'inativo').map(c =>
+                `<option value="${c.id}" ${data?.cliente_id == c.id ? 'selected' : ''}>${esc(c.empresa || c.nome)}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data *</label>
+            <input type="date" id="f-data" value="${fmtDateInput(data?.data || '')}">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Valor (R$) *</label><input type="number" step="0.01" min="0" id="f-valor" value="${data?.valor ?? ''}"></div>
+          <div class="form-group">
+            <label>M&eacute;todo *</label>
+            <select id="f-metodo">
+              <option value="">Selecione...</option>
+              <option value="pix" ${data?.metodo === 'pix' ? 'selected' : ''}>PIX</option>
+              <option value="boleto" ${data?.metodo === 'boleto' ? 'selected' : ''}>Boleto</option>
+              <option value="transferencia" ${data?.metodo === 'transferencia' ? 'selected' : ''}>Transferência</option>
+              <option value="cartao" ${data?.metodo === 'cartao' ? 'selected' : ''}>Cartão</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contrato</label>
+          <select id="f-contrato_id">
+            <option value="">Nenhum</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Observa&ccedil;&otilde;es</label><textarea id="f-observacoes">${esc(data?.observacoes || '')}</textarea></div>
+      `;
+      const pSel = document.getElementById('f-cliente_id');
+      pSel.addEventListener('change', () => loadContratosForSelect(pSel.value, data?.contrato_id));
+      if (data?.cliente_id) loadContratosForSelect(data.cliente_id, data?.contrato_id);
+      break;
+
+    case 'ata':
+      title.textContent = currentEditId ? 'Editar Ata' : 'Nova Ata';
+      body.innerHTML = `
+        <div class="form-row">
+          <div class="form-group">
+            <label>Evento</label>
+            <select id="f-evento_id">
+              <option value="">Nenhum (ata avulsa)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="f-data" value="${fmtDateInput(data?.data || '')}">
+          </div>
+        </div>
+        <div class="form-group"><label>T&iacute;tulo *</label><input type="text" id="f-titulo" value="${esc(data?.titulo || '')}"></div>
+        <div class="form-group"><label>Participantes</label><input type="text" id="f-participantes" value="${esc(data?.participantes || '')}"></div>
+        <div class="form-group"><label>Pauta</label><textarea id="f-pauta">${esc(data?.pauta || '')}</textarea></div>
+        <div class="form-group"><label>Discuss&atilde;o</label><textarea id="f-discussao">${esc(data?.discussao || '')}</textarea></div>
+        <div class="form-group"><label>Decis&otilde;es</label><textarea id="f-decisoes">${esc(data?.decisoes || '')}</textarea></div>
+        <div class="form-group"><label>Pr&oacute;ximos Passos</label><textarea id="f-proximos_passos">${esc(data?.proximos_passos || '')}</textarea></div>
+      `;
+      loadEventosForSelect(data?.evento_id);
+      break;
+  }
+
+  overlay.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  currentModalType = null;
+  currentEditId = null;
+}
+
+function closeModalOverlay(e) {
+  if (e.target === e.currentTarget) closeModal();
+}
+
+async function loadContratosForSelect(clienteId, selectedId) {
+  const sel = document.getElementById('f-contrato_id');
+  if (!sel) return;
+  if (!clienteId) { sel.innerHTML = '<option value="">Nenhum</option>'; return; }
+  try {
+    const data = await apiFetch('/clientes/' + clienteId + '/contratos');
+    sel.innerHTML = '<option value="">Nenhum</option>' +
+      (data || []).map(c =>
+        `<option value="${c.id}" ${c.id == selectedId ? 'selected' : ''}>${esc(c.descricao || c.numero || 'Contrato #' + c.id)}</option>`
+      ).join('');
+  } catch { sel.innerHTML = '<option value="">Nenhum</option>'; }
+}
+
+async function loadEventosForSelect(selectedId) {
+  const sel = document.getElementById('f-evento_id');
+  if (!sel) return;
+  try {
+    const data = await apiFetch('/eventos?limit=50');
+    sel.innerHTML = '<option value="">Nenhum (ata avulsa)</option>' +
+      (data || []).map(e =>
+        `<option value="${e.id}" ${e.id == selectedId ? 'selected' : ''}>${fmtDate(e.data)} - ${esc(e.cliente_nome || clienteNome(e.cliente_id))} - ${esc(e.descricao || tipoLabel(e.tipo))}</option>`
+      ).join('');
+  } catch { /* keep default */ }
+}
+
+// ── SAVE MODAL ──
+
+async function saveModal() {
+  try {
+    let payload, endpoint, method;
+
+    switch (currentModalType) {
+      case 'cliente': {
+        const nome = document.getElementById('f-nome').value.trim();
+        if (!nome) { showToast('Nome é obrigatório', 'error'); return; }
+        payload = {
+          nome,
+          empresa: document.getElementById('f-empresa').value.trim(),
+          email: document.getElementById('f-email').value.trim(),
+          telefone: document.getElementById('f-telefone').value.trim(),
+          cnpj: document.getElementById('f-cnpj').value.trim()
+        };
+        endpoint = currentEditId ? '/clientes/' + currentEditId : '/clientes';
+        method = currentEditId ? 'PUT' : 'POST';
+        break;
+      }
+      case 'evento': {
+        const cid = document.getElementById('f-cliente_id').value;
+        const data = document.getElementById('f-data').value;
+        const tipo = document.getElementById('f-tipo').value;
+        const descricao = document.getElementById('f-descricao').value.trim();
+        const horas = document.getElementById('f-horas').value;
+        if (!cid || !data || !tipo || !descricao || !horas) {
+          showToast('Preencha todos os campos obrigatórios', 'error'); return;
+        }
+        payload = {
+          cliente_id: parseInt(cid),
+          data,
+          tipo,
+          descricao,
+          horas: parseFloat(horas),
+          valor_hora: parseFloat(document.getElementById('f-valor_hora').value) || 0,
+          observacoes: document.getElementById('f-observacoes').value.trim(),
+          contrato_id: document.getElementById('f-contrato_id').value || null
+        };
+        if (payload.contrato_id) payload.contrato_id = parseInt(payload.contrato_id);
+        endpoint = currentEditId ? '/eventos/' + currentEditId : '/eventos';
+        method = currentEditId ? 'PUT' : 'POST';
+        break;
+      }
+      case 'pagamento': {
+        const cid = document.getElementById('f-cliente_id').value;
+        const data = document.getElementById('f-data').value;
+        const valor = document.getElementById('f-valor').value;
+        const metodo = document.getElementById('f-metodo').value;
+        if (!cid || !data || !valor || !metodo) {
+          showToast('Preencha todos os campos obrigatórios', 'error'); return;
+        }
+        payload = {
+          cliente_id: parseInt(cid),
+          data,
+          valor: parseFloat(valor),
+          metodo,
+          observacoes: document.getElementById('f-observacoes').value.trim(),
+          contrato_id: document.getElementById('f-contrato_id').value || null
+        };
+        if (payload.contrato_id) payload.contrato_id = parseInt(payload.contrato_id);
+        endpoint = currentEditId ? '/pagamentos/' + currentEditId : '/pagamentos';
+        method = currentEditId ? 'PUT' : 'POST';
+        break;
+      }
+      case 'ata': {
+        const titulo = document.getElementById('f-titulo').value.trim();
+        if (!titulo) { showToast('Título é obrigatório', 'error'); return; }
+        payload = {
+          titulo,
+          data: document.getElementById('f-data').value || null,
+          evento_id: document.getElementById('f-evento_id').value || null,
+          participantes: document.getElementById('f-participantes').value.trim(),
+          pauta: document.getElementById('f-pauta').value.trim(),
+          discussao: document.getElementById('f-discussao').value.trim(),
+          decisoes: document.getElementById('f-decisoes').value.trim(),
+          proximos_passos: document.getElementById('f-proximos_passos').value.trim()
+        };
+        if (payload.evento_id) payload.evento_id = parseInt(payload.evento_id);
+        endpoint = currentEditId ? '/atas/' + currentEditId : '/atas';
+        method = currentEditId ? 'PUT' : 'POST';
+        break;
+      }
+    }
+
+    document.getElementById('modal-save').disabled = true;
+    document.getElementById('modal-save').textContent = 'Salvando...';
+
+    await apiFetch(endpoint, { method, body: JSON.stringify(payload) });
+
+    showToast(currentEditId ? 'Atualizado com sucesso' : 'Criado com sucesso', 'success');
+    closeModal();
+    loadCurrentSection();
+    if (currentSection !== 'clientes') loadClientes(); // refresh cache
+
+  } catch (e) {
+    showToast('Erro ao salvar: ' + e.message, 'error');
+  } finally {
+    const btn = document.getElementById('modal-save');
+    btn.disabled = false;
+    btn.textContent = 'Salvar';
+  }
+}
+
+// ── Keyboard shortcuts ──
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ── Mobile sidebar toggle ──
+
+document.querySelector('.topbar h1').addEventListener('click', () => {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+});
+
+// ── Init ──
+
+async function init() {
+  await checkAuth();
+  await loadClientes();
+}
+
+init();
+</script>
+</body>
+</html>

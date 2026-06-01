@@ -1,11 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import session from 'express-session';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
+import { router as portalRouter, initPortalDB } from './portal/routes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -13,7 +15,14 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'anderstech-dev',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 },
+}));
 app.use(express.static(__dirname));
+app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -51,6 +60,7 @@ async function initDB() {
 }
 
 initDB().catch(console.error);
+initPortalDB().catch(console.error);
 
 const rateLimit = new Map();
 function checkRate(ip) {
@@ -230,6 +240,8 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
     res.status(500).json({ error: 'Erro ao atualizar lead' });
   }
 });
+
+app.use(portalRouter);
 
 app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '') || '/';

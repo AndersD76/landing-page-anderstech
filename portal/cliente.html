@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anders Tech · Portal do Cliente</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#1a1a2e;min-height:100vh}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif}
+
+/* ── Header ── */
+header{
+  background:#203864;
+  color:#fff;
+  padding:0 32px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+header .header-left{display:flex;align-items:center;gap:16px}
+header .header-left img{height:36px}
+header .header-left .divider{width:1px;height:28px;background:rgba(255,255,255,.2)}
+header .header-left .client-name{font-size:.95rem;font-weight:500;opacity:.9}
+header .btn-logout{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  border:none;
+  padding:8px 18px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:.85rem;
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  transition:background .2s;
+}
+header .btn-logout:hover{background:rgba(255,255,255,.22)}
+
+/* ── Tabs ── */
+.tabs{
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  padding:0 32px;
+  display:flex;
+  gap:0;
+  overflow-x:auto;
+}
+.tab-btn{
+  padding:14px 20px;
+  font-size:.9rem;
+  font-weight:500;
+  color:#666;
+  background:none;
+  border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  white-space:nowrap;
+  transition:color .2s, border-color .2s;
+}
+.tab-btn:hover{color:#203864}
+.tab-btn.active{color:#203864;border-bottom-color:#203864;font-weight:600}
+
+/* ── Content ── */
+.content{padding:24px 32px;max-width:1200px;margin:0 auto}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Cards ── */
+.summary-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin-bottom:28px;
+}
+.card{
+  background:#fff;
+  border-radius:10px;
+  padding:22px 24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.card .card-label{
+  font-size:.78rem;
+  color:#888;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin-bottom:6px;
+}
+.card .card-value{
+  font-size:1.7rem;
+  font-weight:700;
+  color:#203864;
+  font-family:'Space Grotesk',sans-serif;
+}
+.card .card-sub{font-size:.8rem;color:#999;margin-top:4px}
+
+/* ── Welcome ── */
+.welcome{
+  background:#fff;
+  border-radius:10px;
+  padding:24px 28px;
+  margin-bottom:24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.welcome h2{font-size:1.3rem;color:#203864;margin-bottom:6px}
+.welcome p{color:#666;font-size:.95rem}
+
+/* ── Section ── */
+.section{
+  background:#fff;
+  border-radius:10px;
+  padding:24px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+  margin-bottom:20px;
+}
+.section h3{
+  font-size:1rem;
+  color:#203864;
+  margin-bottom:16px;
+  padding-bottom:10px;
+  border-bottom:1px solid #f0f0f5;
+}
+
+/* ── Tables ── */
+table{width:100%;border-collapse:collapse}
+thead{background:#f8f9fb}
+th{
+  text-align:left;
+  padding:10px 14px;
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  color:#666;
+  font-weight:600;
+  white-space:nowrap;
+}
+td{
+  padding:10px 14px;
+  font-size:.88rem;
+  border-top:1px solid #f0f0f5;
+  vertical-align:top;
+}
+tr:hover{background:#fafbfd}
+.table-wrap{overflow-x:auto}
+
+.total-row{
+  font-weight:700;
+  background:#f8f9fb;
+  border-top:2px solid #e5e7eb;
+}
+.total-row td{color:#203864;font-family:'Space Grotesk',sans-serif}
+
+/* ── Filter bar ── */
+.filter-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  margin-bottom:20px;
+}
+.filter-bar label{font-size:.82rem;color:#666;font-weight:500}
+.filter-bar input[type="date"]{
+  padding:8px 12px;
+  border:1px solid #d0d5dd;
+  border-radius:6px;
+  font-size:.88rem;
+  font-family:'Inter',sans-serif;
+}
+.filter-bar input:focus{outline:none;border-color:#203864}
+.filter-bar .btn-filter{
+  padding:8px 16px;
+  background:#203864;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:.85rem;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+}
+.filter-bar .btn-filter:hover{background:#2a4a7f}
+.filter-bar .btn-clear{
+  padding:8px 16px;
+  background:#fff;
+  color:#666;
+  border:1px solid #d0d5dd;
+  border-radius:6px;
+  font-size:.85rem;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.filter-bar .btn-clear:hover{background:#f5f6fa}
+
+/* ── Status badges ── */
+.badge{
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:12px;
+  font-size:.75rem;
+  font-weight:600;
+  text-transform:capitalize;
+}
+.badge-ativo{background:#d1fae5;color:#047857}
+.badge-encerrado{background:#e5e7eb;color:#6b7280}
+.badge-pendente{background:#fef3c7;color:#b45309}
+.badge-pago{background:#d1fae5;color:#047857}
+
+/* ── Ata Modal ── */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:#fff;
+  border-radius:12px;
+  max-width:720px;
+  width:100%;
+  max-height:85vh;
+  overflow-y:auto;
+  box-shadow:0 16px 48px rgba(0,0,0,.2);
+}
+.modal-header{
+  padding:20px 24px;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  background:#fff;
+  border-radius:12px 12px 0 0;
+  z-index:1;
+}
+.modal-header h3{font-size:1.1rem;color:#203864}
+.modal-close{
+  background:none;
+  border:none;
+  font-size:1.5rem;
+  cursor:pointer;
+  color:#999;
+  padding:4px 8px;
+  line-height:1;
+}
+.modal-close:hover{color:#333}
+.modal-body{padding:24px}
+.modal-body .ata-content{
+  font-size:.92rem;
+  line-height:1.7;
+  color:#333;
+  white-space:pre-wrap;
+}
+.modal-footer{
+  padding:16px 24px;
+  border-top:1px solid #e5e7eb;
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+}
+.btn-pdf{
+  padding:10px 20px;
+  background:#203864;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-size:.88rem;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.btn-pdf:hover{background:#2a4a7f}
+.btn-secondary{
+  padding:10px 20px;
+  background:#fff;
+  color:#666;
+  border:1px solid #d0d5dd;
+  border-radius:6px;
+  font-size:.88rem;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+}
+.btn-secondary:hover{background:#f5f6fa}
+
+/* ── Download link ── */
+.download-link{
+  color:#203864;
+  text-decoration:none;
+  font-weight:500;
+  font-size:.85rem;
+}
+.download-link:hover{text-decoration:underline}
+
+/* ── Empty state ── */
+.empty-state{
+  text-align:center;
+  padding:40px 20px;
+  color:#999;
+  font-size:.9rem;
+}
+
+/* ── Loading ── */
+.loading{
+  text-align:center;
+  padding:60px 20px;
+  color:#999;
+}
+.loading .spinner{
+  display:inline-block;
+  width:32px;
+  height:32px;
+  border:3px solid #e5e7eb;
+  border-top-color:#203864;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin-bottom:12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  header{padding:0 16px}
+  .tabs{padding:0 16px}
+  .content{padding:16px}
+  .tab-btn{padding:12px 14px;font-size:.84rem}
+  .summary-cards{grid-template-columns:1fr}
+  .modal{max-width:100%;margin:0;border-radius:0;max-height:100vh}
+  .modal-header{border-radius:0}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header>
+  <div class="header-left">
+    <img src="/assets/logo-horizontal-white.png" alt="Anders Tech"
+         onerror="this.outerHTML='<span style=\'font-family:Space Grotesk;font-weight:700;font-size:1.1rem\'>Anders Tech</span>'">
+    <div class="divider"></div>
+    <span class="client-name" id="header-client-name">Carregando...</span>
+  </div>
+  <button class="btn-logout" id="btn-logout">Sair</button>
+</header>
+
+<!-- ── Tabs ── -->
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="resumo">Resumo</button>
+  <button class="tab-btn" data-tab="eventos">Eventos &amp; Horas</button>
+  <button class="tab-btn" data-tab="atas">Atas</button>
+  <button class="tab-btn" data-tab="pagamentos">Pagamentos</button>
+  <button class="tab-btn" data-tab="contratos">Contratos</button>
+</nav>
+
+<!-- ── Content ── -->
+<main class="content">
+
+  <!-- Loading state -->
+  <div id="loading-state" class="loading">
+    <div class="spinner"></div>
+    <p>Carregando seus dados...</p>
+  </div>
+
+  <!-- ═══════ Tab 1: Resumo ═══════ -->
+  <div class="tab-panel active" id="tab-resumo" style="display:none">
+    <div class="welcome">
+      <h2 id="welcome-name">Bem-vindo</h2>
+      <p>Aqui você acompanha o andamento dos seus projetos, horas realizadas, pagamentos e documentos.</p>
+    </div>
+
+    <div class="summary-cards">
+      <div class="card">
+        <div class="card-label">Total de horas realizadas</div>
+        <div class="card-value" id="sum-horas">--</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total pago</div>
+        <div class="card-value" id="sum-pago">--</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Saldo pendente</div>
+        <div class="card-value" id="sum-pendente">--</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Últimos eventos</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Horas</th><th>Valor</th></tr>
+          </thead>
+          <tbody id="resumo-eventos"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Últimos pagamentos</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Valor</th><th>Método</th><th>Observações</th></tr>
+          </thead>
+          <tbody id="resumo-pagamentos"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Tab 2: Eventos & Horas ═══════ -->
+  <div class="tab-panel" id="tab-eventos">
+    <div class="section">
+      <h3>Eventos &amp; Horas</h3>
+      <div class="filter-bar">
+        <label>De:</label>
+        <input type="date" id="filter-data-inicio">
+        <label>Até:</label>
+        <input type="date" id="filter-data-fim">
+        <button class="btn-filter" id="btn-filtrar-eventos">Filtrar</button>
+        <button class="btn-clear" id="btn-limpar-eventos">Limpar</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Horas</th><th>Valor</th></tr>
+          </thead>
+          <tbody id="eventos-tbody"></tbody>
+          <tfoot id="eventos-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Tab 3: Atas ═══════ -->
+  <div class="tab-panel" id="tab-atas">
+    <div class="section">
+      <h3>Atas de Reunião</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Título</th><th>Evento</th><th></th></tr>
+          </thead>
+          <tbody id="atas-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Tab 4: Pagamentos ═══════ -->
+  <div class="tab-panel" id="tab-pagamentos">
+    <div class="section">
+      <h3>Pagamentos</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Valor</th><th>Método</th><th>Observações</th></tr>
+          </thead>
+          <tbody id="pagamentos-tbody"></tbody>
+          <tfoot id="pagamentos-tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Tab 5: Contratos ═══════ -->
+  <div class="tab-panel" id="tab-contratos">
+    <div class="section">
+      <h3>Contratos</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Título</th><th>Valor</th><th>Horas contratadas</th><th>Período</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody id="contratos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── Ata Modal ── -->
+<div class="modal-overlay" id="ata-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="ata-modal-titulo">Ata</h3>
+      <button class="modal-close" id="ata-modal-close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="ata-content" id="ata-modal-content">Carregando...</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="ata-modal-fechar">Fechar</button>
+      <a class="btn-pdf" id="ata-modal-pdf" href="#" target="_blank">Baixar PDF</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ── Utilities ──
+  function fmtCurrency(val) {
+    if (val == null) return 'R$ 0,00';
+    return Number(val).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  function fmtDate(dateStr) {
+    if (!dateStr) return '-';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('pt-BR');
+  }
+
+  function fmtHours(val) {
+    if (val == null) return '-';
+    return Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'h';
+  }
+
+  function el(id) { return document.getElementById(id); }
+
+  async function api(path) {
+    const res = await fetch('/portal/api/me' + path, { credentials: 'same-origin' });
+    if (res.status === 401) {
+      window.location.href = '/portal';
+      throw new Error('Unauthorized');
+    }
+    if (!res.ok) throw new Error('API error: ' + res.status);
+    return res.json();
+  }
+
+  // ── State ──
+  let clientData = null;
+  let allEventos = [];
+  let allPagamentos = [];
+  let allAtas = [];
+  let allContratos = [];
+
+  // ── Auth Check ──
+  async function init() {
+    try {
+      clientData = await api('');
+      el('header-client-name').textContent = clientData.nome || clientData.name || clientData.email || '';
+      el('welcome-name').textContent = 'Bem-vindo, ' + (clientData.nome || clientData.name || 'Cliente');
+
+      // Load all data in parallel
+      const [eventos, pagamentos, atas, contratos] = await Promise.all([
+        api('/eventos').catch(() => []),
+        api('/pagamentos').catch(() => []),
+        api('/atas').catch(() => []),
+        api('/contratos').catch(() => [])
+      ]);
+
+      allEventos = eventos || [];
+      allPagamentos = pagamentos || [];
+      allAtas = atas || [];
+      allContratos = contratos || [];
+
+      renderResumo();
+      renderEventos(allEventos);
+      renderAtas();
+      renderPagamentos(allPagamentos);
+      renderContratos();
+
+      // Hide loading, show content
+      el('loading-state').style.display = 'none';
+      document.querySelectorAll('.tab-panel').forEach(function(p) {
+        if (p.classList.contains('active')) p.style.display = 'block';
+      });
+
+    } catch (err) {
+      if (err.message !== 'Unauthorized') {
+        el('loading-state').innerHTML = '<p style="color:#dc2626">Erro ao carregar dados. Tente recarregar a página.</p>';
+      }
+    }
+  }
+
+  // ── Tab Switching ──
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); p.style.display = 'none'; });
+      btn.classList.add('active');
+      var panel = el('tab-' + btn.dataset.tab);
+      panel.classList.add('active');
+      panel.style.display = 'block';
+    });
+  });
+
+  // ── Render: Resumo ──
+  function renderResumo() {
+    // Summary cards
+    var totalHoras = allEventos.reduce(function(s, e) { return s + (Number(e.horas) || 0); }, 0);
+    var totalPago = allPagamentos.reduce(function(s, p) { return s + (Number(p.valor) || 0); }, 0);
+    var totalValorEventos = allEventos.reduce(function(s, e) { return s + (Number(e.valor) || 0); }, 0);
+    var pendente = totalValorEventos - totalPago;
+
+    el('sum-horas').textContent = fmtHours(totalHoras);
+    el('sum-pago').textContent = fmtCurrency(totalPago);
+    el('sum-pendente').textContent = pendente > 0 ? fmtCurrency(pendente) : 'R$ 0,00';
+    if (pendente <= 0) {
+      el('sum-pendente').parentElement.querySelector('.card-label').insertAdjacentHTML('afterend', '');
+    }
+
+    // Last 5 events
+    var recentEventos = allEventos.slice().sort(function(a, b) {
+      return new Date(b.data) - new Date(a.data);
+    }).slice(0, 5);
+
+    var evHtml = '';
+    if (recentEventos.length === 0) {
+      evHtml = '<tr><td colspan="5" class="empty-state">Nenhum evento registrado.</td></tr>';
+    } else {
+      recentEventos.forEach(function(e) {
+        evHtml += '<tr>'
+          + '<td>' + fmtDate(e.data) + '</td>'
+          + '<td>' + (e.tipo || '-') + '</td>'
+          + '<td>' + (e.descricao || e.titulo || '-') + '</td>'
+          + '<td>' + fmtHours(e.horas) + '</td>'
+          + '<td>' + fmtCurrency(e.valor) + '</td>'
+          + '</tr>';
+      });
+    }
+    el('resumo-eventos').innerHTML = evHtml;
+
+    // Last 3 payments
+    var recentPag = allPagamentos.slice().sort(function(a, b) {
+      return new Date(b.data) - new Date(a.data);
+    }).slice(0, 3);
+
+    var pagHtml = '';
+    if (recentPag.length === 0) {
+      pagHtml = '<tr><td colspan="4" class="empty-state">Nenhum pagamento registrado.</td></tr>';
+    } else {
+      recentPag.forEach(function(p) {
+        pagHtml += '<tr>'
+          + '<td>' + fmtDate(p.data) + '</td>'
+          + '<td>' + fmtCurrency(p.valor) + '</td>'
+          + '<td>' + (p.metodo || '-') + '</td>'
+          + '<td>' + (p.observacoes || '-') + '</td>'
+          + '</tr>';
+      });
+    }
+    el('resumo-pagamentos').innerHTML = pagHtml;
+  }
+
+  // ── Render: Eventos ──
+  function renderEventos(eventos) {
+    var sorted = eventos.slice().sort(function(a, b) {
+      return new Date(b.data) - new Date(a.data);
+    });
+
+    var html = '';
+    var totalH = 0, totalV = 0;
+
+    if (sorted.length === 0) {
+      html = '<tr><td colspan="5" class="empty-state">Nenhum evento encontrado.</td></tr>';
+    } else {
+      sorted.forEach(function(e) {
+        var h = Number(e.horas) || 0;
+        var v = Number(e.valor) || 0;
+        totalH += h;
+        totalV += v;
+        html += '<tr>'
+          + '<td>' + fmtDate(e.data) + '</td>'
+          + '<td>' + (e.tipo || '-') + '</td>'
+          + '<td>' + (e.descricao || e.titulo || '-') + '</td>'
+          + '<td>' + fmtHours(e.horas) + '</td>'
+          + '<td>' + fmtCurrency(e.valor) + '</td>'
+          + '</tr>';
+      });
+    }
+    el('eventos-tbody').innerHTML = html;
+
+    if (sorted.length > 0) {
+      el('eventos-tfoot').innerHTML = '<tr class="total-row">'
+        + '<td colspan="3" style="text-align:right">Total</td>'
+        + '<td>' + fmtHours(totalH) + '</td>'
+        + '<td>' + fmtCurrency(totalV) + '</td>'
+        + '</tr>';
+    } else {
+      el('eventos-tfoot').innerHTML = '';
+    }
+  }
+
+  // Event filters
+  el('btn-filtrar-eventos').addEventListener('click', function() {
+    var inicio = el('filter-data-inicio').value;
+    var fim = el('filter-data-fim').value;
+    var filtered = allEventos.filter(function(e) {
+      if (!e.data) return true;
+      var d = e.data.substring(0, 10);
+      if (inicio && d < inicio) return false;
+      if (fim && d > fim) return false;
+      return true;
+    });
+    renderEventos(filtered);
+  });
+
+  el('btn-limpar-eventos').addEventListener('click', function() {
+    el('filter-data-inicio').value = '';
+    el('filter-data-fim').value = '';
+    renderEventos(allEventos);
+  });
+
+  // ── Render: Atas ──
+  function renderAtas() {
+    var sorted = allAtas.slice().sort(function(a, b) {
+      return new Date(b.data) - new Date(a.data);
+    });
+
+    var html = '';
+    if (sorted.length === 0) {
+      html = '<tr><td colspan="4" class="empty-state">Nenhuma ata registrada.</td></tr>';
+    } else {
+      sorted.forEach(function(a) {
+        html += '<tr style="cursor:pointer" onclick="window.__openAta(' + a.id + ')">'
+          + '<td>' + fmtDate(a.data) + '</td>'
+          + '<td>' + (a.titulo || '-') + '</td>'
+          + '<td>' + (a.evento || '-') + '</td>'
+          + '<td><button class="download-link" onclick="event.stopPropagation();window.__openAta(' + a.id + ')">Visualizar</button></td>'
+          + '</tr>';
+      });
+    }
+    el('atas-tbody').innerHTML = html;
+  }
+
+  // Ata modal
+  window.__openAta = async function(id) {
+    var modal = el('ata-modal');
+    el('ata-modal-content').textContent = 'Carregando...';
+    el('ata-modal-titulo').textContent = 'Ata';
+    el('ata-modal-pdf').href = '/portal/api/atas/' + id + '/pdf';
+    modal.classList.add('open');
+
+    try {
+      var ata = await api('/atas/' + id);
+      el('ata-modal-titulo').textContent = ata.titulo || 'Ata';
+      el('ata-modal-content').textContent = ata.conteudo || ata.content || 'Sem conteúdo disponível.';
+    } catch (err) {
+      el('ata-modal-content').textContent = 'Erro ao carregar a ata.';
+    }
+  };
+
+  function closeModal() {
+    el('ata-modal').classList.remove('open');
+  }
+  el('ata-modal-close').addEventListener('click', closeModal);
+  el('ata-modal-fechar').addEventListener('click', closeModal);
+  el('ata-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ── Render: Pagamentos ──
+  function renderPagamentos(pagamentos) {
+    var sorted = pagamentos.slice().sort(function(a, b) {
+      return new Date(b.data) - new Date(a.data);
+    });
+
+    var html = '';
+    var totalV = 0;
+
+    if (sorted.length === 0) {
+      html = '<tr><td colspan="4" class="empty-state">Nenhum pagamento registrado.</td></tr>';
+    } else {
+      sorted.forEach(function(p) {
+        var v = Number(p.valor) || 0;
+        totalV += v;
+        html += '<tr>'
+          + '<td>' + fmtDate(p.data) + '</td>'
+          + '<td>' + fmtCurrency(p.valor) + '</td>'
+          + '<td>' + (p.metodo || '-') + '</td>'
+          + '<td>' + (p.observacoes || '-') + '</td>'
+          + '</tr>';
+      });
+    }
+    el('pagamentos-tbody').innerHTML = html;
+
+    if (sorted.length > 0) {
+      el('pagamentos-tfoot').innerHTML = '<tr class="total-row">'
+        + '<td style="text-align:right">Total</td>'
+        + '<td>' + fmtCurrency(totalV) + '</td>'
+        + '<td colspan="2"></td>'
+        + '</tr>';
+    } else {
+      el('pagamentos-tfoot').innerHTML = '';
+    }
+  }
+
+  // ── Render: Contratos ──
+  function renderContratos() {
+    var html = '';
+    if (allContratos.length === 0) {
+      html = '<tr><td colspan="6" class="empty-state">Nenhum contrato registrado.</td></tr>';
+    } else {
+      allContratos.forEach(function(c) {
+        var statusClass = (c.status || '').toLowerCase() === 'ativo' ? 'badge-ativo'
+          : (c.status || '').toLowerCase() === 'encerrado' ? 'badge-encerrado' : 'badge-pendente';
+        var downloadHtml = c.arquivo_path
+          ? '<a class="download-link" href="' + c.arquivo_path + '" target="_blank">Baixar contrato</a>'
+          : '-';
+        var periodo = '';
+        if (c.data_inicio || c.data_fim) {
+          periodo = fmtDate(c.data_inicio) + ' — ' + fmtDate(c.data_fim);
+        } else if (c.periodo) {
+          periodo = c.periodo;
+        } else {
+          periodo = '-';
+        }
+
+        html += '<tr>'
+          + '<td>' + (c.titulo || '-') + '</td>'
+          + '<td>' + fmtCurrency(c.valor) + '</td>'
+          + '<td>' + (c.horas_contratadas != null ? fmtHours(c.horas_contratadas) : '-') + '</td>'
+          + '<td>' + periodo + '</td>'
+          + '<td><span class="badge ' + statusClass + '">' + (c.status || '-') + '</span></td>'
+          + '<td>' + downloadHtml + '</td>'
+          + '</tr>';
+      });
+    }
+    el('contratos-tbody').innerHTML = html;
+  }
+
+  // ── Logout ──
+  el('btn-logout').addEventListener('click', async function() {
+    try {
+      await fetch('/portal/logout', { method: 'POST', credentials: 'same-origin' });
+    } catch (e) { /* ignore */ }
+    window.location.href = '/portal';
+  });
+
+  // ── Start ──
+  init();
+})();
+</script>
+</body>
+</html>
