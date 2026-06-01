@@ -15,11 +15,15 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+app.set('trust proxy', 1);
 app.use(session({
   secret: process.env.SESSION_SECRET || 'anderstech-dev',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 },
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'lax',
+  },
 }));
 app.use(express.static(__dirname));
 app.use('/uploads', express.static(join(__dirname, 'uploads')));
