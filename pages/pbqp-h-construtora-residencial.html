@@ -15,6 +15,7 @@
 <meta property="og:url" content="https://anderstech.net/pages/pbqp-h-construtora-residencial.html" />
 <meta property="og:locale" content="pt_BR" />
 <meta property="og:site_name" content="Anders Tech" />
+<link rel="stylesheet" href="/styles.css">
 <link rel="icon" href="/assets/favicon.png" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -344,18 +345,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="lp-nav">
-  <div class="lp-nav-inner">
-    <a href="/" class="brand">
-      <span class="wm">anders<b>tech</b></span>
-    </a>
-    <a href="/" class="lp-back">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg>
-      Voltar
-    </a>
-  </div>
-</nav>
+<div id="shared-nav"></div>
 
 <!-- HERO -->
 <section class="lp-hero">
@@ -516,10 +506,8 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="site-footer">
-  Anders Tech &mdash; CNPJ 42.073.716/0001-80 &middot; Passo Fundo, RS
-</footer>
+<div id="shared-footer"></div>
 
+<script src="/shared.js"></script>
 </body>
 </html>

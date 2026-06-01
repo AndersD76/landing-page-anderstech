@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
 <link rel="icon" href="/assets/favicon.png" type="image/png">
 <style>
 :root{--navy:#203864;--navy-950:#0b1730;--red:#FE0000;--paper:#F4F6FA;--paper-2:#FBFCFE;--ink:#16233f;--ink-soft:#46577a;--ink-mute:#8190ac;--line:rgba(32,56,100,.14);--on-navy:#fff;--on-navy-soft:#b9c8e4;--on-navy-mute:#7589ad;--ff-display:"Space Grotesk",system-ui,sans-serif;--ff-body:"Inter",system-ui,sans-serif;--ff-mono:"Space Mono",ui-monospace,monospace;--ease:cubic-bezier(.22,.61,.36,1)}
@@ -51,10 +52,7 @@ img{max-width:100%;display:block}
 </style>
 </head>
 <body>
-<header class="nav"><div class="wrap">
-  <a href="/" class="brand"><img src="/assets/logo-symbol.png" alt="Anders Tech"><span class="wm">anders<b>tech</b></span></a>
-  <a href="/" class="back">← Voltar ao site</a>
-</div></header>
+<div id="shared-nav"></div>
 
 <section class="hero"><div class="wrap">
   <span class="tag">Conteúdo &amp; Recursos</span>
@@ -163,8 +161,7 @@ img{max-width:100%;display:block}
   </div>
 </div></section>
 
-<footer class="footer"><div class="wrap">
-  Anders Tech · CNPJ 42.073.716/0001-80 · <a href="/">anderstech.net</a>
-</div></footer>
+<div id="shared-footer"></div>
+<script src="/shared.js"></script>
 </body>
 </html>
