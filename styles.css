@@ -120,7 +120,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
    NAV
    ============================================================ */
 .nav { position: fixed; top: var(--edge); left: var(--edge); right: var(--edge); z-index: 80; transition: transform .4s var(--ease); }
-.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 80px; padding-inline: clamp(16px, 2.2vw, 30px); background: rgba(244,246,250,0); transition: background .35s, box-shadow .35s, backdrop-filter .35s; }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 96px; padding-inline: clamp(16px, 2.2vw, 30px); background: rgba(244,246,250,0); transition: background .35s, box-shadow .35s, backdrop-filter .35s; }
 .nav.solid .nav-inner { background: rgba(251,252,254,.86); backdrop-filter: saturate(160%) blur(16px); box-shadow: 0 1px 0 var(--line), 0 16px 40px -28px rgba(18,33,64,.5); }
 .brand { display: flex; align-items: center; gap: 13px; }
 .brand .logo, .brand .logo-img { width: 52px; height: 52px; flex: none; object-fit: contain; transition: filter .35s; }
