@@ -8,7 +8,7 @@
     + '<a href="/#sobre">Sobre</a>'
     + '<a href="/blog">Conteúdo</a>'
     + '<a href="/#contato">Contato</a></nav>'
-    + '<div class="nav-cta"><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a></div>'
+    + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a></div>'
     + '</div></div></header>';
 
   var FOOTER = '<footer class="footer"><div class="wrap footer-big">'
