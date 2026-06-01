@@ -77,6 +77,10 @@
 <!-- Logo styles -->
 <style>
 .brand .logo-img { width: 40px; height: 40px; object-fit: contain; border-radius: 6px; }
+.nav.solid .logo-dark { display: none !important; }
+.nav.solid .logo-light { display: block !important; }
+.nav:not(.solid) .logo-dark { display: block; }
+.nav:not(.solid) .logo-light { display: none; }
 .footer .brand .logo-img { filter: brightness(10); }
 </style>
 
@@ -94,7 +98,8 @@
 <header class="nav" id="nav">
   <div class="wrap"><div class="nav-inner">
     <a href="#top" class="brand" aria-label="Anders Tech — início">
-      <img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech — Gestão com Tecnologia" style="height:64px;width:auto;object-fit:contain">
+      <img src="/assets/logo-horizontal-white.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-dark" style="height:64px;width:auto;object-fit:contain">
+      <img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-light" style="height:64px;width:auto;object-fit:contain;display:none">
     </a>
     <nav class="nav-links" aria-label="Principal">
       <a href="#servicos">Serviços</a>
