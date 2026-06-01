@@ -1,7 +1,7 @@
 (function(){
   var NAV = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
     + '<a href="/" class="brand" aria-label="Anders Tech">'
-    + '<img src="/assets/logo-symbol.png" alt="Anders Tech" class="logo-img" style="width:44px;height:44px;object-fit:contain">'
+    + '<img src="/assets/logo-nav.png" alt="Anders Tech" class="logo-img" style="width:44px;height:44px;object-fit:contain">'
     + '<span class="wm">anders<b>tech</b></span></a>'
     + '<nav class="nav-links" aria-label="Principal">'
     + '<a href="/#servicos">Serviços</a>'
@@ -17,7 +17,7 @@
     + '<div class="fb-tag">GESTÃO COM TECNOLOGIA · QUALIDADE & CONFORMIDADE PARA A INDÚSTRIA</div></div>'
     + '<div class="wrap footer-grid">'
     + '<div class="footer-brand"><a href="/" class="brand">'
-    + '<img src="/assets/logo-symbol.png" alt="Anders Tech" class="logo-img" style="width:40px;height:40px;object-fit:contain;filter:brightness(10)">'
+    + '<img src="/assets/logo-nav.png" alt="Anders Tech" class="logo-img" style="width:40px;height:40px;object-fit:contain;filter:brightness(10)">'
     + '<span class="wm" style="color:#fff">anders<b>tech</b></span></a>'
     + '<p style="margin-top:18px">Consultoria de qualidade e conformidade para a indústria. Diagnóstico baseado em dados.</p>'
     + '<div class="cnpj">CNPJ 42.073.716/0001-80</div></div>'
