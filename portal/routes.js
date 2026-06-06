@@ -3,14 +3,17 @@ import bcrypt from 'bcryptjs';
 import multer from 'multer';
 import PDFDocument from 'pdfkit';
 import { neon } from '@neondatabase/serverless';
+import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { createReadStream } from 'fs';
+import { portalWelcome } from '../emails.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = dirname(__dirname);
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // ── Multer config ──
 const upload = multer({ dest: join(projectRoot, 'uploads') });
@@ -224,6 +227,19 @@ router.post('/portal/api/clients', requireAdmin, async (req, res) => {
       VALUES (${email.toLowerCase().trim()}, ${hash}, ${nome}, 'cliente', ${empresa || null}, ${telefone || null}, ${cnpj || null})
       RETURNING id, email, nome, empresa, telefone, cnpj, ativo, created_at
     `;
+
+    if (resend) {
+      try {
+        await resend.emails.send({
+          from: 'Anders Tech <noreply@anderstech.net>',
+          to: email.toLowerCase().trim(),
+          subject: `${nome.split(' ')[0]}, bem-vindo ao Portal Anders Tech`,
+          html: portalWelcome({ nome, email: email.toLowerCase().trim(), senhaTemporaria: rawPassword }),
+        });
+      } catch (emailErr) {
+        console.error('Welcome email error:', emailErr);
+      }
+    }
 
     res.json({
       ...result[0],

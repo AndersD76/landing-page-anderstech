@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Check syntax (server)
+        run: node --check server.js
+
+      - name: Check syntax (emails)
+        run: node --check emails.js
+
+      - name: Check syntax (portal routes)
+        run: node --check portal/routes.js
+
+      - name: Verify required files exist
+        run: |
+          test -f index.html
+          test -f styles.css
+          test -f app.js
+          test -f shared.js
+          test -f sitemap.xml
+          test -f robots.txt
+          test -f portal/login.html
+          test -f portal/admin.html
+          test -f portal/cliente.html
+
+      - name: Check for .env leaks
+        run: |
+          if git diff --cached --name-only 2>/dev/null | grep -q '\.env$'; then
+            echo "ERROR: .env file staged for commit"
+            exit 1
+          fi
+          echo "No .env leaks detected"

@@ -440,3 +440,21 @@ a.serv-row { text-decoration: none; color: inherit; }
   .sec-head { grid-template-columns: 1fr; gap: 14px; }
   .dotfield { grid-template-columns: repeat(20, 1fr); }
 }
+
+/* ============================================================
+   EXIT-INTENT POPUP
+   ============================================================ */
+.exit-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(11,23,48,.72); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; }
+.exit-overlay.active { display: flex; }
+.exit-popup { background: var(--white); max-width: 460px; width: 100%; padding: 44px 40px 36px; position: relative; text-align: center; animation: exitIn .4s var(--ease-out); }
+@keyframes exitIn { from { opacity: 0; transform: translateY(24px) scale(.96); } to { opacity: 1; transform: none; } }
+.exit-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; font-size: 24px; color: var(--ink-mute); display: grid; place-items: center; transition: color .2s; }
+.exit-close:hover { color: var(--ink); }
+.exit-badge { display: inline-flex; align-items: center; gap: 10px; font-family: var(--ff-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+.exit-popup h3 { font-size: clamp(24px, 3vw, 30px); color: var(--navy); margin-bottom: 12px; }
+.exit-popup p { color: var(--ink-soft); font-size: 15px; margin-bottom: 24px; max-width: 38ch; margin-inline: auto; }
+.exit-form { display: flex; flex-direction: column; gap: 12px; }
+.exit-form input { border: 1.5px solid var(--line); padding: 13px 16px; font-size: 15px; transition: border-color .25s; background: transparent; color: var(--ink); }
+.exit-form input:focus { outline: none; border-color: var(--red); }
+.exit-form .btn { width: 100%; margin-top: 4px; }
+.exit-note { display: block; margin-top: 16px; font-family: var(--ff-mono); font-size: 11px; color: var(--ink-mute); letter-spacing: .04em; }

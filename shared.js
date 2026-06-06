@@ -35,7 +35,9 @@
     + '<a href="https://andersdev.com.br" target="_blank" rel="noopener" class="footer-cross" style="display:inline-flex;align-items:center;gap:11px;margin-top:12px;padding:13px 18px;border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14px">'
     + 'Software sob medida → andersdev.com.br</a></div></div>'
     + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
-    + '<div class="fl"><a href="https://anderstech.net"><b>anderstech.net</b></a>'
+    + '<div class="fl"><a href="/termos-de-uso">Termos</a>'
+    + '<a href="/politica-de-privacidade">Privacidade</a>'
+    + '<a href="https://anderstech.net"><b>anderstech.net</b></a>'
     + '<a href="https://andersdev.com.br" target="_blank" rel="noopener">andersdev.com.br</a></div></div></footer>';
 
   var FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'

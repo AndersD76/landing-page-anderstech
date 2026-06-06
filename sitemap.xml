@@ -32,4 +32,11 @@
   <!-- Ferramentas -->
   <url><loc>https://anderstech.net/calculadora-roi-certificacao</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://anderstech.net/checklist-iso-9001</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Blog index -->
+  <url><loc>https://anderstech.net/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Legal -->
+  <url><loc>https://anderstech.net/termos-de-uso</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://anderstech.net/politica-de-privacidade</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

@@ -13,6 +13,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+if (process.env.SENTRY_DSN) {
+  import('@sentry/node').then(Sentry => {
+    Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.1 });
+    app.use(Sentry.expressErrorHandler());
+    console.log('Sentry initialized');
+  }).catch(() => {});
+}
+
 app.use(cors());
 app.use(express.json());
 app.set('trust proxy', 1);

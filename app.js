@@ -215,4 +215,91 @@
       });
     });
   }
+  /* ---- Plausible custom event tracking ---- */
+  function track(name, props) {
+    if (typeof plausible === "function") plausible(name, { props: props });
+  }
+
+  // track section views
+  var sections = { "serviços": "servicos", "diferencial": "diferencial", "cases": "cases", "sobre": "sobre", "conteúdo": "conteudo", "contato": "contato" };
+  var sectionIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (!en.isIntersecting) return;
+      var name = en.target.id || en.target.className;
+      var mapped = sections[name];
+      if (mapped && !en.target._tracked) { en.target._tracked = 1; track("scroll_section", { section: mapped }); }
+    });
+  }, { threshold: 0.3 });
+  Object.keys(sections).forEach(function (id) { var el = document.getElementById(id); if (el) sectionIO.observe(el); });
+
+  // track CTA clicks
+  $$(".btn-red, .btn-out-light, [data-wa], .optc").forEach(function (el) {
+    el.addEventListener("click", function () {
+      var label = el.textContent.trim().slice(0, 40);
+      var section = el.closest("section");
+      track("cta_click", { label: label, section: section ? section.id || "nav" : "nav" });
+    });
+  });
+
+  // track form submit
+  if (form) {
+    form.addEventListener("submit", function () { track("form_submit", { type: "contact" }); }, true);
+  }
+
+  /* ---- exit-intent popup ---- */
+  var exitOverlay = $("#exitOverlay"), exitClose = $("#exitClose"), exitForm = $("#exitForm");
+  var exitShown = localStorage.getItem("at_exit_shown");
+
+  function showExit() {
+    if (exitShown || !exitOverlay) return;
+    exitShown = true;
+    localStorage.setItem("at_exit_shown", "1");
+    exitOverlay.classList.add("active");
+    track("exit_intent_shown");
+  }
+
+  if (exitOverlay && !exitShown) {
+    document.addEventListener("mouseout", function (e) {
+      if (e.clientY < 5 && !exitShown) showExit();
+    });
+    // mobile: show after 45s if scrolled past 50%
+    setTimeout(function () {
+      var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      if (scrollPct > 0.5) showExit();
+    }, 45000);
+  }
+
+  if (exitClose) exitClose.addEventListener("click", function () { exitOverlay.classList.remove("active"); });
+  if (exitOverlay) exitOverlay.addEventListener("click", function (e) { if (e.target === exitOverlay) exitOverlay.classList.remove("active"); });
+
+  if (exitForm) {
+    exitForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var d = new FormData(exitForm);
+      var g = function (k) { return (d.get(k) || "").toString().trim(); };
+      if (g("website")) return;
+      if (!g("nome") || !g("email")) { showToast("Preencha nome e email."); return; }
+
+      var btn = $("button", exitForm);
+      btn.disabled = true;
+      btn.innerHTML = "<span>Enviando...</span>";
+
+      fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: g("nome"), email: g("email"), empresa: g("empresa"),
+          source: "lead_magnet_checklist", interesse: "ISO 9001 — implantação / manutenção"
+        })
+      })
+      .then(function (res) { return res.json(); })
+      .then(function () {
+        showToast("Checklist enviado para o seu email!");
+        exitOverlay.classList.remove("active");
+        track("exit_intent_submit");
+      })
+      .catch(function () { showToast("Erro ao enviar. Tente via WhatsApp."); })
+      .finally(function () { btn.disabled = false; btn.innerHTML = "<span>Enviar checklist</span>"; });
+    });
+  }
 })();

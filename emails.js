@@ -76,6 +76,23 @@ ${tip}
 </div>`);
 }
 
+export function portalWelcome({ nome, email, senhaTemporaria }) {
+  return layout(`<div class="body">
+<h2>Bem-vindo ao Portal Anders Tech, ${nome.split(' ')[0]}!</h2>
+<p>Sua conta no <b>Portal do Cliente</b> foi criada. Aqui você poderá acompanhar seus contratos, eventos, pagamentos e atas de reunião.</p>
+<div class="meta">
+<b>Seus dados de acesso:</b><br>
+Email: ${email}<br>
+Senha temporária: <b>${senhaTemporaria}</b>
+</div>
+<p>Recomendamos que altere sua senha no primeiro acesso.</p>
+<a href="https://anderstech.net/portal" class="cta">Acessar o Portal</a>
+<hr class="divider">
+<p>Se tiver qualquer dúvida, entre em contato pelo WhatsApp:</p>
+<a href="https://wa.me/5554999648368" style="color:${BRAND.navy};font-size:14px;font-weight:600;text-decoration:none">(54) 99964-8368 →</a>
+</div>`);
+}
+
 export function checklistDelivery({ nome }) {
   return layout(`<div class="body">
 <h2>${nome.split(' ')[0]}, aqui está seu Checklist ISO 9001</h2>
