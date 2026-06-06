@@ -1,0 +1,92 @@
+# Anders Tech — Gestao com Tecnologia
+> Consultoria em gestao da qualidade e conformidade para a industria.
+
+## About
+Anders Tech is a quality management consultancy serving industrial companies in Rio Grande do Sul, Brazil. Founded by Daniel Anders, an electrical engineer with 15+ years of experience in business management and technology.
+
+The company's key differentiator is data-driven diagnostics: analyzing real operational data (months of history, thousands of messages) to find hidden problems — not just filling compliance forms.
+
+## Founder
+Daniel Anders — Electrical Engineer, ISO 9001 Consultant, 15+ years in business management and technology. Based in Passo Fundo, RS, Brazil.
+
+## Services
+
+### ISO 9001 Implementation & Maintenance
+Full implementation and maintenance of Quality Management Systems according to ISO 9001:2015. Preparation for certification audits and ongoing surveillance audits. Applicable to any industry sector.
+
+### PBQP-H Qualification
+Qualification for Brazil's Quality and Productivity Program for Housing (Programa Brasileiro da Qualidade e Produtividade do Habitat). Required for construction companies to access government housing financing (Minha Casa Minha Vida / Casa Verde e Amarela) and public tenders.
+
+### Process Optimization
+Workflow mapping, bottleneck identification, and rework reduction using data analysis. Transforms documentation requirements into real productivity gains. Typical results include 20-60% rework reduction.
+
+### Non-Conformity & Corrective Action Systems
+Root cause analysis (Ishikawa, 5 Whys, 8D) and corrective action systems that prevent recurrence. Systematic treatment of non-conformities aligned with ISO 9001 clause 10.2.
+
+## Case Studies
+
+### Case 1: PILI Industrial
+ISO 9001 implementation integrated with digital monitoring tools. Achieved certification with fully digitalized processes and real-time quality indicators.
+
+### Case 2: PBQP-H Qualification (via Sebrae partnership)
+Residential construction company qualified for PBQP-H, enabling access to government housing financing and public construction tenders.
+
+### Case 3: Metallurgy Operational Diagnostic
+Analysis of 18 months of operational communication (25,000+ messages) revealed rework running at 400% above target and risk of losing the largest client. Action plan implemented in 90 days, reducing rework by 60% in the first quarter.
+
+### Case 4: Agricultural Cooperative QMS
+Quality management system adapted to cooperative operations — standardizing receiving, processing, and shipping with full traceability. 35% reduction in product non-conformities.
+
+### Case 5: Food Industry Process Optimization
+Complete production line mapping identified 12 waste points. Implementation of visual controls achieved positive ROI in 4 months and 22% productivity increase without equipment investment.
+
+## Service Area
+Primary: Passo Fundo, Erechim, and northern Rio Grande do Sul.
+Extended: All of Rio Grande do Sul state with possibility of remote/hybrid engagements.
+
+## Tools & Resources
+
+### ROI Calculator
+Interactive calculator that estimates the investment and return of ISO 9001 certification based on company revenue, employee count, sector, and motivation. Available at: https://anderstech.net/calculadora-roi-certificacao
+
+### ISO 9001 Diagnostic Checklist (47 points)
+Free diagnostic checklist covering 7 ISO 9001 categories: organizational context, leadership, planning, support & resources, operations, performance evaluation, and improvement. Available at: https://anderstech.net/checklist-iso-9001
+
+## Blog Articles
+
+### Quanto custa a certificacao ISO 9001? (How much does ISO 9001 certification cost?)
+Comprehensive guide covering investment ranges by company size, cost components (consulting, certification body, internal costs), and ROI analysis. URL: https://anderstech.net/blog/quanto-custa-certificacao-iso-9001
+
+### PBQP-H: o que e e para que serve? (PBQP-H: what is it and what is it for?)
+Guide to Brazil's construction quality program, including qualification levels, requirements, benefits (financing access, tender eligibility), and implementation timeline. URL: https://anderstech.net/blog/pbqp-h-o-que-e-para-que-serve
+
+### ISO 9001 vale a pena para metalurgica? (Is ISO 9001 worth it for metallurgy?)
+Practical analysis of ISO 9001 benefits specific to the metallurgical sector: traceability, process control, customer requirements, and competitive advantage. URL: https://anderstech.net/blog/iso-9001-vale-a-pena-para-metalurgica
+
+### Como reduzir retrabalho na producao (How to reduce rework in production)
+Practical methods for eliminating waste on the factory floor: root cause analysis, standardized work procedures, visual management, and data-driven decision making. URL: https://anderstech.net/blog/como-reduzir-retrabalho-na-producao
+
+## Sector-Specific Pages
+- ISO 9001 for Metallurgy: https://anderstech.net/iso-9001-metalurgica
+- ISO 9001 for Food Industry: https://anderstech.net/iso-9001-industria-alimenticia
+- ISO 9001 for Agricultural Cooperatives: https://anderstech.net/iso-9001-cooperativa-agricola
+- ISO 9001 for Construction: https://anderstech.net/iso-9001-construtora
+- PBQP-H for Residential Construction: https://anderstech.net/pbqp-h-construtora-residencial
+- PBQP-H for Large Construction: https://anderstech.net/pbqp-h-construtora-grande-porte
+
+## Regional Pages
+- Consultoria ISO 9001 Passo Fundo: https://anderstech.net/consultoria-iso-9001-passo-fundo
+- Consultoria ISO 9001 Erechim: https://anderstech.net/consultoria-iso-9001-erechim
+- Consultoria ISO 9001 Caxias do Sul: https://anderstech.net/consultoria-iso-9001-caxias-do-sul
+- Consultoria ISO 9001 Porto Alegre: https://anderstech.net/consultoria-iso-9001-porto-alegre
+- Consultoria ISO 9001 Bento Goncalves: https://anderstech.net/consultoria-iso-9001-bento-goncalves
+
+## Contact
+- Website: https://anderstech.net
+- WhatsApp: +55 54 99964-8368
+- Email: danielanders76@gmail.com
+- Scheduling: https://cal.com/danielanders/15min (free 30-min diagnostic)
+- CNPJ: 42.073.716/0001-80
+
+## Sister Company
+Anders Dev (https://andersdev.com.br) — Custom software development for industrial operations.

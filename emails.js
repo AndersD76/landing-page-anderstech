@@ -1,5 +1,10 @@
 const BRAND = { navy: '#203864', red: '#FE0000', paper: '#F4F6FA', white: '#FFFFFF' };
 
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 function layout(content) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>
 body{margin:0;padding:0;background:${BRAND.paper};font-family:'Helvetica Neue',Arial,sans-serif;color:#16233f}
@@ -28,27 +33,27 @@ Passo Fundo · RS · (54) 99964-8368<br>
 
 export function notifyNewLead({ nome, empresa, email, telefone, interesse, mensagem, source, leadId, roiData }) {
   const rows = [
-    ['Nome', nome],
-    ['Empresa', empresa || '—'],
-    ['Email', email || '—'],
-    ['Telefone', telefone || '—'],
-    ['Interesse', interesse || '—'],
-    ['Fonte', source || 'site_form'],
+    ['Nome', esc(nome)],
+    ['Empresa', esc(empresa) || '—'],
+    ['Email', esc(email) || '—'],
+    ['Telefone', esc(telefone) || '—'],
+    ['Interesse', esc(interesse) || '—'],
+    ['Fonte', esc(source) || 'site_form'],
   ].map(([k, v]) => `<tr><td style="padding:6px 12px;font-size:13px;color:#8190ac;border-bottom:1px solid #f0f2f6">${k}</td><td style="padding:6px 12px;font-size:14px;font-weight:500;border-bottom:1px solid #f0f2f6">${v}</td></tr>`).join('');
 
   let roiBlock = '';
   if (roiData) {
     roiBlock = `<div class="meta"><b>Calculadora ROI:</b><br>
-Faturamento: R$ ${roiData.faturamento || 0} · ${roiData.funcionarios || '—'} funcionários<br>
-Setor: ${roiData.setor || '—'} · Motivação: ${roiData.motivacao || '—'}<br>
-Investimento: R$ ${roiData.investMin || 0} – ${roiData.investMax || 0}<br>
-Economia 24m: R$ ${roiData.savings24 || 0} · ROI: ${roiData.roi || 0}%</div>`;
+Faturamento: R$ ${esc(roiData.faturamento) || 0} · ${esc(roiData.funcionarios) || '—'} funcionários<br>
+Setor: ${esc(roiData.setor) || '—'} · Motivação: ${esc(roiData.motivacao) || '—'}<br>
+Investimento: R$ ${esc(roiData.investMin) || 0} – ${esc(roiData.investMax) || 0}<br>
+Economia 24m: R$ ${esc(roiData.savings24) || 0} · ROI: ${esc(roiData.roi) || 0}%</div>`;
   }
 
   return layout(`<div class="body">
-<h2>Novo lead #${leadId || '—'}</h2>
+<h2>Novo lead #${esc(leadId) || '—'}</h2>
 <table style="width:100%;border-collapse:collapse">${rows}</table>
-${mensagem ? `<div class="meta">${mensagem}</div>` : ''}
+${mensagem ? `<div class="meta">${esc(mensagem)}</div>` : ''}
 ${roiBlock}
 <hr class="divider">
 <a href="https://anderstech.net/admin" class="cta">Ver no painel</a>
@@ -66,7 +71,7 @@ export function autoReplyContact({ nome, interesse }) {
   const tip = matchedTip ? `<p>${matchedTip[1]}</p>` : '';
 
   return layout(`<div class="body">
-<h2>Olá, ${nome.split(' ')[0]}!</h2>
+<h2>Olá, ${esc(nome.split(' ')[0])}!</h2>
 <p>Recebemos sua mensagem e vamos responder em até <b>24 horas úteis</b>.</p>
 <p>Se precisar falar antes, o Daniel está disponível no WhatsApp:</p>
 <a href="https://wa.me/5554999648368" class="cta">Falar no WhatsApp</a>
@@ -78,12 +83,12 @@ ${tip}
 
 export function portalWelcome({ nome, email, senhaTemporaria }) {
   return layout(`<div class="body">
-<h2>Bem-vindo ao Portal Anders Tech, ${nome.split(' ')[0]}!</h2>
+<h2>Bem-vindo ao Portal Anders Tech, ${esc(nome.split(' ')[0])}!</h2>
 <p>Sua conta no <b>Portal do Cliente</b> foi criada. Aqui você poderá acompanhar seus contratos, eventos, pagamentos e atas de reunião.</p>
 <div class="meta">
 <b>Seus dados de acesso:</b><br>
-Email: ${email}<br>
-Senha temporária: <b>${senhaTemporaria}</b>
+Email: ${esc(email)}<br>
+Senha temporária: <b>${esc(senhaTemporaria)}</b>
 </div>
 <p>Recomendamos que altere sua senha no primeiro acesso.</p>
 <a href="https://anderstech.net/portal" class="cta">Acessar o Portal</a>
@@ -95,7 +100,7 @@ Senha temporária: <b>${senhaTemporaria}</b>
 
 export function checklistDelivery({ nome }) {
   return layout(`<div class="body">
-<h2>${nome.split(' ')[0]}, aqui está seu Checklist ISO 9001</h2>
+<h2>${esc(nome.split(' ')[0])}, aqui está seu Checklist ISO 9001</h2>
 <p>Obrigado pelo interesse. O <b>Checklist Diagnóstico ISO 9001 — 47 pontos</b> está pronto para uso.</p>
 <p>Use este checklist para avaliar em quais requisitos sua empresa já atende e onde precisa melhorar antes de uma auditoria.</p>
 <div class="meta">

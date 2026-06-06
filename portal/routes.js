@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import multer from 'multer';
+import crypto from 'crypto';
 import PDFDocument from 'pdfkit';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { dirname, join, extname } from 'path';
 import { createReadStream } from 'fs';
 import { portalWelcome } from '../emails.js';
 
@@ -15,8 +16,39 @@ const projectRoot = dirname(__dirname);
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-// ── Multer config ──
-const upload = multer({ dest: join(projectRoot, 'uploads') });
+// ── Multer config (secured) ──
+const ALLOWED_MIMES = new Set(['application/pdf', 'image/png', 'image/jpeg', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+const upload = multer({
+  dest: join(projectRoot, 'uploads'),
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (ALLOWED_MIMES.has(file.mimetype)) return cb(null, true);
+    cb(new Error('Tipo de arquivo não permitido'));
+  },
+  storage: multer.diskStorage({
+    destination: join(projectRoot, 'uploads'),
+    filename: (_req, file, cb) => cb(null, crypto.randomUUID() + extname(file.originalname)),
+  }),
+});
+
+// ── Rate limiting (login) ──
+const loginAttempts = new Map();
+function loginRateLimit(req, res, next) {
+  const key = req.ip;
+  const now = Date.now();
+  const window = 15 * 60 * 1000;
+  const maxAttempts = 10;
+  const entry = loginAttempts.get(key);
+  if (entry && now - entry.start < window) {
+    if (entry.count >= maxAttempts) {
+      return res.status(429).json({ error: 'Muitas tentativas. Aguarde 15 minutos.' });
+    }
+    entry.count++;
+  } else {
+    loginAttempts.set(key, { start: now, count: 1 });
+  }
+  next();
+}
 
 // ── Router ──
 const router = Router();
@@ -141,7 +173,7 @@ function requireAdmin(req, res, next) {
 // Auth routes
 // ═══════════════════════════════════════════════════════════════════
 
-router.post('/portal/login', async (req, res) => {
+router.post('/portal/login', loginRateLimit, async (req, res) => {
   const { email, senha } = req.body;
   if (!email || !senha) {
     return res.status(400).json({ error: 'Email e senha sao obrigatorios' });
@@ -199,9 +231,11 @@ router.post('/portal/logout', (req, res) => {
 router.get('/portal/api/clients', requireAdmin, async (req, res) => {
   if (!sql) return res.json([]);
   try {
+    const limit = Math.min(parseInt(req.query.limit, 10) || 100, 500);
+    const offset = parseInt(req.query.offset, 10) || 0;
     const clients = await sql`
       SELECT id, email, nome, role, empresa, telefone, cnpj, ativo, created_at
-      FROM portal_users WHERE role = 'cliente' ORDER BY created_at DESC
+      FROM portal_users WHERE role = 'cliente' ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}
     `;
     res.json(clients);
   } catch (err) {

@@ -198,6 +198,7 @@
       .then(function (result) {
         if (result.ok) {
           showToast("Mensagem enviada! Entraremos em contato.");
+          if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "contact", event_label: payload.interesse, value: 1 });
           form.reset();
           setTimeout(function () {
             window.open(waUrl("Oi, sou " + payload.nome + (payload.empresa ? " da " + payload.empresa : "") + ". Acabei de preencher o formulário no site."), "_blank", "noopener");
@@ -296,6 +297,7 @@
       .then(function () {
         showToast("Checklist enviado para o seu email!");
         exitOverlay.classList.remove("active");
+        if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "lead_magnet", event_label: "checklist_iso_9001", value: 1 });
         track("exit_intent_submit");
       })
       .catch(function () { showToast("Erro ao enviar. Tente via WhatsApp."); })

@@ -40,6 +40,9 @@ jobs:
           test -f portal/admin.html
           test -f portal/cliente.html
 
+      - name: npm audit (critical/high)
+        run: npm audit --omit=dev --audit-level=high || true
+
       - name: Check for .env leaks
         run: |
           if git diff --cached --name-only 2>/dev/null | grep -q '\.env$'; then
@@ -47,3 +50,40 @@ jobs:
             exit 1
           fi
           echo "No .env leaks detected"
+
+      - name: Secret scan (grep for common patterns)
+        run: |
+          echo "Scanning for hardcoded secrets..."
+          FOUND=0
+          for pattern in 'AKIA[0-9A-Z]{16}' 'sk-[a-zA-Z0-9]{32,}' 'ghp_[a-zA-Z0-9]{36}' 're_[a-zA-Z0-9_]{20,}'; do
+            if grep -rn --include='*.js' --include='*.html' --include='*.json' -E "$pattern" . --exclude-dir=node_modules --exclude-dir=.git 2>/dev/null; then
+              echo "WARN: possible secret matching $pattern"
+              FOUND=1
+            fi
+          done
+          if [ "$FOUND" = "1" ]; then
+            echo "::warning::Possible hardcoded secrets found — review above matches"
+          fi
+          echo "Secret scan complete"
+
+      - name: Ping IndexNow (on push to master only)
+        if: github.event_name == 'push'
+        run: |
+          curl -s -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "host": "anderstech.net",
+              "key": "f6ba6a9696c4426b9a20bd3baa58e3ec",
+              "keyLocation": "https://anderstech.net/f6ba6a9696c4426b9a20bd3baa58e3ec.txt",
+              "urlList": [
+                "https://anderstech.net/",
+                "https://anderstech.net/blog",
+                "https://anderstech.net/blog/quanto-custa-certificacao-iso-9001",
+                "https://anderstech.net/blog/pbqp-h-o-que-e-para-que-serve",
+                "https://anderstech.net/blog/iso-9001-vale-a-pena-para-metalurgica",
+                "https://anderstech.net/blog/como-reduzir-retrabalho-na-producao",
+                "https://anderstech.net/calculadora-roi-certificacao",
+                "https://anderstech.net/checklist-iso-9001"
+              ]
+            }' || echo "IndexNow ping failed (non-blocking)"
+          echo "IndexNow ping sent"

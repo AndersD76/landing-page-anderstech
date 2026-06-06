@@ -24,21 +24,45 @@ if (process.env.SENTRY_DSN) {
   }).catch(() => {});
 }
 
+const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production';
+
 app.use(compression());
 app.use(helmet({
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://plausible.io"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://plausible.io", "https://www.google-analytics.com"],
+      frameSrc: ["'none'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+    },
+  },
   crossOriginEmbedderPolicy: false,
 }));
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: IS_PROD ? 'https://anderstech.net' : true,
+  credentials: true,
+}));
+app.use(express.json({ limit: '100kb' }));
 app.set('trust proxy', 1);
+
+if (IS_PROD && !process.env.SESSION_SECRET) {
+  console.error('FATAL: SESSION_SECRET must be set in production');
+  process.exit(1);
+}
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'anderstech-dev',
+  secret: process.env.SESSION_SECRET || 'anderstech-dev-only',
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
     sameSite: 'lax',
+    httpOnly: true,
+    secure: IS_PROD,
   },
 }));
 
@@ -97,18 +121,58 @@ const WA_FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20s
 
 const SKIP_LINK = '<a href="#main-content" class="skip-link">Pular para o conteúdo</a>';
 
-function injectShared(html) {
+const BREADCRUMB_LABELS = {
+  blog: 'Conteúdo',
+  'quanto-custa-certificacao-iso-9001': 'Quanto custa a certificação ISO 9001?',
+  'pbqp-h-o-que-e-para-que-serve': 'PBQP-H: o que é e para que serve?',
+  'iso-9001-vale-a-pena-para-metalurgica': 'ISO 9001 vale a pena para metalúrgica?',
+  'como-reduzir-retrabalho-na-producao': 'Como reduzir retrabalho na produção',
+  'consultoria-iso-9001-passo-fundo': 'Consultoria ISO 9001 em Passo Fundo',
+  'consultoria-iso-9001-erechim': 'Consultoria ISO 9001 em Erechim',
+  'consultoria-iso-9001-caxias-do-sul': 'Consultoria ISO 9001 em Caxias do Sul',
+  'consultoria-iso-9001-porto-alegre': 'Consultoria ISO 9001 em Porto Alegre',
+  'consultoria-iso-9001-bento-goncalves': 'Consultoria ISO 9001 em Bento Gonçalves',
+  'iso-9001-metalurgica': 'ISO 9001 para Metalúrgicas',
+  'iso-9001-industria-alimenticia': 'ISO 9001 para Indústria Alimentícia',
+  'iso-9001-cooperativa-agricola': 'ISO 9001 para Cooperativas Agrícolas',
+  'iso-9001-construtora': 'ISO 9001 para Construtoras',
+  'pbqp-h-construtora-residencial': 'PBQP-H para Construtora Residencial',
+  'pbqp-h-construtora-grande-porte': 'PBQP-H para Construtora Grande Porte',
+  'iso-9001-vale-a-pena': 'ISO 9001 vale a pena?',
+  'quanto-custa-certificacao-iso': 'Quanto custa a certificação ISO?',
+  'quanto-tempo-implantar-iso-9001': 'Quanto tempo leva para implantar a ISO 9001?',
+  'diferenca-iso-9001-vs-bpm': 'ISO 9001 vs BPM',
+  'calculadora-roi-certificacao': 'Calculadora ROI da Certificação',
+  'checklist-iso-9001': 'Checklist ISO 9001',
+};
+
+function buildBreadcrumbSchema(urlPath) {
+  const parts = urlPath.replace(/^\/|\/$/g, '').split('/').filter(Boolean);
+  if (!parts.length) return '';
+  const items = [{ '@type': 'ListItem', position: 1, name: 'Início', item: 'https://anderstech.net' }];
+  let pos = 2;
+  if (parts[0] === 'blog' && parts.length > 1) {
+    items.push({ '@type': 'ListItem', position: pos++, name: 'Conteúdo', item: 'https://anderstech.net/blog' });
+    items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[1]] || parts[1] });
+  } else {
+    items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[0]] || parts[0] });
+  }
+  return '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items }) + '</script>';
+}
+
+function injectShared(html, urlPath) {
+  const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
   return html
-    .replace('</head>', GTAG_HTML + '</head>')
+    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">' + breadcrumb + GTAG_HTML + '</head>')
     .replace('<body>', '<body>' + SKIP_LINK)
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB);
 }
 
-function sendPage(filePath, res) {
+function sendPage(filePath, res, urlPath) {
   try {
     const html = readFileSync(filePath, 'utf8');
-    res.type('html').send(injectShared(html));
+    res.type('html').send(injectShared(html, urlPath));
   } catch { return false; }
   return true;
 }
@@ -235,12 +299,22 @@ app.post('/api/contact', async (req, res) => {
 // ── Admin auth middleware ──
 function adminAuth(req, res, next) {
   const key = process.env.ADMIN_KEY;
-  if (!key) return next(); // dev mode: no key required
+  if (!key) {
+    if (IS_PROD) return res.status(503).json({ error: 'Admin não configurado' });
+    return next();
+  }
   const auth = req.headers.authorization;
-  if (!auth || auth !== 'Bearer ' + key) {
+  if (!auth || !timingSafeEqual(auth, 'Bearer ' + key)) {
     return res.status(401).json({ error: 'Não autorizado' });
   }
   next();
+}
+
+function timingSafeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return result === 0;
 }
 
 // ── Admin: serve panel ──
@@ -276,17 +350,19 @@ app.get('/api/admin/leads', adminAuth, async (req, res) => {
   if (!sql) return res.json([]);
   try {
     const { status, interesse, source } = req.query;
+    const limit = Math.min(parseInt(req.query.limit, 10) || 100, 500);
+    const offset = parseInt(req.query.offset, 10) || 0;
     let leads;
     if (status && interesse) {
-      leads = await sql`SELECT * FROM leads WHERE status = ${status} AND interesse = ${interesse} ORDER BY created_at DESC`;
+      leads = await sql`SELECT * FROM leads WHERE status = ${status} AND interesse = ${interesse} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
     } else if (status) {
-      leads = await sql`SELECT * FROM leads WHERE status = ${status} ORDER BY created_at DESC`;
+      leads = await sql`SELECT * FROM leads WHERE status = ${status} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
     } else if (interesse) {
-      leads = await sql`SELECT * FROM leads WHERE interesse = ${interesse} ORDER BY created_at DESC`;
+      leads = await sql`SELECT * FROM leads WHERE interesse = ${interesse} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
     } else if (source) {
-      leads = await sql`SELECT * FROM leads WHERE source = ${source} ORDER BY created_at DESC`;
+      leads = await sql`SELECT * FROM leads WHERE source = ${source} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
     } else {
-      leads = await sql`SELECT * FROM leads ORDER BY created_at DESC`;
+      leads = await sql`SELECT * FROM leads ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
     }
     res.json(leads);
   } catch (err) {
@@ -341,18 +417,29 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
 
 app.use(portalRouter);
 
+function safePath(base, userInput) {
+  const resolved = join(base, userInput);
+  if (!resolved.startsWith(base)) return null;
+  return resolved;
+}
+
 app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '') || '/';
+  if (/[<>"'`]|\.\./.test(clean)) return send404(res);
   if (clean === '/blog') {
-    if (sendPage(join(__dirname, 'blog', 'index.html'), res)) return;
+    if (sendPage(join(__dirname, 'blog', 'index.html'), res, '/blog')) return;
   }
-  const blogMatch = clean.match(/^\/blog\/(.+)$/);
+  const blogMatch = clean.match(/^\/blog\/([a-z0-9-]+)$/);
   if (blogMatch) {
-    if (sendPage(join(__dirname, 'blog', blogMatch[1] + '.html'), res)) return;
+    const file = safePath(join(__dirname, 'blog'), blogMatch[1] + '.html');
+    if (file && sendPage(file, res, clean)) return;
     return send404(res);
   }
   if (clean !== '/') {
-    if (sendPage(join(__dirname, 'pages', clean.slice(1) + '.html'), res)) return;
+    const slug = clean.slice(1);
+    if (!/^[a-z0-9-]+$/.test(slug)) return send404(res);
+    const file = safePath(join(__dirname, 'pages'), slug + '.html');
+    if (file && sendPage(file, res, clean)) return;
     return send404(res);
   }
   sendPage(join(__dirname, 'index.html'), res);
