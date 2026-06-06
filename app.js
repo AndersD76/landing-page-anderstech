@@ -21,23 +21,27 @@
   });
 
   /* ---- build the data-as-art bits ---- */
-  // timeline: 18 months, rising trend, last stretch flagged red (overshoot)
+  // timeline: 18 months, escalating trend with transition zone
   var tl = $("#timeline");
   if (tl) {
-    var heights = [22,30,26,38,34,46,42,55,50,62,58,70,66,80,76,90,96,100];
+    var heights = [18,24,22,32,28,38,35,45,42,54,50,64,60,75,72,88,94,100];
     heights.forEach(function (h, i) {
       var b = document.createElement("i");
       b.dataset.h = h;
-      if (i >= 13) b.classList.add("on");
+      if (i >= 14) b.classList.add("on");
+      else if (i >= 11) b.style.background = "rgba(255,106,106,.4)";
       tl.appendChild(b);
     });
   }
-  // dotfield: 25 x 5 grid, scatter "hot" cells
+  // dotfield: 25 x 5 grid, clustered hot zones (not random)
   var df = $("#dotfield");
   if (df) {
+    var hotCells = [12,13,17,18,19,36,37,38,42,43,56,57,61,62,63,67,68,81,82,86,87,88,106,107,111,112,113];
+    var hotSet = {};
+    hotCells.forEach(function (c) { hotSet[c] = true; });
     for (var i = 0; i < 125; i++) {
       var d = document.createElement("i");
-      if (Math.random() < 0.16) d.classList.add("hot");
+      if (hotSet[i]) d.classList.add("hot");
       d.dataset.i = i;
       df.appendChild(d);
     }

@@ -256,19 +256,19 @@ a.serv-row { text-decoration: none; color: inherit; }
 .cblk-val { font-family: var(--ff-display); font-weight: 700; font-size: clamp(34px,4vw,48px); line-height: .9; color: #fff; letter-spacing: -.03em; }
 .cblk-val span { color: var(--red-accent); }
 /* overshoot bar */
-.barwrap { position: relative; height: 12px; background: rgba(255,255,255,.07); }
-.barwrap .meta { position: absolute; top: -7px; bottom: -7px; left: 22%; width: 1px; background: var(--on-navy-soft); }
-.barwrap .meta::after { content: "META"; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-family: var(--ff-mono); font-size: 9px; letter-spacing: .1em; color: var(--on-navy-soft); }
-.barwrap .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(90deg, var(--red-600), var(--red)); transition: width 1.6s var(--ease-out); }
-.barwrap .fill::after { content: ""; position: absolute; right: 0; top: -3px; bottom: -3px; width: 2px; background: #fff; }
+.barwrap { position: relative; height: 8px; background: rgba(255,255,255,.06); border-radius: 4px; overflow: visible; }
+.barwrap .meta { position: absolute; top: -10px; bottom: -10px; left: 22%; width: 2px; background: rgba(255,255,255,.35); z-index: 2; border-radius: 1px; }
+.barwrap .meta::after { content: "META"; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-family: var(--ff-mono); font-size: 8px; letter-spacing: .14em; color: rgba(255,255,255,.5); font-weight: 500; }
+.barwrap .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: linear-gradient(90deg, #ff6a6a 0%, var(--red) 40%, #cc0000 100%); transition: width 1.6s var(--ease-out); box-shadow: 0 0 16px rgba(254,0,0,.3); }
+.barwrap .fill::after { content: ""; position: absolute; right: -1px; top: -4px; bottom: -4px; width: 3px; background: #fff; border-radius: 2px; box-shadow: 0 0 8px rgba(255,255,255,.5); }
 /* timeline */
-.timeline { display: flex; gap: 4px; height: 30px; align-items: flex-end; }
-.timeline i { flex: 1; background: rgba(255,255,255,.16); height: 30%; transform-origin: bottom; transform: scaleY(0); transition: transform .5s var(--ease-out), background .3s; }
-.timeline i.on { background: var(--red); }
+.timeline { display: flex; gap: 3px; height: 44px; align-items: flex-end; }
+.timeline i { flex: 1; background: rgba(255,255,255,.1); border-radius: 2px 2px 0 0; height: 30%; transform-origin: bottom; transform: scaleY(0); transition: transform .5s var(--ease-out), background .3s .1s; }
+.timeline i.on { background: var(--red); box-shadow: 0 0 8px rgba(254,0,0,.25); }
 /* dotfield */
-.dotfield { display: grid; grid-template-columns: repeat(25, 1fr); gap: 5px; }
-.dotfield i { aspect-ratio: 1; background: rgba(255,255,255,.14); transform: rotate(45deg) scale(0); transition: transform .4s var(--ease-out), background .3s; }
-.dotfield i.hot { background: var(--red); }
+.dotfield { display: grid; grid-template-columns: repeat(25, 1fr); gap: 4px; }
+.dotfield i { aspect-ratio: 1; background: rgba(255,255,255,.08); border-radius: 2px; transform: rotate(45deg) scale(0); transition: transform .4s var(--ease-out), background .3s; }
+.dotfield i.hot { background: var(--red); box-shadow: 0 0 6px rgba(254,0,0,.35); }
 
 /* ============================================================
    CASES + DEPOIMENTO
