@@ -63,8 +63,18 @@ const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index
   + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:60px;width:auto;object-fit:contain"></a>'
   + '<nav class="nav-links" aria-label="Principal">'
   + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/#contato">Contato</a></nav>'
-  + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a></div>'
-  + '</div></div></header>';
+  + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a>'
+  + '<button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">'
+  + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>'
+  + '</div></div></div></header>'
+  + '<nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel">'
+  + '<a href="/#servicos"><i>01</i> Serviços</a>'
+  + '<a href="/#diferencial"><i>02</i> Diferencial</a>'
+  + '<a href="/#sobre"><i>03</i> Sobre</a>'
+  + '<a href="/blog"><i>04</i> Conteúdo</a>'
+  + '<a href="/#contato"><i>05</i> Contato</a>'
+  + '<a href="/#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a></nav>'
+  + '<script>!function(){var t=document.getElementById("navToggle"),m=document.getElementById("mobileMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",String(o));document.body.style.overflow=o?"hidden":""});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow=""})})}}()</script>';
 const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<div class="fb-word">anders<b>tech</b></div>'
   + '<div class="fb-tag">GESTÃO COM TECNOLOGIA · QUALIDADE &amp; CONFORMIDADE PARA A INDÚSTRIA</div></div>'
@@ -85,9 +95,12 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
 const WA_FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'
   + '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a>';
 
+const SKIP_LINK = '<a href="#main-content" class="skip-link">Pular para o conteúdo</a>';
+
 function injectShared(html) {
   return html
     .replace('</head>', GTAG_HTML + '</head>')
+    .replace('<body>', '<body>' + SKIP_LINK)
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB);
 }
@@ -98,6 +111,15 @@ function sendPage(filePath, res) {
     res.type('html').send(injectShared(html));
   } catch { return false; }
   return true;
+}
+
+function send404(res) {
+  try {
+    const html = readFileSync(join(__dirname, 'pages', '404.html'), 'utf8');
+    res.status(404).type('html').send(injectShared(html));
+  } catch {
+    res.status(404).send('Página não encontrada');
+  }
 }
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
@@ -327,11 +349,11 @@ app.use((req, res) => {
   const blogMatch = clean.match(/^\/blog\/(.+)$/);
   if (blogMatch) {
     if (sendPage(join(__dirname, 'blog', blogMatch[1] + '.html'), res)) return;
-    return sendPage(join(__dirname, 'index.html'), res);
+    return send404(res);
   }
   if (clean !== '/') {
     if (sendPage(join(__dirname, 'pages', clean.slice(1) + '.html'), res)) return;
-    return sendPage(join(__dirname, 'index.html'), res);
+    return send404(res);
   }
   sendPage(join(__dirname, 'index.html'), res);
 });
