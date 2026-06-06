@@ -53,6 +53,10 @@ const staticOpts = {
 app.use(express.static(__dirname, { ...staticOpts, index: false }));
 app.use('/uploads', express.static(join(__dirname, 'uploads'), staticOpts));
 
+// ── Google Analytics 4 (gtag.js) ──
+const GTAG_HTML = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-7XL5XVE6QZ"></script>'
+  + '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-7XL5XVE6QZ");</script>';
+
 // ── SSR nav/footer for sub-pages (SEO: Google sees full HTML) ──
 const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
   + '<a href="/" class="brand" aria-label="Anders Tech">'
@@ -83,6 +87,7 @@ const WA_FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20s
 
 function injectShared(html) {
   return html
+    .replace('</head>', GTAG_HTML + '</head>')
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB);
 }
@@ -322,13 +327,13 @@ app.use((req, res) => {
   const blogMatch = clean.match(/^\/blog\/(.+)$/);
   if (blogMatch) {
     if (sendPage(join(__dirname, 'blog', blogMatch[1] + '.html'), res)) return;
-    return res.sendFile(join(__dirname, 'index.html'));
+    return sendPage(join(__dirname, 'index.html'), res);
   }
   if (clean !== '/') {
     if (sendPage(join(__dirname, 'pages', clean.slice(1) + '.html'), res)) return;
-    return res.sendFile(join(__dirname, 'index.html'));
+    return sendPage(join(__dirname, 'index.html'), res);
   }
-  res.sendFile(join(__dirname, 'index.html'));
+  sendPage(join(__dirname, 'index.html'), res);
 });
 
 app.listen(PORT, () => console.log(`Anders Tech running on :${PORT}`));
