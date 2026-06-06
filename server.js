@@ -1,11 +1,14 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
+import helmet from 'helmet';
 import session from 'express-session';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { readFileSync } from 'fs';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
 import { router as portalRouter, initPortalDB } from './portal/routes.js';
 
@@ -21,6 +24,11 @@ if (process.env.SENTRY_DSN) {
   }).catch(() => {});
 }
 
+app.use(compression());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
 app.use(cors());
 app.use(express.json());
 app.set('trust proxy', 1);
@@ -33,8 +41,59 @@ app.use(session({
     sameSite: 'lax',
   },
 }));
-app.use(express.static(__dirname));
-app.use('/uploads', express.static(join(__dirname, 'uploads')));
+
+const staticOpts = {
+  maxAge: '7d',
+  setHeaders(res, filePath) {
+    if (/\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2?)$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
+    }
+  },
+};
+app.use(express.static(__dirname, { ...staticOpts, index: false }));
+app.use('/uploads', express.static(join(__dirname, 'uploads'), staticOpts));
+
+// ── SSR nav/footer for sub-pages (SEO: Google sees full HTML) ──
+const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
+  + '<a href="/" class="brand" aria-label="Anders Tech">'
+  + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:60px;width:auto;object-fit:contain"></a>'
+  + '<nav class="nav-links" aria-label="Principal">'
+  + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/#contato">Contato</a></nav>'
+  + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a></div>'
+  + '</div></div></header>';
+const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
+  + '<div class="fb-word">anders<b>tech</b></div>'
+  + '<div class="fb-tag">GESTÃO COM TECNOLOGIA · QUALIDADE &amp; CONFORMIDADE PARA A INDÚSTRIA</div></div>'
+  + '<div class="wrap footer-grid"><div class="footer-brand"><a href="/" class="brand">'
+  + '<img src="/assets/logo-nav.png" alt="Anders Tech" class="logo-img" style="width:40px;height:40px;object-fit:contain;filter:brightness(10)">'
+  + '<span class="wm" style="color:#fff">anders<b>tech</b></span></a>'
+  + '<p style="margin-top:18px">Consultoria de qualidade e conformidade para a indústria. Diagnóstico baseado em dados.</p>'
+  + '<div class="cnpj">CNPJ 42.073.716/0001-80</div></div>'
+  + '<div class="footer-col"><h4>Navegação</h4><ul>'
+  + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
+  + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
+  + '<li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li></ul></div>'
+  + '<div class="footer-col"><h4>Contato</h4><ul class="footer-contact"><li>Passo Fundo · Erechim · RS</li><li>danielanders76@gmail.com</li></ul>'
+  + '<a href="https://andersdev.com.br" target="_blank" rel="noopener" class="footer-cross" style="display:inline-flex;align-items:center;gap:11px;margin-top:12px;padding:13px 18px;border:1px solid rgba(255,255,255,.14);color:#fff;font-size:14px">Software sob medida → andersdev.com.br</a></div></div>'
+  + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
+  + '<div class="fl"><a href="/termos-de-uso">Termos</a><a href="/politica-de-privacidade">Privacidade</a>'
+  + '<a href="https://anderstech.net"><b>anderstech.net</b></a><a href="https://andersdev.com.br" target="_blank" rel="noopener">andersdev.com.br</a></div></div></footer>';
+const WA_FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'
+  + '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a>';
+
+function injectShared(html) {
+  return html
+    .replace('<div id="shared-nav"></div>', NAV_HTML)
+    .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB);
+}
+
+function sendPage(filePath, res) {
+  try {
+    const html = readFileSync(filePath, 'utf8');
+    res.type('html').send(injectShared(html));
+  } catch { return false; }
+  return true;
+}
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -258,16 +317,16 @@ app.use(portalRouter);
 app.use((req, res) => {
   const clean = req.path.replace(/\/$/, '') || '/';
   if (clean === '/blog') {
-    return res.sendFile(join(__dirname, 'blog', 'index.html'));
+    if (sendPage(join(__dirname, 'blog', 'index.html'), res)) return;
   }
   const blogMatch = clean.match(/^\/blog\/(.+)$/);
   if (blogMatch) {
-    const file = join(__dirname, 'blog', blogMatch[1] + '.html');
-    return res.sendFile(file, err => { if (err) res.sendFile(join(__dirname, 'index.html')); });
+    if (sendPage(join(__dirname, 'blog', blogMatch[1] + '.html'), res)) return;
+    return res.sendFile(join(__dirname, 'index.html'));
   }
   if (clean !== '/') {
-    const page = join(__dirname, 'pages', clean.slice(1) + '.html');
-    return res.sendFile(page, err => { if (err) res.sendFile(join(__dirname, 'index.html')); });
+    if (sendPage(join(__dirname, 'pages', clean.slice(1) + '.html'), res)) return;
+    return res.sendFile(join(__dirname, 'index.html'));
   }
   res.sendFile(join(__dirname, 'index.html'));
 });

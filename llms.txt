@@ -1,0 +1,31 @@
+# Anders Tech — Gestao com Tecnologia
+> Consultoria em gestao da qualidade e conformidade para a industria.
+
+## About
+Anders Tech is a quality management consultancy serving industrial companies in Rio Grande do Sul, Brazil. Founded by Daniel Anders, an electrical engineer with 15+ years of experience in business management and technology.
+
+## Services
+- ISO 9001: Implementation and maintenance of Quality Management Systems
+- PBQP-H: Qualification for Brazil's Quality and Productivity Program for Housing
+- Process Optimization: Workflow mapping, bottleneck identification, rework reduction
+- Non-Conformity & Corrective Action: Root cause analysis and corrective action systems
+
+## Key Differentiator
+Data-driven diagnostics — analyzing real operational data (months of history, thousands of messages) to find hidden problems, not just filling forms.
+
+## Service Area
+Passo Fundo, Erechim, and northern Rio Grande do Sul, Brazil.
+
+## Contact
+- Website: https://anderstech.net
+- WhatsApp: +55 54 99964-8368
+- Email: danielanders76@gmail.com
+- CNPJ: 42.073.716/0001-80
+
+## Content
+- Blog: https://anderstech.net/blog
+- ROI Calculator: https://anderstech.net/calculadora-roi-certificacao
+- ISO 9001 Checklist: https://anderstech.net/checklist-iso-9001
+
+## Sister Company
+Anders Dev (andersdev.com.br) — Custom software development.

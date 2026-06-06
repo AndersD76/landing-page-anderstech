@@ -1,3 +1,30 @@
 User-agent: *
 Allow: /
+Disallow: /portal/
+Disallow: /admin/
+Disallow: /uploads/
+Disallow: /api/
+
+# AI crawlers — allow indexing for GEO/AEO visibility
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
 Sitemap: https://anderstech.net/sitemap.xml
