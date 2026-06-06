@@ -16,7 +16,7 @@
     + '<div class="fb-tag">GESTÃO COM TECNOLOGIA · QUALIDADE & CONFORMIDADE PARA A INDÚSTRIA</div></div>'
     + '<div class="wrap footer-grid">'
     + '<div class="footer-brand"><a href="/" class="brand">'
-    + '<img src="/assets/logo-nav.png" alt="Anders Tech" class="logo-img" style="width:40px;height:40px;object-fit:contain;filter:brightness(10)">'
+    + '<img src="/assets/logo-horizontal-white.png" alt="Anders Tech" class="logo-img" style="height:36px;width:auto;object-fit:contain">'
     + '<span class="wm" style="color:#fff">anders<b>tech</b></span></a>'
     + '<p style="margin-top:18px">Consultoria de qualidade e conformidade para a indústria. Diagnóstico baseado em dados.</p>'
     + '<div class="cnpj">CNPJ 42.073.716/0001-80</div></div>'
