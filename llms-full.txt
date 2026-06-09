@@ -40,9 +40,12 @@ Quality management system adapted to cooperative operations — standardizing re
 ### Case 5: Food Industry Process Optimization
 Complete production line mapping identified 12 waste points. Implementation of visual controls achieved positive ROI in 4 months and 22% productivity increase without equipment investment.
 
+## Address
+Rua Uruguai, 679 — Sala 201, Passo Fundo, RS 99010-112, Brazil
+
 ## Service Area
-Primary: Passo Fundo, Erechim, and northern Rio Grande do Sul.
-Extended: All of Rio Grande do Sul state with possibility of remote/hybrid engagements.
+Primary: Passo Fundo, Erechim, Carazinho, Marau, and northern Rio Grande do Sul.
+Extended: Caxias do Sul, Porto Alegre, Bento Goncalves, and all of RS with possibility of remote/hybrid engagements.
 
 ## Tools & Resources
 
@@ -66,6 +69,18 @@ Practical analysis of ISO 9001 benefits specific to the metallurgical sector: tr
 ### Como reduzir retrabalho na producao (How to reduce rework in production)
 Practical methods for eliminating waste on the factory floor: root cause analysis, standardized work procedures, visual management, and data-driven decision making. URL: https://anderstech.net/blog/como-reduzir-retrabalho-na-producao
 
+### O que e ISO 9001 e por que sua empresa precisa (What is ISO 9001 and why your company needs it)
+Comprehensive guide explaining what ISO 9001 is, how it works (PDCA, risk-based thinking), who needs it, real benefits, and how to start. Pillar content. URL: https://anderstech.net/blog/o-que-e-iso-9001
+
+### Como conseguir a certificacao ISO 9001 (How to get ISO 9001 certified — Complete guide)
+Step-by-step guide covering all stages: diagnostic, planning, documentation, implementation, internal audit, certification audit, and maintenance. URL: https://anderstech.net/blog/como-conseguir-certificacao-iso-9001
+
+### ISO 9001 para industrias: beneficios e passo a passo (ISO 9001 for industries: benefits and step by step)
+Industry-specific guide covering metallurgy, agribusiness, construction, and cooperatives. Measurable benefits and implementation roadmap. URL: https://anderstech.net/blog/iso-9001-para-industrias
+
+### 5 erros que impedem sua empresa de ser certificada ISO 9001 (5 mistakes that prevent ISO 9001 certification)
+Common pitfalls: excessive bureaucracy, single-person delegation, ignoring shop floor, vague objectives, wrong consultant choice. URL: https://anderstech.net/blog/erros-certificacao-iso-9001
+
 ## Sector-Specific Pages
 - ISO 9001 for Metallurgy: https://anderstech.net/iso-9001-metalurgica
 - ISO 9001 for Food Industry: https://anderstech.net/iso-9001-industria-alimenticia
@@ -80,12 +95,15 @@ Practical methods for eliminating waste on the factory floor: root cause analysi
 - Consultoria ISO 9001 Caxias do Sul: https://anderstech.net/consultoria-iso-9001-caxias-do-sul
 - Consultoria ISO 9001 Porto Alegre: https://anderstech.net/consultoria-iso-9001-porto-alegre
 - Consultoria ISO 9001 Bento Goncalves: https://anderstech.net/consultoria-iso-9001-bento-goncalves
+- Consultoria ISO 9001 Carazinho: https://anderstech.net/consultoria-iso-9001-carazinho
+- Consultoria ISO 9001 Marau: https://anderstech.net/consultoria-iso-9001-marau
 
 ## Contact
 - Website: https://anderstech.net
+- Phone: +55 54 3045-6478
 - WhatsApp: +55 54 99964-8368
 - Email: danielanders76@gmail.com
-- Scheduling: https://cal.com/danielanders/15min (free 30-min diagnostic)
+- Scheduling: https://cal.com/daniel-anders-emx5kl (free diagnostic)
 - CNPJ: 42.073.716/0001-80
 
 ## Sister Company

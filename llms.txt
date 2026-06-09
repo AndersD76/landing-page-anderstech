@@ -14,18 +14,27 @@ Anders Tech is a quality management consultancy serving industrial companies in 
 Data-driven diagnostics — analyzing real operational data (months of history, thousands of messages) to find hidden problems, not just filling forms.
 
 ## Service Area
-Passo Fundo, Erechim, and northern Rio Grande do Sul, Brazil.
+Passo Fundo, Erechim, Carazinho, Marau, Caxias do Sul, Porto Alegre, Bento Goncalves — Rio Grande do Sul, Brazil.
+
+## Address
+Rua Uruguai, 679 — Sala 201, Passo Fundo, RS 99010-112, Brazil
 
 ## Contact
 - Website: https://anderstech.net
+- Phone: +55 54 3045-6478
 - WhatsApp: +55 54 99964-8368
 - Email: danielanders76@gmail.com
+- Scheduling: https://cal.com/daniel-anders-emx5kl
 - CNPJ: 42.073.716/0001-80
 
 ## Content
 - Blog: https://anderstech.net/blog
 - ROI Calculator: https://anderstech.net/calculadora-roi-certificacao
 - ISO 9001 Checklist: https://anderstech.net/checklist-iso-9001
+- What is ISO 9001: https://anderstech.net/blog/o-que-e-iso-9001
+- How to get ISO 9001 certified: https://anderstech.net/blog/como-conseguir-certificacao-iso-9001
+- ISO 9001 for industries: https://anderstech.net/blog/iso-9001-para-industrias
+- 5 certification mistakes: https://anderstech.net/blog/erros-certificacao-iso-9001
 
 ## Sister Company
 Anders Dev (andersdev.com.br) — Custom software development.

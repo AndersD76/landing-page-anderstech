@@ -114,7 +114,9 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
   + '<li><a href="/consultoria-iso-9001-caxias-do-sul">Caxias do Sul</a></li>'
   + '<li><a href="/consultoria-iso-9001-porto-alegre">Porto Alegre</a></li>'
-  + '<li><a href="/consultoria-iso-9001-bento-goncalves">Bento Gonçalves</a></li></ul></div>'
+  + '<li><a href="/consultoria-iso-9001-bento-goncalves">Bento Gonçalves</a></li>'
+  + '<li><a href="/consultoria-iso-9001-carazinho">Carazinho</a></li>'
+  + '<li><a href="/consultoria-iso-9001-marau">Marau</a></li></ul></div>'
   + '<div class="footer-col"><h4>Contato</h4><ul class="footer-contact"><li>Passo Fundo · Erechim · RS</li><li>danielanders76@gmail.com</li></ul>'
   + '<a href="https://andersdev.com.br" target="_blank" rel="noopener" class="footer-cross">Software sob medida → andersdev.com.br</a></div></div>'
   + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
@@ -148,6 +150,12 @@ const BREADCRUMB_LABELS = {
   'diferenca-iso-9001-vs-bpm': 'ISO 9001 vs BPM',
   'calculadora-roi-certificacao': 'Calculadora ROI da Certificação',
   'checklist-iso-9001': 'Checklist ISO 9001',
+  'consultoria-iso-9001-carazinho': 'Consultoria ISO 9001 em Carazinho',
+  'consultoria-iso-9001-marau': 'Consultoria ISO 9001 em Marau',
+  'o-que-e-iso-9001': 'O que é ISO 9001?',
+  'como-conseguir-certificacao-iso-9001': 'Como conseguir a certificação ISO 9001',
+  'iso-9001-para-industrias': 'ISO 9001 para indústrias',
+  'erros-certificacao-iso-9001': '5 erros na certificação ISO 9001',
 };
 
 function buildBreadcrumbSchema(urlPath) {
