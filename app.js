@@ -4,6 +4,20 @@
 (function () {
   "use strict";
 
+  /* ---- save UTMs then clean tracking params from URL ---- */
+  var _savedUtm = {};
+  if (window.location.search) {
+    var _url = new URL(window.location.href);
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach(function (p) {
+      if (_url.searchParams.has(p)) _savedUtm[p] = _url.searchParams.get(p);
+    });
+    var _dirty = false;
+    ["fbclid", "gclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach(function (p) {
+      if (_url.searchParams.has(p)) { _url.searchParams.delete(p); _dirty = true; }
+    });
+    if (_dirty) window.history.replaceState(null, "", _url.pathname + _url.search + _url.hash);
+  }
+
   /* ---- CONFIG: troque pelos dados reais ---- */
   var CONFIG = {
     whatsapp: "5554999648368",
@@ -183,14 +197,13 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = "<span>Enviando...</span>";
 
-      var params = new URLSearchParams(window.location.search);
       var payload = {
         nome: g("nome"), empresa: g("empresa"), email: g("email"),
         telefone: g("telefone"), interesse: g("interesse"), mensagem: g("mensagem"),
         source: "site_form",
-        utm_source: params.get("utm_source") || "",
-        utm_medium: params.get("utm_medium") || "",
-        utm_campaign: params.get("utm_campaign") || ""
+        utm_source: _savedUtm.utm_source || "",
+        utm_medium: _savedUtm.utm_medium || "",
+        utm_campaign: _savedUtm.utm_campaign || ""
       };
 
       fetch("/api/contact", {
@@ -237,12 +250,19 @@
   }, { threshold: 0.3 });
   Object.keys(sections).forEach(function (id) { var el = document.getElementById(id); if (el) sectionIO.observe(el); });
 
-  // track CTA clicks
-  $$(".btn-red, .btn-out-light, [data-wa], .optc").forEach(function (el) {
+  // track CTA clicks (Plausible + GA4)
+  $$(".btn-red, .btn-out-light, [data-wa], .optc, .hero-tool").forEach(function (el) {
     el.addEventListener("click", function () {
-      var label = el.textContent.trim().slice(0, 40);
+      var label = el.dataset.track || el.textContent.trim().slice(0, 40);
       var section = el.closest("section");
-      track("cta_click", { label: label, section: section ? section.id || "nav" : "nav" });
+      var sectionId = section ? section.id || "nav" : "nav";
+      track("cta_click", { label: label, section: sectionId });
+      if (typeof gtag === "function") {
+        var isWa = el.hasAttribute("data-wa");
+        var isTool = el.hasAttribute("data-track");
+        if (isWa) gtag("event", "contact_whatsapp", { event_category: "engagement", event_label: sectionId });
+        if (isTool) gtag("event", "select_content", { content_type: "tool", item_id: label });
+      }
     });
   });
 
@@ -267,11 +287,11 @@
     document.addEventListener("mouseout", function (e) {
       if (e.clientY < 5 && !exitShown) showExit();
     });
-    // mobile: show after 45s if scrolled past 50%
+    // mobile: show after 15s if scrolled past 25%
     setTimeout(function () {
       var scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      if (scrollPct > 0.5) showExit();
-    }, 45000);
+      if (scrollPct > 0.25) showExit();
+    }, 15000);
   }
 
   if (exitClose) exitClose.addEventListener("click", function () { exitOverlay.classList.remove("active"); });
