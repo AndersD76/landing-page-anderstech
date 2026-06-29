@@ -28,9 +28,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles.css?v=2" />
 <link rel="dns-prefetch" href="https://plausible.io" />
-<link rel="preload" href="/styles.css" as="style" />
+<link rel="preload" href="/styles.css?v=2" as="style" />
 <link rel="preload" href="/assets/logo-horizontal-white.png" as="image" />
 <script defer data-domain="anderstech.net" src="https://plausible.io/js/script.js"></script>
 <script type="application/ld+json">
@@ -127,9 +127,10 @@
       <img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-light" style="height:80px;width:auto;object-fit:contain;display:none">
     </a>
     <nav class="nav-links" aria-label="Principal">
-      <a href="#servicos">Serviços</a>
+      <a href="#serviços">Serviços</a>
       <a href="#diferencial">Diferencial</a>
       <a href="#sobre">Sobre</a>
+      <a href="#treinamentos">Cursos</a>
       <a href="/blog">Conteúdo</a>
       <a href="#contato">Contato</a>
     </nav>
@@ -143,11 +144,12 @@
   </div></div>
 </header>
 <nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel">
-  <a href="#servicos"><i>01</i> Serviços</a>
+  <a href="#serviços"><i>01</i> Serviços</a>
   <a href="#diferencial"><i>02</i> Diferencial</a>
   <a href="#sobre"><i>03</i> Sobre</a>
-  <a href="/blog"><i>04</i> Conteúdo</a>
-  <a href="#contato"><i>05</i> Contato</a>
+  <a href="#treinamentos"><i>04</i> Cursos</a>
+  <a href="/blog"><i>05</i> Conteúdo</a>
+  <a href="#contato"><i>06</i> Contato</a>
   <a href="#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a>
 </nav>
 
@@ -436,54 +438,107 @@
 
 <!-- ============ TREINAMENTOS ============ -->
 <section class="section treinamentos" id="treinamentos">
+  <div class="hero-bg"><span class="g1"></span><span class="grid"></span></div>
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-index"><b>06</b> / TREINAMENTOS</div>
+      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:#ff6a6a">06</b> / TREINAMENTOS</div>
       <div class="sec-title">
-        <span class="tag">Aprenda com quem implanta</span>
-        <h2>Cursos online de qualidade industrial</h2>
+        <span class="tag" style="color:var(--red)">Aprenda com quem implanta</span>
+        <h2 style="color:#fff">Cursos online de qualidade industrial</h2>
+        <p style="color:var(--on-navy-soft);max-width:52ch">Conteudo direto ao ponto, templates prontos, casos reais e certificado. Do basico ao avancado.</p>
       </div>
     </div>
+
     <div class="treinamentos-grid">
       <a href="/ead/curso/iso-9001-2015-interpretacao" class="trein-card reveal">
-        <div class="trein-icon">9001</div>
-        <div class="trein-body">
-          <span class="trein-cat">Certificação</span>
-          <h3>ISO 9001:2015 — Interpretação dos Requisitos</h3>
-          <p>Entenda cada cláusula da norma e saiba aplicar na prática. 24 aulas, 12h de conteúdo.</p>
-          <div class="trein-bottom"><span class="trein-price">R$ 397</span><span class="trein-meta">12h · 24 aulas · Certificado</span></div>
+        <div class="trein-top">
+          <div class="trein-icon">9001</div>
+          <span class="trein-badge">Mais vendido</span>
+        </div>
+        <span class="trein-cat">Certificacao</span>
+        <h3>ISO 9001:2015 — Interpretacao dos Requisitos</h3>
+        <p>Entenda cada clausula da norma e saiba aplicar na pratica. 24 aulas com exemplos reais da industria.</p>
+        <div class="trein-meta-row">
+          <span>12h</span><span>24 aulas</span><span>6 modulos</span>
+        </div>
+        <div class="trein-bottom">
+          <div class="trein-prices">
+            <span class="trein-price-old">R$ 597</span>
+            <span class="trein-price">R$ 397</span>
+          </div>
+          <span class="trein-cta-btn">Ver curso &rarr;</span>
         </div>
       </a>
+
       <a href="/ead/curso/auditor-interno-iso-9001" class="trein-card reveal">
-        <div class="trein-icon">AUD</div>
-        <div class="trein-body">
-          <span class="trein-cat">Auditoria</span>
-          <h3>Auditor Interno ISO 9001:2015</h3>
-          <p>Planeje, conduza e relate auditorias internas com base na ISO 19011:2018. 28 aulas práticas.</p>
-          <div class="trein-bottom"><span class="trein-price">R$ 497</span><span class="trein-meta">16h · 28 aulas · Certificado</span></div>
+        <div class="trein-top">
+          <div class="trein-icon">AUD</div>
+        </div>
+        <span class="trein-cat">Auditoria</span>
+        <h3>Auditor Interno ISO 9001:2015</h3>
+        <p>Planeje, conduza e relate auditorias internas com base na ISO 19011:2018. 28 aulas praticas.</p>
+        <div class="trein-meta-row">
+          <span>16h</span><span>28 aulas</span><span>7 modulos</span>
+        </div>
+        <div class="trein-bottom">
+          <div class="trein-prices">
+            <span class="trein-price-old">R$ 797</span>
+            <span class="trein-price">R$ 497</span>
+          </div>
+          <span class="trein-cta-btn">Ver curso &rarr;</span>
         </div>
       </a>
+
       <a href="/ead/curso/gestao-processos-indicadores" class="trein-card reveal">
-        <div class="trein-icon">KPI</div>
-        <div class="trein-body">
-          <span class="trein-cat">Processos</span>
-          <h3>Gestão de Processos e Indicadores</h3>
-          <p>Mapeie processos, defina KPIs e implemente ciclos de melhoria contínua na sua operação.</p>
-          <div class="trein-bottom"><span class="trein-price">R$ 297</span><span class="trein-meta">10h · 20 aulas · Certificado</span></div>
+        <div class="trein-top">
+          <div class="trein-icon">KPI</div>
+        </div>
+        <span class="trein-cat">Processos</span>
+        <h3>Gestao de Processos e Indicadores</h3>
+        <p>Mapeie processos, defina KPIs e implemente ciclos de melhoria continua na sua operacao.</p>
+        <div class="trein-meta-row">
+          <span>10h</span><span>20 aulas</span><span>5 modulos</span>
+        </div>
+        <div class="trein-bottom">
+          <div class="trein-prices">
+            <span class="trein-price-old">R$ 497</span>
+            <span class="trein-price">R$ 297</span>
+          </div>
+          <span class="trein-cta-btn">Ver curso &rarr;</span>
         </div>
       </a>
+
       <a href="/ead/curso/5s-pratica-industrial" class="trein-card reveal">
-        <div class="trein-icon">5S</div>
-        <div class="trein-body">
-          <span class="trein-cat">Lean</span>
-          <h3>5S na Prática Industrial</h3>
-          <p>Implante o programa 5S na sua fábrica com método, ferramentas e resultados mensuráveis.</p>
-          <div class="trein-bottom"><span class="trein-price">R$ 197</span><span class="trein-meta">6h · 16 aulas · Certificado</span></div>
+        <div class="trein-top">
+          <div class="trein-icon">5S</div>
+        </div>
+        <span class="trein-cat">Lean</span>
+        <h3>5S na Pratica Industrial</h3>
+        <p>Implante o programa 5S na sua fabrica com metodo, ferramentas e resultados mensuraveis.</p>
+        <div class="trein-meta-row">
+          <span>6h</span><span>16 aulas</span><span>4 modulos</span>
+        </div>
+        <div class="trein-bottom">
+          <div class="trein-prices">
+            <span class="trein-price-old">R$ 347</span>
+            <span class="trein-price">R$ 197</span>
+          </div>
+          <span class="trein-cta-btn">Ver curso &rarr;</span>
         </div>
       </a>
     </div>
-    <div class="trein-cta reveal">
-      <a href="/ead/cursos" class="btn-todos">Ver todos os cursos e pacote completo</a>
+
+    <div class="trein-bundle reveal">
+      <div class="trein-bundle-text">
+        <span class="trein-cat">Pacote completo</span>
+        <h3>Todos os 4 cursos + certificados</h3>
+        <p>88 aulas, 44h de conteudo, templates prontos. Economize mais de R$ 300.</p>
+      </div>
+      <div class="trein-bundle-price">
+        <span class="trein-price-old">R$ 1.388</span>
+        <span class="trein-price" style="font-size:32px">R$ 997</span>
+        <a href="/ead/cursos" class="trein-bundle-btn">Ver pacote completo &rarr;</a>
+      </div>
     </div>
   </div>
 </section>
