@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cursos de Qualidade e ISO 9001 — Anders Tech EAD</title>
-<meta name="description" content="Cursos online de ISO 9001:2015, Auditor Interno, Gestao de Processos e 5S. Conteudo pratico com templates prontos e certificado. Anders Tech.">
+<meta name="description" content="Cursos online de ISO 9001:2015, Auditor Interno, Gestão de Processos e 5S. Conteúdo prático com templates prontos e certificado. Anders Tech.">
 <link rel="icon" href="/assets/favicon.png">
 <link rel="canonical" href="https://anderstech.net/ead/cursos">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,10 +79,10 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 
 <section class="hero-ead">
   <div id="promoBanner" style="display:none;margin-bottom:24px">
-    <div style="display:inline-block;background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;margin-bottom:12px">LANCAMENTO</div>
+    <div style="display:inline-block;background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;margin-bottom:12px">LANÇAMENTO</div>
   </div>
-  <h1>Cursos de Qualidade e Gestao Industrial</h1>
-  <p>Aprenda ISO 9001, auditoria, processos e 5S com quem implanta na pratica. Conteudo direto, templates prontos, certificado incluso.</p>
+  <h1>Cursos de Qualidade e Gestão Industrial</h1>
+  <p>Aprenda ISO 9001, auditoria, processos e 5S com quem implanta na prática. Conteúdo direto, templates prontos, certificado incluso.</p>
 </section>
 
 <div class="wrap">
@@ -94,8 +94,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 <div class="trust-bar">
   <span>Certificado incluso</span>
   <span>Templates prontos</span>
-  <span>Casos reais da industria</span>
-  <span>Acesso vitalicio</span>
+  <span>Casos reais da indústria</span>
+  <span>Acesso vitalício</span>
 </div>
 
 <footer class="ead-footer">
@@ -124,7 +124,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
     if(promo.ativa){
       var b=document.getElementById('promoBanner');
       b.style.display='block';
-      b.innerHTML='<div class="promo-tag">LANCAMENTO</div><h2 style="font-size:clamp(20px,3vw,28px);margin:8px 0 4px">Todos os cursos gratuitos por tempo limitado</h2><p style="color:rgba(255,255,255,.7);font-size:15px">Matricule-se agora e mantenha o acesso permanente. Oferta valida ate '+new Date(promo.fim).toLocaleDateString('pt-BR')+'.</p>';
+      b.innerHTML='<div class="promo-tag">LANÇAMENTO</div><h2 style="font-size:clamp(20px,3vw,28px);margin:8px 0 4px">Todos os cursos gratuitos por tempo limitado</h2><p style="color:rgba(255,255,255,.7);font-size:15px">Matricule-se agora e mantenha o acesso permanente. Oferta válida até '+new Date(promo.fim).toLocaleDateString('pt-BR')+'.</p>';
     }
   }).catch(function(){});
 
@@ -135,19 +135,19 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
     grid.innerHTML=courses.map(function(c,i){
       var priceHtml;
       if(c.promo_gratuito){
-        priceHtml='<div><span class="price-was">'+fmt(c.preco)+'</span><span class="price-free">Gratis</span></div>';
+        priceHtml='<div><span class="price-was">'+fmt(c.preco)+'</span><span class="price-free">Grátis</span></div>';
       } else {
         priceHtml='<div>'+(c.preco_original?'<span class="price-original">'+fmt(c.preco_original)+'</span>':'')+'<span class="price">'+fmt(c.preco)+'</span></div>';
       }
       return '<div class="course-card">'
-        +'<div class="thumb">'+(c.promo_gratuito?'<span class="promo-tag">Gratis</span>':'')+(icons[i]||'')+'</div>'
+        +'<div class="thumb">'+(c.promo_gratuito?'<span class="promo-tag">Grátis</span>':'')+(icons[i]||'')+'</div>'
         +'<div class="body">'
         +'<h2>'+c.titulo+'</h2>'
-        +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+c.total_modulos+' modulos</span><span>'+c.total_aulas+' aulas</span></div>'
+        +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+c.total_modulos+' módulos</span><span>'+c.total_aulas+' aulas</span></div>'
         +'<p class="desc">'+(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
         +'<div class="bottom">'
         +priceHtml
-        +'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar gratis</a>'
+        +'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar grátis</a>'
         +'</div></div></div>';
     }).join('');
   }).catch(function(){

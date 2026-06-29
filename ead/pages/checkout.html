@@ -84,7 +84,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
   function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 
   fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
-    if(!c.id){document.getElementById('checkout').innerHTML='<div class="loading">Curso nao encontrado.</div>';return}
+    if(!c.id){document.getElementById('checkout').innerHTML='<div class="loading">Curso não encontrado.</div>';return}
     if(c.enrolled){window.location.href='/ead/player/'+slug;return}
 
     document.title='Checkout: '+c.titulo+' — Anders Tech EAD';
@@ -93,21 +93,21 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       document.getElementById('checkout').innerHTML=
         '<div class="course-summary">'
         +'<h1>'+c.titulo+'</h1>'
-        +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' modulos &middot; Certificado incluso</div>'
+        +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' módulos &middot; Certificado incluso</div>'
         +'<ul class="features">'
-        +'<li>Acesso vitalicio ao conteudo completo</li>'
+        +'<li>Acesso vitalício ao conteúdo completo</li>'
         +'<li>Templates e ferramentas para download</li>'
-        +'<li>Quizzes por modulo + avaliacao final</li>'
-        +'<li>Certificado de conclusao</li>'
-        +'<li>Casos reais anonimizados da industria</li></ul></div>'
+        +'<li>Quizzes por módulo + avaliação final</li>'
+        +'<li>Certificado de conclusão</li>'
+        +'<li>Casos reais anonimizados da indústria</li></ul></div>'
         +'<div class="payment-box" style="text-align:center">'
-        +'<div style="background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;display:inline-block;margin-bottom:16px">LANCAMENTO — GRATIS</div>'
-        +'<h2 style="margin-bottom:4px">Matricula gratuita</h2>'
-        +'<p style="font-size:14px;color:var(--mute);margin-bottom:20px">Oferta de lancamento. Matricule-se agora e mantenha o acesso permanente.</p>'
-        +'<div style="margin-bottom:16px"><span style="font-size:15px;color:var(--mute);text-decoration:line-through">'+fmt(c.preco)+'</span> <span style="font-size:28px;font-weight:700;color:#16a34a">Gratis</span></div>'
+        +'<div style="background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;display:inline-block;margin-bottom:16px">LANÇAMENTO — GRÁTIS</div>'
+        +'<h2 style="margin-bottom:4px">Matrícula gratuita</h2>'
+        +'<p style="font-size:14px;color:var(--mute);margin-bottom:20px">Oferta de lançamento. Matricule-se agora e mantenha o acesso permanente.</p>'
+        +'<div style="margin-bottom:16px"><span style="font-size:15px;color:var(--mute);text-decoration:line-through">'+fmt(c.preco)+'</span> <span style="font-size:28px;font-weight:700;color:#16a34a">Grátis</span></div>'
         +'<div class="error" id="payError"></div>'
-        +'<button class="btn-pay green" id="btnFree" style="font-size:18px;padding:16px">Matricular gratis agora</button>'
-        +'<p style="font-size:12px;color:var(--mute);margin-top:12px">Sem cartao. Sem compromisso. Acesso imediato.</p></div>';
+        +'<button class="btn-pay green" id="btnFree" style="font-size:18px;padding:16px">Matricular grátis agora</button>'
+        +'<p style="font-size:12px;color:var(--mute);margin-top:12px">Sem cartão. Sem compromisso. Acesso imediato.</p></div>';
 
       document.getElementById('btnFree').addEventListener('click',function(){
         var btn=this;btn.disabled=true;btn.textContent='Matriculando...';
@@ -116,9 +116,9 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
         .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
         .then(function(r){
           if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
-          document.getElementById('payError').textContent=r.data.error||'Erro na matricula';document.getElementById('payError').style.display='block';
-          btn.disabled=false;btn.textContent='Matricular gratis agora';
-        }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Matricular gratis agora'});
+          document.getElementById('payError').textContent=r.data.error||'Erro na matrícula';document.getElementById('payError').style.display='block';
+          btn.disabled=false;btn.textContent='Matricular grátis agora';
+        }).catch(function(){document.getElementById('payError').textContent='Erro de conexão.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Matricular grátis agora'});
       });
       return;
     }
@@ -126,13 +126,13 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
     document.getElementById('checkout').innerHTML=
       '<div class="course-summary">'
       +'<h1>'+c.titulo+'</h1>'
-      +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' modulos &middot; Certificado incluso</div>'
+      +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' módulos &middot; Certificado incluso</div>'
       +'<ul class="features">'
-      +'<li>Acesso vitalicio ao conteudo completo</li>'
+      +'<li>Acesso vitalício ao conteúdo completo</li>'
       +'<li>Templates e ferramentas para download</li>'
-      +'<li>Quizzes por modulo + avaliacao final</li>'
-      +'<li>Certificado de conclusao</li>'
-      +'<li>Casos reais anonimizados da industria</li></ul></div>'
+      +'<li>Quizzes por módulo + avaliação final</li>'
+      +'<li>Certificado de conclusão</li>'
+      +'<li>Casos reais anonimizados da indústria</li></ul></div>'
       +'<div class="payment-box">'
       +'<h2>Pagamento</h2>'
       +(c.preco_original?'<span class="price-old">De '+fmt(c.preco_original)+'</span>':'')
@@ -140,15 +140,15 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       +'<div class="error" id="payError"></div>'
       +'<div class="method-tabs">'
       +'<div class="method-tab active" data-method="pix">PIX</div>'
-      +'<div class="method-tab" data-method="card">Cartao</div></div>'
+      +'<div class="method-tab" data-method="card">Cartão</div></div>'
       +'<div class="method-content active" id="methodPix">'
-      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pagamento instantaneo via PIX. Acesso liberado imediatamente apos confirmacao.</p>'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pagamento instantâneo via PIX. Acesso liberado imediatamente após confirmação.</p>'
       +'<button class="btn-pay green" id="btnPix">Gerar PIX</button></div>'
       +'<div class="method-content" id="methodCard">'
-      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartao de credito via Mercado Pago. Parcelamento disponivel.</p>'
-      +'<button class="btn-pay" id="btnCard">Pagar com cartao</button></div>'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartão de crédito via Mercado Pago. Parcelamento disponível.</p>'
+      +'<button class="btn-pay" id="btnCard">Pagar com cartão</button></div>'
       +'<div id="pixResult"></div>'
-      +'<div class="security">Pagamento processado pelo Mercado Pago. Seus dados estao protegidos.</div></div>';
+      +'<div class="security">Pagamento processado pelo Mercado Pago. Seus dados estão protegidos.</div></div>';
 
     // Tab switching
     document.querySelectorAll('.method-tab').forEach(function(tab){
@@ -169,7 +169,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       .then(function(r){
         if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
         if(!r.ok){document.getElementById('payError').textContent=r.data.error;document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX';return}
-        var html='<div class="pix-info"><p>Escaneie o QR Code ou copie o codigo PIX:</p>';
+        var html='<div class="pix-info"><p>Escaneie o QR Code ou copie o código PIX:</p>';
         if(r.data.qr_code_base64)html+='<div class="pix-qr"><img src="data:image/png;base64,'+r.data.qr_code_base64+'" alt="QR Code PIX"></div>';
         if(r.data.qr_code)html+='<div class="pix-code" title="Clique para copiar" id="pixCopy">'+r.data.qr_code+'</div>';
         html+='<div class="status-msg pending" id="pixStatus">Aguardando pagamento...</div></div>';
@@ -187,7 +187,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
             if(d.status==='aprovado'){clearInterval(poll);document.getElementById('pixStatus').className='status-msg success';document.getElementById('pixStatus').textContent='Pagamento confirmado! Redirecionando...';setTimeout(function(){window.location.href='/ead/player/'+slug},1500)}
           });
         },5000);
-      }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX'});
+      }).catch(function(){document.getElementById('payError').textContent='Erro de conexão.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX'});
     });
 
     // Card
@@ -200,8 +200,8 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
         if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
         if(r.data.init_point){window.location.href=r.data.init_point;return}
         document.getElementById('payError').textContent=r.data.error||'Erro no checkout';document.getElementById('payError').style.display='block';
-        btn.disabled=false;btn.textContent='Pagar com cartao';
-      }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Pagar com cartao'});
+        btn.disabled=false;btn.textContent='Pagar com cartão';
+      }).catch(function(){document.getElementById('payError').textContent='Erro de conexão.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Pagar com cartão'});
     });
 
   }).catch(function(){document.getElementById('checkout').innerHTML='<div class="loading">Erro ao carregar.</div>'});

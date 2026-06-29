@@ -80,13 +80,13 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
   });
 
   fetch('/ead/api/me').then(function(r){return r.json()}).then(function(u){
-    document.getElementById('greeting').textContent='Ola, '+u.nome.split(' ')[0];
+    document.getElementById('greeting').textContent='Olá, '+u.nome.split(' ')[0];
   }).catch(function(){});
 
   fetch('/ead/api/my-courses').then(function(r){return r.json()}).then(function(courses){
     var list=document.getElementById('coursesList');
     if(!courses.length){
-      list.innerHTML='<div class="empty"><h2>Nenhum curso ainda</h2><p>Explore nossos cursos e comece a aprender.</p><br><a href="/ead/cursos">Ver cursos disponiveis &rarr;</a></div>';
+      list.innerHTML='<div class="empty"><h2>Nenhum curso ainda</h2><p>Explore nossos cursos e comece a aprender.</p><br><a href="/ead/cursos">Ver cursos disponíveis &rarr;</a></div>';
       return;
     }
     list.innerHTML=courses.map(function(c){
@@ -97,13 +97,13 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
         actions='<div><a href="/ead/api/certificate/'+c.certificate_code+'" target="_blank" class="btn-certificate">Certificado</a>'
           +'<a href="/ead/player/'+c.slug+'" class="btn-continue" style="margin-left:8px;background:var(--navy)">Revisar</a></div>';
       }else{
-        actions='<a href="/ead/player/'+c.slug+'" class="btn-continue">'+(c.aulas_completas>0?'Continuar':'Comecar')+'</a>';
+        actions='<a href="/ead/player/'+c.slug+'" class="btn-continue">'+(c.aulas_completas>0?'Continuar':'Começar')+'</a>';
       }
       return '<div class="course-item"><div>'
         +'<h2>'+c.titulo+'</h2>'
         +'<div class="meta">'+c.carga_horaria+' &middot; '+c.aulas_completas+'/'+c.total_aulas+' aulas</div>'
         +'<div class="progress-track"><div class="fill" style="width:'+pct+'%"></div></div>'
-        +'<div class="progress-label">'+pct+'% concluido</div></div>'
+        +'<div class="progress-label">'+pct+'% concluído</div></div>'
         +actions+'</div>';
     }).join('');
   }).catch(function(){document.getElementById('coursesList').innerHTML='<div class="loading">Erro ao carregar.</div>'});

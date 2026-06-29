@@ -35,12 +35,12 @@ a.back{display:block;margin-top:20px;color:#6b7280;font-size:14px;text-decoratio
     var data=new Date(c.data).toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
     document.getElementById('content').innerHTML=
       '<div class="badge"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>'
-      +'<h1>Certificado valido</h1>'
-      +'<div class="detail"><strong>'+c.nome+'</strong> concluiu o curso<br><strong>'+c.curso+'</strong><br>com carga horaria de '+c.carga+'<br>em '+data+'</div>'
+      +'<h1>Certificado válido</h1>'
+      +'<div class="detail"><strong>'+c.nome+'</strong> concluiu o curso<br><strong>'+c.curso+'</strong><br>com carga horária de '+c.carga+'<br>em '+data+'</div>'
       +'<div class="code">'+c.code+'</div><br>'
       +'<a href="/ead/api/certificate/'+code+'" target="_blank" class="btn">Baixar PDF</a>';
   }).catch(function(){
-    document.getElementById('content').innerHTML='<p class="not-found">Certificado nao encontrado.<br>Verifique o codigo informado.</p>';
+    document.getElementById('content').innerHTML='<p class="not-found">Certificado não encontrado.<br>Verifique o código informado.</p>';
   });
 })();
 </script>

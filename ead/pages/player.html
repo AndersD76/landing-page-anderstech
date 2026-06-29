@@ -154,7 +154,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
           +'<span>'+l.titulo+'</span>'
           +'<span class="dur">'+(l.duracao||'')+'</span></div>';
       });
-      html+='<div class="mod-header'+(isOpen||i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">Modulo '+(i+1)+': '+m.titulo+'<span>'+(m.aulas?m.aulas.length:0)+' aulas</span></div>'
+      html+='<div class="mod-header'+(isOpen||i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">Módulo '+(i+1)+': '+m.titulo+'<span>'+(m.aulas?m.aulas.length:0)+' aulas</span></div>'
         +'<div class="mod-lessons"'+(isOpen||i===0?' style="display:block"':'')+'>'+lessons+'</div>';
     });
     sidebar.innerHTML=html;
@@ -168,7 +168,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     currentLessonId=id;
     main.innerHTML='<div class="loading">Carregando aula...</div>';
     fetch('/ead/api/lesson/'+id).then(function(r){return r.json()}).then(function(l){
-      if(!l.id){main.innerHTML='<div class="loading">Aula nao encontrada.</div>';return}
+      if(!l.id){main.innerHTML='<div class="loading">Aula não encontrada.</div>';return}
 
       var navHtml='<div class="nav-btns">';
       if(l.prev)navHtml+='<a href="#" class="nav-btn" data-id="'+l.prev.id+'">&larr; '+l.prev.titulo+'</a>';
@@ -178,9 +178,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
       main.innerHTML='<div class="lesson-header">'
         +'<div class="mod-label">'+l.module_titulo+'</div>'
         +'<h1>'+l.titulo+'</h1></div>'
-        +'<div class="lesson-body">'+(l.conteudo||'<p>Conteudo em producao.</p>')+'</div>'
+        +'<div class="lesson-body">'+(l.conteudo||'<p>Conteúdo em produção.</p>')+'</div>'
         +'<div class="lesson-footer">'
-        +'<button class="btn-complete'+(l.completed?' done':'')+'" id="completeBtn">'+(l.completed?'Concluida':'Marcar como concluida')+'</button>'
+        +'<button class="btn-complete'+(l.completed?' done':'')+'" id="completeBtn">'+(l.completed?'Concluída':'Marcar como concluída')+'</button>'
         +navHtml+'</div>';
 
       main.scrollTop=0;
@@ -190,8 +190,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         document.getElementById('completeBtn').addEventListener('click',function(){
           var btn=this;
           fetch('/ead/api/lesson/'+id+'/complete',{method:'POST'}).then(function(r){return r.json()}).then(function(){
-            btn.textContent='Concluida';btn.classList.add('done');
-            showToast('Aula concluida!');
+            btn.textContent='Concluída';btn.classList.add('done');
+            showToast('Aula concluída!');
             // Update sidebar
             courseData.modules.forEach(function(m){
               (m.aulas||[]).forEach(function(a){if(a.id===id)a.completed=true});

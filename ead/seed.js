@@ -38,11 +38,11 @@ async function main() {
   await seedCourse2(sql);
   console.log('  OK\n');
 
-  console.log('[3/4] Gestao de Processos e Indicadores');
+  console.log('[3/4] Gestão de Processos e Indicadores');
   await seedCourse3(sql);
   console.log('  OK\n');
 
-  console.log('[4/4] 5S na Pratica Industrial');
+  console.log('[4/4] 5S na Prática Industrial');
   await seedCourse4(sql);
   console.log('  OK\n');
 

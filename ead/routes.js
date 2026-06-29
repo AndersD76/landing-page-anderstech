@@ -22,8 +22,8 @@ const router = Router();
 const PROMO = {
   ativa: true,
   fim: new Date('2026-07-29T23:59:59-03:00'),
-  label: 'Lancamento — acesso gratuito',
-  desc: 'Todos os cursos liberados gratuitamente ate 29/07/2026. Matricule-se agora e mantenha o acesso permanente.',
+  label: 'Lançamento — acesso gratuito',
+  desc: 'Todos os cursos liberados gratuitamente até 29/07/2026. Matricule-se agora e mantenha o acesso permanente.',
 };
 function promoAtiva() { return PROMO.ativa && new Date() < PROMO.fim; }
 
@@ -180,7 +180,7 @@ async function initEadDB() {
 function requireEadAuth(req, res, next) {
   if (!req.session?.eadUser) {
     if (req.path.startsWith('/ead/api/')) {
-      return res.status(401).json({ error: 'Nao autenticado' });
+      return res.status(401).json({ error: 'Não autenticado' });
     }
     return res.redirect('/ead/login');
   }
@@ -260,11 +260,11 @@ router.get('/ead/api/courses', async (req, res) => {
 });
 
 router.get('/ead/api/courses/:slug', async (req, res) => {
-  if (!sql) return res.status(404).json({ error: 'Curso nao encontrado' });
+  if (!sql) return res.status(404).json({ error: 'Curso não encontrado' });
   try {
     const slug = req.params.slug;
     const courses = await sql`SELECT * FROM ead_courses WHERE slug = ${slug} AND ativo = true`;
-    if (!courses.length) return res.status(404).json({ error: 'Curso nao encontrado' });
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
     const modules = await sql`
@@ -295,13 +295,13 @@ router.get('/ead/api/courses/:slug', async (req, res) => {
 
 router.post('/ead/api/register', regRateLimit, async (req, res) => {
   const { nome, email, senha, telefone, empresa } = req.body;
-  if (!nome || !email || !senha) return res.status(400).json({ error: 'Nome, email e senha sao obrigatorios' });
+  if (!nome || !email || !senha) return res.status(400).json({ error: 'Nome, email e senha são obrigatórios' });
   if (senha.length < 6) return res.status(400).json({ error: 'Senha deve ter pelo menos 6 caracteres' });
-  if (!sql) return res.status(500).json({ error: 'Banco de dados nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'Banco de dados não configurado' });
 
   try {
     const existing = await sql`SELECT id FROM ead_users WHERE email = ${email.toLowerCase().trim()}`;
-    if (existing.length) return res.status(409).json({ error: 'Email ja cadastrado' });
+    if (existing.length) return res.status(409).json({ error: 'E-mail já cadastrado' });
 
     const hash = await bcrypt.hash(senha, 10);
     const result = await sql`
@@ -339,8 +339,8 @@ router.post('/ead/api/register', regRateLimit, async (req, res) => {
 
 router.post('/ead/api/login', loginRateLimit, async (req, res) => {
   const { email, senha } = req.body;
-  if (!email || !senha) return res.status(400).json({ error: 'Email e senha sao obrigatorios' });
-  if (!sql) return res.status(500).json({ error: 'Banco de dados nao configurado' });
+  if (!email || !senha) return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+  if (!sql) return res.status(500).json({ error: 'Banco de dados não configurado' });
 
   try {
     const users = await sql`SELECT id, email, senha_hash, nome, ativo FROM ead_users WHERE email = ${email.toLowerCase().trim()}`;
@@ -393,17 +393,17 @@ router.get('/ead/api/my-courses', requireEadAuth, async (req, res) => {
 });
 
 router.get('/ead/api/player/:courseSlug', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(404).json({ error: 'Curso nao encontrado' });
+  if (!sql) return res.status(404).json({ error: 'Curso não encontrado' });
   try {
     const userId = req.session.eadUser.id;
     const slug = req.params.courseSlug;
 
     const courses = await sql`SELECT * FROM ead_courses WHERE slug = ${slug}`;
-    if (!courses.length) return res.status(404).json({ error: 'Curso nao encontrado' });
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
     const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
-    if (!enrolled.length) return res.status(403).json({ error: 'Voce nao esta matriculado neste curso' });
+    if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
 
     const modules = await sql`
       SELECT m.*,
@@ -423,7 +423,7 @@ router.get('/ead/api/player/:courseSlug', requireEadAuth, async (req, res) => {
 });
 
 router.get('/ead/api/lesson/:lessonId', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(404).json({ error: 'Aula nao encontrada' });
+  if (!sql) return res.status(404).json({ error: 'Aula não encontrada' });
   try {
     const userId = req.session.eadUser.id;
     const lessonId = parseInt(req.params.lessonId, 10);
@@ -433,11 +433,11 @@ router.get('/ead/api/lesson/:lessonId', requireEadAuth, async (req, res) => {
       FROM ead_lessons l JOIN ead_modules m ON l.module_id = m.id
       WHERE l.id = ${lessonId}
     `;
-    if (!lessons.length) return res.status(404).json({ error: 'Aula nao encontrada' });
+    if (!lessons.length) return res.status(404).json({ error: 'Aula não encontrada' });
     const lesson = lessons[0];
 
     const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${lesson.course_id}`;
-    if (!enrolled.length) return res.status(403).json({ error: 'Voce nao esta matriculado neste curso' });
+    if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
 
     const progress = await sql`SELECT completed FROM ead_progress WHERE user_id = ${userId} AND lesson_id = ${lessonId}`;
 
@@ -464,7 +464,7 @@ router.get('/ead/api/lesson/:lessonId', requireEadAuth, async (req, res) => {
 });
 
 router.post('/ead/api/lesson/:lessonId/complete', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const userId = req.session.eadUser.id;
     const lessonId = parseInt(req.params.lessonId, 10);
@@ -486,7 +486,7 @@ router.post('/ead/api/lesson/:lessonId/complete', requireEadAuth, async (req, re
 // ═══════════════════════════════════════════════════════════════════
 
 router.get('/ead/api/quiz/:courseSlug', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(404).json({ error: 'Quiz nao encontrado' });
+  if (!sql) return res.status(404).json({ error: 'Quiz não encontrado' });
   try {
     const userId = req.session.eadUser.id;
     const slug = req.params.courseSlug;
@@ -494,11 +494,11 @@ router.get('/ead/api/quiz/:courseSlug', requireEadAuth, async (req, res) => {
     const moduleId = req.query.module ? parseInt(req.query.module, 10) : null;
 
     const courses = await sql`SELECT id, titulo FROM ead_courses WHERE slug = ${slug}`;
-    if (!courses.length) return res.status(404).json({ error: 'Curso nao encontrado' });
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
     const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
-    if (!enrolled.length) return res.status(403).json({ error: 'Nao matriculado' });
+    if (!enrolled.length) return res.status(403).json({ error: 'Não matriculado' });
 
     let questions;
     if (isFinal) {
@@ -517,14 +517,14 @@ router.get('/ead/api/quiz/:courseSlug', requireEadAuth, async (req, res) => {
 });
 
 router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const userId = req.session.eadUser.id;
     const slug = req.params.courseSlug;
     const { answers, isFinal, moduleId } = req.body;
 
     const courses = await sql`SELECT id FROM ead_courses WHERE slug = ${slug}`;
-    if (!courses.length) return res.status(404).json({ error: 'Curso nao encontrado' });
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const courseId = courses[0].id;
 
     let questions;
@@ -573,7 +573,7 @@ router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res)
 // ═══════════════════════════════════════════════════════════════════
 
 router.get('/ead/api/certificate/:code', async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const code = req.params.code;
     const certs = await sql`
@@ -583,7 +583,7 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
       JOIN ead_courses c ON c.id = cert.course_id
       WHERE cert.code = ${code}
     `;
-    if (!certs.length) return res.status(404).json({ error: 'Certificado nao encontrado' });
+    if (!certs.length) return res.status(404).json({ error: 'Certificado não encontrado' });
     const cert = certs[0];
 
     if (req.query.format === 'json') {
@@ -600,10 +600,10 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
 
     doc.moveDown(2);
     doc.fontSize(14).font('Helvetica').fillColor('#0b1730').text('ANDERS TECH', { align: 'center' });
-    doc.fontSize(10).fillColor('#666').text('Gestao com Tecnologia · Qualidade & Conformidade', { align: 'center' });
+    doc.fontSize(10).fillColor('#666').text('Gestão com Tecnologia · Qualidade & Conformidade', { align: 'center' });
     doc.moveDown(2);
 
-    doc.fontSize(28).font('Helvetica-Bold').fillColor('#0b1730').text('CERTIFICADO DE CONCLUSAO', { align: 'center' });
+    doc.fontSize(28).font('Helvetica-Bold').fillColor('#0b1730').text('CERTIFICADO DE CONCLUSÃO', { align: 'center' });
     doc.moveDown(1.5);
 
     doc.fontSize(12).font('Helvetica').fillColor('#333').text('Certificamos que', { align: 'center' });
@@ -614,7 +614,7 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
     doc.moveDown(0.5);
     doc.fontSize(18).font('Helvetica-Bold').fillColor('#c5383c').text(cert.curso_titulo, { align: 'center' });
     doc.moveDown(0.5);
-    doc.fontSize(12).font('Helvetica').fillColor('#333').text(`com carga horaria de ${cert.carga_horaria}`, { align: 'center' });
+    doc.fontSize(12).font('Helvetica').fillColor('#333').text(`com carga horária de ${cert.carga_horaria}`, { align: 'center' });
     doc.moveDown(2);
 
     const dataFormatada = new Date(cert.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
@@ -627,7 +627,7 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
     doc.fontSize(9).fillColor('#666').text('Anders Tech · Consultor de Qualidade', { align: 'center' });
 
     doc.moveDown(1.5);
-    doc.fontSize(8).fillColor('#999').text(`Codigo de verificacao: ${cert.code}`, { align: 'center' });
+    doc.fontSize(8).fillColor('#999').text(`Código de verificação: ${cert.code}`, { align: 'center' });
     doc.text('Verifique em: anderstech.net/ead/certificado/' + cert.code, { align: 'center' });
 
     doc.end();
@@ -642,17 +642,17 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
 // ═══════════════════════════════════════════════════════════════════
 
 router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const userId = req.session.eadUser.id;
     const { courseSlug, metodo } = req.body;
 
     const courses = await sql`SELECT * FROM ead_courses WHERE slug = ${courseSlug} AND ativo = true`;
-    if (!courses.length) return res.status(404).json({ error: 'Curso nao encontrado' });
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
     const existing = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
-    if (existing.length) return res.status(400).json({ error: 'Voce ja esta matriculado neste curso' });
+    if (existing.length) return res.status(400).json({ error: 'Você já está matriculado neste curso' });
 
     if (promoAtiva()) {
       const order = await sql`
@@ -774,10 +774,10 @@ router.post('/ead/api/webhook/mp', async (req, res) => {
               await resend.emails.send({
                 from: 'Anders Tech Cursos <noreply@anderstech.net>',
                 to: users[0].email,
-                subject: `Matricula confirmada: ${courses[0].titulo}`,
+                subject: `Matrícula confirmada: ${courses[0].titulo}`,
                 html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
                   <h2 style="color:#0b1730">Pagamento confirmado!</h2>
-                  <p>Ola, ${users[0].nome.split(' ')[0]}! Seu pagamento foi aprovado e voce ja tem acesso ao curso <strong>${courses[0].titulo}</strong>.</p>
+                  <p>Olá, ${users[0].nome.split(' ')[0]}! Seu pagamento foi aprovado e você já tem acesso ao curso <strong>${courses[0].titulo}</strong>.</p>
                   <p><a href="https://anderstech.net/ead/meus-cursos" style="display:inline-block;padding:12px 24px;background:#c5383c;color:#fff;text-decoration:none;font-weight:bold">Acessar meus cursos</a></p>
                   <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
                   <p style="font-size:12px;color:#888">Anders Tech · anderstech.net</p>
@@ -800,12 +800,12 @@ router.post('/ead/api/webhook/mp', async (req, res) => {
 
 // Check order status (polling from frontend)
 router.get('/ead/api/order/:orderId/status', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB nao configurado' });
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const orderId = parseInt(req.params.orderId, 10);
     const userId = req.session.eadUser.id;
     const orders = await sql`SELECT status FROM ead_orders WHERE id = ${orderId} AND user_id = ${userId}`;
-    if (!orders.length) return res.status(404).json({ error: 'Pedido nao encontrado' });
+    if (!orders.length) return res.status(404).json({ error: 'Pedido não encontrado' });
     res.json({ status: orders[0].status });
   } catch (err) {
     res.status(500).json({ error: 'Erro' });
