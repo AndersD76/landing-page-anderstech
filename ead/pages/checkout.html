@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout — Anders Tech EAD</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0b1730;--red:#c5383c;--bg:#f4f5f7;--card:#fff;--text:#1a1a2e;--mute:#6b7280;--green:#16a34a;--ff-display:'Space Grotesk',sans-serif;--ff-mono:'JetBrains Mono',monospace}
+body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.ead-header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;gap:16px}
+.ead-header a{color:#fff;text-decoration:none;font-weight:600;font-size:18px;display:flex;align-items:center;gap:10px}
+.ead-header img{height:40px}
+
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.checkout-wrap{display:grid;grid-template-columns:1fr 360px;gap:32px;max-width:800px;width:100%;align-items:start}
+
+.course-summary{background:var(--card);padding:32px;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.course-summary h1{font-size:22px;margin-bottom:8px}
+.course-summary .meta{font-family:var(--ff-mono);font-size:13px;color:var(--mute);margin-bottom:16px}
+.course-summary .features{font-size:14px;line-height:1.8;color:var(--mute)}
+.course-summary .features li{margin-bottom:4px}
+
+.payment-box{background:var(--card);padding:32px;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+.payment-box h2{font-size:18px;margin-bottom:4px}
+.payment-box .price{font-size:32px;font-weight:700;color:var(--navy);margin-bottom:20px}
+.payment-box .price-old{font-size:15px;color:var(--mute);text-decoration:line-through;display:block;margin-bottom:4px}
+
+.method-tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid #ddd}
+.method-tab{flex:1;padding:12px;text-align:center;font-size:14px;font-weight:600;cursor:pointer;background:var(--bg);transition:background .2s;border-right:1px solid #ddd}
+.method-tab:last-child{border-right:none}
+.method-tab.active{background:var(--navy);color:#fff}
+
+.method-content{display:none}
+.method-content.active{display:block}
+
+.pix-info{text-align:center;padding:20px 0}
+.pix-info p{font-size:14px;color:var(--mute);margin-bottom:16px}
+.pix-qr{max-width:200px;margin:0 auto 16px}
+.pix-qr img{width:100%;height:auto}
+.pix-code{font-family:var(--ff-mono);font-size:11px;background:#f1f5f9;padding:10px;word-break:break-all;margin:12px 0;cursor:pointer}
+.pix-code:hover{background:#e2e8f0}
+
+.btn-pay{width:100%;padding:14px;background:var(--red);color:#fff;border:none;font-family:var(--ff-display);font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-pay:hover{background:#a52e32}
+.btn-pay:disabled{opacity:.6;cursor:not-allowed}
+.btn-pay.green{background:var(--green)}
+.btn-pay.green:hover{background:#15803d}
+
+.error{background:#fef2f2;color:#dc2626;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
+.security{font-size:11px;color:var(--mute);text-align:center;margin-top:16px}
+
+.status-msg{text-align:center;padding:20px;font-size:15px}
+.status-msg.success{color:var(--green);font-weight:600}
+.status-msg.pending{color:#f59e0b}
+
+.ead-footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:13px}
+.loading{text-align:center;padding:40px;color:var(--mute)}
+
+@media(max-width:700px){.checkout-wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="ead-header">
+  <a href="/ead/cursos"><img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech"> Cursos</a>
+</header>
+
+<main>
+  <div class="checkout-wrap" id="checkout">
+    <div class="loading">Carregando...</div>
+  </div>
+</main>
+
+<footer class="ead-footer">
+  <p>Pagamento seguro via Mercado Pago &middot; &copy; 2026 Anders Tech</p>
+</footer>
+
+<script>
+(function(){
+  var slug=window.location.pathname.split('/').pop();
+  function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+
+  fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
+    if(!c.id){document.getElementById('checkout').innerHTML='<div class="loading">Curso nao encontrado.</div>';return}
+    if(c.enrolled){window.location.href='/ead/player/'+slug;return}
+
+    document.title='Checkout: '+c.titulo+' — Anders Tech EAD';
+
+    document.getElementById('checkout').innerHTML=
+      '<div class="course-summary">'
+      +'<h1>'+c.titulo+'</h1>'
+      +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' modulos &middot; Certificado incluso</div>'
+      +'<ul class="features">'
+      +'<li>Acesso vitalicio ao conteudo completo</li>'
+      +'<li>Templates e ferramentas para download</li>'
+      +'<li>Quizzes por modulo + avaliacao final</li>'
+      +'<li>Certificado de conclusao</li>'
+      +'<li>Casos reais anonimizados da industria</li></ul></div>'
+      +'<div class="payment-box">'
+      +'<h2>Pagamento</h2>'
+      +(c.preco_original?'<span class="price-old">De '+fmt(c.preco_original)+'</span>':'')
+      +'<div class="price">'+fmt(c.preco)+'</div>'
+      +'<div class="error" id="payError"></div>'
+      +'<div class="method-tabs">'
+      +'<div class="method-tab active" data-method="pix">PIX</div>'
+      +'<div class="method-tab" data-method="card">Cartao</div></div>'
+      +'<div class="method-content active" id="methodPix">'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pagamento instantaneo via PIX. Acesso liberado imediatamente apos confirmacao.</p>'
+      +'<button class="btn-pay green" id="btnPix">Gerar PIX</button></div>'
+      +'<div class="method-content" id="methodCard">'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartao de credito via Mercado Pago. Parcelamento disponivel.</p>'
+      +'<button class="btn-pay" id="btnCard">Pagar com cartao</button></div>'
+      +'<div id="pixResult"></div>'
+      +'<div class="security">Pagamento processado pelo Mercado Pago. Seus dados estao protegidos.</div></div>';
+
+    // Tab switching
+    document.querySelectorAll('.method-tab').forEach(function(tab){
+      tab.addEventListener('click',function(){
+        document.querySelectorAll('.method-tab').forEach(function(t){t.classList.remove('active')});
+        document.querySelectorAll('.method-content').forEach(function(t){t.classList.remove('active')});
+        tab.classList.add('active');
+        document.getElementById('method'+tab.dataset.method.charAt(0).toUpperCase()+tab.dataset.method.slice(1)).classList.add('active');
+      });
+    });
+
+    // PIX
+    document.getElementById('btnPix').addEventListener('click',function(){
+      var btn=this;btn.disabled=true;btn.textContent='Gerando PIX...';
+      document.getElementById('payError').style.display='none';
+      fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'pix'})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+      .then(function(r){
+        if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
+        if(!r.ok){document.getElementById('payError').textContent=r.data.error;document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX';return}
+        var html='<div class="pix-info"><p>Escaneie o QR Code ou copie o codigo PIX:</p>';
+        if(r.data.qr_code_base64)html+='<div class="pix-qr"><img src="data:image/png;base64,'+r.data.qr_code_base64+'" alt="QR Code PIX"></div>';
+        if(r.data.qr_code)html+='<div class="pix-code" title="Clique para copiar" id="pixCopy">'+r.data.qr_code+'</div>';
+        html+='<div class="status-msg pending" id="pixStatus">Aguardando pagamento...</div></div>';
+        document.getElementById('pixResult').innerHTML=html;
+        btn.style.display='none';
+        if(r.data.qr_code){
+          document.getElementById('pixCopy').addEventListener('click',function(){
+            navigator.clipboard.writeText(r.data.qr_code).then(function(){document.getElementById('pixCopy').style.background='#dcfce7'});
+          });
+        }
+        // Poll status
+        var orderId=r.data.orderId;
+        var poll=setInterval(function(){
+          fetch('/ead/api/order/'+orderId+'/status').then(function(r){return r.json()}).then(function(d){
+            if(d.status==='aprovado'){clearInterval(poll);document.getElementById('pixStatus').className='status-msg success';document.getElementById('pixStatus').textContent='Pagamento confirmado! Redirecionando...';setTimeout(function(){window.location.href='/ead/player/'+slug},1500)}
+          });
+        },5000);
+      }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX'});
+    });
+
+    // Card
+    document.getElementById('btnCard').addEventListener('click',function(){
+      var btn=this;btn.disabled=true;btn.textContent='Redirecionando...';
+      document.getElementById('payError').style.display='none';
+      fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'card'})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+      .then(function(r){
+        if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
+        if(r.data.init_point){window.location.href=r.data.init_point;return}
+        document.getElementById('payError').textContent=r.data.error||'Erro no checkout';document.getElementById('payError').style.display='block';
+        btn.disabled=false;btn.textContent='Pagar com cartao';
+      }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Pagar com cartao'});
+    });
+
+  }).catch(function(){document.getElementById('checkout').innerHTML='<div class="loading">Erro ao carregar.</div>'});
+})();
+</script>
+</body>
+</html>

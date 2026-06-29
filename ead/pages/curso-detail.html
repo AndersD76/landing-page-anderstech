@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Curso — Anders Tech EAD</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0b1730;--red:#c5383c;--bg:#f4f5f7;--card:#fff;--text:#1a1a2e;--mute:#6b7280;--green:#16a34a;--ff-display:'Space Grotesk',sans-serif;--ff-mono:'JetBrains Mono',monospace}
+body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
+.ead-header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ead-header .left{display:flex;align-items:center;gap:16px}
+.ead-header a.brand{color:#fff;text-decoration:none;font-weight:600;font-size:18px;display:flex;align-items:center;gap:10px}
+.ead-header img{height:40px}
+.ead-header .tag{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+.ead-header .right a{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;padding:8px 16px}
+
+.hero-course{background:var(--navy);color:#fff;padding:60px 24px 50px}
+.hero-course .wrap{max-width:900px;margin:0 auto}
+.hero-course .breadcrumb{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px}
+.hero-course .breadcrumb a{color:rgba(255,255,255,.6);text-decoration:none}
+.hero-course h1{font-size:clamp(24px,3.5vw,36px);font-weight:700;margin-bottom:12px;line-height:1.2}
+.hero-course .sub{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:20px;line-height:1.5}
+.hero-course .meta{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--ff-mono);font-size:13px;color:rgba(255,255,255,.6);margin-bottom:24px}
+.hero-course .cta-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.hero-course .price{font-size:32px;font-weight:700}
+.hero-course .price-old{font-size:16px;color:rgba(255,255,255,.5);text-decoration:line-through;margin-right:8px}
+.btn-buy{padding:14px 32px;background:var(--red);color:#fff;text-decoration:none;font-weight:700;font-size:16px;display:inline-block;transition:background .2s}
+.btn-buy:hover{background:#a52e32}
+.btn-enrolled{padding:14px 32px;background:var(--green);color:#fff;text-decoration:none;font-weight:700;font-size:16px}
+
+.wrap{max-width:900px;margin:0 auto;padding:0 24px}
+.content-section{padding:40px 0}
+.content-section h2{font-size:22px;font-weight:700;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #eee}
+
+.module-accordion{margin-bottom:16px;background:var(--card);box-shadow:0 1px 6px rgba(0,0,0,.06)}
+.module-header{padding:18px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none}
+.module-header h3{font-size:16px;font-weight:600;margin:0}
+.module-header .count{font-family:var(--ff-mono);font-size:12px;color:var(--mute)}
+.module-header .chevron{width:20px;height:20px;transition:transform .2s;color:var(--mute)}
+.module-header.open .chevron{transform:rotate(180deg)}
+.module-lessons{display:none;border-top:1px solid #eee}
+.module-header.open+.module-lessons{display:block}
+.lesson-item{padding:12px 20px 12px 40px;font-size:14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5}
+.lesson-item:last-child{border-bottom:none}
+.lesson-item .dur{font-family:var(--ff-mono);font-size:12px;color:var(--mute);white-space:nowrap}
+.lesson-item .tpl{font-size:11px;color:var(--green);margin-left:8px}
+
+.features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.feature{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5}
+.feature svg{flex:none;color:var(--green);margin-top:2px}
+
+.ead-footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:13px;margin-top:60px}
+.ead-footer a{color:rgba(255,255,255,.7);text-decoration:none}
+.loading{text-align:center;padding:60px;color:var(--mute)}
+@media(max-width:640px){.features{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="ead-header">
+  <div class="left">
+    <a href="/" class="brand"><img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech"></a>
+    <span class="tag">Cursos EAD</span>
+  </div>
+  <div class="right">
+    <a href="/ead/cursos">Todos os cursos</a>
+    <a href="/ead/login" id="navAuth">Entrar</a>
+  </div>
+</header>
+
+<div id="courseContent">
+  <div class="loading">Carregando curso...</div>
+</div>
+
+<footer class="ead-footer">
+  <p>&copy; 2026 Anders Tech &middot; <a href="/">anderstech.net</a></p>
+</footer>
+
+<script>
+(function(){
+  var slug=window.location.pathname.split('/').pop();
+  if(!slug){window.location.href='/ead/cursos';return}
+
+  function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+
+  fetch('/ead/api/me').then(function(r){if(r.ok)return r.json();return null}).then(function(u){
+    if(u)document.getElementById('navAuth').outerHTML='<a href="/ead/meus-cursos">Meus cursos</a>';
+  }).catch(function(){});
+
+  fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
+    if(!c.id){document.getElementById('courseContent').innerHTML='<div class="loading">Curso nao encontrado.</div>';return}
+    document.title=c.titulo+' — Anders Tech EAD';
+    var totalAulas=0;
+    if(c.modules)c.modules.forEach(function(m){if(m.aulas)totalAulas+=m.aulas.length});
+
+    var ctaHtml='';
+    if(c.enrolled){
+      ctaHtml='<a href="/ead/player/'+c.slug+'" class="btn-enrolled">Acessar curso</a>';
+    }else{
+      ctaHtml=(c.preco_original?'<span class="price-old">'+fmt(c.preco_original)+'</span>':'')
+        +'<span class="price">'+fmt(c.preco)+'</span>'
+        +'<a href="/ead/checkout/'+c.slug+'" class="btn-buy">Comprar agora</a>';
+    }
+
+    var modulesHtml='';
+    if(c.modules)c.modules.forEach(function(m,i){
+      var lessons='';
+      if(m.aulas)m.aulas.forEach(function(l){
+        lessons+='<div class="lesson-item"><span>'+l.titulo+(l.entregavel_titulo?'<span class="tpl">'+l.entregavel_titulo+'</span>':'')+'</span>'
+          +'<span class="dur">'+(l.duracao||'')+'</span></div>';
+      });
+      modulesHtml+='<div class="module-accordion">'
+        +'<div class="module-header'+(i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">'
+        +'<h3>Modulo '+(i+1)+': '+m.titulo+'</h3>'
+        +'<span class="count">'+(m.aulas?m.aulas.length:0)+' aulas</span>'
+        +'<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
+        +'</div>'
+        +'<div class="module-lessons"'+(i===0?' style="display:block"':'')+'>'+lessons+'</div></div>';
+    });
+
+    document.getElementById('courseContent').innerHTML=
+      '<section class="hero-course"><div class="wrap">'
+      +'<div class="breadcrumb"><a href="/ead/cursos">Cursos</a> / '+c.titulo+'</div>'
+      +'<h1>'+c.titulo+'</h1>'
+      +'<p class="sub">'+(c.subtitulo||'')+'</p>'
+      +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+(c.modules?c.modules.length:0)+' modulos</span><span>'+totalAulas+' aulas</span><span>Certificado incluso</span></div>'
+      +'<div class="cta-row">'+ctaHtml+'</div>'
+      +'</div></section>'
+      +'<div class="wrap"><section class="content-section">'
+      +'<h2>O que voce vai aprender</h2>'
+      +'<p style="font-size:15px;line-height:1.7;color:var(--mute);margin-bottom:28px">'+(c.objetivo||c.descricao||'')+'</p>'
+      +'<div class="features">'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Templates e ferramentas baixaveis</span></div>'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Casos reais anonimizados da industria</span></div>'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Quiz por modulo + avaliacao final</span></div>'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Certificado de conclusao</span></div>'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Acesso vitalicio ao conteudo</span></div>'
+      +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Linguagem pratica, sem academicismo</span></div>'
+      +'</div></section>'
+      +'<section class="content-section"><h2>Conteudo do curso</h2>'+modulesHtml+'</section>'
+      +'<section class="content-section" style="text-align:center;padding-bottom:40px">'
+      +'<div class="cta-row" style="justify-content:center">'+ctaHtml+'</div>'
+      +'</section></div>';
+  }).catch(function(){
+    document.getElementById('courseContent').innerHTML='<div class="loading">Erro ao carregar curso.</div>';
+  });
+})();
+</script>
+</body>
+</html>

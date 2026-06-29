@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Criar conta — Cursos Anders Tech</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0b1730;--red:#c5383c;--bg:#f4f5f7;--card:#fff;--text:#1a1a2e;--mute:#6b7280;--ff-display:'Space Grotesk',sans-serif;--ff-mono:'JetBrains Mono',monospace}
+body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.ead-header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;gap:16px}
+.ead-header a{color:#fff;text-decoration:none;font-weight:600;font-size:18px;display:flex;align-items:center;gap:10px}
+.ead-header img{height:40px}
+.ead-header .tag{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.auth-card{background:var(--card);padding:40px;max-width:460px;width:100%;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.auth-card h1{font-size:24px;margin-bottom:8px}
+.auth-card p.sub{color:var(--mute);font-size:14px;margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.field input{width:100%;padding:12px 14px;border:1px solid #ddd;font-family:var(--ff-display);font-size:15px;transition:border-color .2s}
+.field input:focus{outline:none;border-color:var(--red)}
+.row{display:flex;gap:12px}
+.row .field{flex:1}
+.btn-submit{width:100%;padding:14px;background:var(--red);color:#fff;border:none;font-family:var(--ff-display);font-size:15px;font-weight:600;cursor:pointer;transition:background .2s;margin-top:8px}
+.btn-submit:hover{background:#a52e32}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+.links{text-align:center;margin-top:20px;font-size:14px;color:var(--mute)}
+.links a{color:var(--red);text-decoration:none;font-weight:500}
+.error{background:#fef2f2;color:#dc2626;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
+.hint{font-size:11px;color:var(--mute);margin-top:4px}
+@media(max-width:500px){.row{flex-direction:column;gap:0}}
+</style>
+</head>
+<body>
+<header class="ead-header">
+  <a href="/"><img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech"></a>
+  <span class="tag">Cursos EAD</span>
+</header>
+
+<main>
+  <div class="auth-card">
+    <h1>Criar conta</h1>
+    <p class="sub">Cadastre-se para acessar os cursos da Anders Tech.</p>
+    <div class="error" id="error"></div>
+    <form id="regForm">
+      <div class="field">
+        <label for="nome">Nome completo *</label>
+        <input type="text" id="nome" name="nome" required autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="empresa">Empresa</label>
+          <input type="text" id="empresa" name="empresa" autocomplete="organization">
+        </div>
+      </div>
+      <div class="field">
+        <label for="senha">Senha *</label>
+        <input type="password" id="senha" name="senha" required autocomplete="new-password" minlength="6">
+        <div class="hint">Minimo 6 caracteres</div>
+      </div>
+      <div class="field">
+        <label for="senha2">Confirmar senha *</label>
+        <input type="password" id="senha2" name="senha2" required autocomplete="new-password" minlength="6">
+      </div>
+      <button type="submit" class="btn-submit" id="submitBtn">Criar conta</button>
+    </form>
+    <div class="links">
+      Ja tem conta? <a href="/ead/login">Entrar</a>
+    </div>
+  </div>
+</main>
+
+<script>
+(function(){
+  var form=document.getElementById('regForm'),err=document.getElementById('error'),btn=document.getElementById('submitBtn');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    err.style.display='none';
+    if(form.senha.value!==form.senha2.value){err.textContent='As senhas nao coincidem.';err.style.display='block';return}
+    btn.disabled=true;btn.textContent='Criando...';
+    fetch('/ead/api/register',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({nome:form.nome.value,email:form.email.value,senha:form.senha.value,telefone:form.telefone.value,empresa:form.empresa.value})
+    }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+    .then(function(r){
+      if(r.ok){
+        var redirect=new URLSearchParams(window.location.search).get('redirect');
+        window.location.href=redirect||'/ead/cursos';
+      } else{err.textContent=r.data.error;err.style.display='block'}
+    }).catch(function(){err.textContent='Erro de conexao.';err.style.display='block'})
+    .finally(function(){btn.disabled=false;btn.textContent='Criar conta'});
+  });
+})();
+</script>
+</body>
+</html>

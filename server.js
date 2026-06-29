@@ -11,6 +11,7 @@ import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
 import { router as portalRouter, initPortalDB } from './portal/routes.js';
+import { eadRouter, initEadDB } from './ead/routes.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -36,7 +37,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'", "https://plausible.io", "https://www.google-analytics.com"],
-      frameSrc: ["'none'"],
+      frameSrc: ["'self'", "https://*.mercadopago.com", "https://*.mercadolibre.com"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
     },
@@ -86,7 +87,7 @@ const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index
   + '<a href="/" class="brand" aria-label="Anders Tech">'
   + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:80px;width:auto;object-fit:contain"></a>'
   + '<nav class="nav-links" aria-label="Principal">'
-  + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/#contato">Contato</a></nav>'
+  + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/ead/cursos">Cursos</a><a href="/#contato">Contato</a></nav>'
   + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a>'
   + '<button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">'
   + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>'
@@ -96,7 +97,8 @@ const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index
   + '<a href="/#diferencial"><i>02</i> Diferencial</a>'
   + '<a href="/#sobre"><i>03</i> Sobre</a>'
   + '<a href="/blog"><i>04</i> Conteúdo</a>'
-  + '<a href="/#contato"><i>05</i> Contato</a>'
+  + '<a href="/ead/cursos"><i>05</i> Cursos EAD</a>'
+  + '<a href="/#contato"><i>06</i> Contato</a>'
   + '<a href="/#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a></nav>'
   + '<script>!function(){var t=document.getElementById("navToggle"),m=document.getElementById("mobileMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",String(o));document.body.style.overflow=o?"hidden":""});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow=""})})}}()</script>';
 const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
@@ -108,7 +110,7 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<div class="footer-col"><h4>Navegação</h4><ul>'
   + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
   + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
-  + '<li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li></ul></div>'
+  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li></ul></div>'
   + '<div class="footer-col"><h4>Regiões</h4><ul>'
   + '<li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>'
   + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
@@ -156,6 +158,7 @@ const BREADCRUMB_LABELS = {
   'como-conseguir-certificacao-iso-9001': 'Como conseguir a certificação ISO 9001',
   'iso-9001-para-industrias': 'ISO 9001 para indústrias',
   'erros-certificacao-iso-9001': '5 erros na certificação ISO 9001',
+  'ead': 'Cursos EAD',
 };
 
 function buildBreadcrumbSchema(urlPath) {
@@ -235,6 +238,7 @@ async function initDB() {
 
 initDB().catch(console.error);
 initPortalDB().catch(console.error);
+initEadDB().catch(console.error);
 
 const rateLimit = new Map();
 function checkRate(ip) {
@@ -428,6 +432,7 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
 });
 
 app.use(portalRouter);
+app.use(eadRouter);
 
 function safePath(base, userInput) {
   const resolved = join(base, userInput);

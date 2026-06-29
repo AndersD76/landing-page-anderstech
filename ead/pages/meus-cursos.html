@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meus Cursos — Anders Tech EAD</title>
+<link rel="icon" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0b1730;--red:#c5383c;--bg:#f4f5f7;--card:#fff;--text:#1a1a2e;--mute:#6b7280;--green:#16a34a;--ff-display:'Space Grotesk',sans-serif;--ff-mono:'JetBrains Mono',monospace}
+body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+.ead-header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ead-header .left{display:flex;align-items:center;gap:16px}
+.ead-header a.brand{color:#fff;text-decoration:none;font-weight:600;font-size:18px;display:flex;align-items:center;gap:10px}
+.ead-header img{height:40px}
+.ead-header .tag{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
+.ead-header .right{display:flex;align-items:center;gap:12px}
+.ead-header .right a{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;padding:8px 16px}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.page-header{padding:40px 0 32px}
+.page-header h1{font-size:28px;font-weight:700;margin-bottom:4px}
+.page-header p{color:var(--mute);font-size:15px}
+
+.courses-list{display:grid;gap:20px;padding-bottom:60px}
+.course-item{background:var(--card);padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.course-item h2{font-size:18px;font-weight:700;margin-bottom:4px}
+.course-item .meta{font-family:var(--ff-mono);font-size:12px;color:var(--mute);margin-bottom:12px}
+.progress-track{background:#e5e7eb;height:8px;width:100%;max-width:400px}
+.progress-track .fill{background:var(--green);height:100%;transition:width .3s}
+.progress-label{font-size:13px;color:var(--mute);margin-top:6px}
+.btn-continue{padding:12px 24px;background:var(--red);color:#fff;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap;transition:background .2s}
+.btn-continue:hover{background:#a52e32}
+.btn-certificate{padding:12px 24px;background:var(--green);color:#fff;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+
+.empty{text-align:center;padding:60px 24px;color:var(--mute)}
+.empty h2{font-size:22px;color:var(--text);margin-bottom:12px}
+.empty a{color:var(--red);text-decoration:none;font-weight:600}
+.loading{text-align:center;padding:60px;color:var(--mute)}
+
+.ead-footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:13px;margin-top:auto}
+.ead-footer a{color:rgba(255,255,255,.7);text-decoration:none}
+
+@media(max-width:640px){.course-item{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="ead-header">
+  <div class="left">
+    <a href="/" class="brand"><img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech"></a>
+    <span class="tag">Cursos EAD</span>
+  </div>
+  <div class="right">
+    <a href="/ead/cursos">Todos os cursos</a>
+    <a href="#" id="logoutBtn">Sair</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="page-header">
+    <h1 id="greeting">Meus cursos</h1>
+    <p>Continue de onde parou ou explore novos cursos.</p>
+  </div>
+  <div class="courses-list" id="coursesList">
+    <div class="loading">Carregando...</div>
+  </div>
+</div>
+
+<footer class="ead-footer">
+  <p>&copy; 2026 Anders Tech &middot; <a href="/">anderstech.net</a></p>
+</footer>
+
+<script>
+(function(){
+  document.getElementById('logoutBtn').addEventListener('click',function(e){
+    e.preventDefault();
+    fetch('/ead/api/logout',{method:'POST'}).then(function(){window.location.href='/ead/login'});
+  });
+
+  fetch('/ead/api/me').then(function(r){return r.json()}).then(function(u){
+    document.getElementById('greeting').textContent='Ola, '+u.nome.split(' ')[0];
+  }).catch(function(){});
+
+  fetch('/ead/api/my-courses').then(function(r){return r.json()}).then(function(courses){
+    var list=document.getElementById('coursesList');
+    if(!courses.length){
+      list.innerHTML='<div class="empty"><h2>Nenhum curso ainda</h2><p>Explore nossos cursos e comece a aprender.</p><br><a href="/ead/cursos">Ver cursos disponiveis &rarr;</a></div>';
+      return;
+    }
+    list.innerHTML=courses.map(function(c){
+      var pct=c.total_aulas>0?Math.round(c.aulas_completas/c.total_aulas*100):0;
+      var completed=pct===100;
+      var actions='';
+      if(completed&&c.certificate_code){
+        actions='<div><a href="/ead/api/certificate/'+c.certificate_code+'" target="_blank" class="btn-certificate">Certificado</a>'
+          +'<a href="/ead/player/'+c.slug+'" class="btn-continue" style="margin-left:8px;background:var(--navy)">Revisar</a></div>';
+      }else{
+        actions='<a href="/ead/player/'+c.slug+'" class="btn-continue">'+(c.aulas_completas>0?'Continuar':'Comecar')+'</a>';
+      }
+      return '<div class="course-item"><div>'
+        +'<h2>'+c.titulo+'</h2>'
+        +'<div class="meta">'+c.carga_horaria+' &middot; '+c.aulas_completas+'/'+c.total_aulas+' aulas</div>'
+        +'<div class="progress-track"><div class="fill" style="width:'+pct+'%"></div></div>'
+        +'<div class="progress-label">'+pct+'% concluido</div></div>'
+        +actions+'</div>';
+    }).join('');
+  }).catch(function(){document.getElementById('coursesList').innerHTML='<div class="loading">Erro ao carregar.</div>'});
+})();
+</script>
+</body>
+</html>
