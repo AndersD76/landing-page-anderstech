@@ -31,7 +31,9 @@
   /* ---- WhatsApp ---- */
   function waUrl(msg) { return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(msg || CONFIG.waGreeting); }
   $$("[data-wa]").forEach(function (el) {
-    el.addEventListener("click", function (e) { e.preventDefault(); window.open(waUrl(), "_blank", "noopener"); });
+    el.href = waUrl();
+    el.target = "_blank";
+    el.rel = "noopener";
   });
 
   /* ---- build the data-as-art bits ---- */
