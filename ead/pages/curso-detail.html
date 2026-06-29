@@ -37,16 +37,16 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
 .content-section h2{font-size:22px;font-weight:700;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid #eee}
 
 .module-accordion{margin-bottom:16px;background:var(--card);box-shadow:0 1px 6px rgba(0,0,0,.06)}
-.module-header{padding:18px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;user-select:none}
+.module-header{padding:18px 20px;cursor:pointer;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;user-select:none}
 .module-header h3{font-size:16px;font-weight:600;margin:0}
-.module-header .count{font-family:var(--ff-mono);font-size:12px;color:var(--mute)}
-.module-header .chevron{width:20px;height:20px;transition:transform .2s;color:var(--mute)}
+.module-header .count{font-family:var(--ff-mono);font-size:12px;color:var(--mute);text-align:right}
+.module-header .chevron{width:20px;height:20px;transition:transform .3s;color:var(--mute)}
 .module-header.open .chevron{transform:rotate(180deg)}
 .module-lessons{display:none;border-top:1px solid #eee}
-.module-header.open+.module-lessons{display:block}
-.lesson-item{padding:12px 20px 12px 40px;font-size:14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5}
+.module-lessons.show{display:block}
+.lesson-item{padding:12px 20px 12px 40px;font-size:14px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;border-bottom:1px solid #f5f5f5}
 .lesson-item:last-child{border-bottom:none}
-.lesson-item .dur{font-family:var(--ff-mono);font-size:12px;color:var(--mute);white-space:nowrap}
+.lesson-item .dur{font-family:var(--ff-mono);font-size:12px;color:var(--mute);white-space:nowrap;text-align:right}
 .lesson-item .tpl{font-size:11px;color:var(--green);margin-left:8px}
 
 .features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
@@ -128,12 +128,12 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
           +'<span class="dur">'+(l.duracao||'')+'</span></div>';
       });
       modulesHtml+='<div class="module-accordion">'
-        +'<div class="module-header'+(i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">'
+        +'<div class="module-header'+(i===0?' open':'')+'" data-accordion>'
         +'<h3>Modulo '+(i+1)+': '+m.titulo+'</h3>'
         +'<span class="count">'+(m.aulas?m.aulas.length:0)+' aulas</span>'
         +'<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>'
         +'</div>'
-        +'<div class="module-lessons"'+(i===0?' style="display:block"':'')+'>'+lessons+'</div></div>';
+        +'<div class="module-lessons'+(i===0?' show':'')+'">'+lessons+'</div></div>';
     });
 
     document.getElementById('courseContent').innerHTML=
@@ -159,6 +159,14 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
       +'<section class="content-section" style="text-align:center;padding-bottom:40px">'
       +'<div class="cta-row" style="justify-content:center">'+ctaHtml+'</div>'
       +'</section></div>';
+
+    document.querySelectorAll('[data-accordion]').forEach(function(header){
+      header.addEventListener('click',function(){
+        header.classList.toggle('open');
+        var lessons=header.nextElementSibling;
+        if(lessons)lessons.classList.toggle('show');
+      });
+    });
   }).catch(function(){
     document.getElementById('courseContent').innerHTML='<div class="loading">Erro ao carregar curso.</div>';
   });
