@@ -58,6 +58,11 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 .ead-footer a{color:rgba(255,255,255,.7);text-decoration:none}
 
 .loading{text-align:center;padding:60px;color:var(--mute);font-size:16px}
+.promo-tag{display:inline-block;background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;margin-bottom:6px}
+.price-free{font-size:24px;font-weight:700;color:#16a34a}
+.price-was{font-size:14px;color:var(--mute);text-decoration:line-through;margin-right:8px}
+.promo-banner{background:linear-gradient(135deg,#16a34a 0%,#15803d 100%);color:#fff;padding:16px 24px;text-align:center;font-size:15px;font-weight:600}
+.promo-banner span{font-family:var(--ff-mono);font-size:13px;opacity:.85;margin-left:8px}
 </style>
 </head>
 <body>
@@ -73,6 +78,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 </header>
 
 <section class="hero-ead">
+  <div id="promoBanner" style="display:none;margin-bottom:24px">
+    <div style="display:inline-block;background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;margin-bottom:12px">LANCAMENTO</div>
+  </div>
   <h1>Cursos de Qualidade e Gestao Industrial</h1>
   <p>Aprenda ISO 9001, auditoria, processos e 5S com quem implanta na pratica. Conteudo direto, templates prontos, certificado incluso.</p>
 </section>
@@ -112,20 +120,34 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
     }
   }).catch(function(){});
 
+  fetch('/ead/api/promo').then(function(r){return r.json()}).then(function(promo){
+    if(promo.ativa){
+      var b=document.getElementById('promoBanner');
+      b.style.display='block';
+      b.innerHTML='<div class="promo-tag">LANCAMENTO</div><h2 style="font-size:clamp(20px,3vw,28px);margin:8px 0 4px">Todos os cursos gratuitos por tempo limitado</h2><p style="color:rgba(255,255,255,.7);font-size:15px">Matricule-se agora e mantenha o acesso permanente. Oferta valida ate '+new Date(promo.fim).toLocaleDateString('pt-BR')+'.</p>';
+    }
+  }).catch(function(){});
+
   fetch('/ead/api/courses').then(function(r){return r.json()}).then(function(courses){
     var grid=document.getElementById('coursesGrid');
     if(!courses.length){grid.innerHTML='<p class="loading">Cursos em breve!</p>';return}
     var icons=['9001','AUD','P+I','5S'];
     grid.innerHTML=courses.map(function(c,i){
+      var priceHtml;
+      if(c.promo_gratuito){
+        priceHtml='<div><span class="price-was">'+fmt(c.preco)+'</span><span class="price-free">Gratis</span></div>';
+      } else {
+        priceHtml='<div>'+(c.preco_original?'<span class="price-original">'+fmt(c.preco_original)+'</span>':'')+'<span class="price">'+fmt(c.preco)+'</span></div>';
+      }
       return '<div class="course-card">'
-        +'<div class="thumb">'+(icons[i]||'')+'</div>'
+        +'<div class="thumb">'+(c.promo_gratuito?'<span class="promo-tag">Gratis</span>':'')+(icons[i]||'')+'</div>'
         +'<div class="body">'
         +'<h2>'+c.titulo+'</h2>'
         +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+c.total_modulos+' modulos</span><span>'+c.total_aulas+' aulas</span></div>'
         +'<p class="desc">'+(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
         +'<div class="bottom">'
-        +'<div>'+(c.preco_original?'<span class="price-original">'+fmt(c.preco_original)+'</span>':'')+'<span class="price">'+fmt(c.preco)+'</span></div>'
-        +'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Ver curso</a>'
+        +priceHtml
+        +'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar gratis</a>'
         +'</div></div></div>';
     }).join('');
   }).catch(function(){

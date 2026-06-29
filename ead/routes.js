@@ -17,6 +17,17 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const router = Router();
 
 // ═══════════════════════════════════════════════════════════════════
+// Launch promotion — free access for 30 days
+// ═══════════════════════════════════════════════════════════════════
+const PROMO = {
+  ativa: true,
+  fim: new Date('2026-07-29T23:59:59-03:00'),
+  label: 'Lancamento — acesso gratuito',
+  desc: 'Todos os cursos liberados gratuitamente ate 29/07/2026. Matricule-se agora e mantenha o acesso permanente.',
+};
+function promoAtiva() { return PROMO.ativa && new Date() < PROMO.fim; }
+
+// ═══════════════════════════════════════════════════════════════════
 // Database initialization
 // ═══════════════════════════════════════════════════════════════════
 
@@ -223,6 +234,13 @@ function loginRateLimit(req, res, next) {
 // Public: Course listing & detail
 // ═══════════════════════════════════════════════════════════════════
 
+router.get('/ead/api/promo', (req, res) => {
+  if (promoAtiva()) {
+    return res.json({ ativa: true, fim: PROMO.fim.toISOString(), label: PROMO.label, desc: PROMO.desc });
+  }
+  res.json({ ativa: false });
+});
+
 router.get('/ead/api/courses', async (req, res) => {
   if (!sql) return res.json([]);
   try {
@@ -232,7 +250,9 @@ router.get('/ead/api/courses', async (req, res) => {
         (SELECT COUNT(*)::int FROM ead_lessons l JOIN ead_modules m ON l.module_id = m.id WHERE m.course_id = c.id) AS total_aulas
       FROM ead_courses c WHERE c.ativo = true ORDER BY c.ordem
     `;
-    res.json(courses);
+    const promo = promoAtiva();
+    const result = courses.map(c => ({ ...c, promo_gratuito: promo }));
+    res.json(result);
   } catch (err) {
     console.error('EAD courses error:', err);
     res.status(500).json({ error: 'Erro ao buscar cursos' });
@@ -262,7 +282,7 @@ router.get('/ead/api/courses/:slug', async (req, res) => {
       enrolled = enr.length > 0;
     }
 
-    res.json({ ...course, modules, enrolled });
+    res.json({ ...course, modules, enrolled, promo_gratuito: promoAtiva() });
   } catch (err) {
     console.error('EAD course detail error:', err);
     res.status(500).json({ error: 'Erro ao buscar curso' });
@@ -634,9 +654,17 @@ router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
     const existing = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
     if (existing.length) return res.status(400).json({ error: 'Voce ja esta matriculado neste curso' });
 
+    if (promoAtiva()) {
+      const order = await sql`
+        INSERT INTO ead_orders (user_id, course_id, valor, metodo, status, paid_at)
+        VALUES (${userId}, ${course.id}, 0, 'promo_lancamento', 'aprovado', NOW()) RETURNING id
+      `;
+      await sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${userId}, ${course.id}, ${order[0].id})`;
+      return res.json({ ok: true, status: 'aprovado', redirect: '/ead/meus-cursos' });
+    }
+
     const MP_TOKEN = process.env.MP_ACCESS_TOKEN;
     if (!MP_TOKEN) {
-      // Dev mode: free enrollment
       const order = await sql`
         INSERT INTO ead_orders (user_id, course_id, valor, metodo, status, paid_at)
         VALUES (${userId}, ${course.id}, ${course.preco}, 'dev_free', 'aprovado', NOW()) RETURNING id

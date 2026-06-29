@@ -89,6 +89,40 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 
     document.title='Checkout: '+c.titulo+' — Anders Tech EAD';
 
+    if(c.promo_gratuito){
+      document.getElementById('checkout').innerHTML=
+        '<div class="course-summary">'
+        +'<h1>'+c.titulo+'</h1>'
+        +'<div class="meta">'+c.carga_horaria+' &middot; '+(c.modules?c.modules.length:0)+' modulos &middot; Certificado incluso</div>'
+        +'<ul class="features">'
+        +'<li>Acesso vitalicio ao conteudo completo</li>'
+        +'<li>Templates e ferramentas para download</li>'
+        +'<li>Quizzes por modulo + avaliacao final</li>'
+        +'<li>Certificado de conclusao</li>'
+        +'<li>Casos reais anonimizados da industria</li></ul></div>'
+        +'<div class="payment-box" style="text-align:center">'
+        +'<div style="background:#16a34a;color:#fff;font-family:var(--ff-mono);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;display:inline-block;margin-bottom:16px">LANCAMENTO — GRATIS</div>'
+        +'<h2 style="margin-bottom:4px">Matricula gratuita</h2>'
+        +'<p style="font-size:14px;color:var(--mute);margin-bottom:20px">Oferta de lancamento. Matricule-se agora e mantenha o acesso permanente.</p>'
+        +'<div style="margin-bottom:16px"><span style="font-size:15px;color:var(--mute);text-decoration:line-through">'+fmt(c.preco)+'</span> <span style="font-size:28px;font-weight:700;color:#16a34a">Gratis</span></div>'
+        +'<div class="error" id="payError"></div>'
+        +'<button class="btn-pay green" id="btnFree" style="font-size:18px;padding:16px">Matricular gratis agora</button>'
+        +'<p style="font-size:12px;color:var(--mute);margin-top:12px">Sem cartao. Sem compromisso. Acesso imediato.</p></div>';
+
+      document.getElementById('btnFree').addEventListener('click',function(){
+        var btn=this;btn.disabled=true;btn.textContent='Matriculando...';
+        document.getElementById('payError').style.display='none';
+        fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'promo'})})
+        .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+        .then(function(r){
+          if(r.data.status==='aprovado'){window.location.href='/ead/meus-cursos';return}
+          document.getElementById('payError').textContent=r.data.error||'Erro na matricula';document.getElementById('payError').style.display='block';
+          btn.disabled=false;btn.textContent='Matricular gratis agora';
+        }).catch(function(){document.getElementById('payError').textContent='Erro de conexao.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Matricular gratis agora'});
+      });
+      return;
+    }
+
     document.getElementById('checkout').innerHTML=
       '<div class="course-summary">'
       +'<h1>'+c.titulo+'</h1>'

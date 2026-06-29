@@ -56,6 +56,12 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
 .ead-footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:24px;font-size:13px;margin-top:60px}
 .ead-footer a{color:rgba(255,255,255,.7);text-decoration:none}
 .loading{text-align:center;padding:60px;color:var(--mute)}
+.promo-banner{background:linear-gradient(135deg,#16a34a 0%,#15803d 100%);color:#fff;padding:14px 24px;text-align:center;font-size:14px;font-weight:600}
+.promo-banner b{font-family:var(--ff-mono);letter-spacing:.05em}
+.price-free{font-size:32px;font-weight:700;color:#16a34a}
+.price-was{font-size:16px;color:rgba(255,255,255,.5);text-decoration:line-through;margin-right:8px}
+.btn-free{padding:14px 32px;background:#16a34a;color:#fff;text-decoration:none;font-weight:700;font-size:16px;display:inline-block;transition:background .2s}
+.btn-free:hover{background:#15803d}
 @media(max-width:640px){.features{grid-template-columns:1fr}}
 </style>
 </head>
@@ -71,6 +77,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
   </div>
 </header>
 
+<div id="promoBanner"></div>
 <div id="courseContent">
   <div class="loading">Carregando curso...</div>
 </div>
@@ -90,6 +97,10 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
     if(u)document.getElementById('navAuth').outerHTML='<a href="/ead/meus-cursos">Meus cursos</a>';
   }).catch(function(){});
 
+  fetch('/ead/api/promo').then(function(r){return r.json()}).then(function(p){
+    if(p.ativa){document.getElementById('promoBanner').innerHTML='<div class="promo-banner"><b>LANCAMENTO:</b> Acesso gratuito a todos os cursos ate '+new Date(p.fim).toLocaleDateString('pt-BR')+'. Matricule-se agora!</div>'}
+  }).catch(function(){});
+
   fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
     if(!c.id){document.getElementById('courseContent').innerHTML='<div class="loading">Curso nao encontrado.</div>';return}
     document.title=c.titulo+' — Anders Tech EAD';
@@ -99,6 +110,10 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
     var ctaHtml='';
     if(c.enrolled){
       ctaHtml='<a href="/ead/player/'+c.slug+'" class="btn-enrolled">Acessar curso</a>';
+    }else if(c.promo_gratuito){
+      ctaHtml='<span class="price-was">'+fmt(c.preco)+'</span>'
+        +'<span class="price-free">Gratis</span>'
+        +'<a href="/ead/checkout/'+c.slug+'" class="btn-free">Matricular gratis</a>';
     }else{
       ctaHtml=(c.preco_original?'<span class="price-old">'+fmt(c.preco_original)+'</span>':'')
         +'<span class="price">'+fmt(c.preco)+'</span>'
