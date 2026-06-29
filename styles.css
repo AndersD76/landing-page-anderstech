@@ -484,6 +484,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
    TREINAMENTOS
    ============================================================ */
 .treinamentos { background: var(--navy-950); color: #fff; position: relative; overflow: hidden; }
+.treinamentos > .wrap { position: relative; z-index: 3; }
 
 .treinamentos-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
