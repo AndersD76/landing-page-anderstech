@@ -182,7 +182,7 @@ function requireEadAuth(req, res, next) {
     if (req.path.startsWith('/ead/api/')) {
       return res.status(401).json({ error: 'Não autenticado' });
     }
-    return res.redirect('/ead/login');
+    return res.redirect('/ead/login?redirect=' + encodeURIComponent(req.originalUrl));
   }
   next();
 }

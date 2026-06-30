@@ -70,6 +70,8 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 
 <script>
 (function(){
+  var qs=window.location.search;
+  if(qs){document.querySelectorAll('a[href="/ead/registro"]').forEach(function(a){a.href+=qs})}
   var form=document.getElementById('loginForm'),err=document.getElementById('error'),btn=document.getElementById('submitBtn');
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -80,7 +82,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       body:JSON.stringify({email:form.email.value,senha:form.senha.value})
     }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
     .then(function(r){
-      if(r.ok){window.location.href='/ead/meus-cursos'}
+      if(r.ok){var rd=new URLSearchParams(window.location.search).get('redirect');window.location.href=rd||'/ead/meus-cursos'}
       else{err.textContent=r.data.error;err.style.display='block'}
     }).catch(function(){err.textContent='Erro de conexão.';err.style.display='block'})
     .finally(function(){btn.disabled=false;btn.textContent='Entrar'});

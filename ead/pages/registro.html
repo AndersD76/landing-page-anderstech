@@ -84,6 +84,8 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 
 <script>
 (function(){
+  var qs=window.location.search;
+  if(qs){document.querySelectorAll('a[href="/ead/login"]').forEach(function(a){a.href+=qs})}
   var form=document.getElementById('regForm'),err=document.getElementById('error'),btn=document.getElementById('submitBtn');
   form.addEventListener('submit',function(e){
     e.preventDefault();
