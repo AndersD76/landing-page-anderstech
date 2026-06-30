@@ -30,7 +30,7 @@ async function main() {
     console.log('Dados anteriores removidos.\n');
   }
 
-  console.log('[1/4] ISO 9001:2015 — Interpretacao dos Requisitos');
+  console.log('[1/4] ISO 9001:2015 — Interpretação dos Requisitos');
   await seedCourse1(sql);
   console.log('  OK\n');
 

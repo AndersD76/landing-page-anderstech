@@ -19,7 +19,7 @@
   // ── Module 1: Fundamentos de Gestão por Processos ──
   const [m1] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Fundamentos de Gestão por Processos', 'O que é um processo, abordagem ISO 9001, SIPOC e fluxogramas', 1) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m1.id}, '1-1-o-que-e-processo', 'O que é um processo e por que gerênciar', '15 min', 1, ${`
 <h2>O que é um processo?</h2>
 <p>Um processo é um <strong>conjunto de atividades inter-relacionadas que transforma entradas em saídas</strong>, gerando valor para um cliente interno ou externo. Essa definição, que parece simples, é a base de toda a gestão por processos — e ignorar ela é a raiz de grande parte da ineficiência nas empresas brasileiras.</p>
@@ -231,7 +231,7 @@
   // ── Module 2: Indicadores de Desempenho (KPIs) ──
   const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Indicadores de Desempenho (KPIs)', 'Definição, medição, dashboards e desdobramento de indicadores', 2) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-1-o-que-medir', 'O que medir e por que — eficácia, eficiência, efetividade', '15 min', 1, ${`
 <h2>O que medir e por que</h2>
 <p>"O que não se mede, não se gerência." A frase, atribuída a Peter Drucker e a Edwards Deming, resume o princípio: <strong>indicadores são o instrumento que transforma gestão de achismo em gestão baseada em evidência</strong>. A ISO 9001:2015 (cláusula 9.1) exige que a organização monitore, meça, análise e avalie o desempenho dos seus processos.</p>
@@ -460,7 +460,7 @@ Cada indicador tem meta, responsável e plano de ação. O operador no torno sab
   // ── Module 3: Ferramentas de Análise ──
   const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Ferramentas de Análise', 'Ishikawa, Pareto, 5 Porquês, Matriz GUT e FMEA para diagnóstico de problemas', 3) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m3.id}, '3-1-diagrama-ishikawa', 'Diagrama de Ishikawa (causa e efeito)', '15 min', 1, ${`
 <h2>Diagrama de Ishikawa (causa e efeito)</h2>
 <p>O Diagrama de Ishikawa — também chamado de <strong>espinha de peixe</strong> ou <strong>diagrama de causa e efeito</strong> — foi criado por Kaoru Ishikawa em 1943 e contínua sendo uma das ferramentas mais usadas para <strong>identificar causas potenciais de um problema</strong>.</p>
@@ -715,7 +715,7 @@ A cooperativa levantou 5 problemas no processo de recebimento de grãos:
   // ── Module 4: Ferramentas de Melhoria ──
   const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Ferramentas de Melhoria', 'PDCA, A3, 5W2H e Kaizen aplicados a processos indústriais', 4) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m4.id}, '4-1-ciclo-pdca', 'Ciclo PDCA na prática', '15 min', 1, ${`
 <h2>Ciclo PDCA na prática</h2>
 <p>O ciclo PDCA (Plan-Do-Check-Act) é o <strong>motor da melhoria contínua</strong>. Criado por Walter Shewhart e popularizado por Edwards Deming, é a base da ISO 9001, do Lean Manufacturing e de práticamente toda métodologia séria de gestão.</p>
@@ -973,7 +973,7 @@ Causa raiz (5 Porquês): Projeto hidraulico não conferido com o eletrico antes 
   // ── Module 5: Integracao e Sustentabilidade ──
   const [m5] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Integração e Sustentabilidade', 'Procedimentos, controle de documentos, cultura de melhoria e plano de ação final', 5) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m5.id}, '5-1-procedimentos-instruções', 'Procedimentos e instruções de trabalho', '15 min', 1, ${`
 <h2>Procedimentos e instruções de trabalho</h2>
 <p>Todo o trabalho de mapeamento, indicadores e melhoria só se sustenta se for <strong>documentado em procedimentos e instruções de trabalho</strong>. Sem padronização escrita, o conhecimento fica na cabeça das pessoas — e sai pela porta quando elas saem.</p>

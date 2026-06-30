@@ -8,7 +8,7 @@
 export async function seedCourse1(sql) {
 
   // ─── Limpar dados anteriores deste curso (idempotente) ──────────────
-  const existing = await sql`SELECT id FROM ead_courses WHERE slug = 'iso-9001-2015-interpretação'`;
+  const existing = await sql`SELECT id FROM ead_courses WHERE slug = 'iso-9001-2015-interpretacao'`;
   if (existing.length) {
     const cid = existing[0].id;
     await sql`DELETE FROM ead_quiz_questions WHERE course_id = ${cid}`;
@@ -21,7 +21,7 @@ export async function seedCourse1(sql) {
   const courseRows = await sql`
     INSERT INTO ead_courses (slug, titulo, subtitulo, descricao, carga_horaria, preco, preco_original, publico, prerequisito, objetivo, ativo, ordem)
     VALUES (
-      'iso-9001-2015-interpretação',
+      'iso-9001-2015-interpretacao',
       'ISO 9001:2015 — Interpretação dos Requisitos',
       'Domine cada cláusula da norma e saiba aplicar na prática da sua empresa',
       'Curso completo de 12 horas cobrindo todos os requisitos da ISO 9001:2015 com exemplos reais da indústria metalúrgica, alimentícia, construção civil e agronegócio. Aprenda a interpretar, implementar e manter um Sistema de Gestão da Qualidade robusto e pronto para certificação.',
@@ -43,14 +43,14 @@ export async function seedCourse1(sql) {
   // ═══════════════════════════════════════════════════════════════════
   const mod1Rows = await sql`
     INSERT INTO ead_modules (course_id, titulo, descricao, ordem)
-    VALUES (${courseId}, 'Fundamentos da ISO 9001', 'O que e a ISO 9001, os 7 princípios, estrutura de 10 cláusulas e diferenças entre as versoes 2008 e 2015.', 1)
+    VALUES (${courseId}, 'Fundamentos da ISO 9001', 'O que é a ISO 9001, os 7 princípios, estrutura de 10 cláusulas e diferenças entre as versões 2008 e 2015.', 1)
     RETURNING id
   `;
   const mod1 = mod1Rows[0].id;
 
   // --- Aula 1.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod1}, 'o-que-e-iso-9001', 'O que e a ISO 9001 e por que ela importa', '30 min', 1, ${`
-<h2>O que e a ISO 9001 e por que ela importa</h2>
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod1}, 'o-que-e-iso-9001', 'O que é a ISO 9001 e por que ela importa', '30 min', 1, ${`
+<h2>O que é a ISO 9001 e por que ela importa</h2>
 
 <p>A ISO 9001 e a norma internacional mais útilizada no mundo para Sistemas de Gestão da Qualidade (SGQ). Publicada pela International Organization for Standardization (ISO), ela define requisitos que qualquer organização — independente do porte, setor ou localização — pode adotar para garantir que seus produtos e serviços atendam consistentemente aos requisitos dos clientes e requisitos regulamentares aplicáveis.</p>
 
@@ -109,7 +109,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 1.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod1}, 'sete-princípios-qualidade', 'Os 7 Princípios de Gestão da Qualidade', '30 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod1}, 'sete-principios-qualidade', 'Os 7 Princípios de Gestão da Qualidade', '30 min', 2, ${`
 <h2>Os 7 Princípios de Gestão da Qualidade</h2>
 
 <p>A ISO 9001:2015 e construida sobre sete princípios de gestão da qualidade. Eles não são requisitos auditaveis diretamente, mas formam a base filosofica de toda a norma. Entender esses princípios e fundamental para interpretar os requisitos de forma inteligente — e não apenas "cumprir tabela".</p>
@@ -181,7 +181,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 1.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod1}, 'estrutura-10-cláusulas', 'Estrutura de 10 Cláusulas (Anexo SL)', '30 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod1}, 'estrutura-10-clausulas', 'Estrutura de 10 Cláusulas (Anexo SL)', '30 min', 3, ${`
 <h2>Estrutura de 10 Cláusulas e o Anexo SL</h2>
 
 <p>A partir da versão 2015, a ISO 9001 adotou a chamada <strong>Estrutura de Alto Nível</strong> (High Level Structure — HLS), definida pelo Anexo SL da ISO. Essa estrutura padroniza todas as normas de sistemas de gestão (ISO 9001, ISO 14001, ISO 45001, etc.) em 10 cláusulas, fácilitando a integração entre elas.</p>
@@ -251,7 +251,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 1.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod1}, 'diferenças-2008-2015', 'Diferenças entre ISO 9001:2008 e 2015', '30 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod1}, 'diferencas-2008-2015', 'Diferenças entre ISO 9001:2008 e 2015', '30 min', 4, ${`
 <h2>Diferenças entre ISO 9001:2008 e ISO 9001:2015</h2>
 
 <p>Se você trabalhou com a versão 2008, precisa entender o que mudou — e por que. Se você e novo na norma, esse comparativo ajuda a entender a evolução do pensamento de gestão da qualidade. A revisão de 2015 foi a mais significativa desde a de 2000.</p>
@@ -333,7 +333,7 @@ export async function seedCourse1(sql) {
   const mod2 = mod2Rows[0].id;
 
   // --- Aula 2.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod2}, 'contexto-organização', 'Cláusula 4.1 — Entendendo a Organização e seu Contexto', '30 min', 1, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod2}, 'contexto-organizacao', 'Cláusula 4.1 — Entendendo a Organização e seu Contexto', '30 min', 1, ${`
 <h2>Cláusula 4.1 — Entendendo a Organização e seu Contexto</h2>
 
 <p>A cláusula 4.1 e o ponto de partida de toda a norma ISO 9001:2015. Antes de definir políticas, objetivos ou processos, a organização precisa entender <strong>onde esta inserida</strong>. Isso envolve mapear fatores internos e externos que podem afetar a capacidade de entregar produtos e serviços conformes.</p>
@@ -396,7 +396,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 2.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod2}, 'partes-interessadas', 'Cláusula 4.2 — Partes Interessadas e seus Requisitos', '30 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod2}, 'partes-interessadas', 'Cláusula 4.2 — Partes Interessadas e seus Requisitos', '30 min', 2, ${`
 <h2>Cláusula 4.2 — Partes Interessadas e seus Requisitos</h2>
 
 <p>A cláusula 4.2 complementa a 4.1. Após entender o contexto, a organização precisa identificar quem são as <strong>partes interessadas pertinentes</strong> ao SGQ e quais são seus requisitos relevantes.</p>
@@ -455,7 +455,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 2.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod2}, 'escopo-processos', 'Cláusulas 4.3 e 4.4 — Escopo do SGQ e Abordagem de Processos', '30 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod2}, 'escopo-processos', 'Cláusulas 4.3 e 4.4 — Escopo do SGQ e Abordagem de Processos', '30 min', 3, ${`
 <h2>Cláusulas 4.3 e 4.4 — Escopo e Abordagem de Processos</h2>
 
 <h3>Cláusula 4.3 — Determinando o escopo do SGQ</h3>
@@ -527,7 +527,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 2.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod2}, 'liderança-política', 'Cláusula 5 — Liderança e Política da Qualidade', '30 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod2}, 'lideranca-politica', 'Cláusula 5 — Liderança e Política da Qualidade', '30 min', 4, ${`
 <h2>Cláusula 5 — Liderança e Política da Qualidade</h2>
 
 <p>A cláusula 5 e o coração estratégico da norma. Ela coloca a alta direção no centro do SGQ — não como figurante, mas como protagonista. Se a direção não estiver comprometida de verdade, todo o resto vira papel sem alma.</p>
@@ -620,7 +620,7 @@ export async function seedCourse1(sql) {
   const mod3 = mod3Rows[0].id;
 
   // --- Aula 3.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod3}, 'riscos-oportunidades', 'Cláusula 6.1 — Ações para Abordar Riscos e Oportunidades', '30 min', 1, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod3}, 'riscos-oportunidades', 'Cláusula 6.1 — Ações para Abordar Riscos e Oportunidades', '30 min', 1, ${`
 <h2>Cláusula 6.1 — Ações para Abordar Riscos e Oportunidades</h2>
 
 <p>A gestão de riscos e a maior novidade conceitual da ISO 9001:2015. Ela substitui o antigo conceito de "ação preventiva" (que na prática nunca funcionou bem) por algo muito mais natural e integrado: pensar em riscos e oportunidades como parte de qualquer decisão.</p>
@@ -688,7 +688,7 @@ export async function seedCourse1(sql) {
 `})`;
 
   // --- Aula 3.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod3}, 'objetivos-qualidade', 'Cláusula 6.2 — Objetivos da Qualidade', '30 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod3}, 'objetivos-qualidade', 'Cláusula 6.2 — Objetivos da Qualidade', '30 min', 2, ${`
 <h2>Cláusula 6.2 — Objetivos da Qualidade e Planejamento para Alcanca-los</h2>
 
 <p>Se a política da qualidade e o "norte estratégico", os objetivos são os "marcos no caminho". A cláusula 6.2 exige que a organização estabeleca objetivos da qualidade em funções, niveis e processos pertinentes, e planeje como alcanca-los.</p>
@@ -756,7 +756,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 3.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod3}, 'planejamento-mudanças', 'Cláusula 6.3 — Planejamento de Mudanças', '30 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod3}, 'planejamento-mudancas', 'Cláusula 6.3 — Planejamento de Mudanças', '30 min', 3, ${`
 <h2>Cláusula 6.3 — Planejamento de Mudanças</h2>
 
 <p>Mudanças são inevitáveis. Novos clientes, novos produtos, mudanças de layout, troca de fornecedores, aquisição de equipamentos, mudanças regulatórias — tudo isso impacta o SGQ. A cláusula 6.3 exige que mudanças no SGQ sejam planejadas e controladas.</p>
@@ -811,7 +811,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 3.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod3}, 'caso-prático-planejamento', 'Caso Prático — Planejamento do SGQ numa Metalurgica', '30 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod3}, 'caso-pratico-planejamento', 'Caso Prático — Planejamento do SGQ numa Metalurgica', '30 min', 4, ${`
 <h2>Caso Prático — Planejamento Completo do SGQ</h2>
 
 <p>Vamos consolidar tudo que vimos nas cláusulas 4, 5 e 6 com um caso prático completo. Acompanhe a jornada da <strong>UsinaMax Ltda.</strong>, uma metalúrgica ficticia (mas baseada em casos reais) que decidiu implantar a ISO 9001:2015.</p>
@@ -918,7 +918,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   const mod4 = mod4Rows[0].id;
 
   // --- Aula 4.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod4}, 'recursos-competência', 'Cláusula 7 — Recursos, Competência e Conscientização', '40 min', 1, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'recursos-competencia', 'Cláusula 7 — Recursos, Competência e Conscientização', '40 min', 1, ${`
 <h2>Cláusula 7 — Apoio: Recursos, Competência e Conscientização</h2>
 
 <p>A cláusula 7 trata de tudo que a organização precisa disponibilizar para que o SGQ funcione: pessoas, infraestrutura, ambiente, recursos de monitoramento, conhecimento organizacional, competência, conscientização e comúnicação.</p>
@@ -992,7 +992,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 4.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod4}, 'informação-documentada', 'Cláusula 7.5 — Informação Documentada', '30 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'informacao-documentada', 'Cláusula 7.5 — Informação Documentada', '30 min', 2, ${`
 <h2>Cláusula 7.5 — Informação Documentada</h2>
 
 <p>A informação documentada e o "esqueleto" do SGQ. E tudo aquilo que precisa ser registrado, controlado e mantido acessível. Na versão 2015, esse conceito ficou muito mais flexível — e isso e uma grande vantagem, se bem útilizado.</p>
@@ -1062,7 +1062,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 4.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod4}, 'operação-requisitos', 'Cláusula 8.1 a 8.4 — Planejamento Operacional e Fornecedores', '40 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'operacao-requisitos', 'Cláusula 8.1 a 8.4 — Planejamento Operacional e Fornecedores', '40 min', 3, ${`
 <h2>Cláusula 8 — Operação (Parte 1: Planejamento, Requisitos e Fornecedores)</h2>
 
 <p>A cláusula 8 e a mais extensa da norma e cobre toda a operação — desde a determinação dos requisitos do produto/serviço até a entrega e pos-entrega. E aqui que "a borracha encontra o asfalto".</p>
@@ -1141,7 +1141,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 4.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod4}, 'produção-liberação', 'Cláusula 8.5 a 8.7 — Produção, Liberação e Controle de Não Conformes', '40 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'producao-liberacao', 'Cláusula 8.5 a 8.7 — Produção, Liberação e Controle de Não Conformes', '40 min', 4, ${`
 <h2>Cláusula 8 — Operação (Parte 2: Produção, Liberação e Saidas Não Conformes)</h2>
 
 <h3>8.5 — Produção e provisão de serviço</h3>
@@ -1224,7 +1224,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   const mod5 = mod5Rows[0].id;
 
   // --- Aula 5.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod5}, 'monitoramento-medição', 'Cláusula 9.1 — Monitoramento, Medição, Análise e Avaliação', '30 min', 1, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod5}, 'monitoramento-medicao', 'Cláusula 9.1 — Monitoramento, Medição, Análise e Avaliação', '30 min', 1, ${`
 <h2>Cláusula 9.1 — Monitoramento, Medição, Análise e Avaliação</h2>
 
 <p>A cláusula 9 marca a transição do "fazer" para o "verificar" no ciclo PDCA. De nada adianta ter processos bem planejados e executados se você não mede os resultados. A cláusula 9.1 trata exatamente disso: como monitorar, medir, analisar e avaliar o desempenho do SGQ.</p>
@@ -1296,7 +1296,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 5.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod5}, 'auditoria-interna', 'Cláusula 9.2 — Auditoria Interna', '30 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod5}, 'auditoria-interna', 'Cláusula 9.2 — Auditoria Interna', '30 min', 2, ${`
 <h2>Cláusula 9.2 — Auditoria Interna</h2>
 
 <p>A auditoria interna e uma das ferramentas mais poderosas do SGQ — e também uma das mais mal útilizadas. Quando bem feita, e uma oportunidade de aprendizado e melhoria. Quando mal feita, vira uma "cacada a bruxas" ou um "ritual de papel" que ninguem leva a serio.</p>
@@ -1369,7 +1369,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 `})`;
 
   // --- Aula 5.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod5}, 'análise-crítica-direção', 'Cláusula 9.3 — Análise Crítica pela Direção', '30 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod5}, 'analise-critica-direcao', 'Cláusula 9.3 — Análise Crítica pela Direção', '30 min', 3, ${`
 <h2>Cláusula 9.3 — Análise Crítica pela Direção</h2>
 
 <p>A análise crítica pela direção e a reunião mais importante do SGQ. E o momento em que a alta direção avalia o desempenho do sistema, toma decisões estratégicas e direciona a melhoria. Na prática, e onde a cláusula 5 (liderança) se materializa com fatos e dados.</p>
@@ -1442,7 +1442,7 @@ Participam: presidente, diretor técnico, gerente de operações, coordenador de
 `})`;
 
   // --- Aula 5.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod5}, 'melhoria-não-conformidade', 'Cláusula 10 — Melhoria, Não Conformidade e Acao Corretiva', '30 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod5}, 'melhoria-nao-conformidade', 'Cláusula 10 — Melhoria, Não Conformidade e Acao Corretiva', '30 min', 4, ${`
 <h2>Cláusula 10 — Melhoria, Não Conformidade e Acao Corretiva</h2>
 
 <p>A cláusula 10 fecha o ciclo PDCA com o "Act" — agir para melhorar. E dividida em três partes: generalidades (10.1), não conformidade e ação corretiva (10.2) e melhoria contínua (10.3).</p>
@@ -1542,7 +1542,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   const mod6 = mod6Rows[0].id;
 
   // --- Aula 6.1 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod6}, 'roteiro-implantação', 'Roteiro de Implantação — Do Zero a Certificação', '25 min', 1, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod6}, 'roteiro-implantação', 'Roteiro de Implantação — Do Zero a Certificação', '25 min', 1, ${`
 <h2>Roteiro de Implantação — Do Zero a Certificação</h2>
 
 <p>Agora que você conhece todos os requisitos da ISO 9001:2015, vamos montar o roteiro prático para implantar o SGQ e chegar a certificação. O prazo tipico para uma PME brasileira e de 6 a 12 meses, dependendo da complexidade e maturidade da organização.</p>
@@ -1614,7 +1614,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 `})`;
 
   // --- Aula 6.2 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod6}, 'preparação-auditoria-certificação', 'Preparação para a Auditoria de Certificação', '25 min', 2, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod6}, 'preparação-auditoria-certificação', 'Preparação para a Auditoria de Certificação', '25 min', 2, ${`
 <h2>Preparação para a Auditoria de Certificação</h2>
 
 <p>A auditoria de certificação e o momento da verdade. Vamos desmistifica-la: não e um tribunal, e não e impossível. Com preparação adequada, a grande maioria das organizações e certificada na primeira tentativa.</p>
@@ -1698,7 +1698,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 `})`;
 
   // --- Aula 6.3 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod6}, 'manutenção-sgq', 'Manutenção e Melhoria Continua do SGQ', '20 min', 3, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod6}, 'manutenção-sgq', 'Manutenção e Melhoria Continua do SGQ', '20 min', 3, ${`
 <h2>Manutenção e Melhoria Continua do SGQ após a Certificação</h2>
 
 <p>Conseguir o certificado e importante, mas mante-lo e o verdadeiro desafio. O certificado ISO 9001 tem válidade de 3 anos, com auditorias de manutenção anuais. Se a organização relaxar após a certificação, a próxima auditoria vai revelar a deterioração — e o certificado pode ser suspenso.</p>
@@ -1755,7 +1755,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 `})`;
 
   // --- Aula 6.4 ---
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo) VALUES (${mod6}, 'prova-final-orientações', 'Orientações para a Prova Final e Encerramento', '20 min', 4, ${`
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod6}, 'prova-final-orientações', 'Orientações para a Prova Final e Encerramento', '20 min', 4, ${`
 <h2>Orientações para a Prova Final e Encerramento</h2>
 
 <p>Parabens por chegar até aqui! Você percorreu todas as cláusulas da ISO 9001:2015, com exemplos práticos da indústria brasileira. Agora vamos preparar você para a prova final do curso, que e requisito para a emissão do certificado.</p>
@@ -1843,37 +1843,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'Qual e o principal objetivo da ISO 9001:2015?',
       alternativas: ['Certificar produtos para exportação', 'Definir requisitos para um Sistema de Gestão da Qualidade', 'Estabelecer limites de tolerância para peças mecânicas', 'Regulamentar a segurança do trabalho na indústria'],
       correta: 1,
-      explicação: 'A ISO 9001 define requisitos para um SGQ que permita a organização fornecer consistentemente produtos e serviços que atendam aos requisitos do cliente e regulamentares.'
+      explicacao: 'A ISO 9001 define requisitos para um SGQ que permita a organização fornecer consistentemente produtos e serviços que atendam aos requisitos do cliente e regulamentares.'
     },
     {
       pergunta: 'Quantos princípios de gestão da qualidade fundamentam a ISO 9001:2015?',
       alternativas: ['5', '6', '7', '8'],
       correta: 2,
-      explicação: 'São 7 princípios: Foco no cliente, Liderança, Engajamento de pessoas, Abordagem de processo, Melhoria, Tomada de decisão baseada em evidência e Gestão de relacionamento.'
+      explicacao: 'São 7 princípios: Foco no cliente, Liderança, Engajamento de pessoas, Abordagem de processo, Melhoria, Tomada de decisão baseada em evidência e Gestão de relacionamento.'
     },
     {
       pergunta: 'Qual estrutura padronizada a ISO 9001:2015 adota para fácilitar a integração com outras normas de gestão?',
       alternativas: ['Estrutura de 8 cláusulas', 'Anexo SL (Estrutura de Alto Nível)', 'Modelo EFQM', 'Ciclo DMAIC'],
       correta: 1,
-      explicação: 'O Anexo SL define a Estrutura de Alto Nível (HLS) com 10 cláusulas, padronizando todas as normas de sistemas de gestão (ISO 9001, ISO 14001, ISO 45001, etc.).'
+      explicacao: 'O Anexo SL define a Estrutura de Alto Nível (HLS) com 10 cláusulas, padronizando todas as normas de sistemas de gestão (ISO 9001, ISO 14001, ISO 45001, etc.).'
     },
     {
       pergunta: 'Qual das seguintes mudanças NÃO ocorreu na transição da ISO 9001:2008 para a 2015?',
       alternativas: ['Eliminação da obrigatoriedade do Manual da Qualidade', 'Introdução da mentalidade de risco', 'Eliminação da necessidade de auditoria interna', 'Adoção da Estrutura de Alto Nível com 10 cláusulas'],
       correta: 2,
-      explicação: 'A auditoria interna contínua sendo obrigatória na versão 2015 (cláusula 9.2). O que mudou foi a eliminação do Manual da Qualidade obrigatório, a introdução da mentalidade de risco e a estrutura de 10 cláusulas.'
+      explicacao: 'A auditoria interna contínua sendo obrigatória na versão 2015 (cláusula 9.2). O que mudou foi a eliminação do Manual da Qualidade obrigatório, a introdução da mentalidade de risco e a estrutura de 10 cláusulas.'
     },
     {
       pergunta: 'As cláusulas 1 a 3 da ISO 9001:2015 contem requisitos auditaveis?',
       alternativas: ['Sim, todas contem requisitos obrigatórios', 'Não, são cláusulas informativas', 'Apenas a cláusula 3 contem requisitos', 'Depende do porte da organização'],
       correta: 1,
-      explicação: 'As cláusulas 1 (Escopo), 2 (Referencia normativa) e 3 (Termos e definições) são informativas. Os requisitos auditaveis estão nas cláusulas 4 a 10.'
+      explicacao: 'As cláusulas 1 (Escopo), 2 (Referencia normativa) e 3 (Termos e definições) são informativas. Os requisitos auditaveis estão nas cláusulas 4 a 10.'
     }
   ];
 
   for (const q of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod1}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod1}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // --- Quiz Módulo 2 ---
@@ -1882,37 +1882,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'O que a cláusula 4.1 da ISO 9001:2015 exige que a organização determine?',
       alternativas: ['Apenas os requisitos legais aplicáveis', 'As questões externas e internas pertinentes ao seu propósito e direção estratégica', 'O número mínimo de funcionários para o SGQ', 'A lista de todos os concorrentes do mercado'],
       correta: 1,
-      explicação: 'A cláusula 4.1 exige que a organização determine questões externas e internas pertinentes para seu propósito, direção estratégica e que afetem o SGQ.'
+      explicacao: 'A cláusula 4.1 exige que a organização determine questões externas e internas pertinentes para seu propósito, direção estratégica e que afetem o SGQ.'
     },
     {
       pergunta: 'Ao identificar partes interessadas (cláusula 4.2), a organização deve listar:',
       alternativas: ['Todas as partes interessadas existentes no mundo', 'Apenas clientes e fornecedores', 'As partes interessadas pertinentes ao SGQ e seus requisitos relevantes', 'Apenas as partes interessadas que reclamam formalmente'],
       correta: 2,
-      explicação: 'A norma pede que sejam identificadas as partes interessadas PERTINENTES ao SGQ e seus requisitos RELEVANTES — não todas as partes existentes.'
+      explicacao: 'A norma pede que sejam identificadas as partes interessadas PERTINENTES ao SGQ e seus requisitos RELEVANTES — não todas as partes existentes.'
     },
     {
       pergunta: 'Na versão 2015, quando um requisito da norma não se aplica, a organização deve:',
       alternativas: ['Ignorar completamente o requisito', 'Solicitar autorização do organismo certificador', 'Justificar a não aplicabilidade, que não pode afetar a conformidade do produto/serviço', 'Incluir o requisito mesmo assim, pois todos são obrigatórios'],
       correta: 2,
-      explicação: 'Na versão 2015, não existem "exclusoes" como na 2008. A organização justifica a não aplicabilidade, desde que isso não afete a conformidade dos produtos/serviços.'
+      explicacao: 'Na versão 2015, não existem "exclusoes" como na 2008. A organização justifica a não aplicabilidade, desde que isso não afete a conformidade dos produtos/serviços.'
     },
     {
       pergunta: 'Qual e o papel da alta direção conforme a cláusula 5.1?',
       alternativas: ['Delegar toda a gestão da qualidade ao coordenador', 'Demonstrar liderança e comprometimento com o SGQ atraves de ações concretas', 'Apenas assinar a política da qualidade uma vez ao ano', 'Participar apenas das reuniões de auditoria externa'],
       correta: 1,
-      explicação: 'A cláusula 5.1 exige que a alta direção demonstre liderança e comprometimento, responsabilizando-se pela eficácia do SGQ, alocando recursos, comúnicando importancia e engajando pessoas.'
+      explicacao: 'A cláusula 5.1 exige que a alta direção demonstre liderança e comprometimento, responsabilizando-se pela eficácia do SGQ, alocando recursos, comúnicando importancia e engajando pessoas.'
     },
     {
       pergunta: 'A política da qualidade deve, entre outros requisitos:',
       alternativas: ['Ser idêntica para todas as empresas do mesmo setor', 'Ser secreta e acessível apenas a direção', 'Ser apropriada ao contexto, prover estrutura para objetivos e incluir comprometimento com melhoria contínua', 'Conter metas numéricas detalhadas para todos os indicadores'],
       correta: 2,
-      explicação: 'A política deve ser apropriada ao propósito e contexto, prover estrutura para definir objetivos, incluir comprometimento com requisitos aplicáveis e melhoria contínua, e ser comunicada na organização.'
+      explicacao: 'A política deve ser apropriada ao propósito e contexto, prover estrutura para definir objetivos, incluir comprometimento com requisitos aplicáveis e melhoria contínua, e ser comunicada na organização.'
     }
   ];
 
   for (const q of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod2}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod2}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // --- Quiz Módulo 3 ---
@@ -1921,37 +1921,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'A cláusula 6.1 exige que a organização útilize qual métodologia formal de gestão de riscos?',
       alternativas: ['FMEA obrigatóriamente', 'ISO 31000 obrigatóriamente', 'Nenhuma específica — a norma pede mentalidade de risco, não métodologia formal', 'Análise Bow-Tie obrigatóriamente'],
       correta: 2,
-      explicação: 'A norma NÃO exige métodologia formal de gestão de riscos. Ela pede que a organização considere riscos e oportunidades de forma proporcional a sua complexidade.'
+      explicacao: 'A norma NÃO exige métodologia formal de gestão de riscos. Ela pede que a organização considere riscos e oportunidades de forma proporcional a sua complexidade.'
     },
     {
       pergunta: 'Os objetivos da qualidade (cláusula 6.2) devem ser:',
       alternativas: ['Genericos e aplicáveis a qualquer empresa', 'Mensuraveis, coerentes com a política e ter plano de ação para alcanca-los', 'Definidos apenas pelo coordenador de qualidade', 'Revisados somente a cada 3 anos na recertificação'],
       correta: 1,
-      explicação: 'Os objetivos devem ser mensuraveis, coerentes com a política, considerar requisitos aplicáveis, ser pertinentes para conformidade e satisfação, monitorados, comunicados e atualizados, com plano de ação definido.'
+      explicacao: 'Os objetivos devem ser mensuraveis, coerentes com a política, considerar requisitos aplicáveis, ser pertinentes para conformidade e satisfação, monitorados, comunicados e atualizados, com plano de ação definido.'
     },
     {
       pergunta: 'A cláusula 6.3 (Planejamento de mudanças) exige que mudanças no SGQ considerem:',
       alternativas: ['Apenas o custo financeiro da mudança', 'Proposito, consequências, integridade do SGQ, recursos e responsabilidades', 'Apenas a opinião do organismo certificador', 'Somente mudanças de documentação'],
       correta: 1,
-      explicação: 'A cláusula 6.3 exige considerar o propósito e potenciais consequências da mudança, a integridade do SGQ, disponibilidade de recursos e alocação de responsabilidades.'
+      explicacao: 'A cláusula 6.3 exige considerar o propósito e potenciais consequências da mudança, a integridade do SGQ, disponibilidade de recursos e alocação de responsabilidades.'
     },
     {
       pergunta: 'Qual dos seguintes e um exemplo de OPORTUNIDADE (não risco) na gestão de riscos do SGQ?',
       alternativas: ['Fornecedor entregar material fora de especificação', 'Novo mercado emergente buscando fornecedores qualificados', 'Máquina com manutenção atrasada', 'Operador sem treinamento adequado'],
       correta: 1,
-      explicação: 'A gestão de riscos inclui oportunidades (efeitos positivos da incerteza). Um novo mercado buscando fornecedores e uma oportunidade que pode ser explorada. Os demais são riscos (efeitos negativos).'
+      explicacao: 'A gestão de riscos inclui oportunidades (efeitos positivos da incerteza). Um novo mercado buscando fornecedores e uma oportunidade que pode ser explorada. Os demais são riscos (efeitos negativos).'
     },
     {
       pergunta: 'Um objetivo da qualidade formulado como "Melhorar a qualidade" e inadequado porque:',
       alternativas: ['Não e possível melhorar a qualidade', 'Não e mensurável, não tem meta numérica nem prazo', 'A norma proibe objetivos relacionados a qualidade', 'Deveria ser "Maximizar a qualidade"'],
       correta: 1,
-      explicação: 'Objetivos devem ser mensuraveis. "Melhorar a qualidade" não tem meta numérica nem prazo, sendo impossível avaliar se foi alcancado. O correto seria algo como "Reduzir o índice de refugo de 4% para 2,5% até dezembro".'
+      explicacao: 'Objetivos devem ser mensuraveis. "Melhorar a qualidade" não tem meta numérica nem prazo, sendo impossível avaliar se foi alcancado. O correto seria algo como "Reduzir o índice de refugo de 4% para 2,5% até dezembro".'
     }
   ];
 
   for (const q of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod3}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod3}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // --- Quiz Módulo 4 ---
@@ -1960,37 +1960,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'O que a cláusula 7.1.5 exige sobre instrumentos de medição útilizados para verificar conformidade de produtos?',
       alternativas: ['Devem ser novos e importados', 'Devem ser calibrados ou verificados em intervalos específicados, contra padrões rastreaveis', 'Basta que funcionem corretamente no momento do uso', 'Apenas instrumentos digitais são aceitos'],
       correta: 1,
-      explicação: 'A cláusula 7.1.5 exige que instrumentos usados para verificar conformidade sejam calibrados/verificados periodicamente contra padrões rastreaveis, identificados e protegidos.'
+      explicacao: 'A cláusula 7.1.5 exige que instrumentos usados para verificar conformidade sejam calibrados/verificados periodicamente contra padrões rastreaveis, identificados e protegidos.'
     },
     {
       pergunta: 'Na ISO 9001:2015, "manter informação documentada" equivale ao antigo conceito de:',
       alternativas: ['Registro (evidência de atividade realizada)', 'Documento (procedimento, instrução de trabalho que e atualizado)', 'Backup de dados em nuvem', 'Manual da qualidade'],
       correta: 1,
-      explicação: '"Manter" informação documentada equivale ao antigo "documento" (algo que se atualiza). "Reter" equivale ao antigo "registro" (evidência de que algo foi feito).'
+      explicacao: '"Manter" informação documentada equivale ao antigo "documento" (algo que se atualiza). "Reter" equivale ao antigo "registro" (evidência de que algo foi feito).'
     },
     {
       pergunta: 'A análise crítica de requisitos (cláusula 8.2.3) deve ser realizada:',
       alternativas: ['Somente após a entrega do produto', 'Antes de se comprometer a fornecer o produto/serviço', 'Apenas para clientes internacionais', 'Somente quando o cliente solicitar formalmente'],
       correta: 1,
-      explicação: 'A análise crítica de requisitos deve ser feita ANTES de a organização se comprometer a fornecer, para garantir que tem capacidade de atender todos os requisitos.'
+      explicacao: 'A análise crítica de requisitos deve ser feita ANTES de a organização se comprometer a fornecer, para garantir que tem capacidade de atender todos os requisitos.'
     },
     {
       pergunta: 'O que são "processos especiais" no contexto da cláusula 8.5.1?',
       alternativas: ['Processos realizados pela direção', 'Processos cujo resultado não pode ser verificado por inspeção posterior', 'Processos que usam máquinas importadas', 'Processos que custam mais de R$ 100.000'],
       correta: 1,
-      explicação: 'Processos especiais são aqueles cujo resultado não pode ser verificado por monitoramento/medição posterior (ex: solda, tratamento térmico, pintura). Eles precisam ser VALIDADOS e ter parâmetros controlados durante a execução.'
+      explicacao: 'Processos especiais são aqueles cujo resultado não pode ser verificado por monitoramento/medição posterior (ex: solda, tratamento térmico, pintura). Eles precisam ser VALIDADOS e ter parâmetros controlados durante a execução.'
     },
     {
       pergunta: 'Ao identificar produto não conforme (cláusula 8.7), qual ação e INADEQUADA?',
       alternativas: ['Segregar o produto em área identificada', 'Retrabalhar para tornar conforme', 'Misturar com produtos conformes para diluir o problema', 'Obter autorização do cliente para aceitação sob concessão'],
       correta: 2,
-      explicação: 'Misturar produto não conforme com conforme e totalmente inadequado e pode gerar entrega de produto defeituoso ao cliente. As ações corretas sao: segregar, retrabalhar, devolver ou obter concessão do cliente.'
+      explicacao: 'Misturar produto não conforme com conforme e totalmente inadequado e pode gerar entrega de produto defeituoso ao cliente. As ações corretas sao: segregar, retrabalhar, devolver ou obter concessão do cliente.'
     }
   ];
 
   for (const q of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod4}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod4}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // --- Quiz Módulo 5 ---
@@ -1999,37 +1999,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'Qual a diferença entre CORRECAO e ACAO CORRETIVA?',
       alternativas: ['São sinônimos — significam a mesma coisa', 'Correção resolve o problema imediato; ação corretiva elimina a causa para evitar recorrência', 'Correção e para problemas graves; ação corretiva e para problemas leves', 'Correção e feita pela produção; ação corretiva e feita pela direção'],
       correta: 1,
-      explicação: 'Correção e a ação imediata para resolver o problema pontual (ex: retrabalhar a peça). Acao corretiva visa eliminar a causa raiz para que o problema não se repita.'
+      explicacao: 'Correção e a ação imediata para resolver o problema pontual (ex: retrabalhar a peça). Acao corretiva visa eliminar a causa raiz para que o problema não se repita.'
     },
     {
       pergunta: 'A auditoria interna (cláusula 9.2) exige que os auditores:',
       alternativas: ['Sejam funcionários de empresas externas', 'Tenham imparcialidade — não auditem seu próprio trabalho', 'Sejam engenheiros formados', 'Tenham pelo menos 10 anos de experiência'],
       correta: 1,
-      explicação: 'A norma exige que os auditores sejam selecionados de forma a assegurar objetividade e imparcialidade do processo de auditoria. Ninguem audita seu próprio trabalho.'
+      explicacao: 'A norma exige que os auditores sejam selecionados de forma a assegurar objetividade e imparcialidade do processo de auditoria. Ninguem audita seu próprio trabalho.'
     },
     {
       pergunta: 'Qual das seguintes NÃO e uma entrada obrigatória da análise crítica pela direção (cláusula 9.3)?',
       alternativas: ['Satisfação do cliente', 'Resultados de auditoria', 'Orçamento detalhado do próximo exercício fiscal', 'Desempenho de provedores externos'],
       correta: 2,
-      explicação: 'O orçamento detalhado não e entrada obrigatória da análise crítica. As entradas obrigatórias incluem: situação de ações anteriores, mudanças no contexto, desempenho do SGQ (satisfação, objetivos, processos, NCs, auditorias, fornecedores), adequação de recursos, eficácia de ações para riscos e oportunidades de melhoria.'
+      explicacao: 'O orçamento detalhado não e entrada obrigatória da análise crítica. As entradas obrigatórias incluem: situação de ações anteriores, mudanças no contexto, desempenho do SGQ (satisfação, objetivos, processos, NCs, auditorias, fornecedores), adequação de recursos, eficácia de ações para riscos e oportunidades de melhoria.'
     },
     {
       pergunta: 'A ferramenta "5 Porques" e útilizada para:',
       alternativas: ['Definir os 5 objetivos estratégicos da organização', 'Identificar a causa raiz de um problema perguntando "por que?" iterativamente', 'Avaliar 5 fornecedores simultaneamente', 'Planejar 5 auditorias por ano'],
       correta: 1,
-      explicação: 'A técnica dos 5 Porques consiste em perguntar "por que?" repetidamente (tipicamente 5 vezes) até chegar a causa raiz de um problema, saindo do sintoma superficial para a causa fundamental.'
+      explicacao: 'A técnica dos 5 Porques consiste em perguntar "por que?" repetidamente (tipicamente 5 vezes) até chegar a causa raiz de um problema, saindo do sintoma superficial para a causa fundamental.'
     },
     {
       pergunta: 'A ausência de reclamações formais de clientes pode ser interpretada como:',
       alternativas: ['Prova definitiva de satisfação total dos clientes', 'Indicativo que não precisa de pesquisa de satisfação', 'Não necessáriamente indica satisfação — a organização deve buscar ativamente a percepção do cliente', 'Razão suficiente para eliminar o indicador de satisfação'],
       correta: 2,
-      explicação: 'A norma e clara: a organização deve MONITORAR a percepção do cliente. A ausência de reclamações não e evidência de satisfação — muitos clientes insatisfeitos simplesmente migram para concorrentes sem reclamar formalmente.'
+      explicacao: 'A norma e clara: a organização deve MONITORAR a percepção do cliente. A ausência de reclamações não e evidência de satisfação — muitos clientes insatisfeitos simplesmente migram para concorrentes sem reclamar formalmente.'
     }
   ];
 
   for (const q of m5q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod5}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod5}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // --- Quiz Módulo 6 ---
@@ -2038,37 +2038,37 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'Qual a válidade do certificado ISO 9001 e com que frequência ocorrem auditorias de manutenção?',
       alternativas: ['5 anos com auditoria a cada 2 anos', '3 anos com auditorias de manutenção anuais', '1 ano com renovação anual', '10 anos sem necessidade de auditorias intermediárias'],
       correta: 1,
-      explicação: 'O certificado ISO 9001 tem válidade de 3 anos. Nesse período, há auditorias de manutenção (vigilancia) anuais. Após 3 anos, e necessária auditoria de recertificação.'
+      explicacao: 'O certificado ISO 9001 tem válidade de 3 anos. Nesse período, há auditorias de manutenção (vigilancia) anuais. Após 3 anos, e necessária auditoria de recertificação.'
     },
     {
       pergunta: 'A auditoria de certificação e dividida em duas fases. A Fase 1 consiste em:',
       alternativas: ['Auditoria completa no chão de fábrica', 'Análise documental e verificação da prontidao do SGQ', 'Entrevista apenas com operadores', 'Teste de produto em laboratorio externo'],
       correta: 1,
-      explicação: 'A Fase 1 e a análise documental, onde o auditor verifica se a documentação do SGQ esta adequada, se os requisitos estão enderecados e identifica áreas de preocupação para a Fase 2.'
+      explicacao: 'A Fase 1 e a análise documental, onde o auditor verifica se a documentação do SGQ esta adequada, se os requisitos estão enderecados e identifica áreas de preocupação para a Fase 2.'
     },
     {
       pergunta: 'Qual das seguintes e uma "armadilha" comum após a certificação?',
       alternativas: ['Manter as auditorias internas em dia', 'Atualizar os documentos quando os processos mudam', 'Coletar indicadores sem analisa-los e sem tomar ações', 'Envolver a direção nas análises críticas'],
       correta: 2,
-      explicação: 'Coletar dados sem analisa-los e agir sobre eles e uma armadilha comum — vira burocracia pura sem gerar valor. Os indicadores existem para apoiar decisões e direcionar a melhoria.'
+      explicacao: 'Coletar dados sem analisa-los e agir sobre eles e uma armadilha comum — vira burocracia pura sem gerar valor. Os indicadores existem para apoiar decisões e direcionar a melhoria.'
     },
     {
       pergunta: 'Qual organismo deve acreditar o certificador para que o certificado ISO 9001 tenha válidade no Brasil?',
       alternativas: ['ABNT', 'Inmetro (ou membro do IAF)', 'Ministerio da Indústria', 'ISO diretamente'],
       correta: 1,
-      explicação: 'O organismo certificador deve ser acreditado pelo Inmetro (ou por um membro do International Accreditation Forum — IAF). Um certificado de organismo não acreditado não tem válidade de mercado.'
+      explicacao: 'O organismo certificador deve ser acreditado pelo Inmetro (ou por um membro do International Accreditation Forum — IAF). Um certificado de organismo não acreditado não tem válidade de mercado.'
     },
     {
       pergunta: 'Antes da auditoria de certificação (Fase 2), a organização deve ter:',
       alternativas: ['Apenas a documentação pronta, sem necessidade de implementação', 'O SGQ implementado e funcionando por pelo menos alguns meses, com evidências de operação', 'Apenas o Manual da Qualidade atualizado', 'Somente treinamento dos operadores concluido'],
       correta: 1,
-      explicação: 'O SGQ deve estar implementado e gerando evidências de operação (registros, indicadores, auditorias internas, análise crítica) por pelo menos 3 meses antes da Fase 2. O auditor verifica implementação e eficácia, não apenas documentação.'
+      explicacao: 'O SGQ deve estar implementado e gerando evidências de operação (registros, indicadores, auditorias internas, análise crítica) por pelo menos 3 meses antes da Fase 2. O auditor verifica implementação e eficácia, não apenas documentação.'
     }
   ];
 
   for (const q of m6q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${mod6}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${mod6}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, false)`;
   }
 
   // ═══════════════════════════════════════════════════════════════════
@@ -2079,187 +2079,187 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
       pergunta: 'A ISO 9001:2015 e uma norma que define requisitos para:',
       alternativas: ['Sistemas de Gestão Ambiental', 'Sistemas de Gestão da Qualidade', 'Sistemas de Gestão de Saude e Seguranca', 'Sistemas de Gestão de Seguranca da Informação'],
       correta: 1,
-      explicação: 'A ISO 9001 define requisitos para Sistemas de Gestão da Qualidade. ISO 14001 e ambiental, ISO 45001 e saude/seguranca, ISO 27001 e segurança da informação.'
+      explicacao: 'A ISO 9001 define requisitos para Sistemas de Gestão da Qualidade. ISO 14001 e ambiental, ISO 45001 e saude/seguranca, ISO 27001 e segurança da informação.'
     },
     {
       pergunta: 'Qual dos seguintes NÃO e um dos 7 princípios de gestão da qualidade?',
       alternativas: ['Foco no cliente', 'Minimização de custos', 'Melhoria', 'Tomada de decisão baseada em evidência'],
       correta: 1,
-      explicação: 'Os 7 princípios sao: Foco no cliente, Liderança, Engajamento de pessoas, Abordagem de processo, Melhoria, Tomada de decisão baseada em evidência e Gestão de relacionamento. "Minimização de custos" não e um princípio.'
+      explicacao: 'Os 7 princípios sao: Foco no cliente, Liderança, Engajamento de pessoas, Abordagem de processo, Melhoria, Tomada de decisão baseada em evidência e Gestão de relacionamento. "Minimização de custos" não e um princípio.'
     },
     {
       pergunta: 'Na estrutura da ISO 9001:2015, a fase "Check" (Verificar) do ciclo PDCA corresponde a qual cláusula?',
       alternativas: ['Cláusula 6', 'Cláusula 8', 'Cláusula 9', 'Cláusula 10'],
       correta: 2,
-      explicação: 'Check = Cláusula 9 (Avaliação de desempenho). Plan = Cláusulas 4-6, Do = Cláusulas 7-8, Act = Cláusula 10.'
+      explicacao: 'Check = Cláusula 9 (Avaliação de desempenho). Plan = Cláusulas 4-6, Do = Cláusulas 7-8, Act = Cláusula 10.'
     },
     {
       pergunta: 'A principal mudança conceitual da versão 2008 para 2015 foi:',
       alternativas: ['Obrigatoriedade de certificação para todas as empresas', 'Introdução da mentalidade de risco em substituição a ação preventiva', 'Exigência de 20 procedimentos documentados obrigatórios', 'Eliminação da necessidade de indicadores'],
       correta: 1,
-      explicação: 'A mentalidade de risco (cláusula 6.1) substituiu a ação preventiva da versão 2008, permeando toda a norma com a consideração de riscos e oportunidades nas decisões.'
+      explicacao: 'A mentalidade de risco (cláusula 6.1) substituiu a ação preventiva da versão 2008, permeando toda a norma com a consideração de riscos e oportunidades nas decisões.'
     },
     {
       pergunta: 'A análise de contexto (cláusula 4.1) deve considerar:',
       alternativas: ['Apenas fatores externos do mercado', 'Apenas fatores internos da organização', 'Fatores externos e internos pertinentes', 'Apenas fatores financeiros'],
       correta: 2,
-      explicação: 'A cláusula 4.1 exige que a organização determine questões externas (mercado, legislação, tecnologia) e internas (cultura, recursos, competências) pertinentes ao SGQ.'
+      explicacao: 'A cláusula 4.1 exige que a organização determine questões externas (mercado, legislação, tecnologia) e internas (cultura, recursos, competências) pertinentes ao SGQ.'
     },
     {
       pergunta: 'Qual ferramenta e mais comumente útilizada por PMEs para atender a cláusula 4.1?',
       alternativas: ['Balanced Scorecard', 'Análise SWOT', 'Six Sigma DMAIC', 'Diagrama de Gantt'],
       correta: 1,
-      explicação: 'A análise SWOT (Forças, Fraquezas, Oportunidades, Ameaças) e a ferramenta mais comum e prática para PMEs analisarem seu contexto interno e externo.'
+      explicacao: 'A análise SWOT (Forças, Fraquezas, Oportunidades, Ameaças) e a ferramenta mais comum e prática para PMEs analisarem seu contexto interno e externo.'
     },
     {
       pergunta: 'A palavra-chave na cláusula 4.2 sobre partes interessadas e:',
       alternativas: ['Todas', 'Pertinentes', 'Prioritarias', 'Financeiras'],
       correta: 1,
-      explicação: 'A norma pede que sejam identificadas as partes interessadas "pertinentes" ao SGQ — não todas as existentes, mas aquelas que efetivamente impactam ou são impactadas pelo SGQ.'
+      explicacao: 'A norma pede que sejam identificadas as partes interessadas "pertinentes" ao SGQ — não todas as existentes, mas aquelas que efetivamente impactam ou são impactadas pelo SGQ.'
     },
     {
       pergunta: 'O escopo do SGQ (cláusula 4.3) deve declarar:',
       alternativas: ['Apenas o nome da empresa', 'Os tipos de produtos e serviços cobertos, com justificativa para não aplicabilidades', 'O faturamento anual da empresa', 'A lista completa de funcionários'],
       correta: 1,
-      explicação: 'O escopo deve declarar os tipos de produtos/serviços cobertos pelo SGQ e justificar qualquer requisito da norma considerado não aplicável.'
+      explicacao: 'O escopo deve declarar os tipos de produtos/serviços cobertos pelo SGQ e justificar qualquer requisito da norma considerado não aplicável.'
     },
     {
       pergunta: 'Na versão 2015, a figura do Representante da Direção (RD):',
       alternativas: ['Continua obrigatória como na versão 2008', 'Deixou de ser obrigatória — a responsabilidade pelo SGQ e da alta direção', 'Foi substituida por um comite externo obrigatório', 'Passou a ser exigida em duplicidade'],
       correta: 1,
-      explicação: 'A versão 2015 eliminou a obrigatoriedade do RD para que a responsabilidade pelo SGQ seja da alta direção como um todo, não delegada a uma única pessoa.'
+      explicacao: 'A versão 2015 eliminou a obrigatoriedade do RD para que a responsabilidade pelo SGQ seja da alta direção como um todo, não delegada a uma única pessoa.'
     },
     {
       pergunta: 'A política da qualidade deve ser:',
       alternativas: ['Idêntica para todas as empresas do mesmo setor', 'Genérica para se aplicar a qualquer situação', 'Apropriada ao contexto e propósito da organização, comunicada e entendida', 'Confidencial e acessível apenas a direção e auditores'],
       correta: 2,
-      explicação: 'A política deve ser apropriada ao contexto, prover estrutura para objetivos, incluir comprometimentos obrigatórios, ser comunicada e entendida na organização e disponível para partes interessadas.'
+      explicacao: 'A política deve ser apropriada ao contexto, prover estrutura para objetivos, incluir comprometimentos obrigatórios, ser comunicada e entendida na organização e disponível para partes interessadas.'
     },
     {
       pergunta: 'A gestão de riscos na ISO 9001:2015 exige:',
       alternativas: ['Uso obrigatório de FMEA em todos os processos', 'Contratação de especialista externo em riscos', 'Considerar riscos e oportunidades de forma proporcional a complexidade da organização', 'Certificação ISO 31000 como pre-requisito'],
       correta: 2,
-      explicação: 'A norma não exige métodologia formal específica. Pede que a organização considere riscos e oportunidades de forma proporcional. Uma PME pode usar uma planilha simples; uma grande indústria pode usar FMEA ou outras métodologias.'
+      explicacao: 'A norma não exige métodologia formal específica. Pede que a organização considere riscos e oportunidades de forma proporcional. Uma PME pode usar uma planilha simples; uma grande indústria pode usar FMEA ou outras métodologias.'
     },
     {
       pergunta: 'Para cada objetivo da qualidade (cláusula 6.2), a organização deve determinar:',
       alternativas: ['Apenas a meta numérica', 'O que sera feito, recursos, responsável, prazo e como avaliar resultados', 'Apenas o indicador de monitoramento', 'Apenas a data de início'],
       correta: 1,
-      explicação: 'A cláusula 6.2 exige plano de ação completo: o que sera feito, recursos necessários, responsável, prazo e como os resultados serao avaliados.'
+      explicacao: 'A cláusula 6.2 exige plano de ação completo: o que sera feito, recursos necessários, responsável, prazo e como os resultados serao avaliados.'
     },
     {
       pergunta: 'A cláusula 7.1.6 (Conhecimento organizacional) foi introduzida para tratar do problema de:',
       alternativas: ['Excesso de documentação', 'Conhecimento crítico que esta "na cabeca das pessoas" e pode ser perdido', 'Sigilo indústrial', 'Proteção de dados pessoais (LGPD)'],
       correta: 1,
-      explicação: 'A cláusula 7.1.6 trata da gestão do conhecimento organizacional — garantir que o conhecimento necessário seja identificado, mantido e disponibilizado, evitando perda quando pessoas-chave saem da organização.'
+      explicacao: 'A cláusula 7.1.6 trata da gestão do conhecimento organizacional — garantir que o conhecimento necessário seja identificado, mantido e disponibilizado, evitando perda quando pessoas-chave saem da organização.'
     },
     {
       pergunta: 'Na ISO 9001:2015, o termo "informação documentada" unificou os antigos conceitos de:',
       alternativas: ['Apenas "documento" e "manual"', 'Apenas "registro" e "formulario"', '"Documento", "registro" e "procedimento documentado"', '"Política" e "objetivo"'],
       correta: 2,
-      explicação: 'O termo "informação documentada" unificou três conceitos da versão 2008: "documento" (procedimento, instrução), "registro" (evidência) e "procedimento documentado" (os 6 obrigatórios).'
+      explicacao: 'O termo "informação documentada" unificou três conceitos da versão 2008: "documento" (procedimento, instrução), "registro" (evidência) e "procedimento documentado" (os 6 obrigatórios).'
     },
     {
       pergunta: '"Manter informação documentada" na ISO 9001:2015 equivale ao antigo conceito de:',
       alternativas: ['Registro', 'Documento (que se atualiza)', 'Backup', 'Formulario em branco'],
       correta: 1,
-      explicação: '"Manter" = documento (algo atualizado, como procedimento ou política). "Reter" = registro (evidência de atividade realizada, como relatório de inspeção).'
+      explicacao: '"Manter" = documento (algo atualizado, como procedimento ou política). "Reter" = registro (evidência de atividade realizada, como relatório de inspeção).'
     },
     {
       pergunta: 'A análise crítica de requisitos do cliente (cláusula 8.2.3) deve ser realizada:',
       alternativas: ['Depois da entrega do produto', 'Antes de a organização se comprometer a fornecer', 'Apenas quando o cliente reclama', 'Somente para pedidos acima de R$ 10.000'],
       correta: 1,
-      explicação: 'A análise crítica deve ser feita ANTES de aceitar o pedido/contrato, para garantir que a organização tem capacidade de atender todos os requisitos específicados.'
+      explicacao: 'A análise crítica deve ser feita ANTES de aceitar o pedido/contrato, para garantir que a organização tem capacidade de atender todos os requisitos específicados.'
     },
     {
       pergunta: 'A calibração de instrumentos (cláusula 7.1.5) e necessária quando:',
       alternativas: ['O instrumento e novo', 'O monitoramento/medição e usado para verificar conformidade de produtos/serviços', 'O instrumento custou mais de R$ 1.000', 'O cliente solicita específicamente'],
       correta: 1,
-      explicação: 'A calibração e necessária quando o instrumento e usado para verificar conformidade de produtos/serviços com requisitos. Não depende do custo do instrumento, mas do seu uso para inspeção/controle.'
+      explicacao: 'A calibração e necessária quando o instrumento e usado para verificar conformidade de produtos/serviços com requisitos. Não depende do custo do instrumento, mas do seu uso para inspeção/controle.'
     },
     {
       pergunta: 'Um "processo especial" e aquele cujo resultado:',
       alternativas: ['Custa mais que os demais processos', 'Não pode ser verificado por inspeção posterior — requer válidação', 'E destinado a clientes VIP', 'Envolve mais de 10 funcionários'],
       correta: 1,
-      explicação: 'Processos especiais (ex: solda, tratamento térmico, pintura) produzem resultados que não podem ser verificados por inspeção posterior sem destruição. Por isso, devem ser VALIDADOS e controlados durante a execução.'
+      explicacao: 'Processos especiais (ex: solda, tratamento térmico, pintura) produzem resultados que não podem ser verificados por inspeção posterior sem destruição. Por isso, devem ser VALIDADOS e controlados durante a execução.'
     },
     {
       pergunta: 'O controle de fornecedores (cláusula 8.4) deve ser proporcional a:',
       alternativas: ['Ao faturamento do fornecedor', 'Ao impacto do produto/serviço fornecido na conformidade do produto final', 'A distancia geografica do fornecedor', 'A idade do relacionamento comercial'],
       correta: 1,
-      explicação: 'O nível de controle deve ser proporcional ao impacto que o produto/serviço do fornecedor tem na conformidade do produto final. Um fornecedor de materia-prima crítica requer mais controle que um fornecedor de material de escritório.'
+      explicacao: 'O nível de controle deve ser proporcional ao impacto que o produto/serviço do fornecedor tem na conformidade do produto final. Um fornecedor de materia-prima crítica requer mais controle que um fornecedor de material de escritório.'
     },
     {
       pergunta: 'Ao identificar produto não conforme (cláusula 8.7), a primeira ação deve ser:',
       alternativas: ['Destruir o produto imediatamente', 'Identificar e segregar para prevenir uso ou entrega não intencional', 'Enviar ao cliente com desconto', 'Registrar e continuar a produção normalmente'],
       correta: 1,
-      explicação: 'A primeira ação e identificar e segregar (separar) o produto não conforme para evitar que seja usado ou entregue por engano. Depois se decide a disposição (retrabalho, refugo, concessão).'
+      explicacao: 'A primeira ação e identificar e segregar (separar) o produto não conforme para evitar que seja usado ou entregue por engano. Depois se decide a disposição (retrabalho, refugo, concessão).'
     },
     {
       pergunta: 'A satisfação do cliente (cláusula 9.1.2) deve ser monitorada:',
       alternativas: ['Apenas quando há reclamações formais', 'Ativamente, usando métodos definidos pela organização', 'Apenas a cada 3 anos na recertificação', 'Somente por pesquisa impressa enviada pelo correio'],
       correta: 1,
-      explicação: 'A organização deve determinar métodos para obter, monitorar e analisar a percepção dos clientes. A norma não específica qual método — pode ser pesquisa, entrevista, análise de indicadores, etc. Mas deve ser ativo, não passivo.'
+      explicacao: 'A organização deve determinar métodos para obter, monitorar e analisar a percepção dos clientes. A norma não específica qual método — pode ser pesquisa, entrevista, análise de indicadores, etc. Mas deve ser ativo, não passivo.'
     },
     {
       pergunta: 'Em uma auditoria interna (cláusula 9.2), o gerente de produção pode auditar:',
       alternativas: ['O processo de produção que ele gerencia', 'Qualquer processo, exceto o que ele gerencia', 'Apenas processos de apoio', 'Apenas a documentação, não o processo'],
       correta: 1,
-      explicação: 'A norma exige imparcialidade — o auditor não pode auditar seu próprio trabalho. O gerente de produção pode auditar outros processos (compras, RH, qualidade), mas não a produção.'
+      explicacao: 'A norma exige imparcialidade — o auditor não pode auditar seu próprio trabalho. O gerente de produção pode auditar outros processos (compras, RH, qualidade), mas não a produção.'
     },
     {
       pergunta: 'As saídas da análise crítica pela direção (cláusula 9.3.3) devem incluir:',
       alternativas: ['Apenas um relatório informativo sem ações', 'Decisões e ações sobre oportunidades de melhoria, mudanças no SGQ e necessidade de recursos', 'Apenas a data da próxima reunião', 'Apenas a aprovação do orçamento anual'],
       correta: 1,
-      explicação: 'As saídas devem ser decisões e ações concretas sobre: oportunidades de melhoria, necessidade de mudanças no SGQ e necessidade de recursos. Não pode ser apenas "manter monitoramento".'
+      explicacao: 'As saídas devem ser decisões e ações concretas sobre: oportunidades de melhoria, necessidade de mudanças no SGQ e necessidade de recursos. Não pode ser apenas "manter monitoramento".'
     },
     {
       pergunta: 'A diferença fundamental entre correção e ação corretiva e:',
       alternativas: ['Correção e mais cara, ação corretiva e mais barata', 'Correção e para problemas grandes, ação corretiva e para problemas pequenos', 'Correção trata o efeito imediato, ação corretiva elimina a causa raiz', 'Não há diferença — são sinônimos'],
       correta: 2,
-      explicação: 'Correção = ação imediata para resolver o problema pontual (retrabalhar a peça). Acao corretiva = ação para eliminar a causa raiz e prevenir recorrência (recalibrar máquina, retreinar operador).'
+      explicacao: 'Correção = ação imediata para resolver o problema pontual (retrabalhar a peça). Acao corretiva = ação para eliminar a causa raiz e prevenir recorrência (recalibrar máquina, retreinar operador).'
     },
     {
       pergunta: 'A cláusula 10.3 (Melhoria contínua) pede que a organização:',
       alternativas: ['Apenas corrija problemas quando surgirem', 'Melhore continuamente a adequação, suficiência e eficácia do SGQ', 'Mude todos os processos a cada 6 meses', 'Contrate consultoria externa permanente'],
       correta: 1,
-      explicação: 'A melhoria contínua vai alem de corrigir problemas. A organização deve buscar ativamente oportunidades de melhoria usando resultados de análises, auditorias e análises críticas.'
+      explicacao: 'A melhoria contínua vai alem de corrigir problemas. A organização deve buscar ativamente oportunidades de melhoria usando resultados de análises, auditorias e análises críticas.'
     },
     {
       pergunta: 'O certificado ISO 9001 tem válidade de:',
       alternativas: ['1 ano', '2 anos', '3 anos', '5 anos'],
       correta: 2,
-      explicação: 'O certificado ISO 9001 tem válidade de 3 anos, com auditorias de manutenção (vigilancia) anuais. Após 3 anos, e necessária auditoria de recertificação.'
+      explicacao: 'O certificado ISO 9001 tem válidade de 3 anos, com auditorias de manutenção (vigilancia) anuais. Após 3 anos, e necessária auditoria de recertificação.'
     },
     {
       pergunta: 'Numa auditoria de certificação, uma não conformidade maior significa que:',
       alternativas: ['A certificação e concedida com ressalvas', 'A certificação NÃO e concedida até a resolução da NC', 'A empresa deve pagar uma multa', 'O certificado e emitido mas com válidade reduzida'],
       correta: 1,
-      explicação: 'Uma NC maior (falha sistemática ou ausência de requisito) impede a concessão da certificação. A empresa tem prazo (geralmente 90 dias) para resolver, e o auditor verifica a resolução antes de conceder o certificado.'
+      explicacao: 'Uma NC maior (falha sistemática ou ausência de requisito) impede a concessão da certificação. A empresa tem prazo (geralmente 90 dias) para resolver, e o auditor verifica a resolução antes de conceder o certificado.'
     },
     {
       pergunta: 'Qual das seguintes cláusulas NÃO contem requisitos auditaveis?',
       alternativas: ['Cláusula 4 (Contexto)', 'Cláusula 7 (Apoio)', 'Cláusula 3 (Termos e definições)', 'Cláusula 10 (Melhoria)'],
       correta: 2,
-      explicação: 'A cláusula 3 (Termos e definições) e informativa — remete a ISO 9000:2015. As cláusulas 4 a 10 contem requisitos auditaveis.'
+      explicacao: 'A cláusula 3 (Termos e definições) e informativa — remete a ISO 9000:2015. As cláusulas 4 a 10 contem requisitos auditaveis.'
     },
     {
       pergunta: 'A abordagem de processo (cláusula 4.4) exige que para cada processo sejam determinados:',
       alternativas: ['Apenas o nome e o responsável', 'Entradas, saídas, sequência, critérios, recursos, responsabilidades e riscos', 'Apenas o fluxograma', 'Apenas o indicador de resultado'],
       correta: 1,
-      explicação: 'A cláusula 4.4 exige determinação completa: entradas, saídas, sequência e interação, critérios e métodos, recursos, responsabilidades e autoridades, riscos e oportunidades, e ações de melhoria.'
+      explicacao: 'A cláusula 4.4 exige determinação completa: entradas, saídas, sequência e interação, critérios e métodos, recursos, responsabilidades e autoridades, riscos e oportunidades, e ações de melhoria.'
     },
     {
       pergunta: 'Ao planejar uma mudança no SGQ (cláusula 6.3), a organização deve considerar, EXCETO:',
       alternativas: ['O propósito da mudança e suas consequências', 'A integridade do SGQ', 'A opinião dos concorrentes sobre a mudança', 'A disponibilidade de recursos e a realocação de responsabilidades'],
       correta: 2,
-      explicação: 'A cláusula 6.3 exige considerar propósito e consequências, integridade do SGQ, disponibilidade de recursos e realocação de responsabilidades. A opinião de concorrentes não faz parte dos requisitos.'
+      explicacao: 'A cláusula 6.3 exige considerar propósito e consequências, integridade do SGQ, disponibilidade de recursos e realocação de responsabilidades. A opinião de concorrentes não faz parte dos requisitos.'
     }
   ];
 
   for (const q of finalQuiz) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final)
-      VALUES (${null}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicação}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final)
+      VALUES (${null}, ${courseId}, ${q.pergunta}, ${JSON.stringify(q.alternativas)}::jsonb, ${q.correta}, ${q.explicacao}, true)`;
   }
 
   console.log(`Curso 1 seed completo: courseId=${courseId}, 6 módulos, 24 aulas, 30 quiz de módulo + 30 quiz final`);

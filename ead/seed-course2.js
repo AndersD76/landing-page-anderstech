@@ -19,7 +19,7 @@ export async function seedCourse2(sql) {
   // ── Module 1: Fundamentos da Auditoria ──
   const [m1] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Fundamentos da Auditoria', 'Conceitos básicos, tipos de auditoria, princípios e terminologia da ISO 19011', 1) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m1.id}, '2-1-1-o-que-e-auditoria', 'O que e auditoria e tipos (1a, 2a, 3a parte)', '20 min', 1, ${`
 <h2>O que e auditoria?</h2>
 <p>Auditoria e um <strong>processo sistemático, independente e documentado</strong> para obter evidências objetivas e avalia-las de forma imparcial, a fim de determinar em que grau os critérios de auditoria são atendidos. Essa definição vem da ISO 19011:2018 e e a base de tudo que você aprendera neste curso.</p>
@@ -182,7 +182,7 @@ export async function seedCourse2(sql) {
   // ── Module 2: Gestão do Programa de Auditoria ──
   const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Gestão do Programa de Auditoria', 'Como planejar, gerenciar e melhorar o programa de auditorias internas', 2) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-2-1-conceito-programa', 'Conceito de programa de auditoria', '15 min', 1, ${`
 <h2>Conceito de programa de auditoria</h2>
 <p>O <strong>programa de auditoria</strong> e o planejamento macro que define quais auditorias serao realizadas em um determinado periodo, seus objetivos, abrangencia e recursos. Pense nele como o "plano anual de auditorias" — embora possa cobrir periodos diferentes de 12 meses.</p>
@@ -362,7 +362,7 @@ export async function seedCourse2(sql) {
   // ── Module 3: Planejamento da Auditoria ──
   const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Planejamento da Auditoria', 'Análise documental, plano de auditoria, checklists e amostragem', 3) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m3.id}, '2-3-1-análise-documentação', 'Análise de documentação pre-auditoria', '20 min', 1, ${`
 <h2>Análise de documentação pre-auditoria</h2>
 <p>Antes de pisar no "chão de fábrica", o auditor deve <strong>estudar</strong>. A análise de documentação e a primeira etapa prática de qualquer auditoria e determina a qualidade de todo o trabalho subsequente. Um auditor que chega sem preparação faz perguntas genericas e perde constatações importantes.</p>
@@ -551,7 +551,7 @@ export async function seedCourse2(sql) {
   // ── Module 4: Execução da Auditoria ──
   const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Execução da Auditoria', 'Reuniao de abertura, entrevistas, coleta de evidências e reunião de encerramento', 4) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m4.id}, '2-4-1-reunião-abertura', 'Reuniao de abertura', '15 min', 1, ${`
 <h2>Reuniao de abertura</h2>
 <p>A reunião de abertura e o <strong>primeiro contato formal</strong> entre a equipe auditora e os auditados. Ela define o tom da auditoria e pode determinar o nível de colaboração que você recebera. Uma abertura bem conduzida reduz ansiedade, esclarece expectativas e demonstra profissionalismo.</p>
@@ -619,7 +619,7 @@ export async function seedCourse2(sql) {
 <h3>Perguntas que funcionam</h3>
 <table>
 <tr><th>Tipo</th><th>Exemplo</th><th>Por que funciona</th></tr>
-<tr><td>Aberta</td><td>"Como você controla..."</td><td>Obriga explicação, revela o processo real</td></tr>
+<tr><td>Aberta</td><td>"Como você controla..."</td><td>Obriga explicacao, revela o processo real</td></tr>
 <tr><td>Mostre-me</td><td>"Mostre-me o registro de..."</td><td>Gera evidência objetiva</td></tr>
 <tr><td>Hipotetica</td><td>"Se chegar material fora da específicação, o que você faz?"</td><td>Testa conhecimento do procedimento</td></tr>
 <tr><td>Rastreamento</td><td>"Posso ver o pedido que originou essa entrega?"</td><td>Segue a trilha do processo (rastreabilidade)</td></tr>
@@ -665,7 +665,7 @@ export async function seedCourse2(sql) {
 <li><strong>Registre:</strong> Documente no checklist com detalhes suficientes</li>
 </ol>
 
-<div class="callout"><strong>Princípio fundamental:</strong> Uma constatação de NC deve sempre ter tres elementos: (1) o <strong>critério</strong> que não foi atendido, (2) a <strong>evidência</strong> objetiva, e (3) a <strong>explicação</strong> de por que não atende. Se falta qualquer um dos tres, a constatação e fragil.</div>
+<div class="callout"><strong>Princípio fundamental:</strong> Uma constatação de NC deve sempre ter tres elementos: (1) o <strong>critério</strong> que não foi atendido, (2) a <strong>evidência</strong> objetiva, e (3) a <strong>explicacao</strong> de por que não atende. Se falta qualquer um dos tres, a constatação e fragil.</div>
 
 <h3>Exemplo de constatação bem estruturada</h3>
 <div class="template-box">
@@ -732,7 +732,7 @@ export async function seedCourse2(sql) {
   // ── Module 5: Relatorio e Acompanhamento ──
   const [m5] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Relatorio e Acompanhamento', 'Redação de NCs, classificação, relatório final e follow-up de ações corretivas', 5) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m5.id}, '2-5-1-redigindo-ncs', 'Redigindo não conformidades claras', '20 min', 1, ${`
 <h2>Redigindo não conformidades claras</h2>
 <p>Uma não conformidade bem redigida e aquela que <strong>qualquer pessoa</strong> consegue entender — o auditado, o gestor de qualidade, a direção, e ate um auditor externo que nunca esteve na empresa. A clareza da NC determina a qualidade da ação corretiva que sera tomada.</p>
@@ -929,7 +929,7 @@ export async function seedCourse2(sql) {
   // ── Module 6: Habilidades do Auditor ──
   const [m6] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Habilidades do Auditor', 'Comunicação, gestão de conflitos, pensamento baseado em risco e ética', 6) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m6.id}, '2-6-1-comunicação-postura', 'Comunicação e postura profissional', '15 min', 1, ${`
 <h2>Comunicação e postura profissional</h2>
 <p>A competência técnica e fundamental, mas sem habilidade de comunicação, o auditor não consegue extrair informações, transmitir constatações e manter um clima construtivo. Muitas auditorias fracassam não por falta de conhecimento técnico, mas por <strong>falha de comunicação</strong>.</p>
@@ -1104,7 +1104,7 @@ export async function seedCourse2(sql) {
   // ── Module 7: Prática e Certificação ──
   const [m7] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Prática e Certificação', 'Estudos de caso completos, erros comuns e preparação para avaliação final', 7) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteudo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m7.id}, '2-7-1-caso-metalúrgica', 'Estudo de caso: auditoria completa numa metalúrgica', '25 min', 1, ${`
 <h2>Estudo de caso: auditoria interna completa numa metalúrgica</h2>
 <p>Vamos acompanhar uma auditoria interna do inicio ao fim na <strong>MetalSul Usinagem Ltda</strong>, uma metalúrgica com 85 funcionarios certificada ISO 9001:2015, localizada em Caxias do Sul/RS. O processo auditado sera <strong>Produção (usinagem CNC)</strong>.</p>
@@ -1336,7 +1336,7 @@ export async function seedCourse2(sql) {
     ['Qual é a principal diferença entre auditoria e inspeção?', ['Auditoria e mais rapida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não ha diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peca específica.'],
   ];
   for (const [p, a, r, e] of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 2 quiz
@@ -1348,7 +1348,7 @@ export async function seedCourse2(sql) {
     ['Um auditor interno pode auditar seu próprio setor de trabalho?', ['Sim, sempre','Não, pois compromete a independencia','Sim, se tiver mais de 5 anos de experiência','Sim, se o gestor autorizar'], 1, 'O princípio da independencia exige que o auditor não audite sua própria atividade/setor.'],
   ];
   for (const [p, a, r, e] of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 3 quiz
@@ -1360,7 +1360,7 @@ export async function seedCourse2(sql) {
     ['Se o auditor encontra uma não conformidade na amostra, o que deve fazer?', ['Encerrar a auditoria','Ampliar a amostra para verificar se e pontual ou sistemico','Ignorar se for apenas 1 caso','Registrar e seguir em frente sem ampliar'], 1, 'Ao encontrar uma NC, o auditor deve ampliar a amostra para determinar se o problema e pontual ou sistemico.'],
   ];
   for (const [p, a, r, e] of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 4 quiz
@@ -1372,7 +1372,7 @@ export async function seedCourse2(sql) {
     ['Perguntas indutivas ("Você sempre segue o procedimento, correto?") devem ser evitadas porque:', ['Sao muito longas','Induzem a resposta que o auditor quer ouvir','Sao dificeis de entender','Sao proibidas pela ISO 19011'], 1, 'Perguntas indutivas direcionam a resposta e não revelam a prática real.'],
   ];
   for (const [p, a, r, e] of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 5 quiz
@@ -1384,7 +1384,7 @@ export async function seedCourse2(sql) {
     ['A verificação de eficácia de uma ação corretiva responde a pergunta:', ['A ação foi implementada?','A NC foi registrada corretamente?','A causa raiz foi eliminada e a NC não reincidiu?','O auditor aprovou o relatório?'], 2, 'A verificação de eficácia confirma que a ação eliminou a causa raiz e que a NC não reincidiu.'],
   ];
   for (const [p, a, r, e] of m5q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 6 quiz
@@ -1396,7 +1396,7 @@ export async function seedCourse2(sql) {
     ['Qual situação configura conflito de interesse para o auditor?', ['Auditar um processo que nunca trabalhou','Auditar uma área onde trabalhou recentemente','Auditar um processo diferente do seu setor','Usar checklist padronizado da empresa'], 1, 'Auditar área onde trabalhou recentemente compromete a independencia e configura conflito de interesse.'],
   ];
   for (const [p, a, r, e] of m6q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m6.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m6.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 7 quiz
@@ -1408,7 +1408,7 @@ export async function seedCourse2(sql) {
     ['Ao identificar que o indice de refugo esta acima da meta, o auditor deve:', ['Abrir NC automaticamente','Investigar as causas e verificar se ha tratamento adequado dos desvios','Ignorar, pois indicadores não são escopo de auditoria','Recomendar demissao do supervisor'], 1, 'O auditor deve investigar se os desvios estao sendo tratados conforme o SGQ exige, não apenas apontar o número.'],
   ];
   for (const [p, a, r, e] of m7q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m7.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m7.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ══════════════════════════════════════════════
@@ -1447,6 +1447,6 @@ export async function seedCourse2(sql) {
     ['Qual é a principal lição dos estudos de caso do modulo 7?', ['Auditorias devem durar pelo menos 3 dias','A preparação e crítica e cada auditoria revela situações únicas que exigem julgamento','Todas as NCs devem ser maiores','Auditorias internas não geram ações corretivas relevantes'], 1, 'Os estudos de caso mostram que preparação sólida e julgamento profissional são essenciais para auditorias eficazes.'],
   ];
   for (const [p, a, r, e] of finalQ) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
   }
 }

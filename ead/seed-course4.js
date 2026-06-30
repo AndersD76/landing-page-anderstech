@@ -1,6 +1,6 @@
 export async function seedCourse4(sql) {
   const [course] = await sql`
-    INSERT INTO ead_courses (slug, titulo, subtitulo, descrição, carga_horaria, preco, preco_original, público, prerequisito, objetivo, ordem)
+    INSERT INTO ead_courses (slug, titulo, subtitulo, descricao, carga_horaria, preco, preco_original, publico, prerequisito, objetivo, ordem)
     VALUES (
       '5s-pratica-industrial',
       '5S na Prática Indústrial',
@@ -17,9 +17,9 @@ export async function seedCourse4(sql) {
   const courseId = course.id;
 
   // ── Module 1: Fundamentos do 5S ──
-  const [m1] = await sql`INSERT INTO ead_modules (course_id, titulo, descrição, ordem) VALUES (${courseId}, 'Fundamentos do 5S', 'Origem, conceitos, benefícios e diagnóstico inicial do programa 5S', 1) RETURNING id`;
+  const [m1] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Fundamentos do 5S', 'Origem, conceitos, benefícios e diagnóstico inicial do programa 5S', 1) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m1.id}, '1-1-origem-historia-5s', 'Origem e história do 5S (do Japão ao Brasil)', '20 min', 1, ${`
 <h2>Origem e história do 5S</h2>
 <p>O programa 5S é uma das métodologias mais conhecidas e aplicadas no mundo indústrial. Nasceu no <strong>Japão pós-Segunda Guerra Mundial</strong>, num contexto de reconstrução econômica em que cada recurso — material, espaço e tempo — precisava ser aproveitado ao máximo. O 5S não surgiu como teoria acadêmica: nasceu no <strong>chão de fábrica</strong>, criado por quem precisava resolver problemas reais de desorganização, desperdício e falta de padronização.</p>
@@ -246,9 +246,9 @@ export async function seedCourse4(sql) {
 `}, 'Checklist de diagnóstico 5S (modelo completo)')`;
 
   // ── Module 2: Implantação dos 3 Primeiros S ──
-  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descrição, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton é Seiso na prática indústrial com ferramentas e templates', 2) RETURNING id`;
+  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton é Seiso na prática indústrial com ferramentas e templates', 2) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-1-seiri-etiqueta-vermelha', 'Seiri na prática: etiqueta vermelha e critérios de descarte', '25 min', 1, ${`
 <h2>Seiri na prática: etiqueta vermelha e critérios de descarte</h2>
 <p>O Seiri (senso de útilização) é o primeiro passo concreto da implantação. Seu objetivo é simples e poderoso: <strong>eliminar tudo que não é necessário na área de trabalho</strong>. Parece fácil, mas na prática é o senso que gera mais resistência — porque mexe com o hábito de "guardar porque um dia pode servir".</p>
@@ -514,9 +514,9 @@ export async function seedCourse4(sql) {
 `}, 'Plano de implantação do Dia D (cronograma completo)')`;
 
   // ── Module 3: Padronização e Disciplina ──
-  const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descrição, ordem) VALUES (${courseId}, 'Padronização e Disciplina', 'Seiketsu, Shitsuke, gestão visual e engajamento de equipe', 3) RETURNING id`;
+  const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Padronização e Disciplina', 'Seiketsu, Shitsuke, gestão visual e engajamento de equipe', 3) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m3.id}, '3-1-seiketsu-padronização-checklists', 'Seiketsu: padronização e checklists diários', '22 min', 1, ${`
 <h2>Seiketsu: padronização e checklists diários</h2>
 <p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os tres primeiros</strong>. Sem ele, o Seiri, Seiton é Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
@@ -766,9 +766,9 @@ export async function seedCourse4(sql) {
 `}, 'Modelo de programa de reconhecimento 5S')`;
 
   // ── Module 4: Sustentação e Melhoria ──
-  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descrição, ordem) VALUES (${courseId}, 'Sustentação e Melhoria', 'Auditoria, indicadores, melhoria contínua e íntegração com outros programas', 4) RETURNING id`;
+  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Sustentação e Melhoria', 'Auditoria, indicadores, melhoria contínua e íntegração com outros programas', 4) RETURNING id`;
 
-  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duração, ordem, conteúdo, entregavel_titulo) VALUES
+  await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m4.id}, '4-1-auditoria-5s-checklist-pontuacao', 'Auditoria 5S: checklist e pontuação', '25 min', 1, ${`
 <h2>Auditoria 5S: checklist e pontuação</h2>
 <p>A auditoria 5S é o <strong>instrumento que mantem o programa vivo</strong>. Sem auditoria, não há medição. Sem medição, não há gestão. Sem gestão, o 5S desaparece em semanas. A auditoria não é "fiscalização" — é um <strong>diagnóstico periódico</strong> que mostra onde a área está e para onde precisa ir.</p>
