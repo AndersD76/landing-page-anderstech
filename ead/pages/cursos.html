@@ -219,7 +219,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
         +'<p class="desc">'+(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
         +'<div class="bottom">'
         +priceHtml
-        +'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar grátis</a>'
+        +(c.enrolled?'<a href="/ead/player/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar curso</a>':'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar grátis</a>')
         +'</div></div></div>';
     }).join('');
   }).catch(function(){

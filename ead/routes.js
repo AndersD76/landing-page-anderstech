@@ -251,7 +251,12 @@ router.get('/ead/api/courses', async (req, res) => {
       FROM ead_courses c WHERE c.ativo = true ORDER BY c.ordem
     `;
     const promo = promoAtiva();
-    const result = courses.map(c => ({ ...c, promo_gratuito: promo }));
+    let enrolledSlugs = [];
+    if (req.session?.eadUser) {
+      const enr = await sql`SELECT c.slug FROM ead_enrollments e JOIN ead_courses c ON c.id = e.course_id WHERE e.user_id = ${req.session.eadUser.id}`;
+      enrolledSlugs = enr.map(r => r.slug);
+    }
+    const result = courses.map(c => ({ ...c, promo_gratuito: promo, enrolled: enrolledSlugs.includes(c.slug) }));
     res.json(result);
   } catch (err) {
     console.error('EAD courses error:', err);

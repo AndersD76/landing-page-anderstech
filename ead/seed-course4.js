@@ -24,10 +24,53 @@ export async function seedCourse4(sql) {
 <h2>Origem e história do 5S</h2>
 <p>O programa 5S é uma das métodologias mais conhecidas e aplicadas no mundo indústrial. Nasceu no <strong>Japão pós-Segunda Guerra Mundial</strong>, num contexto de reconstrução econômica em que cada recurso — material, espaço e tempo — precisava ser aproveitado ao máximo. O 5S não surgiu como teoria acadêmica: nasceu no <strong>chão de fábrica</strong>, criado por quem precisava resolver problemas reais de desorganização, desperdício e falta de padronização.</p>
 
+<div class="diagram">
+  <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c5383c"/></marker>
+    </defs>
+    <circle cx="210" cy="130" r="45" fill="#0b1730" stroke="#c5383c" stroke-width="2"/>
+    <text x="210" y="126" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">5S</text>
+    <text x="210" y="140" text-anchor="middle" fill="#eab308" font-size="9">Base da</text>
+    <text x="210" y="151" text-anchor="middle" fill="#eab308" font-size="9">Melhoria</text>
+    <!-- Seiri -->
+    <circle cx="210" cy="30" r="28" fill="#c5383c" opacity="0.9"/>
+    <text x="210" y="27" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIRI</text>
+    <text x="210" y="39" text-anchor="middle" fill="#fff" font-size="7">Utilização</text>
+    <line x1="210" y1="58" x2="210" y2="83" stroke="#c5383c" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- Seiton -->
+    <circle cx="380" cy="90" r="28" fill="#2563eb" opacity="0.9"/>
+    <text x="380" y="87" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEITON</text>
+    <text x="380" y="99" text-anchor="middle" fill="#fff" font-size="7">Organização</text>
+    <line x1="354" y1="100" x2="258" y2="120" stroke="#2563eb" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- Seiso -->
+    <circle cx="340" cy="210" r="28" fill="#16a34a" opacity="0.9"/>
+    <text x="340" y="207" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEISO</text>
+    <text x="340" y="219" text-anchor="middle" fill="#fff" font-size="7">Limpeza</text>
+    <line x1="316" y1="196" x2="242" y2="158" stroke="#16a34a" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- Seiketsu -->
+    <circle cx="80" cy="210" r="28" fill="#eab308" opacity="0.9"/>
+    <text x="80" y="207" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">SEIKETSU</text>
+    <text x="80" y="219" text-anchor="middle" fill="#0b1730" font-size="7">Padronização</text>
+    <line x1="104" y1="196" x2="178" y2="158" stroke="#eab308" stroke-width="2" marker-end="url(#arr1)"/>
+    <!-- Shitsuke -->
+    <circle cx="40" cy="90" r="28" fill="#c5383c" opacity="0.7"/>
+    <text x="40" y="87" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">SHITSUKE</text>
+    <text x="40" y="99" text-anchor="middle" fill="#fff" font-size="7">Disciplina</text>
+    <line x1="66" y1="100" x2="162" y2="120" stroke="#c5383c" stroke-width="2" marker-end="url(#arr1)"/>
+  </svg>
+  <figcaption>Os 5 sensos e sua conexão com a base de melhoria contínua</figcaption>
+</div>
+
 <h3>O contexto japonês</h3>
 <p>Após 1945, o Japão estava devastado. A indústria precisava produzir mais com menos. Engenheiros e gestores japoneses, com forte influência dos consultores americanos W. Edwards Deming e Joseph Juran, desenvolveram sistemas de gestão que valorizavam a <strong>ordem, a limpeza e a disciplina</strong> como base para qualquer melhoria. O 5S foi uma das primeiras ferramentas adotadas em larga escala por empresas como Toyota, Honda e Matsushita (atual Panasonic).</p>
 
 <div class="callout"><strong>Curiosidade:</strong> No Japão, o conceito de manter o ambiente limpo e organizado tem raízes culturais profundas. Nas escolas japonesas, os próprios alunos limpam as salas de aula. O 5S indústrial apenas sistematizou algo que já era valor cultural.</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Em 1948, a Toyota Motor Corporation começou a implementar o que chamava de "housekeeping industrial". Taiichi Ohno, engenheiro-chefe, costumava dizer: "Comece limpando. Quando o chão estiver limpo, os problemas aparecerão sozinhos." Essa frase simples resume a essência do 5S: organização e limpeza não são fins em si mesmos — são ferramentas para tornar problemas visíveis.</p>
+</div>
 
 <h3>Os 5 sensos — origem do nome</h3>
 <p>O nome "5S" vem de cinco palavras japonesas que começam com a letra S:</p>
@@ -47,12 +90,13 @@ export async function seedCourse4(sql) {
 
 <h3>Evolução do 5S na indústria brasileira</h3>
 <p>A trajetória do 5S no Brasil pode ser dividida em fases:</p>
-<ul>
-<li><strong>Anos 1990:</strong> Introdução — focado em "limpeza e organização". Muitas empresas fizeram o "Dia da Limpeza" e pararam por aí.</li>
-<li><strong>Anos 2000:</strong> Integração com sistemas de gestão (ISO 9001, ISO 14001). O 5S passou a ser visto como base para programas mais robustos.</li>
-<li><strong>Anos 2010:</strong> Conexão com Lean Manufacturing. O 5S se tornou pré-requisito para TPM, Kaizen e produção enxuta.</li>
-<li><strong>Anos 2020 em diante:</strong> 5S digital — uso de apps para auditorias, fotos de antes/depois com geolocalização, dashboards de indicadores em tempo real.</li>
-</ul>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>Anos 1990 — Introdução</strong><br>Focado em "limpeza e organização". Muitas empresas fizeram o "Dia da Limpeza" e pararam por aí.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Anos 2000 — Integração</strong><br>Conexão com sistemas de gestão (ISO 9001, ISO 14001). O 5S passou a ser base para programas mais robustos.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Anos 2010 — Lean</strong><br>Pré-requisito para TPM, Kaizen e produção enxuta. O 5S se tornou a fundação do Lean Manufacturing.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Anos 2020+ — Digital</strong><br>Apps para auditorias, fotos antes/depois com geolocalização, dashboards de indicadores em tempo real.</div></div>
+</div>
 
 <h3>Por que o 5S contínua relevante</h3>
 <p>Mesmo após mais de 70 anos, o 5S contínua sendo a <strong>porta de entrada</strong> para qualquer programa de melhoria. A razão é simples: não adianta implantar Lean, Six Sigma ou Indústria 4.0 num ambiente sujo, desorganizado e sem padrão. O 5S cria a <strong>fundação cultural e física</strong> sobre a qual outros programas podem prosperar.</p>
@@ -61,11 +105,72 @@ export async function seedCourse4(sql) {
 
 <h3>5S não é faxina</h3>
 <p>O maior erro na implantação do 5S é reduzi-lo a "dia de limpeza". O 5S é um <strong>programa de mudança de comportamento</strong>. A limpeza e a organização são consequências — o verdadeiro objetivo é criar uma cultura de <strong>cuidado com o ambiente, respeito ao padrão e melhoria contínua</strong>. Quando tratado apenas como faxina, o programa morre em 3 meses.</p>
+
+<div class="comparison">
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 5S como faxina</h4><ul><li>Evento pontual ("Dia da Limpeza")</li><li>Resultados duram 2-3 semanas</li><li>Equipe vê como obrigação chata</li><li>Sem medição, sem padrão</li><li>Morre em 3 meses</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> 5S como programa</h4><ul><li>Mudança cultural contínua</li><li>Resultados sustentáveis por anos</li><li>Equipe engajada e orgulhosa</li><li>Auditorias, KPIs, reconhecimento</li><li>Base para Lean, TPM, ISO</li></ul></div>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O 5S nasceu no chão de fábrica japonês pós-guerra." data-fb-nok="Incorreto. O 5S surgiu no Japão pós-Segunda Guerra Mundial.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Em que contexto histórico o programa 5S foi criado?</div>
+  <button class="qi-option" data-key="a">Na Revolução Industrial europeia do século XIX</button>
+  <button class="qi-option" data-key="b">No Japão pós-Segunda Guerra Mundial</button>
+  <button class="qi-option" data-key="c">Nos EUA durante os anos 1980</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O 5S é a única ferramenta de gestão que gera resultados visíveis em horas (Dia D), mensuráveis em semanas (auditorias) e culturais em meses (disciplina). Por isso é sempre o primeiro passo — e nunca o último.</div></div>
 `}, NULL),
 
   (${m1.id}, '1-2-cinco-sensos-explicados', 'Os 5 sensos explicados: Seiri, Seiton, Seiso, Seiketsu, Shitsuke', '25 min', 2, ${`
 <h2>Os 5 sensos explicados</h2>
 <p>Cada um dos 5 sensos tem um propósito específico é uma lógica de sequência. Não se implanta o 5S de forma aleatória — os três primeiros sensos (Seiri, Seiton, Seiso) são de <strong>ação física</strong>, enquanto os dois últimos (Seiketsu, Shitsuke) são de <strong>manutenção e cultura</strong>. Entender cada senso em profundidade é fundamental antes de ir para a prática.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c5383c"/></marker>
+    </defs>
+    <!-- Ação física -->
+    <rect x="10" y="10" width="250" height="75" rx="8" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="135" y="28" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="bold">AÇÃO FÍSICA (fazer)</text>
+    <rect x="20" y="40" width="70" height="38" rx="6" fill="#c5383c"/>
+    <text x="55" y="57" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIRI</text>
+    <text x="55" y="69" text-anchor="middle" fill="#fff" font-size="7">Utilizar</text>
+    <line x1="90" y1="59" x2="105" y2="59" stroke="#c5383c" stroke-width="2" marker-end="url(#arr2)"/>
+    <rect x="107" y="40" width="70" height="38" rx="6" fill="#2563eb"/>
+    <text x="142" y="57" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEITON</text>
+    <text x="142" y="69" text-anchor="middle" fill="#fff" font-size="7">Organizar</text>
+    <line x1="177" y1="59" x2="192" y2="59" stroke="#c5383c" stroke-width="2" marker-end="url(#arr2)"/>
+    <rect x="194" y="40" width="60" height="38" rx="6" fill="#16a34a"/>
+    <text x="224" y="57" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEISO</text>
+    <text x="224" y="69" text-anchor="middle" fill="#fff" font-size="7">Limpar</text>
+    <!-- Manutenção e cultura -->
+    <rect x="275" y="10" width="140" height="75" rx="8" fill="none" stroke="#eab308" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="345" y="28" text-anchor="middle" fill="#eab308" font-size="9" font-weight="bold">CULTURA (manter)</text>
+    <rect x="282" y="40" width="60" height="38" rx="6" fill="#eab308"/>
+    <text x="312" y="55" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">SEIKETSU</text>
+    <text x="312" y="67" text-anchor="middle" fill="#0b1730" font-size="7">Padronizar</text>
+    <rect x="350" y="40" width="60" height="38" rx="6" fill="#c5383c" opacity="0.8"/>
+    <text x="380" y="55" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">SHITSUKE</text>
+    <text x="380" y="67" text-anchor="middle" fill="#fff" font-size="7">Disciplina</text>
+    <line x1="254" y1="59" x2="280" y2="59" stroke="#eab308" stroke-width="2" marker-end="url(#arr2)"/>
+    <!-- Seta retorno -->
+    <path d="M380 82 L380 140 L55 140 L55 82" fill="none" stroke="#c5383c" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr2)"/>
+    <text x="210" y="158" text-anchor="middle" fill="#c5383c" font-size="9">Ciclo contínuo de melhoria</text>
+  </svg>
+  <figcaption>Os 5 sensos: 3 de ação física + 2 de sustentação cultural, em ciclo contínuo</figcaption>
+</div>
+
+<div class="tabs">
+  <div class="tab-btns"><button class="tab-btn active">Seiri</button><button class="tab-btn">Seiton</button><button class="tab-btn">Seiso</button><button class="tab-btn">Seiketsu</button><button class="tab-btn">Shitsuke</button></div>
+  <div class="tab-panel active"><p><strong>Seiri (Utilização)</strong> — Separar o necessário do desnecessário. Ferramenta principal: etiqueta vermelha. Resultado: espaço liberado e menos desperdício.</p></div>
+  <div class="tab-panel"><p><strong>Seiton (Organização)</strong> — Um lugar para cada coisa. Ferramentas: shadow boards, sinalização de chão, endereçamento. Resultado: encontrar qualquer item em 30 segundos.</p></div>
+  <div class="tab-panel"><p><strong>Seiso (Limpeza)</strong> — Limpeza como inspeção. Ferramentas: checklist de limpeza, rotina de 5 minutos. Resultado: anomalias detectadas antes de virarem quebras.</p></div>
+  <div class="tab-panel"><p><strong>Seiketsu (Padronização)</strong> — Manter os 3 primeiros S com padrões visuais. Ferramentas: foto do estado padrão, checklist diário. Resultado: sustentabilidade do programa.</p></div>
+  <div class="tab-panel"><p><strong>Shitsuke (Disciplina)</strong> — Criar hábito e cultura. Ferramentas: auditoria, reconhecimento, exemplo da liderança. Resultado: 5S vira parte do DNA da empresa.</p></div>
+</div>
 
 <h3>1. Seiri — Senso de útilização</h3>
 <p>O primeiro senso é sobre <strong>separar o necessário do desnecessário</strong>. No ambiente indústrial, isso significa passar por cada área de trabalho e questionar: "Este item é necessário aqui? Com que frequência é usado?"</p>
@@ -76,6 +181,13 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="example"><strong>Exemplo real:</strong> Numa metalúrgica de Caxias do Sul (RS), ao aplicar o Seiri no setor de ferramentaria, foram encontradas 340 ferramentas. Após a classificação, 95 foram descartadas (quebradas ou obsoletas), 80 foram realocadas para o almoxarifado central, e 165 permaneceram no setor. O tempo médio para localizar uma ferramenta caiu de 4,5 minutos para 45 segundos.</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">340</div><div class="kpi-label">Ferramentas encontradas</div></div>
+  <div class="kpi-card"><div class="kpi-value">95</div><div class="kpi-label">Descartadas</div></div>
+  <div class="kpi-card"><div class="kpi-value">80</div><div class="kpi-label">Realocadas</div></div>
+  <div class="kpi-card"><div class="kpi-value">45s</div><div class="kpi-label">Novo tempo de busca</div></div>
+</div>
 
 <p>A principal ferramenta do Seiri é a <strong>etiqueta vermelha</strong> (red tag): um cartão que se fixa no item questionável, registrando data, responsável e destino proposto. Itens etiquetados ficam numa "área de quarentena" por 30 dias — se ninguém reclamar, são descartados ou realocados.</p>
 
@@ -119,11 +231,32 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="callout"><strong>A verdade sobre o Shitsuke:</strong> Pesquisas mostram que o 5S leva em média 18 a 24 meses para se tornar hábito numa organização. Nos primeiros 6 meses, é puro esforço consciente. Se a liderança afrouxar nesse período, o programa desmorona.</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Numa fábrica de componentes plásticos em Manaus (AM), o programa 5S foi implantado três vezes. As duas primeiras vezes, morreu em menos de 4 meses. Na terceira, o diretor decidiu participar pessoalmente das auditorias semanais e manter sua própria sala como referência. Dois anos depois, a empresa conquistou a ISO 9001 e credita ao 5S sustentado pelo exemplo a mudança cultural que tornou isso possível.</p>
+</div>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! Os 3 primeiros sensos são de ação física e os 2 últimos de manutenção cultural." data-fb-nok="Incorreto. Seiri, Seiton e Seiso são de ação física; Seiketsu e Shitsuke sustentam a cultura.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual a divisão correta dos 5 sensos?</div>
+  <button class="qi-option" data-key="a">Todos os 5 são de ação física</button>
+  <button class="qi-option" data-key="b">4 de ação + 1 de cultura</button>
+  <button class="qi-option" data-key="c">3 de ação física (Seiri, Seiton, Seiso) + 2 de cultura (Seiketsu, Shitsuke)</button>
+  <div class="qi-feedback"></div>
+</div>
 `}, 'Resumo visual dos 5 sensos (pôster para impressão)'),
 
   (${m1.id}, '1-3-beneficios-5s-numeros-reais', 'Benefícios do 5S com números reais', '20 min', 3, ${`
 <h2>Benefícios do 5S com números reais</h2>
 <p>Um dos maiores desafios ao implantar o 5S é convencer a liderança e os operadores de que o programa vale o investimento de tempo e dinheiro. Nesta aula, vamos apresentar <strong>dados concretos e casos reais</strong> de indústrias brasileiras que mediram os resultados do 5S.</p>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">-38%</div><div class="kpi-label">Tempo de setup</div></div>
+  <div class="kpi-card"><div class="kpi-value">-81%</div><div class="kpi-label">Tempo busca ferramenta</div></div>
+  <div class="kpi-card"><div class="kpi-value">-67%</div><div class="kpi-label">Acidentes/ano</div></div>
+  <div class="kpi-card"><div class="kpi-value">+22%</div><div class="kpi-label">Área útil recuperada</div></div>
+</div>
 
 <h3>Benefícios tangíveis (mensuráveis)</h3>
 <table>
@@ -145,6 +278,22 @@ export async function seedCourse4(sql) {
 <li><strong>Resultado em 12 meses:</strong> Redução de 42% nas paradas não planejadas, economia de R$ 95.000 em peças rejeitadas, área de produção ampliada em 35 m2 sem obra</li>
 <li><strong>ROI:</strong> R$ 95.000 / R$ 18.000 = 5,3x no primeiro ano</li>
 </ul>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+    <!-- ROI bar comparison -->
+    <text x="10" y="20" fill="#fff" font-size="11" font-weight="bold">ROI do 5S — Investimento vs. Retorno</text>
+    <!-- Investimento -->
+    <rect x="10" y="40" width="72" height="30" rx="4" fill="#c5383c"/>
+    <text x="46" y="59" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">R$ 18k</text>
+    <text x="90" y="59" fill="#aaa" font-size="9">Investimento</text>
+    <!-- Retorno -->
+    <rect x="10" y="80" width="380" height="30" rx="4" fill="#16a34a"/>
+    <text x="200" y="99" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">R$ 95k economia</text>
+    <text x="200" y="130" text-anchor="middle" fill="#eab308" font-size="13" font-weight="bold">ROI = 5,3x no primeiro ano</text>
+  </svg>
+  <figcaption>Caso da metalúrgica de Joinville: retorno 5,3 vezes superior ao investimento</figcaption>
+</div>
 
 <h3>Caso 2 — Cooperativa agrícola em Cascavel (PR)</h3>
 <p>Cooperativa com 80 funcionários na unidade de beneficiamento de grãos. Implantou o 5S no armazém e na área de classificação.</p>
@@ -173,6 +322,20 @@ export async function seedCourse4(sql) {
 
 <div class="example"><strong>Depoimento real:</strong> "Antes do 5S, eu perdia uns 40 minutos por turno procurando ferramenta e material. Hoje perco zero. Isso me dá mais calma pra trabalhar e mais tempo pra produzir." — Operador de CNC, metalúrgica de Erechim (RS), 2022.</div>
 
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Carlos, supervisor de produção numa fábrica de autopeças em Sorocaba (SP), era cético com o 5S: "Achava que era modinha de consultor." Após 6 meses, ele mediu: a equipe dele economizava 3h20min por turno em tempo de busca de ferramentas e materiais. "Isso se traduz em 680 horas/ano. Com nosso custo hora, dá mais de R$ 40.000/ano economizados só no meu setor."</p>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O ROI da metalúrgica de Joinville foi de 5,3 vezes o investimento." data-fb-nok="Incorreto. O ROI apresentado foi de 5,3x (R$ 95k de retorno sobre R$ 18k de investimento).">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">No caso da metalúrgica de Joinville, qual foi o ROI do 5S no primeiro ano?</div>
+  <button class="qi-option" data-key="a">2x o investimento</button>
+  <button class="qi-option" data-key="b">5,3x o investimento</button>
+  <button class="qi-option" data-key="c">10x o investimento</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>Quanto custa implantar o 5S?</h3>
 <table>
 <tr><th>Porte da empresa</th><th>Investimento típico</th><th>Inclui</th></tr>
@@ -183,6 +346,8 @@ export async function seedCourse4(sql) {
 </table>
 
 <div class="callout"><strong>Conclusão:</strong> O 5S tem um dos melhores ROIs entre todas as ferramentas de gestão indústrial. Com investimento baixo (comparado a automação ou novos equipamentos), gera resultados rápidos e visíveis. O único recurso realmente caro é o <strong>tempo da liderança</strong> — e esse é inegociável.</div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O 5S é provavelmente a única ferramenta de gestão em que o investimento inicial pode ser inferior a R$ 5.000 (para micro e pequenas empresas) e ainda assim gerar retorno mensurável em 3 meses. A chave não é dinheiro — é liderança e disciplina.</div></div>
 `}, 'Planilha de ROI do 5S (modelo editável)'),
 
   (${m1.id}, '1-4-diagnostico-inicial', 'Diagnóstico inicial: como avaliar o estado atual', '20 min', 4, ${`
@@ -223,16 +388,63 @@ export async function seedCourse4(sql) {
 </table>
 
 <h3>Passo a passo do diagnóstico</h3>
-<ol>
-<li><strong>Defina as áreas:</strong> Liste todas as áreas da fábrica (produção, almoxarifado, escritório, refeitório, vestiário, área externa). Cada área será avaliada separadamente.</li>
-<li><strong>Escolha os avaliadores:</strong> Mínimo 2 pessoas por área. Idealmente, inclua alguém de fora da área (olhar externo é mais crítico).</li>
-<li><strong>Fotografe tudo:</strong> Tire fotos sistemáticas de cada área — essas fotos serão o "antes" para comparação futura. Recomendação: use sempre o mesmo ângulo para o "depois".</li>
-<li><strong>Aplique o checklist:</strong> Cada avaliador pontua independentemente. Use a média.</li>
-<li><strong>Consolide os resultados:</strong> Monte um quadro com a nota de cada área e cada senso. Isso mostra onde atacar primeiro.</li>
-<li><strong>Apresente para a direção:</strong> Use as fotos e os números para justificar o investimento no programa.</li>
-</ol>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Defina as áreas</strong><br>Liste todas as áreas: produção, almoxarifado, escritório, refeitório, vestiário, área externa.</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Escolha os avaliadores</strong><br>Mínimo 2 pessoas por área. Inclua alguém de fora da área (olhar externo é mais crítico).</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Fotografe tudo</strong><br>Fotos sistemáticas de cada área — o "antes" para comparação futura. Use sempre o mesmo ângulo.</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Aplique o checklist</strong><br>Cada avaliador pontua independentemente. Use a média das notas.</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Consolide resultados</strong><br>Quadro com nota de cada área e senso. Isso mostra onde atacar primeiro.</div></div>
+  <div class="step-item"><div class="step-content"><strong>6. Apresente à direção</strong><br>Use as fotos e os números para justificar o investimento no programa.</div></div>
+</div>
 
 <div class="example"><strong>Exemplo prático:</strong> Uma indústria alimentícia de Lajeado (RS) fez o diagnóstico em 8 áreas. Resultado médio: 32% (insuficiente). A área mais crítica foi o almoxarifado de embalagens (18%), e a menos crítica foi o escritório administrativo (55%). A direção aprovou o programa ao ver as fotos do almoxarifado — itens empilhados sem identificação, embalagens vencidas misturadas com novas, corredores bloqueados.</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Diagnóstico por área — exemplo real</text>
+    <!-- Bars -->
+    <rect x="30" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="30" y="138" width="36" height="27" rx="3" fill="#c5383c"/>
+    <text x="48" y="155" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">18%</text>
+    <text x="48" y="180" text-anchor="middle" fill="#aaa" font-size="7">Almox.</text>
+
+    <rect x="80" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="80" y="130" width="36" height="35" rx="3" fill="#c5383c"/>
+    <text x="98" y="152" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">25%</text>
+    <text x="98" y="180" text-anchor="middle" fill="#aaa" font-size="7">Prod. A</text>
+
+    <rect x="130" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="130" y="126" width="36" height="39" rx="3" fill="#c5383c"/>
+    <text x="148" y="150" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">28%</text>
+    <text x="148" y="180" text-anchor="middle" fill="#aaa" font-size="7">Prod. B</text>
+
+    <rect x="180" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="180" y="122" width="36" height="43" rx="3" fill="#eab308"/>
+    <text x="198" y="148" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">30%</text>
+    <text x="198" y="180" text-anchor="middle" fill="#aaa" font-size="7">Manutenção</text>
+
+    <rect x="230" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="230" y="113" width="36" height="52" rx="3" fill="#eab308"/>
+    <text x="248" y="143" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">35%</text>
+    <text x="248" y="180" text-anchor="middle" fill="#aaa" font-size="7">Expedição</text>
+
+    <rect x="280" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="280" y="109" width="36" height="56" rx="3" fill="#eab308"/>
+    <text x="298" y="141" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">38%</text>
+    <text x="298" y="180" text-anchor="middle" fill="#aaa" font-size="7">Refeitório</text>
+
+    <rect x="330" y="35" width="36" height="130" rx="3" fill="#333" stroke="#555" stroke-width="0.5"/>
+    <rect x="330" y="96" width="36" height="69" rx="3" fill="#16a34a"/>
+    <text x="348" y="135" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">55%</text>
+    <text x="348" y="180" text-anchor="middle" fill="#aaa" font-size="7">Escritório</text>
+
+    <!-- Média line -->
+    <line x1="25" y1="123" x2="371" y2="123" stroke="#eab308" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="380" y="127" fill="#eab308" font-size="8">32% média</text>
+  </svg>
+  <figcaption>Exemplo de diagnóstico: indústria alimentícia de Lajeado (RS) — 8 áreas avaliadas</figcaption>
+</div>
 
 <h3>Erros comuns no diagnóstico</h3>
 <ul>
@@ -243,6 +455,25 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="callout"><strong>Dica de ouro:</strong> Faça o diagnóstico numa sexta-feira à tarde, quando a fábrica está no "modo automático" e ninguém se preparou para ser avaliado. Isso mostra a realidade. Se avisar com antecedência, todo mundo vai arrumar na véspera — e você não medirá o dia a dia real.</div>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Listar todas as áreas da fábrica (incluindo refeitório, vestiário, área externa)</li>
+  <li><span class="ck-box"></span>Definir avaliadores (mínimo 2 por área, incluir olhar externo)</li>
+  <li><span class="ck-box"></span>Preparar câmera/celular para fotos do "antes"</li>
+  <li><span class="ck-box"></span>Imprimir checklists de diagnóstico para todas as áreas</li>
+  <li><span class="ck-box"></span>Agendar sem aviso prévio (sexta-feira à tarde, idealmente)</li>
+  <li><span class="ck-box"></span>Consolidar notas por área e por senso em planilha</li>
+  <li><span class="ck-box"></span>Montar apresentação com fotos + números para a direção</li>
+</ul>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Fotografar o antes é essencial para comprovar a evolução depois." data-fb-nok="Incorreto. As fotos do estado atual são a evidência mais poderosa para comparação futura.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é a ferramenta mais poderosa de motivação no diagnóstico do 5S?</div>
+  <button class="qi-option" data-key="a">Fotos de antes/depois para comparação visual</button>
+  <button class="qi-option" data-key="b">Planilha com indicadores numéricos</button>
+  <button class="qi-option" data-key="c">Relatório escrito para a diretoria</button>
+  <div class="qi-feedback"></div>
+</div>
 `}, 'Checklist de diagnóstico 5S (modelo completo)')`;
 
   // ── Module 2: Implantação dos 3 Primeiros S ──
@@ -255,13 +486,58 @@ export async function seedCourse4(sql) {
 
 <h3>A técnica da etiqueta vermelha (Red Tag)</h3>
 <p>A etiqueta vermelha é o método mais eficaz para o Seiri. Funciona assim:</p>
-<ol>
-<li><strong>Percorra a área</strong> com a equipe e identifique todos os itens questionáveis</li>
-<li><strong>Fixe uma etiqueta vermelha</strong> em cada item cuja necessidade não é unânime</li>
-<li><strong>Registre na etiqueta:</strong> data, nome do item, responsável, motivo da etiqueta e destino sugerido</li>
-<li><strong>Mova para a "área de quarentena"</strong> (um local definido para itens etiquetados)</li>
-<li><strong>Aguarde 30 dias:</strong> Se ninguém reclamar ou justificar a permanência, o item é descartado, vendido ou doado</li>
-</ol>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Percorra a área</strong><br>Com a equipe, identifique todos os itens questionáveis</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Fixe etiqueta vermelha</strong><br>Em cada item cuja necessidade não é unânime</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Registre na etiqueta</strong><br>Data, nome do item, responsável, motivo e destino sugerido</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Mova para quarentena</strong><br>Local definido para itens etiquetados</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Aguarde 30 dias</strong><br>Se ninguém reclamar, item é descartado, vendido ou doado</div></div>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c5383c"/></marker>
+    </defs>
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Fluxo da Etiqueta Vermelha</text>
+    <!-- Item -->
+    <rect x="10" y="40" width="80" height="40" rx="6" fill="#0b1730" stroke="#555" stroke-width="1"/>
+    <text x="50" y="57" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">ITEM</text>
+    <text x="50" y="69" text-anchor="middle" fill="#aaa" font-size="7">encontrado</text>
+    <line x1="90" y1="60" x2="118" y2="60" stroke="#c5383c" stroke-width="2" marker-end="url(#arr3)"/>
+    <!-- Decisão -->
+    <polygon points="160,35 200,55 160,75 120,55" fill="#eab308" stroke="#eab308" stroke-width="1"/>
+    <text x="160" y="58" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">Necessário?</text>
+    <!-- Sim -->
+    <line x1="160" y1="35" x2="160" y2="10" stroke="#16a34a" stroke-width="2"/>
+    <text x="170" y="15" fill="#16a34a" font-size="8">SIM</text>
+    <text x="210" y="15" fill="#aaa" font-size="8">→ Mantém no posto</text>
+    <!-- Não / Dúvida -->
+    <line x1="200" y1="55" x2="228" y2="55" stroke="#c5383c" stroke-width="2" marker-end="url(#arr3)"/>
+    <text x="210" y="48" fill="#c5383c" font-size="8">NÃO</text>
+    <!-- Etiquetar -->
+    <rect x="230" y="38" width="75" height="35" rx="6" fill="#c5383c"/>
+    <text x="268" y="54" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">ETIQUETAR</text>
+    <text x="268" y="65" text-anchor="middle" fill="#fff" font-size="7">Etiqueta vermelha</text>
+    <line x1="268" y1="73" x2="268" y2="98" stroke="#c5383c" stroke-width="2" marker-end="url(#arr3)"/>
+    <!-- Quarentena -->
+    <rect x="220" y="100" width="95" height="35" rx="6" fill="#0b1730" stroke="#eab308" stroke-width="1.5"/>
+    <text x="268" y="116" text-anchor="middle" fill="#eab308" font-size="9" font-weight="bold">QUARENTENA</text>
+    <text x="268" y="128" text-anchor="middle" fill="#aaa" font-size="7">30 dias</text>
+    <line x1="268" y1="135" x2="268" y2="155" stroke="#c5383c" stroke-width="2" marker-end="url(#arr3)"/>
+    <!-- Destinos -->
+    <rect x="155" y="160" width="55" height="30" rx="5" fill="#c5383c" opacity="0.7"/>
+    <text x="183" y="179" text-anchor="middle" fill="#fff" font-size="8">Descartar</text>
+    <rect x="220" y="160" width="55" height="30" rx="5" fill="#2563eb" opacity="0.7"/>
+    <text x="248" y="179" text-anchor="middle" fill="#fff" font-size="8">Vender</text>
+    <rect x="285" y="160" width="55" height="30" rx="5" fill="#16a34a" opacity="0.7"/>
+    <text x="313" y="179" text-anchor="middle" fill="#fff" font-size="8">Doar</text>
+    <rect x="350" y="160" width="55" height="30" rx="5" fill="#eab308" opacity="0.7"/>
+    <text x="378" y="179" text-anchor="middle" fill="#0b1730" font-size="8">Realocar</text>
+  </svg>
+  <figcaption>Fluxo decisório da etiqueta vermelha: do item encontrado ao destino final</figcaption>
+</div>
 
 <div class="template-box">
 <h3>Template: Etiqueta Vermelha 5S</h3>
@@ -303,6 +579,27 @@ export async function seedCourse4(sql) {
 
 <div class="example"><strong>Caso real:</strong> Uma fábrica de móveis de Bento Gonçalves (RS) liberou 85 m² de área útil só com o Seiri. Os itens removidos incluíam: 2 máquinas desativadas há 4 anos, 120 kg de retalhos de MDF sem classificação, 3 estantes cheias de catálogos de fornecedores que não existiam mais, e 45 baldes de cola vencida. O espaço liberado foi transformado em área de embalagem, eliminando um gargalo de produção.</div>
 
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Dona Marta, encarregada da ferramentaria numa indústria de embalagens em Gravataí (RS), relembra: "No primeiro Seiri, eu quase chorei. Tinha ferramentas ali que eu guardava há 8 anos 'por garantia'. Quando medimos, 40% do armário era lixo. Hoje, com o shadow board, sei exatamente o que tenho. E aquele espaço que eu usava pra guardar tralha virou minha mesa de trabalho."</p>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">85 m²</div><div class="kpi-label">Área útil liberada</div></div>
+  <div class="kpi-card"><div class="kpi-value">2</div><div class="kpi-label">Máquinas desativadas removidas</div></div>
+  <div class="kpi-card"><div class="kpi-value">120 kg</div><div class="kpi-label">Retalhos descartados</div></div>
+  <div class="kpi-card"><div class="kpi-value">45</div><div class="kpi-label">Baldes de cola vencida</div></div>
+</div>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! O prazo padrão da quarentena é 30 dias." data-fb-nok="Incorreto. Itens etiquetados ficam na área de quarentena por 30 dias antes da decisão final.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é o prazo padrão para manter itens na área de quarentena antes do descarte?</div>
+  <button class="qi-option" data-key="a">7 dias</button>
+  <button class="qi-option" data-key="b">15 dias</button>
+  <button class="qi-option" data-key="c">30 dias</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>Registro e controle</h3>
 <p>Mantenha um controle de todas as etiquetas vermelhas emitidas:</p>
 <ul>
@@ -327,6 +624,44 @@ export async function seedCourse4(sql) {
 
 <h3>Shadow boards (quadros de sombra)</h3>
 <p>O shadow board é um painel onde o contorno de cada ferramenta e desenhado ou pintado. Quando a ferramenta está no lugar, o contorno está coberto. Quando falta, o contorno vazio mostra imediatamente <strong>o que falta e onde deveria estar</strong>.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Shadow Board — Antes vs. Depois</text>
+    <!-- Antes -->
+    <rect x="10" y="30" width="180" height="150" rx="6" fill="#1a1a2e" stroke="#c5383c" stroke-width="1.5"/>
+    <text x="100" y="48" text-anchor="middle" fill="#c5383c" font-size="10" font-weight="bold">ANTES</text>
+    <!-- Ferramentas bagunçadas -->
+    <rect x="25" y="60" width="40" height="8" rx="2" fill="#666" transform="rotate(15, 45, 64)"/>
+    <rect x="50" y="80" width="35" height="7" rx="2" fill="#888" transform="rotate(-20, 68, 84)"/>
+    <rect x="80" y="55" width="30" height="10" rx="2" fill="#777" transform="rotate(45, 95, 60)"/>
+    <circle cx="140" cy="100" r="12" fill="none" stroke="#666" stroke-width="2"/>
+    <rect x="100" y="120" width="50" height="6" rx="2" fill="#555" transform="rotate(-10, 125, 123)"/>
+    <rect x="30" y="130" width="25" height="30" rx="3" fill="#444"/>
+    <text x="100" y="170" text-anchor="middle" fill="#c5383c" font-size="8">Desordem — tempo de busca: 4+ min</text>
+    <!-- Depois -->
+    <rect x="210" y="30" width="180" height="150" rx="6" fill="#1a1a2e" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="300" y="48" text-anchor="middle" fill="#16a34a" font-size="10" font-weight="bold">DEPOIS</text>
+    <!-- Contornos organizados -->
+    <rect x="225" y="60" width="45" height="8" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <rect x="225" y="60" width="45" height="8" rx="2" fill="#16a34a" opacity="0.3"/>
+    <text x="248" y="57" fill="#aaa" font-size="6">Chave 10mm</text>
+    <rect x="225" y="82" width="40" height="7" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <rect x="225" y="82" width="40" height="7" rx="2" fill="#16a34a" opacity="0.3"/>
+    <text x="245" y="79" fill="#aaa" font-size="6">Chave 13mm</text>
+    <rect x="285" y="60" width="35" height="8" rx="2" fill="none" stroke="#eab308" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="303" y="57" fill="#aaa" font-size="6">Alicate</text>
+    <text x="303" y="73" fill="#eab308" font-size="7" font-weight="bold">FALTANDO</text>
+    <rect x="285" y="82" width="50" height="7" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <rect x="285" y="82" width="50" height="7" rx="2" fill="#16a34a" opacity="0.3"/>
+    <text x="310" y="79" fill="#aaa" font-size="6">Chave Phillips</text>
+    <circle cx="260" cy="120" r="12" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <circle cx="260" cy="120" r="12" fill="#16a34a" opacity="0.2"/>
+    <text x="260" y="108" text-anchor="middle" fill="#aaa" font-size="6">Fita métrica</text>
+    <text x="300" y="170" text-anchor="middle" fill="#16a34a" font-size="8">Ordem — tempo de busca: 30 seg</text>
+  </svg>
+  <figcaption>Shadow board: contornos mostram imediatamente o que falta e onde deveria estar</figcaption>
+</div>
 
 <div class="callout"><strong>Como fazer um shadow board:</strong> (1) Selecione as ferramentas do posto. (2) Fixe um painel de MDF pintado de branco ou cinza claro. (3) Posicione cada ferramenta e trace o contorno com caneta permanente preta. (4) Instale ganchos ou suportes. (5) Identifique cada posição com etiqueta. Custo médio: R$ 80 a R$ 200 por painel (material + mao de obra interna).</div>
 
@@ -371,6 +706,27 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="callout"><strong>Teste do Seiton:</strong> Pegue um visitante que nunca entrou na fábrica e peça para ele localizar um item. Se conseguir em menos de 30 segundos seguindo a sinalização, o Seiton está bom. Se precisar perguntar a alguém, precisa melhorar.</div>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Shadow boards instalados em todos os postos de trabalho</li>
+  <li><span class="ck-box"></span>Demarcação de chão com cores padronizadas (NBR 7195)</li>
+  <li><span class="ck-box"></span>Endereçamento de estantes (E-P-C) com etiquetas visíveis</li>
+  <li><span class="ck-box"></span>Itens mais usados na altura dos olhos (1,20m a 1,60m)</li>
+  <li><span class="ck-box"></span>Sistema FIFO implantado para insumos com validade</li>
+  <li><span class="ck-box"></span>Kanban visual para controle de estoque (verde/amarelo/vermelho)</li>
+  <li><span class="ck-box"></span>Teste dos 30 segundos aprovado com visitante externo</li>
+</ul>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A regra dos 30 segundos é o benchmark do Seiton." data-fb-nok="Incorreto. No Seiton bem implantado, qualquer item deve ser encontrado em até 30 segundos.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Segundo a "regra dos 30 segundos", o que deve acontecer nesse tempo?</div>
+  <button class="qi-option" data-key="a">A limpeza do posto deve ser completada</button>
+  <button class="qi-option" data-key="b">Qualquer item deve ser localizado por qualquer pessoa</button>
+  <button class="qi-option" data-key="c">O setup da máquina deve iniciar</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O shadow board é a ferramenta com melhor relação custo-benefício do 5S: custa R$ 80-200 e elimina 100% do tempo de busca de ferramentas no posto. Se você pudesse implantar apenas uma coisa do Seiton, seria o shadow board.</div></div>
 `}, 'Guia de sinalização de chao indústrial'),
 
   (${m2.id}, '2-3-seiso-limpeza-inspeção', 'Seiso na prática: limpeza como inspeção', '22 min', 3, ${`
@@ -389,13 +745,39 @@ export async function seedCourse4(sql) {
 
 <h3>O conceito de "limpeza como inspeção"</h3>
 <p>Este conceito vem do TPM (Total Productive Maintenance) e se íntegra perfeitamente ao 5S. A ideia é:</p>
-<ol>
-<li><strong>Limpar:</strong> Remover sujeira, poeira, óleo, resíduos</li>
-<li><strong>Inspecionar:</strong> Enquanto limpa, observar: vazamentos, folgas, rachaduras, fios soltos, ruídos anormais, vibração</li>
-<li><strong>Registrar:</strong> Anotar anomalias encontradas numa ficha ou app</li>
-<li><strong>Corrigir ou escalar:</strong> Se o operador pode resolver, resolve. Se não, abre ordem de serviço para manutenção</li>
-<li><strong>Eliminar a fonte:</strong> Investigar por que a sujeira aparece é tratar a causa raiz</li>
-</ol>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Limpar</strong><br>Remover sujeira, poeira, óleo, resíduos</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Inspecionar</strong><br>Observar vazamentos, folgas, rachaduras, fios soltos, ruídos anormais</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Registrar</strong><br>Anotar anomalias encontradas numa ficha ou app</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Corrigir ou escalar</strong><br>Resolver ou abrir ordem de serviço para manutenção</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Eliminar a fonte</strong><br>Investigar e tratar a causa raiz da sujeira</div></div>
+</div>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Seiso: Limpeza como Inspeção — Ciclo</text>
+    <!-- Ciclo circular -->
+    <circle cx="200" cy="105" r="65" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <circle cx="200" cy="105" r="30" fill="#0b1730" stroke="#16a34a" stroke-width="2"/>
+    <text x="200" y="101" text-anchor="middle" fill="#16a34a" font-size="9" font-weight="bold">SEISO</text>
+    <text x="200" y="113" text-anchor="middle" fill="#fff" font-size="7">Limpeza +</text>
+    <text x="200" y="122" text-anchor="middle" fill="#fff" font-size="7">Inspeção</text>
+    <!-- Pontos no ciclo -->
+    <circle cx="200" cy="37" r="16" fill="#2563eb"/>
+    <text x="200" y="41" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">Limpar</text>
+    <circle cx="265" cy="60" r="16" fill="#16a34a"/>
+    <text x="265" y="63" text-anchor="middle" fill="#fff" font-size="6" font-weight="bold">Inspecionar</text>
+    <circle cx="270" cy="140" r="16" fill="#eab308"/>
+    <text x="270" y="143" text-anchor="middle" fill="#0b1730" font-size="7" font-weight="bold">Registrar</text>
+    <circle cx="200" cy="173" r="16" fill="#c5383c"/>
+    <text x="200" y="176" text-anchor="middle" fill="#fff" font-size="7" font-weight="bold">Corrigir</text>
+    <circle cx="130" cy="140" r="16" fill="#c5383c" opacity="0.7"/>
+    <text x="130" y="138" text-anchor="middle" fill="#fff" font-size="6" font-weight="bold">Eliminar</text>
+    <text x="130" y="147" text-anchor="middle" fill="#fff" font-size="6">fonte</text>
+  </svg>
+  <figcaption>Ciclo do Seiso: limpar, inspecionar, registrar, corrigir e eliminar a fonte</figcaption>
+</div>
 
 <div class="example"><strong>Caso real:</strong> Numa indústria de alimentos de Ponta Grossa (PR), a implantação do Seiso como inspeção nas linhas de envase gerou 67 relatórios de anomalias no primeiro mês. Dentre eles: 12 vazamentos de ar comprimido, 8 mangueiras com microfissuras, 3 rolamentos com ruído anormal é 1 fio elétrico desencapado. Custo total de reparo: R$ 3.800. Custo estimado se os problemas evoluissem para quebra: mais de R$ 45.000 (incluindo parada de linha e perda de produto).</div>
 
@@ -430,6 +812,25 @@ export async function seedCourse4(sql) {
 
 <div class="callout"><strong>Indicador de Seiso:</strong> Meça o "número de fontes de sujeira eliminadas por mês". No início será alto (muitas fontes). Com o tempo, cai — sinal de que o ambiente está realmente mais limpo de forma sustentável, não apenas varrido.</div>
 
+<div class="comparison">
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Faxina comum</h4><ul><li>Feita pela equipe de limpeza</li><li>Quando está sujo</li><li>Objetivo: estética</li><li>Limpa a sujeira</li><li>Resultado: limpo temporariamente</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Seiso Industrial</h4><ul><li>Feita pelo próprio operador</li><li>Rotina diária programada (5 min)</li><li>Objetivo: inspeção e prevenção</li><li>Elimina a fonte da sujeira</li><li>Resultado: anomalias detectadas</li></ul></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>José Ricardo, operador de torno CNC numa metalúrgica de São Bernardo do Campo (SP): "Antes eu achava que limpar máquina era coisa de faxineiro. Depois que comecei a fazer o check de 5 minutos, em uma semana achei um vazamento de óleo hidráulico que ninguém tinha visto. O mecânico disse que se tivesse continuado, ia travar o cabeçote. Reparo: R$ 200. Se travasse: R$ 12.000. Agora eu limpo com orgulho."</p>
+</div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! No Seiso industrial, ao limpar o operador também inspeciona buscando anomalias." data-fb-nok="Incorreto. O conceito de limpeza como inspeção significa que o operador observa anomalias enquanto limpa.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">No conceito de "limpeza como inspeção", o que diferencia o Seiso da faxina comum?</div>
+  <button class="qi-option" data-key="a">O operador observa anomalias (vazamentos, folgas, fissuras) enquanto limpa</button>
+  <button class="qi-option" data-key="b">Usa-se produtos de limpeza industriais mais caros</button>
+  <button class="qi-option" data-key="c">A limpeza é feita apenas uma vez por semana</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>Materiais de limpeza adequados</h3>
 <p>Cada tipo de indústria exige materiais específicos:</p>
 <table>
@@ -444,6 +845,54 @@ export async function seedCourse4(sql) {
   (${m2.id}, '2-4-dia-d-5s', 'Dia D do 5S: planejando o mutirao', '23 min', 4, ${`
 <h2>Dia D do 5S: planejando o mutirao</h2>
 <p>O Dia D é o marco de lançamento do programa 5S. É um <strong>evento concentrado</strong>, geralmente de 4 a 8 horas, onde toda a fábrica para (ou roda em escala reduzida) para aplicar os tres primeiros sensos de uma vez. O Dia D não é o 5S — e o <strong>pontape inicial</strong> que gera impacto visual e emocional, criando momentum para o programa.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eab308"/></marker>
+    </defs>
+    <text x="210" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Cronograma do Dia D — 6 horas</text>
+    <!-- Timeline -->
+    <line x1="20" y1="60" x2="400" y2="60" stroke="#555" stroke-width="2"/>
+    <!-- 07h00 -->
+    <circle cx="40" cy="60" r="6" fill="#2563eb"/>
+    <text x="40" y="50" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="bold">07h00</text>
+    <text x="40" y="80" text-anchor="middle" fill="#aaa" font-size="7">Abertura</text>
+    <text x="40" y="90" text-anchor="middle" fill="#aaa" font-size="6">30 min</text>
+    <!-- 07h30 -->
+    <circle cx="110" cy="60" r="6" fill="#c5383c"/>
+    <text x="110" y="50" text-anchor="middle" fill="#c5383c" font-size="8" font-weight="bold">07h30</text>
+    <text x="110" y="80" text-anchor="middle" fill="#c5383c" font-size="7" font-weight="bold">SEIRI</text>
+    <text x="110" y="90" text-anchor="middle" fill="#aaa" font-size="6">2 horas</text>
+    <rect x="60" y="55" width="100" height="10" rx="3" fill="#c5383c" opacity="0.3"/>
+    <!-- 09h30 -->
+    <circle cx="190" cy="60" r="6" fill="#eab308"/>
+    <text x="190" y="50" text-anchor="middle" fill="#eab308" font-size="8" font-weight="bold">09h30</text>
+    <text x="190" y="80" text-anchor="middle" fill="#aaa" font-size="7">Café</text>
+    <text x="190" y="90" text-anchor="middle" fill="#aaa" font-size="6">15 min</text>
+    <!-- 09h45 -->
+    <circle cx="220" cy="60" r="6" fill="#16a34a"/>
+    <text x="220" y="50" text-anchor="middle" fill="#16a34a" font-size="8" font-weight="bold">09h45</text>
+    <text x="240" y="80" text-anchor="middle" fill="#16a34a" font-size="7" font-weight="bold">SEISO</text>
+    <text x="240" y="90" text-anchor="middle" fill="#aaa" font-size="6">1h30</text>
+    <rect x="220" y="55" width="70" height="10" rx="3" fill="#16a34a" opacity="0.3"/>
+    <!-- 11h15 -->
+    <circle cx="300" cy="60" r="6" fill="#2563eb"/>
+    <text x="300" y="50" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="bold">11h15</text>
+    <text x="310" y="80" text-anchor="middle" fill="#2563eb" font-size="7" font-weight="bold">SEITON</text>
+    <text x="310" y="90" text-anchor="middle" fill="#aaa" font-size="6">1h15</text>
+    <rect x="300" y="55" width="60" height="10" rx="3" fill="#2563eb" opacity="0.3"/>
+    <!-- 12h30 -->
+    <circle cx="370" cy="60" r="6" fill="#eab308"/>
+    <text x="370" y="50" text-anchor="middle" fill="#eab308" font-size="8" font-weight="bold">12h30</text>
+    <text x="370" y="80" text-anchor="middle" fill="#aaa" font-size="7">Encerramento</text>
+    <text x="370" y="90" text-anchor="middle" fill="#aaa" font-size="6">30 min</text>
+    <!-- Legenda -->
+    <rect x="50" y="120" width="320" height="30" rx="6" fill="#0b1730" stroke="#555" stroke-width="0.5"/>
+    <text x="210" y="139" text-anchor="middle" fill="#eab308" font-size="9">Dica: ofereça café/lanche — é investimento, não luxo!</text>
+  </svg>
+  <figcaption>Roteiro hora a hora de um Dia D de 6 horas</figcaption>
+</div>
 
 <h3>Antes do Dia D — planejamento (2-4 semanas antes)</h3>
 
@@ -503,6 +952,27 @@ export async function seedCourse4(sql) {
 
 <div class="example"><strong>Resultado típico:</strong> Uma fábrica de embalagens plásticas de Curitiba (PR) com 65 funcionários fez seu Dia D em um sábado. Resultados do dia: 2,3 toneladas de material descartado, 120 etiquetas vermelhas emitidas, 45 m2 de área liberada, 8 caçambas de entulho. Na segunda-feira seguinte, os operadores relataram que "parecia outra fábrica". A nota do diagnóstico 5S subiu de 28% para 58% em um único dia.</div>
 
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">2,3 ton</div><div class="kpi-label">Material descartado</div></div>
+  <div class="kpi-card"><div class="kpi-value">120</div><div class="kpi-label">Etiquetas vermelhas</div></div>
+  <div class="kpi-card"><div class="kpi-value">45 m²</div><div class="kpi-label">Área liberada</div></div>
+  <div class="kpi-card"><div class="kpi-value">28→58%</div><div class="kpi-label">Nota 5S (1 dia!)</div></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Anderson, diretor de uma fábrica de plásticos em Joinville (SC): "Fiz questão de limpar o chão junto com os operadores no Dia D. Alguns ficaram surpresos de me ver de joelhos limpando, mas a mensagem foi clara: isso é importante pra mim também. Dois anos depois, o pessoal ainda fala daquele dia."</p>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! Fotografar o antes é essencial e deve ser feito antes de qualquer atividade." data-fb-nok="Incorreto. O registro fotográfico do estado inicial deve acontecer antes de qualquer ação, pois sem ele não há como comprovar a evolução.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">No Dia D, qual é a atividade que DEVE acontecer ANTES de todas as outras?</div>
+  <button class="qi-option" data-key="a">Limpar as máquinas</button>
+  <button class="qi-option" data-key="b">Fotografar o estado atual (antes)</button>
+  <button class="qi-option" data-key="c">Distribuir as etiquetas vermelhas</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>Pós-Dia D — as primeiras 4 semanas</h3>
 <p>O período após o Dia D e crítico. Ações essenciais:</p>
 <ol>
@@ -520,6 +990,37 @@ export async function seedCourse4(sql) {
   (${m3.id}, '3-1-seiketsu-padronização-checklists', 'Seiketsu: padronização e checklists diários', '22 min', 1, ${`
 <h2>Seiketsu: padronização e checklists diários</h2>
 <p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os tres primeiros</strong>. Sem ele, o Seiri, Seiton é Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Seiketsu: a cola que sustenta os 3 primeiros S</text>
+    <!-- 3 primeiros S -->
+    <rect x="30" y="40" width="70" height="50" rx="6" fill="#c5383c"/>
+    <text x="65" y="62" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIRI</text>
+    <text x="65" y="78" text-anchor="middle" fill="#fff" font-size="7">Separar</text>
+    <rect x="115" y="40" width="70" height="50" rx="6" fill="#2563eb"/>
+    <text x="150" y="62" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEITON</text>
+    <text x="150" y="78" text-anchor="middle" fill="#fff" font-size="7">Organizar</text>
+    <rect x="200" y="40" width="70" height="50" rx="6" fill="#16a34a"/>
+    <text x="235" y="62" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEISO</text>
+    <text x="235" y="78" text-anchor="middle" fill="#fff" font-size="7">Limpar</text>
+    <!-- Seiketsu como base -->
+    <rect x="20" y="100" width="260" height="40" rx="8" fill="#eab308"/>
+    <text x="150" y="118" text-anchor="middle" fill="#0b1730" font-size="11" font-weight="bold">SEIKETSU — Padronização</text>
+    <text x="150" y="132" text-anchor="middle" fill="#0b1730" font-size="8">Foto padrão + Checklist + Cores + Rotina</text>
+    <!-- Sem Seiketsu -->
+    <rect x="300" y="40" width="90" height="100" rx="6" fill="#0b1730" stroke="#c5383c" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="345" y="60" text-anchor="middle" fill="#c5383c" font-size="9" font-weight="bold">SEM</text>
+    <text x="345" y="75" text-anchor="middle" fill="#c5383c" font-size="9" font-weight="bold">SEIKETSU</text>
+    <text x="345" y="95" text-anchor="middle" fill="#aaa" font-size="8">Tudo volta</text>
+    <text x="345" y="108" text-anchor="middle" fill="#aaa" font-size="8">ao normal</text>
+    <text x="345" y="121" text-anchor="middle" fill="#aaa" font-size="8">em semanas</text>
+    <!-- Setas -->
+    <text x="150" y="160" text-anchor="middle" fill="#16a34a" font-size="9" font-weight="bold">Com padrão = sustentável</text>
+    <text x="345" y="155" text-anchor="middle" fill="#c5383c" font-size="9">Sem padrão = efêmero</text>
+  </svg>
+  <figcaption>Sem Seiketsu, os 3 primeiros S se desfazem em semanas</figcaption>
+</div>
 
 <h3>O que é padronizar no contexto do 5S?</h3>
 <p>Padronizar significa definir <strong>como as coisas devem ser</strong> e garantir que todos saibam e sigam. No 5S, isso inclui:</p>
@@ -577,6 +1078,35 @@ export async function seedCourse4(sql) {
 </table>
 
 <div class="example"><strong>Caso prático:</strong> Uma fábrica de autopecas de Sorocaba (SP) padronizou todo o sistema de cores em 30 dias. Investiu R$ 9.500 em tinta e mao de obra. Resultado: tempo de íntegração de novos funcionários caiu de 5 dias para 2 dias (porque o ambiente "se explica sozinho"), e o número de quase-acidentes por "não sabia que era perigoso" caiu 70%.</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">R$ 8-15</div><div class="kpi-label">Custo/foto padrão A3</div></div>
+  <div class="kpi-card"><div class="kpi-value">5→2 dias</div><div class="kpi-label">Integração novos func.</div></div>
+  <div class="kpi-card"><div class="kpi-value">-70%</div><div class="kpi-label">Quase-acidentes</div></div>
+  <div class="kpi-card"><div class="kpi-value">5 min/dia</div><div class="kpi-label">Checklist diário</div></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Fernanda, analista de qualidade de uma indústria de alimentos em Chapecó (SC): "Quando colamos a foto do estado padrão na parede de cada setor, a mudança foi imediata. Os operadores passaram a se autocorrigir. Um deles disse: 'Agora todo mundo vê se tá errado — não precisa mais de fiscal.' Custou R$ 120 para fazer as 10 fotos da fábrica toda. O retorno? Imensurável."</p>
+</div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A foto do estado padrão é a ferramenta mais simples e eficaz do Seiketsu." data-fb-nok="Incorreto. A foto do estado padrão — impressa e fixada no local — é a referência visual mais simples e de melhor custo-benefício do 4º S.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é a ferramenta mais simples e de melhor custo-benefício do Seiketsu?</div>
+  <button class="qi-option" data-key="a">Foto do estado padrão fixada no local (R$ 8-15)</button>
+  <button class="qi-option" data-key="b">Sistema ERP de controle</button>
+  <button class="qi-option" data-key="c">App de auditoria digital</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Foto do estado padrão impressa A3 e fixada em cada área</li>
+  <li><span class="ck-box"></span>Checklist diário de 5S implantado em todos os setores</li>
+  <li><span class="ck-box"></span>Sistema de cores padronizado (tubulações, áreas, equipamentos)</li>
+  <li><span class="ck-box"></span>Limites visuais de quantidade definidos (min/max)</li>
+  <li><span class="ck-box"></span>Regras de uso compartilhado documentadas e visíveis</li>
+</ul>
 `}, 'Checklist diário de 5S (modelo editável)'),
 
   (${m3.id}, '3-2-shitsuke-disciplina-lideranca', 'Shitsuke: disciplina e o papel da liderança', '22 min', 2, ${`
@@ -594,6 +1124,34 @@ export async function seedCourse4(sql) {
 <tr><td><strong>3. Habito</strong></td><td>O padrão é seguido naturalmente, faz parte da cultura</td><td>Após 18 meses</td><td>Manter auditorias mensais, inovar, celebrar resultados</td></tr>
 </table>
 
+<div class="diagram">
+  <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Evolução da disciplina no 5S</text>
+    <!-- Eixo X -->
+    <line x1="40" y1="120" x2="380" y2="120" stroke="#555" stroke-width="1.5"/>
+    <text x="210" y="150" text-anchor="middle" fill="#aaa" font-size="8">Tempo (meses)</text>
+    <!-- Eixo Y -->
+    <line x1="40" y1="30" x2="40" y2="120" stroke="#555" stroke-width="1.5"/>
+    <text x="15" y="75" text-anchor="middle" fill="#aaa" font-size="7" transform="rotate(-90, 15, 75)">Autonomia</text>
+    <!-- Fase 1 -->
+    <rect x="50" y="35" width="100" height="82" rx="4" fill="#c5383c" opacity="0.15"/>
+    <line x1="50" y1="110" x2="150" y2="90" stroke="#c5383c" stroke-width="2.5"/>
+    <text x="100" y="55" text-anchor="middle" fill="#c5383c" font-size="9" font-weight="bold">Cobrança</text>
+    <text x="100" y="130" text-anchor="middle" fill="#aaa" font-size="7">Meses 1-6</text>
+    <!-- Fase 2 -->
+    <rect x="155" y="35" width="110" height="82" rx="4" fill="#eab308" opacity="0.15"/>
+    <line x1="155" y1="90" x2="265" y2="55" stroke="#eab308" stroke-width="2.5"/>
+    <text x="210" y="48" text-anchor="middle" fill="#eab308" font-size="9" font-weight="bold">Consciência</text>
+    <text x="210" y="130" text-anchor="middle" fill="#aaa" font-size="7">Meses 6-18</text>
+    <!-- Fase 3 -->
+    <rect x="270" y="35" width="105" height="82" rx="4" fill="#16a34a" opacity="0.15"/>
+    <line x1="270" y1="55" x2="370" y2="40" stroke="#16a34a" stroke-width="2.5"/>
+    <text x="320" y="48" text-anchor="middle" fill="#16a34a" font-size="9" font-weight="bold">Hábito</text>
+    <text x="320" y="130" text-anchor="middle" fill="#aaa" font-size="7">Após 18 meses</text>
+  </svg>
+  <figcaption>A disciplina evolui em 3 estágios: de cobrança externa a hábito natural (18-24 meses)</figcaption>
+</div>
+
 <h3>O papel da liderança — o fator mais crítico</h3>
 <p>Pesquisas de campo em indústrias brasileiras revelam um padrão claro: <strong>onde a liderança prática o 5S, o programa funciona; onde não prática, o programa morre</strong>. Não importa quanto treinamento você deu. Se o supervisor tem a mesa bagunçada, se o gerente ignora o chao sujo, o operador entende que "5S não é de verdade".</p>
 
@@ -609,15 +1167,37 @@ export async function seedCourse4(sql) {
 </ol>
 
 <h3>O que mata o 5S — os 7 assassinos</h3>
-<ul>
-<li><strong>1. Falta de exemplo da liderança:</strong> "Faça o que eu digo, não o que eu faco" não funciona</li>
-<li><strong>2. Dia D sem continuidade:</strong> Fazer o evento e abandonar depois</li>
-<li><strong>3. Punicao sem reconhecimento:</strong> Cobrar erros e ignorar acertos</li>
-<li><strong>4. Falta de tempo dedicado:</strong> "Não temos tempo para 5S, tem produção para entregar" — se não há 5 minutos por dia, o problema é de gestão, não de tempo</li>
-<li><strong>5. Rotatividade sem treinamento:</strong> Novos funcionários não sabem o que é 5S é desfazem o trabalho dos outros</li>
-<li><strong>6. Sem medição:</strong> O que não é medido não é gerênciado. Sem auditoria, sem nota, sem acompanhamento</li>
-<li><strong>7. Programa "da qualidade":</strong> Quando o 5S é visto como responsabilidade só do setor de qualidade, e não de todos</li>
-</ul>
+
+<div class="accordion-lesson">
+  <div class="acc-item">
+    <button class="acc-trigger">1. Falta de exemplo da liderança <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>"Faça o que eu digo, não o que eu faço" não funciona. Se o supervisor tem a mesa bagunçada, o operador entende que "5S não é de verdade".</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">2. Dia D sem continuidade <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Fazer o evento e abandonar depois. Sem os 4º e 5º S, tudo volta ao normal em 60 dias.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">3. Punição sem reconhecimento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Cobrar erros e ignorar acertos. Reconhecimento público é mais poderoso que qualquer punição.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">4. Falta de tempo dedicado <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>"Não temos tempo para 5S, tem produção para entregar." Se não há 5 minutos por dia, o problema é de gestão, não de tempo.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">5. Rotatividade sem treinamento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Novos funcionários que não são treinados no 5S desfazem o trabalho dos outros. Integração de 5S no primeiro dia é essencial.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">6. Sem medição <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>O que não é medido não é gerenciado. Sem auditoria, sem nota, sem acompanhamento — o programa morre.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">7. Programa "da qualidade" <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Quando o 5S é visto como responsabilidade só do setor de qualidade, e não de todos, perde força e legitimidade.</p></div>
+  </div>
+</div>
 
 <div class="example"><strong>Caso real:</strong> Uma indústria grafica de Blumenau (SC) implantou o 5S em 2019. Em 6 meses, a nota média subiu de 35% para 78%. Então o gerente de produção foi transferido e o substituto "não acreditava em 5S". Em 4 meses, a nota caiu para 42%. A empresa só recuperou quando o diretor assumiu pessoalmente as auditorias e cobrou o novo gerente. Licao: a sustentação depende da <strong>estrutura</strong> (auditorias, metas, reconhecimento), não de uma única pessoa.</div>
 
@@ -629,11 +1209,91 @@ export async function seedCourse4(sql) {
 <li>Apresentação do shadow board e do checklist da área</li>
 <li>Designacao de um "padrinho de 5S" (colega experiente) na primeira semana</li>
 </ul>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A liderança pelo exemplo é o fator mais crítico para a sustentação do 5S." data-fb-nok="Incorreto. Pesquisas de campo mostram que onde a liderança pratica o 5S, o programa funciona; onde não pratica, morre.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é o fator mais crítico para que o programa 5S sobreviva no longo prazo?</div>
+  <button class="qi-option" data-key="a">Investimento em tecnologia (apps, sensores)</button>
+  <button class="qi-option" data-key="b">Contratação de consultoria externa permanente</button>
+  <button class="qi-option" data-key="c">Exemplo e envolvimento ativo da liderança</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> A sustentação do 5S depende de estrutura (auditorias, metas, reconhecimento), não de uma única pessoa. Se o programa depende de um gerente específico, quando ele sair o 5S morre junto. Construa o sistema, não a dependência.</div></div>
 `}, NULL),
 
   (${m3.id}, '3-3-gestão-visual-quadros-sinalização', 'Gestão visual: quadros, sinalização e cores', '20 min', 3, ${`
 <h2>Gestão visual: quadros, sinalização e cores</h2>
 <p>A gestão visual e o <strong>sistema nervoso do 5S</strong>. Num ambiente com boa gestão visual, qualquer pessoa — funcionário, visitante, auditor — consegue entender a situação em segundos, sem precisar perguntar. O objetivo é simples: <strong>tornar o estado normal e o anormal visíveis instantaneamente</strong>.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="210" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Layout de Fábrica com Gestão Visual</text>
+    <!-- Chão da fábrica -->
+    <rect x="10" y="30" width="400" height="175" rx="6" fill="#1a1a2e" stroke="#555" stroke-width="1"/>
+    <!-- Corredor principal (amarelo) -->
+    <rect x="180" y="30" width="50" height="175" rx="0" fill="#eab308" opacity="0.15"/>
+    <line x1="180" y1="30" x2="180" y2="205" stroke="#eab308" stroke-width="2"/>
+    <line x1="230" y1="30" x2="230" y2="205" stroke="#eab308" stroke-width="2"/>
+    <text x="205" y="200" text-anchor="middle" fill="#eab308" font-size="7" transform="rotate(-90, 205, 170)">CORREDOR</text>
+    <!-- Setor Produção (esquerda) -->
+    <rect x="20" y="40" width="150" height="70" rx="4" fill="none" stroke="#2563eb" stroke-width="1"/>
+    <text x="95" y="55" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="bold">PRODUÇÃO A</text>
+    <!-- Máquinas -->
+    <rect x="30" y="62" width="35" height="20" rx="3" fill="#2563eb" opacity="0.4"/>
+    <text x="48" y="75" text-anchor="middle" fill="#fff" font-size="6">CNC-01</text>
+    <rect x="75" y="62" width="35" height="20" rx="3" fill="#2563eb" opacity="0.4"/>
+    <text x="93" y="75" text-anchor="middle" fill="#fff" font-size="6">CNC-02</text>
+    <rect x="120" y="62" width="35" height="20" rx="3" fill="#2563eb" opacity="0.4"/>
+    <text x="138" y="75" text-anchor="middle" fill="#fff" font-size="6">CNC-03</text>
+    <!-- Shadow board -->
+    <rect x="30" y="90" width="25" height="12" rx="2" fill="#16a34a" opacity="0.5"/>
+    <text x="43" y="99" text-anchor="middle" fill="#fff" font-size="5">SB</text>
+    <!-- Quadro gestão visual -->
+    <rect x="120" y="90" width="40" height="12" rx="2" fill="#eab308" opacity="0.5"/>
+    <text x="140" y="99" text-anchor="middle" fill="#0b1730" font-size="5">QUADRO</text>
+    <!-- Setor Produção B (esquerda baixo) -->
+    <rect x="20" y="120" width="150" height="75" rx="4" fill="none" stroke="#16a34a" stroke-width="1"/>
+    <text x="95" y="135" text-anchor="middle" fill="#16a34a" font-size="8" font-weight="bold">PRODUÇÃO B</text>
+    <rect x="30" y="145" width="35" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+    <rect x="75" y="145" width="35" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+    <rect x="120" y="145" width="35" height="20" rx="3" fill="#16a34a" opacity="0.3"/>
+    <!-- Almoxarifado (direita) -->
+    <rect x="240" y="40" width="160" height="70" rx="4" fill="none" stroke="#eab308" stroke-width="1"/>
+    <text x="320" y="55" text-anchor="middle" fill="#eab308" font-size="8" font-weight="bold">ALMOXARIFADO</text>
+    <!-- Estantes -->
+    <rect x="250" y="62" width="15" height="40" rx="2" fill="#555"/>
+    <text x="258" y="85" text-anchor="middle" fill="#fff" font-size="5">E1</text>
+    <rect x="275" y="62" width="15" height="40" rx="2" fill="#555"/>
+    <text x="283" y="85" text-anchor="middle" fill="#fff" font-size="5">E2</text>
+    <rect x="300" y="62" width="15" height="40" rx="2" fill="#555"/>
+    <text x="308" y="85" text-anchor="middle" fill="#fff" font-size="5">E3</text>
+    <!-- Área não conforme -->
+    <rect x="350" y="62" width="40" height="40" rx="4" fill="#c5383c" opacity="0.2" stroke="#c5383c" stroke-width="1.5"/>
+    <text x="370" y="78" text-anchor="middle" fill="#c5383c" font-size="6" font-weight="bold">N.C.</text>
+    <text x="370" y="88" text-anchor="middle" fill="#c5383c" font-size="5">Rejeito</text>
+    <!-- Expedição (direita baixo) -->
+    <rect x="240" y="120" width="160" height="75" rx="4" fill="none" stroke="#c5383c" stroke-width="1"/>
+    <text x="320" y="135" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">EXPEDIÇÃO</text>
+    <!-- Extintores -->
+    <circle cx="172" cy="115" r="5" fill="#c5383c"/>
+    <text x="172" y="117" text-anchor="middle" fill="#fff" font-size="5">E</text>
+    <circle cx="237" cy="115" r="5" fill="#c5383c"/>
+    <text x="237" y="117" text-anchor="middle" fill="#fff" font-size="5">E</text>
+    <!-- Legenda -->
+    <rect x="250" y="150" width="8" height="8" fill="#eab308" opacity="0.4"/>
+    <text x="262" y="157" fill="#aaa" font-size="6">Corredor</text>
+    <rect x="300" y="150" width="8" height="8" fill="#c5383c"/>
+    <text x="312" y="157" fill="#aaa" font-size="6">Extintor</text>
+    <rect x="345" y="150" width="8" height="8" fill="#c5383c" opacity="0.3"/>
+    <text x="357" y="157" fill="#aaa" font-size="6">Não conforme</text>
+    <rect x="250" y="165" width="8" height="8" fill="#16a34a" opacity="0.5"/>
+    <text x="262" y="172" fill="#aaa" font-size="6">Shadow board</text>
+    <rect x="315" y="165" width="8" height="8" fill="#eab308" opacity="0.5"/>
+    <text x="327" y="172" fill="#aaa" font-size="6">Quadro visual</text>
+  </svg>
+  <figcaption>Layout de fábrica com elementos de gestão visual: corredores, sinalização, shadow boards e quadros</figcaption>
+</div>
 
 <h3>Princípios da gestão visual indústrial</h3>
 <ol>
@@ -690,11 +1350,33 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="callout"><strong>Equilibrio:</strong> A gestão visual física (quadros, placas, cores) e insubstituivel — funciona sem energia, sem wifi, sem celular. A digital complementa, mas não substitui. Comece pelo físico, depois adicione o digital onde agregar valor.</div>
+
+<div class="tabs">
+  <div class="tab-btns"><button class="tab-btn active">Gestão Visual Física</button><button class="tab-btn">Gestão Visual Digital</button></div>
+  <div class="tab-panel active"><p><strong>Vantagens:</strong> Funciona sem energia, sem wifi. Visível a qualquer momento. Baixo custo de implantação. Sem barreira tecnológica para operadores.</p><p><strong>Ferramentas:</strong> Quadros de bordo, placas de identificação, sinalização de chão, shadow boards, Andon, etiquetas.</p><p><strong>Quando usar:</strong> Sempre. É a base insubstituível da gestão visual.</p></div>
+  <div class="tab-panel"><p><strong>Vantagens:</strong> Indicadores em tempo real, histórico automático, fotos geolocalizadas, acesso remoto.</p><p><strong>Ferramentas:</strong> TVs/monitores no setor, apps de auditoria, QR codes em máquinas/estantes.</p><p><strong>Quando usar:</strong> Como complemento após o físico estar consolidado. Ideal para fábricas com 100+ funcionários.</p></div>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A informação deve estar onde é necessária, no ponto de uso." data-fb-nok="Incorreto. O princípio fundamental da gestão visual é que a informação fique no ponto de uso, não centralizada.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é o princípio mais importante da gestão visual industrial?</div>
+  <button class="qi-option" data-key="a">Toda informação deve ser digital para facilitar o acesso</button>
+  <button class="qi-option" data-key="b">A informação deve estar no ponto de uso, compreensível em 5 segundos</button>
+  <button class="qi-option" data-key="c">Apenas supervisores devem ter acesso aos quadros de indicadores</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Um auditor da ANVISA visitou uma indústria de alimentos em Marília (SP) e comentou: "Não precisei pedir nenhum documento na primeira hora. O chão de fábrica me contou tudo: onde era cada área, quais produtos estavam liberados, quais estavam bloqueados, quando foi a última limpeza. A gestão visual economizou meu tempo e me deu confiança no sistema da empresa."</p>
+</div>
 `}, 'Layout de quadro de gestão visual (modelo A1)'),
 
   (${m3.id}, '3-4-engajamento-equipe-comunicação', 'Engajamento de equipe e comunicação', '20 min', 4, ${`
 <h2>Engajamento de equipe e comunicação</h2>
 <p>O 5S só funciona se as <strong>pessoas acreditarem no programa</strong>. Não se implanta 5S por decreto — se implanta por <strong>convencimento, envolvimento e comunicação</strong>. Esta aula aborda as estratégias práticas para engajar todos os niveis da organização.</p>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> "As pessoas apoiam o que ajudam a construir." Quanto mais a equipe participar das decisões do 5S (onde guardar, como organizar, que padrão definir), mais ela vai defender o programa. Faça com eles, nunca para eles.</div></div>
 
 <h3>Por que as pessoas resistem ao 5S?</h3>
 <p>Entender a resistência é o primeiro passo para supera-la:</p>
@@ -709,26 +1391,24 @@ export async function seedCourse4(sql) {
 
 <h3>Estratégias de engajamento por nível</h3>
 
-<h3>Alta direção</h3>
-<ul>
-<li><strong>Linguagem:</strong> ROI, produtividade, redução de custo, imagem para clientes e auditores</li>
-<li><strong>Ferramenta:</strong> Apresente o diagnóstico com fotos e números. Compare o custo do 5S com o custo do desperdício.</li>
-<li><strong>Compromisso:</strong> A direção deve estar presente no Dia D e nas auditorias iniciais.</li>
-</ul>
-
-<h3>Gestão intermediaria (supervisores e líderes)</h3>
-<ul>
-<li><strong>Linguagem:</strong> Facilitação do trabalho, menos problemas diários, equipe mais autônoma</li>
-<li><strong>Ferramenta:</strong> Treine-os como auditores 5S. Dando-lhes papel ativo, cria senso de propriedade.</li>
-<li><strong>Compromisso:</strong> Cada supervisor e responsável pela nota 5S da sua área.</li>
-</ul>
-
-<h3>Operadores</h3>
-<ul>
-<li><strong>Linguagem:</strong> Conforto, segurança, orgulho do ambiente, menos tempo perdido</li>
-<li><strong>Ferramenta:</strong> Envolvimento na decisão (eles decidem o que fica é o que sai, onde cada coisa fica). Faça com eles, não para eles.</li>
-<li><strong>Compromisso:</strong> Cada operador e responsável pelo check diário da sua área.</li>
-</ul>
+<div class="tabs">
+  <div class="tab-btns"><button class="tab-btn active">Alta Direção</button><button class="tab-btn">Supervisores/Líderes</button><button class="tab-btn">Operadores</button></div>
+  <div class="tab-panel active">
+    <p><strong>Linguagem:</strong> ROI, produtividade, redução de custo, imagem para clientes e auditores</p>
+    <p><strong>Ferramenta:</strong> Apresente o diagnóstico com fotos e números. Compare o custo do 5S com o custo do desperdício.</p>
+    <p><strong>Compromisso:</strong> A direção deve estar presente no Dia D e nas auditorias iniciais.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Linguagem:</strong> Facilitação do trabalho, menos problemas diários, equipe mais autônoma</p>
+    <p><strong>Ferramenta:</strong> Treine-os como auditores 5S. Dando-lhes papel ativo, cria senso de propriedade.</p>
+    <p><strong>Compromisso:</strong> Cada supervisor é responsável pela nota 5S da sua área.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Linguagem:</strong> Conforto, segurança, orgulho do ambiente, menos tempo perdido</p>
+    <p><strong>Ferramenta:</strong> Envolvimento na decisão (eles decidem o que fica e o que sai, onde cada coisa fica). Faça com eles, não para eles.</p>
+    <p><strong>Compromisso:</strong> Cada operador é responsável pelo check diário da sua área.</p>
+  </div>
+</div>
 
 <div class="callout"><strong>Princípio fundamental:</strong> "As pessoas apoiam o que ajudam a construir." Quanto mais a equipe participar das decisões do 5S (onde guardar, como organizar, que padrão definir), mais ela vai defender o programa.</div>
 
@@ -763,6 +1443,50 @@ export async function seedCourse4(sql) {
 <li>Mandato de 12 meses, renovável</li>
 </ul>
 <p>Atribuições: planejar auditorias, compilar resultados, propor melhorias, organizar eventos de reconhecimento, treinar novos funcionários.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Programa de Reconhecimento 5S</text>
+    <!-- Troféu central -->
+    <rect x="150" y="35" width="100" height="50" rx="8" fill="#eab308" opacity="0.2" stroke="#eab308" stroke-width="1.5"/>
+    <text x="200" y="55" text-anchor="middle" fill="#eab308" font-size="10" font-weight="bold">RECONHECIMENTO</text>
+    <text x="200" y="70" text-anchor="middle" fill="#eab308" font-size="8">Mais eficaz que punição</text>
+    <!-- Opções -->
+    <rect x="10" y="100" width="85" height="55" rx="6" fill="#0b1730" stroke="#16a34a" stroke-width="1"/>
+    <text x="53" y="118" text-anchor="middle" fill="#16a34a" font-size="8" font-weight="bold">Área Destaque</text>
+    <text x="53" y="130" text-anchor="middle" fill="#aaa" font-size="7">Troféu simbólico</text>
+    <text x="53" y="142" text-anchor="middle" fill="#16a34a" font-size="8">Custo: R$ 0</text>
+    <rect x="105" y="100" width="85" height="55" rx="6" fill="#0b1730" stroke="#2563eb" stroke-width="1"/>
+    <text x="148" y="118" text-anchor="middle" fill="#2563eb" font-size="8" font-weight="bold">Foto no Quadro</text>
+    <text x="148" y="130" text-anchor="middle" fill="#aaa" font-size="7">Orgulho visível</text>
+    <text x="148" y="142" text-anchor="middle" fill="#2563eb" font-size="8">Custo: R$ 0</text>
+    <rect x="200" y="100" width="95" height="55" rx="6" fill="#0b1730" stroke="#eab308" stroke-width="1"/>
+    <text x="248" y="118" text-anchor="middle" fill="#eab308" font-size="8" font-weight="bold">Café c/ Direção</text>
+    <text x="248" y="130" text-anchor="middle" fill="#aaa" font-size="7">Agradecimento pessoal</text>
+    <text x="248" y="142" text-anchor="middle" fill="#eab308" font-size="8">Custo: R$ 50</text>
+    <rect x="305" y="100" width="85" height="55" rx="6" fill="#0b1730" stroke="#c5383c" stroke-width="1"/>
+    <text x="348" y="118" text-anchor="middle" fill="#c5383c" font-size="8" font-weight="bold">Prêmio Trim.</text>
+    <text x="348" y="130" text-anchor="middle" fill="#aaa" font-size="7">Churrasco/cesta</text>
+    <text x="348" y="142" text-anchor="middle" fill="#c5383c" font-size="8">R$ 500-1.500</text>
+    <!-- Seta impacto -->
+    <text x="200" y="172" text-anchor="middle" fill="#aaa" font-size="8">Impacto na motivação: alto independente do custo</text>
+  </svg>
+  <figcaption>4 estratégias de reconhecimento: de custo zero a investimento moderado, todas com alto impacto</figcaption>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>O "Torneio 5S" de uma metalúrgica em Piracicaba (SP) transformou a cultura da empresa. As 6 áreas competem mensalmente e a vencedora ganha uma estrela no quadro. Em 2 anos, a nota média subiu de 45% para 87%, e a rotatividade caiu 18%. O segredo? As pessoas passaram a ter orgulho do ambiente de trabalho — e orgulho é o combustível da disciplina.</p>
+</div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! As pessoas apoiam o que ajudam a construir." data-fb-nok="Incorreto. O princípio fundamental do engajamento é envolver as pessoas nas decisões — o que fica, o que sai, onde organizar.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é o princípio mais eficaz para engajar operadores no 5S?</div>
+  <button class="qi-option" data-key="a">Envolver nas decisões — fazer com eles, não para eles</button>
+  <button class="qi-option" data-key="b">Impor regras rígidas e punir quem não cumprir</button>
+  <button class="qi-option" data-key="c">Contratar consultoria para definir tudo e a equipe apenas executa</button>
+  <div class="qi-feedback"></div>
+</div>
 `}, 'Modelo de programa de reconhecimento 5S')`;
 
   // ── Module 4: Sustentação e Melhoria ──
@@ -772,6 +1496,38 @@ export async function seedCourse4(sql) {
   (${m4.id}, '4-1-auditoria-5s-checklist-pontuacao', 'Auditoria 5S: checklist e pontuação', '25 min', 1, ${`
 <h2>Auditoria 5S: checklist e pontuação</h2>
 <p>A auditoria 5S é o <strong>instrumento que mantem o programa vivo</strong>. Sem auditoria, não há medição. Sem medição, não há gestão. Sem gestão, o 5S desaparece em semanas. A auditoria não é "fiscalização" — é um <strong>diagnóstico periódico</strong> que mostra onde a área está e para onde precisa ir.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Radar de Auditoria 5S — Exemplo</text>
+    <!-- Radar background -->
+    <polygon points="200,45 280,90 260,160 140,160 120,90" fill="none" stroke="#333" stroke-width="1"/>
+    <polygon points="200,65 260,100 248,145 152,145 140,100" fill="none" stroke="#333" stroke-width="0.5"/>
+    <polygon points="200,85 240,110 235,130 165,130 160,110" fill="none" stroke="#333" stroke-width="0.5"/>
+    <!-- Eixos -->
+    <line x1="200" y1="45" x2="200" y2="105" stroke="#555" stroke-width="0.5"/>
+    <line x1="280" y1="90" x2="200" y2="105" stroke="#555" stroke-width="0.5"/>
+    <line x1="260" y1="160" x2="200" y2="105" stroke="#555" stroke-width="0.5"/>
+    <line x1="140" y1="160" x2="200" y2="105" stroke="#555" stroke-width="0.5"/>
+    <line x1="120" y1="90" x2="200" y2="105" stroke="#555" stroke-width="0.5"/>
+    <!-- Labels -->
+    <text x="200" y="38" text-anchor="middle" fill="#c5383c" font-size="9" font-weight="bold">Seiri 85%</text>
+    <text x="295" y="90" fill="#2563eb" font-size="9" font-weight="bold">Seiton 78%</text>
+    <text x="275" y="172" fill="#16a34a" font-size="9" font-weight="bold">Seiso 90%</text>
+    <text x="110" y="172" fill="#eab308" font-size="9" font-weight="bold">Seiketsu 70%</text>
+    <text x="80" y="90" fill="#c5383c" font-size="9" font-weight="bold">Shitsuke 65%</text>
+    <!-- Área preenchida -->
+    <polygon points="200,52 268,93 254,155 148,155 128,93" fill="#2563eb" opacity="0.2" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="200" cy="52" r="3" fill="#c5383c"/>
+    <circle cx="268" cy="93" r="3" fill="#2563eb"/>
+    <circle cx="254" cy="155" r="3" fill="#16a34a"/>
+    <circle cx="148" cy="155" r="3" fill="#eab308"/>
+    <circle cx="128" cy="93" r="3" fill="#c5383c"/>
+    <!-- Nota total -->
+    <text x="200" y="195" text-anchor="middle" fill="#eab308" font-size="12" font-weight="bold">Nota total: 77,6% — BOM</text>
+  </svg>
+  <figcaption>Gráfico radar: visualize a nota de cada senso e identifique onde focar a melhoria</figcaption>
+</div>
 
 <h3>Frequência de auditorias</h3>
 <table>
@@ -865,11 +1621,72 @@ export async function seedCourse4(sql) {
 </ol>
 
 <div class="example"><strong>Benchmark:</strong> Empresas com programa 5S maduro costumam ter nota média entre 80% e 92%. Notas acima de 95% por períodos longos podem indicar auditoria branda (complacência). O ideal e que haja sempre oportunidades de melhoria identificadas — isso mostra que o olhar crítico contínua ativo.</div>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Caminhe pela área</strong><br>Entre, olhe atrás das máquinas, abra armários, verifique gavetas</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Converse com operadores</strong><br>Pergunte: "Onde fica tal ferramenta? Qual a rotina de limpeza?"</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Teste os 30 segundos</strong><br>Peça para localizar um item específico e cronometre</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Fotografe desvios</strong><br>Foto com data e hora = evidência objetiva</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Feedback imediato</strong><br>Converse com o líder da área ao final — não espere relatório</div></div>
+  <div class="step-item"><div class="step-content"><strong>6. Registre pontos positivos</strong><br>Auditoria não é só para achar defeitos — reconheça o que está bom</div></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Roberto, gerente de qualidade de uma fábrica de autopeças em Betim (MG): "No começo, os operadores tinham medo da auditoria. Mudou quando comecei a elogiar primeiro: 'Olha como esse shadow board está impecável!' Depois apontava o que melhorar. Hoje os próprios operadores me chamam para mostrar melhorias que fizeram por conta própria."</p>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A auditoria cruzada traz olhar externo e dissemina boas práticas entre setores." data-fb-nok="Incorreto. Na auditoria cruzada, líderes de diferentes setores auditam áreas uns dos outros.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">O que é uma "auditoria cruzada" no contexto do 5S?</div>
+  <button class="qi-option" data-key="a">Auditoria realizada por consultoria externa</button>
+  <button class="qi-option" data-key="b">O líder do setor A audita o setor B, e vice-versa</button>
+  <button class="qi-option" data-key="c">Dois auditores avaliam a mesma área simultaneamente</button>
+  <div class="qi-feedback"></div>
+</div>
 `}, 'Checklist de auditoria 5S (modelo completo com pontuação)'),
 
   (${m4.id}, '4-2-indicadores-5s-acompanhamento', 'Indicadores de 5S é acompanhamento', '20 min', 2, ${`
 <h2>Indicadores de 5S é acompanhamento</h2>
 <p>O 5S, como qualquer programa de gestão, precisa de <strong>indicadores para ser gerênciado</strong>. Sem números, não há como saber se o programa está avancando, estagnado ou regredindo. Os indicadores transformam percepção em <strong>fatos</strong>.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Evolução da Nota 5S — 12 meses</text>
+    <!-- Eixos -->
+    <line x1="40" y1="130" x2="380" y2="130" stroke="#555" stroke-width="1"/>
+    <line x1="40" y1="30" x2="40" y2="130" stroke="#555" stroke-width="1"/>
+    <!-- Labels eixo Y -->
+    <text x="30" y="35" text-anchor="end" fill="#aaa" font-size="7">100%</text>
+    <text x="30" y="55" text-anchor="end" fill="#aaa" font-size="7">80%</text>
+    <text x="30" y="80" text-anchor="end" fill="#aaa" font-size="7">60%</text>
+    <text x="30" y="105" text-anchor="end" fill="#aaa" font-size="7">40%</text>
+    <text x="30" y="130" text-anchor="end" fill="#aaa" font-size="7">20%</text>
+    <!-- Meta line -->
+    <line x1="40" y1="50" x2="380" y2="50" stroke="#16a34a" stroke-width="1" stroke-dasharray="5,3"/>
+    <text x="385" y="53" fill="#16a34a" font-size="7">Meta 80%</text>
+    <!-- Linha de evolução -->
+    <polyline points="60,115 90,100 120,90 150,82 180,75 210,68 240,62 270,58 300,55 330,52 360,50" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+    <!-- Pontos -->
+    <circle cx="60" cy="115" r="3" fill="#c5383c"/>
+    <circle cx="120" cy="90" r="3" fill="#eab308"/>
+    <circle cx="180" cy="75" r="3" fill="#eab308"/>
+    <circle cx="240" cy="62" r="3" fill="#16a34a"/>
+    <circle cx="300" cy="55" r="3" fill="#16a34a"/>
+    <circle cx="360" cy="50" r="3" fill="#16a34a"/>
+    <!-- Labels meses -->
+    <text x="60" y="145" text-anchor="middle" fill="#aaa" font-size="7">M1</text>
+    <text x="120" y="145" text-anchor="middle" fill="#aaa" font-size="7">M3</text>
+    <text x="180" y="145" text-anchor="middle" fill="#aaa" font-size="7">M5</text>
+    <text x="240" y="145" text-anchor="middle" fill="#aaa" font-size="7">M7</text>
+    <text x="300" y="145" text-anchor="middle" fill="#aaa" font-size="7">M9</text>
+    <text x="360" y="145" text-anchor="middle" fill="#aaa" font-size="7">M12</text>
+    <!-- Anotações -->
+    <text x="75" y="110" fill="#c5383c" font-size="7">28%</text>
+    <text x="355" y="45" fill="#16a34a" font-size="7">80%</text>
+  </svg>
+  <figcaption>Curva típica de evolução do 5S: de 28% (diagnóstico) a 80% (meta) em 12 meses</figcaption>
+</div>
 
 <h3>Indicadores primários do 5S</h3>
 <table>
@@ -925,6 +1742,27 @@ export async function seedCourse4(sql) {
 
 <div class="example"><strong>Caso prático:</strong> Uma fábrica de peças em Manaus (AM) migrou das auditorias em papel para o app ChecklistFacil. O tempo de auditoria por área caiu de 45 minutos para 20 minutos (porque o app já tem os critérios pre-carregados). O tempo de compilacao dos resultados caiu de 4 horas/mês para zero (o app gera o relatório automaticamente). É o histórico de fotos permitiu criar um "album de evolução" que impressiona clientes em visitas a fábrica.</div>
 
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">>80%</div><div class="kpi-label">Meta nota auditoria (12 meses)</div></div>
+  <div class="kpi-card"><div class="kpi-value">>60%</div><div class="kpi-label">Piso mínimo por senso</div></div>
+  <div class="kpi-card"><div class="kpi-value">>90%</div><div class="kpi-label">Fechamento de ações</div></div>
+  <div class="kpi-card"><div class="kpi-value">45→20 min</div><div class="kpi-label">Auditoria c/ app</div></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Cláudia, coordenadora de qualidade em uma fábrica de cosméticos em Diadema (SP): "Quando começamos a mostrar o gráfico de evolução mês a mês na reunião geral, a competição saudável entre os setores explodiu. A área de envase, que sempre foi a pior, decidiu virar a melhor — e conseguiu em 4 meses. Tudo porque viram o número deles no quadro, menor que os outros."</p>
+</div>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A tendência de evolução é verificada trimestralmente." data-fb-nok="Incorreto. O indicador de tendência (nota subindo, estável ou caindo) é verificado a cada trimestre.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual meta de nota de auditoria 5S é recomendada após 12 meses de programa?</div>
+  <button class="qi-option" data-key="a">Acima de 50%</button>
+  <button class="qi-option" data-key="b">Acima de 60%</button>
+  <button class="qi-option" data-key="c">Acima de 80%</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>Reuniao mensal de 5S</h3>
 <p>Uma boa prática e realizar uma reunião mensal de 15-30 minutos para revisar os indicadores:</p>
 <ol>
@@ -941,6 +1779,40 @@ export async function seedCourse4(sql) {
 <p>A auditoria identifica desvios. Os indicadores mostram tendências. Mas o que realmente <strong>melhora o programa</strong> e a ação sobre essas informações. Nesta aula, vamos tratar de como transformar achados de auditoria em <strong>ações eficazes</strong> e como manter o ciclo de melhoria contínua do 5S.</p>
 
 <h3>O ciclo PDCA aplicado ao 5S</h3>
+
+<div class="diagram">
+  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+    <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Ciclo PDCA aplicado ao 5S</text>
+    <!-- Ciclo -->
+    <circle cx="200" cy="115" r="70" fill="none" stroke="#555" stroke-width="1.5"/>
+    <!-- P -->
+    <path d="M200 45 A70 70 0 0 1 270 115" fill="#2563eb" opacity="0.2" stroke="#2563eb" stroke-width="2"/>
+    <text x="250" y="70" fill="#2563eb" font-size="11" font-weight="bold">PLAN</text>
+    <text x="260" y="83" fill="#aaa" font-size="7">Diagnóstico</text>
+    <text x="260" y="93" fill="#aaa" font-size="7">Metas, Padrões</text>
+    <!-- D -->
+    <path d="M270 115 A70 70 0 0 1 200 185" fill="#16a34a" opacity="0.2" stroke="#16a34a" stroke-width="2"/>
+    <text x="250" y="158" fill="#16a34a" font-size="11" font-weight="bold">DO</text>
+    <text x="258" y="170" fill="#aaa" font-size="7">Dia D, Seiri</text>
+    <text x="258" y="180" fill="#aaa" font-size="7">Seiton, Seiso</text>
+    <!-- C -->
+    <path d="M200 185 A70 70 0 0 1 130 115" fill="#eab308" opacity="0.2" stroke="#eab308" stroke-width="2"/>
+    <text x="120" y="158" fill="#eab308" font-size="11" font-weight="bold">CHECK</text>
+    <text x="110" y="170" fill="#aaa" font-size="7">Auditorias</text>
+    <text x="110" y="180" fill="#aaa" font-size="7">Indicadores</text>
+    <!-- A -->
+    <path d="M130 115 A70 70 0 0 1 200 45" fill="#c5383c" opacity="0.2" stroke="#c5383c" stroke-width="2"/>
+    <text x="120" y="70" fill="#c5383c" font-size="11" font-weight="bold">ACT</text>
+    <text x="110" y="83" fill="#aaa" font-size="7">Ações corretivas</text>
+    <text x="110" y="93" fill="#aaa" font-size="7">Kaizen, 5W2H</text>
+    <!-- Centro -->
+    <circle cx="200" cy="115" r="25" fill="#0b1730" stroke="#eab308" stroke-width="1.5"/>
+    <text x="200" y="112" text-anchor="middle" fill="#eab308" font-size="9" font-weight="bold">5S</text>
+    <text x="200" y="123" text-anchor="middle" fill="#fff" font-size="7">contínuo</text>
+  </svg>
+  <figcaption>O 5S segue naturalmente o ciclo PDCA: planejar, executar, verificar, agir</figcaption>
+</div>
+
 <p>O 5S segue naturalmente o ciclo PDCA:</p>
 <table>
 <tr><th>Fase</th><th>Aplicacao no 5S</th><th>Ferramentas</th></tr>
@@ -990,12 +1862,14 @@ export async function seedCourse4(sql) {
 
 <h3>Kaizen no 5S — pequenas melhorias continuas</h3>
 <p>Além de corrigir desvios, o 5S pode (e deve) evoluir continuamente. Ideias de Kaizen no 5S:</p>
-<ul>
-<li><strong>Novos shadow boards:</strong> Expandir para áreas que não tinham</li>
-<li><strong>Demarcacao de chao melhorada:</strong> Trocar fita por pintura (mais durável)</li>
-<li><strong>Iluminacao de estantes:</strong> Adicionar LED em estantes escuras para fácilitar a identificação</li>
-<li><strong>Etiquetas com QR code:</strong> Linkar para a ficha técnica ou instrução de trabalho</li>
-<li><strong>Redução do check de 5 min para 3 min:</strong> Otimizar a rotina a medida que o padrão se consolida</li>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Expandir shadow boards para áreas que ainda não tinham</li>
+  <li><span class="ck-box"></span>Trocar fita de demarcação por pintura epóxi (mais durável)</li>
+  <li><span class="ck-box"></span>Adicionar LED em estantes escuras para facilitar identificação</li>
+  <li><span class="ck-box"></span>Instalar etiquetas com QR code linkando a fichas técnicas</li>
+  <li><span class="ck-box"></span>Otimizar o check diário de 5 min para 3 min</li>
+  <li><span class="ck-box"></span>Criar "banco de ideias" para sugestões de Kaizen dos operadores</li>
 </ul>
 
 <h3>Quando o 5S regride — plano de recuperação</h3>
@@ -1009,11 +1883,64 @@ export async function seedCourse4(sql) {
 </ol>
 
 <div class="callout"><strong>Dado real:</strong> Em uma pesquisa com 45 indústrias brasileiras que implantaram 5S (SENAI-PR, 2021), 62% relataram pelo menos uma regressão significativa nos primeiros 2 anos. Das que se recuperaram, 100% tinham sistema de auditoria ativo. Das que não se recuperaram, apenas 15% faziam auditorias regulares. A auditoria é o "seguro de vida" do programa 5S.</div>
+
+<div class="comparison">
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Sem ação corretiva</h4><ul><li>Desvios se acumulam</li><li>Nota cai progressivamente</li><li>Equipe perde credibilidade no programa</li><li>Auditoria vira "formalidade"</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Com PDCA ativo</h4><ul><li>Desvios tratados na raiz</li><li>Nota sobe consistentemente</li><li>Equipe vê resultado das ações</li><li>Melhoria contínua real</li></ul></div>
+</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Uma indústria de plásticos em Caxias do Sul (RS) teve queda da nota de 82% para 55% quando mudou o turno da noite sem treinar os novos operadores. O comitê 5S fez um mini Dia D de 3 horas, retomou auditorias semanais e criou um programa de integração com "padrinho de 5S". Em 2 meses, a nota voltou a 78%. Aprenderam que o 5S precisa de blindagem contra rotatividade.</p>
+</div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A técnica dos 5 Por Quês permite encontrar a causa raiz de desvios de forma simples." data-fb-nok="Incorreto. Os 5 Por Quês é a técnica recomendada para ir além do sintoma e encontrar a causa raiz.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual técnica é recomendada para encontrar a causa raiz de desvios na auditoria 5S?</div>
+  <button class="qi-option" data-key="a">5 Por Quês — perguntar "por quê?" até chegar na causa raiz</button>
+  <button class="qi-option" data-key="b">Diagrama de Gantt</button>
+  <button class="qi-option" data-key="c">Análise SWOT</button>
+  <div class="qi-feedback"></div>
+</div>
 `}, 'Modelo de plano de ação 5W2H para 5S'),
 
   (${m4.id}, '4-4-íntegração-5s-iso-outros-programas', 'Integracao do 5S com ISO 9001 e outros programas', '22 min', 4, ${`
 <h2>Integracao do 5S com ISO 9001 e outros programas</h2>
 <p>O 5S não existe isolado. Ele é a <strong>base sobre a qual outros programas de gestão se apoiam</strong>. Nesta aula, vamos explorar como integrar o 5S com ISO 9001, ISO 14001, Lean Manufacturing, TPM e outros programas comuns na indústria brasileira.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="210" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">5S como fundação do sistema de gestão</text>
+    <!-- Base 5S -->
+    <rect x="40" y="170" width="340" height="40" rx="6" fill="#c5383c"/>
+    <text x="210" y="193" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">5S — FUNDAÇÃO</text>
+    <!-- ISO 9001 -->
+    <rect x="50" y="125" width="100" height="38" rx="5" fill="#2563eb"/>
+    <text x="100" y="143" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">ISO 9001</text>
+    <text x="100" y="155" text-anchor="middle" fill="#fff" font-size="7">Qualidade</text>
+    <!-- Lean -->
+    <rect x="160" y="125" width="100" height="38" rx="5" fill="#16a34a"/>
+    <text x="210" y="143" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">LEAN</text>
+    <text x="210" y="155" text-anchor="middle" fill="#fff" font-size="7">Produção enxuta</text>
+    <!-- TPM -->
+    <rect x="270" y="125" width="100" height="38" rx="5" fill="#eab308"/>
+    <text x="320" y="143" text-anchor="middle" fill="#0b1730" font-size="9" font-weight="bold">TPM</text>
+    <text x="320" y="155" text-anchor="middle" fill="#0b1730" font-size="7">Manutenção</text>
+    <!-- ISO 14001 -->
+    <rect x="80" y="80" width="110" height="38" rx="5" fill="#16a34a" opacity="0.7"/>
+    <text x="135" y="98" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">ISO 14001</text>
+    <text x="135" y="110" text-anchor="middle" fill="#fff" font-size="7">Meio ambiente</text>
+    <!-- ISO 45001 -->
+    <rect x="230" y="80" width="110" height="38" rx="5" fill="#c5383c" opacity="0.7"/>
+    <text x="285" y="98" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">ISO 45001</text>
+    <text x="285" y="110" text-anchor="middle" fill="#fff" font-size="7">Seg. Trabalho</text>
+    <!-- Topo -->
+    <rect x="130" y="35" width="160" height="38" rx="5" fill="#eab308" opacity="0.5"/>
+    <text x="210" y="53" text-anchor="middle" fill="#0b1730" font-size="9" font-weight="bold">EXCELÊNCIA</text>
+    <text x="210" y="65" text-anchor="middle" fill="#0b1730" font-size="7">Indústria 4.0 / WCM</text>
+  </svg>
+  <figcaption>O 5S é a fundação — sem ele, nenhum programa avançado se sustenta</figcaption>
+</div>
 
 <h3>5S é ISO 9001:2015</h3>
 <p>A ISO 9001 não menciona o 5S explicitamente, mas vários requisitos são atendidos ou fácilitados pelo programa:</p>
@@ -1042,6 +1969,22 @@ export async function seedCourse4(sql) {
 </ul>
 
 <div class="example"><strong>Sequência recomendada de implantação Lean:</strong> 5S → Trabalho padronizado → Gestão visual → SMED → Kanban → Fluxo contínuo → Heijunka. O 5S é sempre o primeiro passo. Tentar implantar Kanban sem 5S é como construir um predio sem fundação.</div>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. 5S</strong><br>Base: organização, limpeza, padrão</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Trabalho Padronizado</strong><br>Definir o método padrão de cada operação</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Gestão Visual</strong><br>Tornar normal/anormal visível</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. SMED</strong><br>Troca rápida de ferramentas</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Kanban + Fluxo</strong><br>Produção puxada e contínua</div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab-btns"><button class="tab-btn active">5S + ISO 9001</button><button class="tab-btn">5S + Lean</button><button class="tab-btn">5S + TPM</button><button class="tab-btn">5S + NRs</button></div>
+  <div class="tab-panel active"><p>O 5S atende diretamente requisitos das cláusulas 7.1.3 (infraestrutura), 7.1.4 (ambiente), 8.5.2 (identificação e rastreabilidade) e 8.5.4 (preservação). Auditores de certificação elogiam fábricas com 5S bem implantado.</p></div>
+  <div class="tab-panel"><p>No Lean, o 5S é a fundação da "Casa Toyota". Sem ele, não funcionam: Kanban, SMED, fluxo contínuo, Kaizen. Comece sempre pelo 5S antes de qualquer ferramenta Lean avançada.</p></div>
+  <div class="tab-panel"><p>Seiso = Manutenção Autônoma. O operador que limpa a máquina é o primeiro nível de prevenção. Muitas empresas implantam "5S + Manutenção Autônoma" como programa único.</p></div>
+  <div class="tab-panel"><p>O 5S contribui para NR-12 (segurança em máquinas), NR-17 (ergonomia), NR-23 (proteção contra incêndio), NR-25 (resíduos) e NR-26 (sinalização de segurança).</p></div>
+</div>
 
 <h3>5S é TPM (Total Productive Maintenance)</h3>
 <p>A conexão entre 5S é TPM e direta e poderosa:</p>
@@ -1085,6 +2028,29 @@ export async function seedCourse4(sql) {
 <div class="callout"><strong>Mensagem final:</strong> O 5S é simultaneamente o programa mais simples é o mais transformador da gestão indústrial. Simples porque não exige tecnologia, investimento alto ou conhecimento avancado. Transformador porque muda a cultura, o ambiente e os resultados de forma visível e rapida. O segredo está em tres palavras: <strong>método, liderança e persistencia</strong>.</div>
 
 <div class="example"><strong>Caso inspirador:</strong> Uma pequena metalúrgica de Novo Hamburgo (RS), com 28 funcionários, implantou o 5S em 2020 como primeiro projeto de gestão. Em 3 anos, o 5S levou a ISO 9001 (2021), que levou ao Lean (2022), que levou a IATF 16949 (2023). A empresa triplicou o faturamento, entrou na cadeia automotiva e recebeu prêmio de fornecedor destaque de um fábricante multinacional. Tudo começou com etiquetas vermelhas e um shadow board de R$ 150.</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Seu Marcos, dono da metalúrgica de Novo Hamburgo: "Quando falo que triplicamos o faturamento em 3 anos, as pessoas perguntam que software caro compramos ou que máquina importamos. Eu respondo: começamos com um shadow board de R$ 150 e etiquetas vermelhas impressas na impressora do escritório. O 5S ensinou a equipe a pensar em padrão, e daí tudo veio naturalmente."</p>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">3x</div><div class="kpi-label">Faturamento em 3 anos</div></div>
+  <div class="kpi-card"><div class="kpi-value">R$ 150</div><div class="kpi-label">Investimento inicial</div></div>
+  <div class="kpi-card"><div class="kpi-value">28</div><div class="kpi-label">Funcionários</div></div>
+  <div class="kpi-card"><div class="kpi-value">IATF</div><div class="kpi-label">Certificação conquistada</div></div>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O roadmap recomendado é 5S, depois ISO 9001, depois Lean, depois TPM." data-fb-nok="Incorreto. A sequência recomendada é: 5S → ISO 9001 → Lean básico → TPM → ISO 14001/45001.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual é a sequência recomendada de evolução após o 5S?</div>
+  <button class="qi-option" data-key="a">TPM → ISO 9001 → Lean</button>
+  <button class="qi-option" data-key="b">ISO 9001 → Lean básico → TPM</button>
+  <button class="qi-option" data-key="c">Lean → ISO 14001 → TPM</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight final:</strong> O 5S é simultaneamente o programa mais simples e o mais transformador da gestão industrial. O segredo está em três palavras: <strong>método, liderança e persistência</strong>. Comece pequeno, meça tudo, e nunca pare de melhorar.</div></div>
 `}, 'Roadmap de íntegração 5S + ISO + Lean')`;
 
   // ── Module 1 quiz ──

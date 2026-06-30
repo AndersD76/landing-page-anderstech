@@ -60,6 +60,88 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .template-box span{font-weight:600}
 .lesson-body .template-box a{background:var(--red);color:#fff;padding:8px 16px;text-decoration:none;font-size:13px;font-weight:600}
 
+/* Interactive components */
+.lesson-body .insight-box{display:flex;gap:16px;background:#fefce8;border-left:3px solid #eab308;padding:16px 18px;margin:20px 0;align-items:flex-start}
+.lesson-body .insight-box svg{flex-shrink:0;color:#ca8a04;margin-top:2px}
+.lesson-body .insight-box .insight-content{font-size:14px;line-height:1.6}
+.lesson-body .insight-box .insight-content strong{color:#854d0e}
+
+.lesson-body .narration{background:linear-gradient(135deg,#0b1730 0%,#1e3a5f 100%);color:#fff;padding:24px;margin:24px 0;position:relative;font-size:14px;line-height:1.7}
+.lesson-body .narration::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red)}
+.lesson-body .narration .narrator{font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.lesson-body .narration p{color:rgba(255,255,255,.85);margin-bottom:8px}
+.lesson-body .narration p:last-child{margin-bottom:0}
+
+.lesson-body .diagram{background:#fff;border:1px solid #e5e7eb;padding:24px;margin:24px 0;text-align:center}
+.lesson-body .diagram svg{max-width:100%;height:auto}
+.lesson-body .diagram figcaption{font-size:12px;color:var(--mute);margin-top:12px;font-family:var(--ff-mono)}
+
+.lesson-body .checklist{list-style:none;margin:16px 0;padding:0}
+.lesson-body .checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--card);border:1px solid #e5e7eb;margin-bottom:6px;font-size:14px;cursor:pointer;transition:background .15s;user-select:none}
+.lesson-body .checklist li:hover{background:#f8fafc}
+.lesson-body .checklist li.checked{background:#f0fdf4;border-color:#86efac}
+.lesson-body .checklist li .ck-box{width:20px;height:20px;border:2px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.lesson-body .checklist li.checked .ck-box{background:var(--green);border-color:var(--green)}
+.lesson-body .checklist li.checked .ck-box::after{content:'';width:6px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);margin-top:-2px}
+
+.lesson-body .tabs{margin:20px 0}
+.lesson-body .tab-btns{display:flex;gap:0;border-bottom:2px solid #e5e7eb;margin-bottom:0}
+.lesson-body .tab-btn{padding:10px 20px;font-size:13px;font-weight:600;color:var(--mute);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:var(--ff-display);transition:color .2s}
+.lesson-body .tab-btn.active{color:var(--navy);border-bottom-color:var(--red)}
+.lesson-body .tab-panel{display:none;padding:16px 0;font-size:14px;line-height:1.7}
+.lesson-body .tab-panel.active{display:block}
+
+.lesson-body .accordion-lesson{margin:16px 0}
+.lesson-body .acc-item{border:1px solid #e5e7eb;margin-bottom:6px}
+.lesson-body .acc-trigger{width:100%;padding:14px 18px;background:#fff;border:none;text-align:left;font-family:var(--ff-display);font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .15s}
+.lesson-body .acc-trigger:hover{background:#f8fafc}
+.lesson-body .acc-trigger .acc-chevron{transition:transform .2s;flex-shrink:0}
+.lesson-body .acc-trigger.open .acc-chevron{transform:rotate(180deg)}
+.lesson-body .acc-body{display:none;padding:0 18px 14px;font-size:14px;line-height:1.7;color:#444}
+.lesson-body .acc-trigger.open+.acc-body{display:block}
+
+.lesson-body .quiz-inline{background:#f8fafc;border:1px solid #e5e7eb;padding:24px;margin:24px 0}
+.lesson-body .quiz-inline .qi-title{font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.lesson-body .quiz-inline .qi-question{font-size:15px;font-weight:600;margin-bottom:16px;color:var(--navy)}
+.lesson-body .quiz-inline .qi-option{display:block;padding:10px 14px;margin-bottom:6px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:14px;transition:all .15s;font-family:var(--ff-display)}
+.lesson-body .quiz-inline .qi-option:hover{border-color:var(--navy);background:#f0f4ff}
+.lesson-body .quiz-inline .qi-option.correct{background:#f0fdf4;border-color:var(--green);color:#166534}
+.lesson-body .quiz-inline .qi-option.wrong{background:#fef2f2;border-color:#ef4444;color:#991b1b}
+.lesson-body .quiz-inline .qi-option.disabled{pointer-events:none;opacity:.7}
+.lesson-body .quiz-inline .qi-feedback{display:none;padding:12px 14px;margin-top:12px;font-size:13px;line-height:1.5}
+.lesson-body .quiz-inline .qi-feedback.show{display:block}
+.lesson-body .quiz-inline .qi-feedback.ok{background:#f0fdf4;border-left:3px solid var(--green);color:#166534}
+.lesson-body .quiz-inline .qi-feedback.nok{background:#fef2f2;border-left:3px solid #ef4444;color:#991b1b}
+
+.lesson-body .progress-visual{margin:20px 0}
+.lesson-body .pv-bar{background:#e5e7eb;height:8px;overflow:hidden;margin-bottom:6px}
+.lesson-body .pv-fill{background:var(--green);height:100%;transition:width .6s ease}
+.lesson-body .pv-label{font-family:var(--ff-mono);font-size:12px;color:var(--mute)}
+
+.lesson-body .step-flow{margin:20px 0;counter-reset:stepcount}
+.lesson-body .step-item{display:flex;gap:16px;margin-bottom:16px;position:relative}
+.lesson-body .step-item::before{counter-increment:stepcount;content:counter(stepcount);width:32px;height:32px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;font-family:var(--ff-mono)}
+.lesson-body .step-item:not(:last-child)::after{content:'';position:absolute;left:15px;top:36px;bottom:-12px;width:2px;background:#e5e7eb}
+.lesson-body .step-content{padding-top:4px;font-size:14px;line-height:1.6}
+.lesson-body .step-content strong{color:var(--navy)}
+
+.lesson-body .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.lesson-body .kpi-card{background:#fff;border:1px solid #e5e7eb;padding:16px;text-align:center}
+.lesson-body .kpi-card .kpi-value{font-size:28px;font-weight:700;color:var(--navy);font-family:var(--ff-mono)}
+.lesson-body .kpi-card .kpi-label{font-size:12px;color:var(--mute);margin-top:4px}
+
+.lesson-body .comparison{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:20px 0;border:1px solid #e5e7eb}
+.lesson-body .comp-col{padding:20px}
+.lesson-body .comp-col:first-child{border-right:1px solid #e5e7eb}
+.lesson-body .comp-col.bad{background:#fef2f2}
+.lesson-body .comp-col.good{background:#f0fdf4}
+.lesson-body .comp-col h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.lesson-body .comp-col.bad h4{color:#dc2626}
+.lesson-body .comp-col.good h4{color:var(--green)}
+.lesson-body .comp-col ul{margin:0;padding:0 0 0 18px;font-size:13px;line-height:1.6}
+
+@media(max-width:640px){.lesson-body .comparison{grid-template-columns:1fr}.lesson-body .comp-col:first-child{border-right:none;border-bottom:1px solid #e5e7eb}.lesson-body .kpi-grid{grid-template-columns:1fr 1fr}}
+
 .lesson-footer{margin-top:40px;padding-top:24px;border-top:2px solid #eee;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .btn-complete{padding:12px 24px;background:var(--green);color:#fff;border:none;font-family:var(--ff-display);font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
 .btn-complete:hover{background:#15803d}
@@ -184,6 +266,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         +navHtml+'</div>';
 
       main.scrollTop=0;
+      initInteractive();
       renderSidebar();
 
       if(!l.completed){
@@ -205,6 +288,50 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         btn.addEventListener('click',function(e){e.preventDefault();loadLesson(parseInt(btn.dataset.id))});
       });
     }).catch(function(){main.innerHTML='<div class="loading">Erro ao carregar aula.</div>'});
+  }
+
+  function initInteractive(){
+    // Tabs
+    main.querySelectorAll('.tabs').forEach(function(t){
+      var btns=t.querySelectorAll('.tab-btn');
+      var panels=t.querySelectorAll('.tab-panel');
+      btns.forEach(function(b,i){
+        b.addEventListener('click',function(){
+          btns.forEach(function(x){x.classList.remove('active')});
+          panels.forEach(function(x){x.classList.remove('active')});
+          b.classList.add('active');
+          if(panels[i])panels[i].classList.add('active');
+        });
+      });
+    });
+    // Accordion
+    main.querySelectorAll('.acc-trigger').forEach(function(t){
+      t.addEventListener('click',function(){t.classList.toggle('open')});
+    });
+    // Checklist
+    main.querySelectorAll('.checklist li').forEach(function(li){
+      li.addEventListener('click',function(){li.classList.toggle('checked')});
+    });
+    // Quiz inline
+    main.querySelectorAll('.quiz-inline').forEach(function(q){
+      var correct=q.dataset.correct;
+      var fb=q.querySelector('.qi-feedback');
+      q.querySelectorAll('.qi-option').forEach(function(opt){
+        opt.addEventListener('click',function(){
+          if(q.classList.contains('answered'))return;
+          q.classList.add('answered');
+          q.querySelectorAll('.qi-option').forEach(function(o){o.classList.add('disabled')});
+          if(opt.dataset.key===correct){
+            opt.classList.add('correct');
+            if(fb){fb.className='qi-feedback show ok';fb.textContent=q.dataset.fbOk||'Correto!'}
+          }else{
+            opt.classList.add('wrong');
+            q.querySelector('[data-key="'+correct+'"]').classList.add('correct');
+            if(fb){fb.className='qi-feedback show nok';fb.textContent=q.dataset.fbNok||'Resposta incorreta. Veja a opção destacada.'}
+          }
+        });
+      });
+    });
   }
 })();
 </script>
