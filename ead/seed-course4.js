@@ -3,14 +3,14 @@ export async function seedCourse4(sql) {
     INSERT INTO ead_courses (slug, titulo, subtitulo, descricao, carga_horaria, preco, preco_original, publico, prerequisito, objetivo, ordem)
     VALUES (
       '5s-pratica-industrial',
-      '5S na Prática Indústrial',
+      '5S na Prática Industrial',
       'Implante o programa 5S na sua fábrica com método, ferramentas e resultados mensuráveis.',
-      'Curso 100% prático de 5S para ambiente indústrial: cada senso explicado com exemplos reais, templates de implantação, auditorias de manutenção e estratégias para sustentar o programa a longo prazo.',
+      'Curso 100% prático de 5S para ambiente industrial: cada senso explicado com exemplos reais, templates de implantação, auditorias de manutenção e estratégias para sustentar o programa a longo prazo.',
       '6 horas',
       197, 347,
       'Supervisores, líderes de produção, operadores, analistas, empresários',
       'Nenhum',
-      'Capacitar o profissional a implantar e sustentar o programa 5S no ambiente indústrial, com método prático e resultados mensuráveis.',
+      'Capacitar o profissional a implantar e sustentar o programa 5S no ambiente industrial, com método prático e resultados mensuráveis.',
       4
     ) RETURNING id
   `;
@@ -22,7 +22,7 @@ export async function seedCourse4(sql) {
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m1.id}, '1-1-origem-historia-5s', 'Origem e história do 5S (do Japão ao Brasil)', '20 min', 1, ${`
 <h2>Origem e história do 5S</h2>
-<p>O programa 5S é uma das métodologias mais conhecidas e aplicadas no mundo indústrial. Nasceu no <strong>Japão pós-Segunda Guerra Mundial</strong>, num contexto de reconstrução econômica em que cada recurso — material, espaço e tempo — precisava ser aproveitado ao máximo. O 5S não surgiu como teoria acadêmica: nasceu no <strong>chão de fábrica</strong>, criado por quem precisava resolver problemas reais de desorganização, desperdício e falta de padronização.</p>
+<p>O programa 5S é uma das metodologias mais conhecidas e aplicadas no mundo industrial. Nasceu no <strong>Japão pós-Segunda Guerra Mundial</strong>, num contexto de reconstrução econômica em que cada recurso — material, espaço e tempo — precisava ser aproveitado ao máximo. O 5S não surgiu como teoria acadêmica: nasceu no <strong>chão de fábrica</strong>, criado por quem precisava resolver problemas reais de desorganização, desperdício e falta de padronização.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,7 @@ export async function seedCourse4(sql) {
 <h3>O contexto japonês</h3>
 <p>Após 1945, o Japão estava devastado. A indústria precisava produzir mais com menos. Engenheiros e gestores japoneses, com forte influência dos consultores americanos W. Edwards Deming e Joseph Juran, desenvolveram sistemas de gestão que valorizavam a <strong>ordem, a limpeza e a disciplina</strong> como base para qualquer melhoria. O 5S foi uma das primeiras ferramentas adotadas em larga escala por empresas como Toyota, Honda e Matsushita (atual Panasonic).</p>
 
-<div class="callout"><strong>Curiosidade:</strong> No Japão, o conceito de manter o ambiente limpo e organizado tem raízes culturais profundas. Nas escolas japonesas, os próprios alunos limpam as salas de aula. O 5S indústrial apenas sistematizou algo que já era valor cultural.</div>
+<div class="callout"><strong>Curiosidade:</strong> No Japão, o conceito de manter o ambiente limpo e organizado tem raízes culturais profundas. Nas escolas japonesas, os próprios alunos limpam as salas de aula. O 5S industrial apenas sistematizou algo que já era valor cultural.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
@@ -76,7 +76,7 @@ export async function seedCourse4(sql) {
 <p>O nome "5S" vem de cinco palavras japonesas que começam com a letra S:</p>
 <table>
 <tr><th>Japonês</th><th>Tradução livre</th><th>Senso (adaptação brasileira)</th></tr>
-<tr><td>Seiri</td><td>Separar, classificar</td><td>Senso de útilização</td></tr>
+<tr><td>Seiri</td><td>Separar, classificar</td><td>Senso de utilização</td></tr>
 <tr><td>Seiton</td><td>Ordenar, organizar</td><td>Senso de organização</td></tr>
 <tr><td>Seiso</td><td>Limpar, inspecionar</td><td>Senso de limpeza</td></tr>
 <tr><td>Seiketsu</td><td>Padronizar, saúde</td><td>Senso de padronização</td></tr>
@@ -86,7 +86,7 @@ export async function seedCourse4(sql) {
 <h3>A chegada ao Brasil</h3>
 <p>O 5S chegou ao Brasil no início dos anos 1990, trazido principalmente por empresas japonesas instaladas no país (como Toyota em Indaiatuba-SP e Honda em Sumaré-SP) e por programas de qualidade total incentivados pela abertura econômica do governo Collor. Naquela época, a indústria brasileira precisava se modernizar rapidamente para competir com produtos importados.</p>
 
-<div class="example"><strong>Marco histórico:</strong> A Fundação Christiano Ottoni (UFMG) foi uma das pioneiras na disseminação do 5S no Brasil, publicando materiais em português e realizando treinamentos em indústrias de Minas Gerais, São Paulo e Paraná a partir de 1991. Muitas metalúrgicas da região do ABC Paulista e do polo indústrial de Betim (MG) adotaram o 5S como primeiro passo para a certificação ISO 9001.</div>
+<div class="example"><strong>Marco histórico:</strong> A Fundação Christiano Ottoni (UFMG) foi uma das pioneiras na disseminação do 5S no Brasil, publicando materiais em português e realizando treinamentos em indústrias de Minas Gerais, São Paulo e Paraná a partir de 1991. Muitas metalúrgicas da região do ABC Paulista e do polo industrial de Betim (MG) adotaram o 5S como primeiro passo para a certificação ISO 9001.</div>
 
 <h3>Evolução do 5S na indústria brasileira</h3>
 <p>A trajetória do 5S no Brasil pode ser dividida em fases:</p>
@@ -172,8 +172,8 @@ export async function seedCourse4(sql) {
   <div class="tab-panel"><p><strong>Shitsuke (Disciplina)</strong> — Criar hábito e cultura. Ferramentas: auditoria, reconhecimento, exemplo da liderança. Resultado: 5S vira parte do DNA da empresa.</p></div>
 </div>
 
-<h3>1. Seiri — Senso de útilização</h3>
-<p>O primeiro senso é sobre <strong>separar o necessário do desnecessário</strong>. No ambiente indústrial, isso significa passar por cada área de trabalho e questionar: "Este item é necessário aqui? Com que frequência é usado?"</p>
+<h3>1. Seiri — Senso de utilização</h3>
+<p>O primeiro senso é sobre <strong>separar o necessário do desnecessário</strong>. No ambiente industrial, isso significa passar por cada área de trabalho e questionar: "Este item é necessário aqui? Com que frequência é usado?"</p>
 <ul>
 <li><strong>O que manter:</strong> Ferramentas, materiais e documentos usados com frequência (diária ou semanal)</li>
 <li><strong>O que realocar:</strong> Itens usados raramente (mensal ou menos) — guardar em almoxarifado central</li>
@@ -203,7 +203,7 @@ export async function seedCourse4(sql) {
 <div class="callout"><strong>Regra dos 30 segundos:</strong> No Seiton bem implantado, qualquer pessoa deve conseguir encontrar qualquer item em até 30 segundos. Se demora mais, a organização precisa ser melhorada.</div>
 
 <h3>3. Seiso — Senso de limpeza</h3>
-<p>Seiso vai muito além de varrer o chão. No contexto indústrial, <strong>limpeza é inspeção</strong>. Ao limpar uma máquina, o operador observa vazamentos, folgas, fissuras e anomalias que poderiam passar despercebidas. O Seiso conecta o 5S com a <strong>manutenção autônoma</strong> do TPM (Total Productive Maintenance).</p>
+<p>Seiso vai muito além de varrer o chão. No contexto industrial, <strong>limpeza é inspeção</strong>. Ao limpar uma máquina, o operador observa vazamentos, folgas, fissuras e anomalias que poderiam passar despercebidas. O Seiso conecta o 5S com a <strong>manutenção autônoma</strong> do TPM (Total Productive Maintenance).</p>
 <ul>
 <li><strong>Limpar e eliminar fontes de sujeira:</strong> Não basta limpar — é preciso identificar e eliminar a causa da sujeira (vazamento de óleo, rebarbas, poeira de processo)</li>
 <li><strong>Definir responsáveis:</strong> Cada área tem um "dono" responsável pela limpeza</li>
@@ -247,7 +247,7 @@ export async function seedCourse4(sql) {
 </div>
 `}, 'Resumo visual dos 5 sensos (pôster para impressão)'),
 
-  (${m1.id}, '1-3-beneficios-5s-numeros-reais', 'Benefícios do 5S com números reais', '20 min', 3, ${`
+  (${m1.id}, '1-3-beneficios-5s-números-reais', 'Benefícios do 5S com números reais', '20 min', 3, ${`
 <h2>Benefícios do 5S com números reais</h2>
 <p>Um dos maiores desafios ao implantar o 5S é convencer a liderança e os operadores de que o programa vale o investimento de tempo e dinheiro. Nesta aula, vamos apresentar <strong>dados concretos e casos reais</strong> de indústrias brasileiras que mediram os resultados do 5S.</p>
 
@@ -272,7 +272,7 @@ export async function seedCourse4(sql) {
 <div class="callout"><strong>Fonte:</strong> Dados compilados de casos publicados pelo SEBRAE-RS, SENAI-SC e relatórios internos de metalúrgicas do ABC Paulista (2019-2023). Os números representam médias — resultados individuais variam conforme o porte e o comprometimento da empresa.</div>
 
 <h3>Caso 1 — Metalúrgica em Joinville (SC)</h3>
-<p>Empresa de 120 funcionários, fábricante de peças estampadas para o setor automotivo. Implantou o 5S em 2021 como pré-requisito para a certificação IATF 16949.</p>
+<p>Empresa de 120 funcionários, fabricante de peças estampadas para o setor automotivo. Implantou o 5S em 2021 como pré-requisito para a certificação IATF 16949.</p>
 <ul>
 <li><strong>Investimento:</strong> R$ 18.000 (sinalização, estantes, treinamento, shadow boards)</li>
 <li><strong>Resultado em 12 meses:</strong> Redução de 42% nas paradas não planejadas, economia de R$ 95.000 em peças rejeitadas, área de produção ampliada em 35 m2 sem obra</li>
@@ -341,11 +341,11 @@ export async function seedCourse4(sql) {
 <tr><th>Porte da empresa</th><th>Investimento típico</th><th>Inclui</th></tr>
 <tr><td>Micro (até 20 func.)</td><td>R$ 2.000 a R$ 5.000</td><td>Sinalização básica, treinamento interno</td></tr>
 <tr><td>Pequena (20-99 func.)</td><td>R$ 5.000 a R$ 20.000</td><td>Estantes, shadow boards, sinalização completa, consultoria pontual</td></tr>
-<tr><td>Média (100-499 func.)</td><td>R$ 20.000 a R$ 80.000</td><td>Projeto completo com consultoria, mobiliário indústrial, sistema de auditoria</td></tr>
+<tr><td>Média (100-499 func.)</td><td>R$ 20.000 a R$ 80.000</td><td>Projeto completo com consultoria, mobiliário industrial, sistema de auditoria</td></tr>
 <tr><td>Grande (500+ func.)</td><td>R$ 80.000 a R$ 300.000</td><td>Programa corporativo com multiplicadores, app de auditoria, premiação</td></tr>
 </table>
 
-<div class="callout"><strong>Conclusão:</strong> O 5S tem um dos melhores ROIs entre todas as ferramentas de gestão indústrial. Com investimento baixo (comparado a automação ou novos equipamentos), gera resultados rápidos e visíveis. O único recurso realmente caro é o <strong>tempo da liderança</strong> — e esse é inegociável.</div>
+<div class="callout"><strong>Conclusão:</strong> O 5S tem um dos melhores ROIs entre todas as ferramentas de gestão industrial. Com investimento baixo (comparado a automação ou novos equipamentos), gera resultados rápidos e visíveis. O único recurso realmente caro é o <strong>tempo da liderança</strong> — e esse é inegociável.</div>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O 5S é provavelmente a única ferramenta de gestão em que o investimento inicial pode ser inferior a R$ 5.000 (para micro e pequenas empresas) e ainda assim gerar retorno mensurável em 3 meses. A chave não é dinheiro — é liderança e disciplina.</div></div>
 `}, 'Planilha de ROI do 5S (modelo editável)'),
@@ -384,7 +384,7 @@ export async function seedCourse4(sql) {
 <tr><td>21-40%</td><td>Insuficiente</td><td>Implantação estruturada em 90 dias, priorizando áreas piores.</td></tr>
 <tr><td>41-60%</td><td>Regular</td><td>Reforço nos 3 primeiros S. Foco em padronização (4o S).</td></tr>
 <tr><td>61-80%</td><td>Bom</td><td>Refinar padrões e focar em disciplina (5o S). Auditorias mensais.</td></tr>
-<tr><td>81-100%</td><td>Excelente</td><td>Manter com auditorias. Buscar íntegração com TPM/Lean.</td></tr>
+<tr><td>81-100%</td><td>Excelente</td><td>Manter com auditorias. Buscar integração com TPM/Lean.</td></tr>
 </table>
 
 <h3>Passo a passo do diagnóstico</h3>
@@ -477,12 +477,12 @@ export async function seedCourse4(sql) {
 `}, 'Checklist de diagnóstico 5S (modelo completo)')`;
 
   // ── Module 2: Implantação dos 3 Primeiros S ──
-  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton é Seiso na prática indústrial com ferramentas e templates', 2) RETURNING id`;
+  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton é Seiso na prática industrial com ferramentas e templates', 2) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-1-seiri-etiqueta-vermelha', 'Seiri na prática: etiqueta vermelha e critérios de descarte', '25 min', 1, ${`
 <h2>Seiri na prática: etiqueta vermelha e critérios de descarte</h2>
-<p>O Seiri (senso de útilização) é o primeiro passo concreto da implantação. Seu objetivo é simples e poderoso: <strong>eliminar tudo que não é necessário na área de trabalho</strong>. Parece fácil, mas na prática é o senso que gera mais resistência — porque mexe com o hábito de "guardar porque um dia pode servir".</p>
+<p>O Seiri (senso de utilização) é o primeiro passo concreto da implantação. Seu objetivo é simples e poderoso: <strong>eliminar tudo que não é necessário na área de trabalho</strong>. Parece fácil, mas na prática é o senso que gera mais resistência — porque mexe com o hábito de "guardar porque um dia pode servir".</p>
 
 <h3>A técnica da etiqueta vermelha (Red Tag)</h3>
 <p>A etiqueta vermelha é o método mais eficaz para o Seiri. Funciona assim:</p>
@@ -613,7 +613,7 @@ export async function seedCourse4(sql) {
 <h2>Seiton na prática: organização visual e shadow boards</h2>
 <p>Após o Seiri ter eliminado o desnecessário, o Seiton organiza o que ficou de forma que <strong>qualquer pessoa encontre, use e devolva em segundos</strong>. O Seiton é o senso que mais transforma visualmente o ambiente — é o que mais impressiona visitantes e auditores.</p>
 
-<h3>Princípios do Seiton indústrial</h3>
+<h3>Princípios do Seiton industrial</h3>
 <ol>
 <li><strong>Um lugar para cada coisa, cada coisa em seu lugar</strong> — o princípio fundamental</li>
 <li><strong>Frequência de uso define a posição</strong> — quanto mais usado, mais acessível</li>
@@ -663,26 +663,26 @@ export async function seedCourse4(sql) {
   <figcaption>Shadow board: contornos mostram imediatamente o que falta e onde deveria estar</figcaption>
 </div>
 
-<div class="callout"><strong>Como fazer um shadow board:</strong> (1) Selecione as ferramentas do posto. (2) Fixe um painel de MDF pintado de branco ou cinza claro. (3) Posicione cada ferramenta e trace o contorno com caneta permanente preta. (4) Instale ganchos ou suportes. (5) Identifique cada posição com etiqueta. Custo médio: R$ 80 a R$ 200 por painel (material + mao de obra interna).</div>
+<div class="callout"><strong>Como fazer um shadow board:</strong> (1) Selecione as ferramentas do posto. (2) Fixe um painel de MDF pintado de branco ou cinza claro. (3) Posicione cada ferramenta e trace o contorno com caneta permanente preta. (4) Instale ganchos ou suportes. (5) Identifique cada posição com etiqueta. Custo médio: R$ 80 a R$ 200 por painel (material + mão de obra interna).</div>
 
-<h3>Sinalização de chao</h3>
-<p>A demarcação de chao é fundamental na indústria. Define visualmente:</p>
+<h3>Sinalização de chão</h3>
+<p>A demarcação de chão é fundamental na indústria. Define visualmente:</p>
 <table>
 <tr><th>Cor</th><th>Uso padrão (NBR 7195 / OSHA adaptado)</th></tr>
 <tr><td><strong>Amarelo</strong></td><td>Corredores de circulação, áreas de atenção</td></tr>
-<tr><td><strong>Branco</strong></td><td>Posicao de equipamentos, bancadas, estáções de trabalho</td></tr>
+<tr><td><strong>Branco</strong></td><td>Posição de equipamentos, bancadas, estações de trabalho</td></tr>
 <tr><td><strong>Verde</strong></td><td>Áreas de produto aprovado, material em processo</td></tr>
 <tr><td><strong>Vermelho</strong></td><td>Áreas de produto não conforme, rejeito, extintores</td></tr>
 <tr><td><strong>Azul</strong></td><td>Material em análise, área de inspeção</td></tr>
 <tr><td><strong>Preto e branco (zebrado)</strong></td><td>Áreas que devem permanecer livres (não obstruir)</td></tr>
 </table>
 
-<div class="example"><strong>Exemplo real:</strong> Uma metalúrgica de Contagem (MG) investiu R$ 6.200 em pintura de chao e sinalização. Resultado: eliminação de 100% das reclamações de "material no corredor" em auditorias. O tempo de movimentação interna de materiais caiu 22% porque os corredores ficaram sempre livres.</div>
+<div class="example"><strong>Exemplo real:</strong> Uma metalúrgica de Contagem (MG) investiu R$ 6.200 em pintura de chão e sinalização. Resultado: eliminação de 100% das reclamações de "material no corredor" em auditorias. O tempo de movimentação interna de materiais caiu 22% porque os corredores ficaram sempre livres.</div>
 
 <h3>Organização de estantes e almoxarifado</h3>
 <p>Regras práticas para organizar prateleiras e estantes:</p>
 <ul>
-<li><strong>Enderecamento:</strong> Cada posição tem um código único (ex: E2-P3-C1 = Estante 2, Prateleira 3, Coluna 1)</li>
+<li><strong>Endereçamento:</strong> Cada posição tem um código único (ex: E2-P3-C1 = Estante 2, Prateleira 3, Coluna 1)</li>
 <li><strong>Etiquetas frontais:</strong> Nome do item, código, quantidade mínima e máxima, foto</li>
 <li><strong>Nível dos olhos:</strong> Itens mais usados na altura dos olhos (1,20 m a 1,60 m)</li>
 <li><strong>Peso embaixo:</strong> Itens pesados nas prateleiras de baixo (segurança)</li>
@@ -727,15 +727,15 @@ export async function seedCourse4(sql) {
 </div>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O shadow board é a ferramenta com melhor relação custo-benefício do 5S: custa R$ 80-200 e elimina 100% do tempo de busca de ferramentas no posto. Se você pudesse implantar apenas uma coisa do Seiton, seria o shadow board.</div></div>
-`}, 'Guia de sinalização de chao indústrial'),
+`}, 'Guia de sinalização de chão industrial'),
 
   (${m2.id}, '2-3-seiso-limpeza-inspeção', 'Seiso na prática: limpeza como inspeção', '22 min', 3, ${`
 <h2>Seiso na prática: limpeza como inspeção</h2>
-<p>O Seiso é frequentemente o senso mais subestimado. Muitas empresas o tratam como "dia de faxina", mas no contexto indústrial o Seiso tem um papel estratégico: <strong>a limpeza é a primeira forma de inspeção</strong>. Ao limpar uma máquina, o operador passa a mao em cada superfície, olha cada canto — e encontra anomalias que nenhum sensor detectaria.</p>
+<p>O Seiso é frequentemente o senso mais subestimado. Muitas empresas o tratam como "dia de faxina", mas no contexto industrial o Seiso tem um papel estratégico: <strong>a limpeza é a primeira forma de inspeção</strong>. Ao limpar uma máquina, o operador passa a mão em cada superfície, olha cada canto — e encontra anomalias que nenhum sensor detectaria.</p>
 
-<h3>Seiso indústrial vs. faxina comum</h3>
+<h3>Seiso industrial vs. faxina comum</h3>
 <table>
-<tr><th>Aspecto</th><th>Faxina comum</th><th>Seiso indústrial</th></tr>
+<tr><th>Aspecto</th><th>Faxina comum</th><th>Seiso industrial</th></tr>
 <tr><td>Objetivo</td><td>Estética</td><td>Inspeção e prevenção</td></tr>
 <tr><td>Quem faz</td><td>Equipe de limpeza</td><td>O próprio operador da área/máquina</td></tr>
 <tr><td>Frequência</td><td>Quando está sujo</td><td>Rotina diária programada</td></tr>
@@ -788,7 +788,7 @@ export async function seedCourse4(sql) {
 <h3>Template: Check de Limpeza/Inspeção Diária (5 min)</h3>
 <table>
 <tr><th>Item</th><th>Verificar</th><th>OK/NOK</th></tr>
-<tr><td>Piso da área</td><td>Limpo, sem óleo/resíduos no chao</td><td>[ ]</td></tr>
+<tr><td>Piso da área</td><td>Limpo, sem óleo/resíduos no chão</td><td>[ ]</td></tr>
 <tr><td>Bancada de trabalho</td><td>Organizada, sem itens desnecessários</td><td>[ ]</td></tr>
 <tr><td>Máquina — visual</td><td>Sem vazamentos, parafusos soltos, fios expostos</td><td>[ ]</td></tr>
 <tr><td>Máquina — auditivo</td><td>Sem ruídos anormais ao ligar</td><td>[ ]</td></tr>
@@ -797,17 +797,17 @@ export async function seedCourse4(sql) {
 <tr><td>Sinalização</td><td>Placas e demarcações visíveis e íntegras</td><td>[ ]</td></tr>
 </table>
 <p><strong>Anomalias encontradas:</strong> _______________________________________________</p>
-<p><strong>Acao tomada:</strong> __________________ | <strong>OS aberta?</strong> [ ] Sim N _______ [ ] Não</p>
+<p><strong>Ação tomada:</strong> __________________ | <strong>OS aberta?</strong> [ ] Sim N _______ [ ] Não</p>
 <p><strong>Operador:</strong> __________________ | <strong>Turno:</strong> _____ | <strong>Data:</strong> ___/___/___</p>
 </div>
 
 <h3>Eliminando fontes de sujeira</h3>
-<p>O Seiso avancado não se contenta em limpar — busca eliminar a <strong>causa raiz da sujeira</strong>:</p>
+<p>O Seiso avançado não se contenta em limpar — busca eliminar a <strong>causa raiz da sujeira</strong>:</p>
 <ul>
 <li><strong>Vazamento de óleo:</strong> Trocar retentores, apertar conexões, instalar bandejas coletoras</li>
 <li><strong>Poeira de processo:</strong> Instalar coifas de exaustão, enclausurar pontos de geração</li>
 <li><strong>Rebarbas e cavaco:</strong> Ajustar parâmetros de corte, instalar proteções, melhorar sistema de refrigeração</li>
-<li><strong>Residuos de embalagem:</strong> Mudar material de embalagem, definir ponto de descarte próximo a área de uso</li>
+<li><strong>Resíduos de embalagem:</strong> Mudar material de embalagem, definir ponto de descarte próximo a área de uso</li>
 </ul>
 
 <div class="callout"><strong>Indicador de Seiso:</strong> Meça o "número de fontes de sujeira eliminadas por mês". No início será alto (muitas fontes). Com o tempo, cai — sinal de que o ambiente está realmente mais limpo de forma sustentável, não apenas varrido.</div>
@@ -835,7 +835,7 @@ export async function seedCourse4(sql) {
 <p>Cada tipo de indústria exige materiais específicos:</p>
 <table>
 <tr><th>Tipo de indústria</th><th>Materiais recomendados</th><th>Cuidados</th></tr>
-<tr><td>Metalúrgica</td><td>Panos absorventes indústriais, desengraxante, vassoura magnética</td><td>Oleo de corte exige descarte como resíduo perigoso</td></tr>
+<tr><td>Metalúrgica</td><td>Panos absorventes indústriais, desengraxante, vassoura magnética</td><td>Óleo de corte exige descarte como resíduo perigoso</td></tr>
 <tr><td>Alimentícia</td><td>Detergente neutro, sanitizante, panos descartáveis, rodo</td><td>Seguir PPHO (Procedimento Padrão de Higiene Operacional)</td></tr>
 <tr><td>Construtora</td><td>Vassoura, pa, container para entulho, água sob pressão</td><td>Separar resíduos classe A, B, C conforme CONAMA 307</td></tr>
 <tr><td>Agrícola</td><td>Vassoura, soprador, pa, sacos de ração/grainhos para descarte</td><td>Embalagens de agrotóxico seguem logística reversa (Lei 7.802)</td></tr>
@@ -843,8 +843,8 @@ export async function seedCourse4(sql) {
 `}, 'Ficha de limpeza/inspeção diária'),
 
   (${m2.id}, '2-4-dia-d-5s', 'Dia D do 5S: planejando o mutirao', '23 min', 4, ${`
-<h2>Dia D do 5S: planejando o mutirao</h2>
-<p>O Dia D é o marco de lançamento do programa 5S. É um <strong>evento concentrado</strong>, geralmente de 4 a 8 horas, onde toda a fábrica para (ou roda em escala reduzida) para aplicar os tres primeiros sensos de uma vez. O Dia D não é o 5S — e o <strong>pontape inicial</strong> que gera impacto visual e emocional, criando momentum para o programa.</p>
+<h2>Dia D do 5S: planejando o mutirão</h2>
+<p>O Dia D é o marco de lançamento do programa 5S. É um <strong>evento concentrado</strong>, geralmente de 4 a 8 horas, onde toda a fábrica para (ou roda em escala reduzida) para aplicar os três primeiros sensos de uma vez. O Dia D não é o 5S — e o <strong>pontapé inicial</strong> que gera impacto visual e emocional, criando momentum para o programa.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
@@ -899,7 +899,7 @@ export async function seedCourse4(sql) {
 <div class="template-box">
 <h3>Template: Plano de Implantação — Dia D do 5S</h3>
 <table>
-<tr><th>Etapa</th><th>Acao</th><th>Responsável</th><th>Prazo</th></tr>
+<tr><th>Etapa</th><th>Ação</th><th>Responsável</th><th>Prazo</th></tr>
 <tr><td>1</td><td>Definir data e horário do Dia D</td><td>Direção</td><td>4 semanas antes</td></tr>
 <tr><td>2</td><td>Formar comitê 5S (3-5 pessoas)</td><td>Gestor de qualidade</td><td>4 semanas antes</td></tr>
 <tr><td>3</td><td>Realizar diagnóstico inicial (todas as áreas)</td><td>Comitê 5S</td><td>3 semanas antes</td></tr>
@@ -920,7 +920,7 @@ export async function seedCourse4(sql) {
 <tr><td>07h00</td><td>Abertura: palavra da direção, objetivos do dia, divisão de equipes</td><td>30 min</td></tr>
 <tr><td>07h30</td><td><strong>Seiri:</strong> Cada equipe percorre sua área, separa e etiqueta itens desnecessários</td><td>2h</td></tr>
 <tr><td>09h30</td><td>Intervalo (café/lanche oferecido pela empresa — gesto simbólico importante)</td><td>15 min</td></tr>
-<tr><td>09h45</td><td><strong>Seiso:</strong> Limpeza profunda de cada área (chao, máquinas, estantes, paredes)</td><td>1h30</td></tr>
+<tr><td>09h45</td><td><strong>Seiso:</strong> Limpeza profunda de cada área (chão, máquinas, estantes, paredes)</td><td>1h30</td></tr>
 <tr><td>11h15</td><td><strong>Seiton:</strong> Reorganizar o que ficou — definir locais, identificar, sinalizar</td><td>1h15</td></tr>
 <tr><td>12h30</td><td>Encerramento: fotos do depois, reconhecimento das equipes, próximos passos</td><td>30 min</td></tr>
 </table>
@@ -939,7 +939,7 @@ export async function seedCourse4(sql) {
 <tr><td><strong>TOTAL ESTIMADO</strong></td><td></td><td><strong>R$ 2.360</strong></td></tr>
 </table>
 
-<div class="callout"><strong>Dica crítica:</strong> O café/lanche não é luxo — é investimento. O Dia D e um evento físico e exaustivo. Oferecer alimentação mostra que a empresa valoriza o esforço. Muitas fábricas relatam que o lanche comunitario do Dia D foi um dos momentos de maior íntegração da equipe.</div>
+<div class="callout"><strong>Dica crítica:</strong> O café/lanche não é luxo — é investimento. O Dia D e um evento físico e exaustivo. Oferecer alimentação mostra que a empresa valoriza o esforço. Muitas fábricas relatam que o lanche comunitário do Dia D foi um dos momentos de maior integração da equipe.</div>
 
 <h3>Erros comuns no Dia D</h3>
 <ul>
@@ -989,7 +989,7 @@ export async function seedCourse4(sql) {
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m3.id}, '3-1-seiketsu-padronização-checklists', 'Seiketsu: padronização e checklists diários', '22 min', 1, ${`
 <h2>Seiketsu: padronização e checklists diários</h2>
-<p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os tres primeiros</strong>. Sem ele, o Seiri, Seiton é Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
+<p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os três primeiros</strong>. Sem ele, o Seiri, Seiton é Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
@@ -1057,7 +1057,7 @@ export async function seedCourse4(sql) {
 <tr><td>5</td><td>Materiais no local correto e identificados</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>6</td><td>Sem itens desnecessários na área</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>7</td><td>Máquina sem vazamentos ou anomalias visíveis</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
-<tr><td>8</td><td>Sinalização de chao íntegra e visível</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
+<tr><td>8</td><td>Sinalização de chão íntegra e visível</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>9</td><td>Corredores livres (sem obstrução)</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>10</td><td>EPIs no local definido e em bom estado</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 </table>
@@ -1066,18 +1066,18 @@ export async function seedCourse4(sql) {
 </div>
 
 <h3>Padronização de cores na fábrica</h3>
-<p>Um sistema de cores consistente fácilita a comunicação visual em toda a planta:</p>
+<p>Um sistema de cores consistente facilita a comunicação visual em toda a planta:</p>
 <table>
 <tr><th>Elemento</th><th>Cor sugerida</th><th>Exemplo</th></tr>
 <tr><td>Equipamentos de produção</td><td>Verde ou azul claro</td><td>Tornos, fresadoras, prensas</td></tr>
 <tr><td>Equipamentos de segurança</td><td>Vermelho</td><td>Extintores, alarmes, lava-olhos</td></tr>
 <tr><td>Tubulações — ar comprimido</td><td>Azul</td><td>Conforme NBR 6493</td></tr>
 <tr><td>Tubulações — água</td><td>Verde</td><td>Conforme NBR 6493</td></tr>
-<tr><td>Tubulações — gas</td><td>Amarelo</td><td>Conforme NBR 6493</td></tr>
+<tr><td>Tubulações — gás</td><td>Amarelo</td><td>Conforme NBR 6493</td></tr>
 <tr><td>Áreas de risco</td><td>Amarelo e preto (zebrado)</td><td>Pontos de esmagamento, queda, elétrico</td></tr>
 </table>
 
-<div class="example"><strong>Caso prático:</strong> Uma fábrica de autopecas de Sorocaba (SP) padronizou todo o sistema de cores em 30 dias. Investiu R$ 9.500 em tinta e mao de obra. Resultado: tempo de íntegração de novos funcionários caiu de 5 dias para 2 dias (porque o ambiente "se explica sozinho"), e o número de quase-acidentes por "não sabia que era perigoso" caiu 70%.</div>
+<div class="example"><strong>Caso prático:</strong> Uma fábrica de autopecas de Sorocaba (SP) padronizou todo o sistema de cores em 30 dias. Investiu R$ 9.500 em tinta e mão de obra. Resultado: tempo de integração de novos funcionários caiu de 5 dias para 2 dias (porque o ambiente "se explica sozinho"), e o número de quase-acidentes por "não sabia que era perigoso" caiu 70%.</div>
 
 <div class="kpi-grid">
   <div class="kpi-card"><div class="kpi-value">R$ 8-15</div><div class="kpi-label">Custo/foto padrão A3</div></div>
@@ -1111,17 +1111,17 @@ export async function seedCourse4(sql) {
 
   (${m3.id}, '3-2-shitsuke-disciplina-lideranca', 'Shitsuke: disciplina e o papel da liderança', '22 min', 2, ${`
 <h2>Shitsuke: disciplina e o papel da liderança</h2>
-<p>O Shitsuke (senso de disciplina) é o senso que determina se o programa 5S <strong>vai sobreviver ou morrer</strong>. Estatisticas indicam que 70% dos programas 5S fracassam no médio prazo — é a causa principal e a falta de disciplina sustentada pela liderança.</p>
+<p>O Shitsuke (senso de disciplina) é o senso que determina se o programa 5S <strong>vai sobreviver ou morrer</strong>. Estatísticas indicam que 70% dos programas 5S fracassam no médio prazo — é a causa principal e a falta de disciplina sustentada pela liderança.</p>
 
 <h3>O que é disciplina no 5S?</h3>
-<p>Disciplina no contexto do 5S <strong>não é punicao</strong>. É a capacidade de <strong>seguir padrões de forma consistente e autônoma</strong>, mesmo sem supervisao. Disciplina madura e quando o operador mantem o padrão porque entende o valor, não porque tem medo de ser cobrado.</p>
+<p>Disciplina no contexto do 5S <strong>não é punição</strong>. É a capacidade de <strong>seguir padrões de forma consistente e autônoma</strong>, mesmo sem supervisão. Disciplina madura e quando o operador mantém o padrão porque entende o valor, não porque tem medo de ser cobrado.</p>
 
-<h3>Os tres estágios da disciplina</h3>
+<h3>Os três estágios da disciplina</h3>
 <table>
-<tr><th>Estágio</th><th>Descrição</th><th>Tempo médio</th><th>Acao da liderança</th></tr>
-<tr><td><strong>1. Cobranca</strong></td><td>A equipe só segue o padrão quando cobrada</td><td>Meses 1-6</td><td>Presenca constante, auditorias semanais, feedback imediato</td></tr>
-<tr><td><strong>2. Consciencia</strong></td><td>A equipe entende o porqu e segue com menos cobrança</td><td>Meses 6-18</td><td>Reconhecimento, autonomia gradual, auditorias quinzenais</td></tr>
-<tr><td><strong>3. Habito</strong></td><td>O padrão é seguido naturalmente, faz parte da cultura</td><td>Após 18 meses</td><td>Manter auditorias mensais, inovar, celebrar resultados</td></tr>
+<tr><th>Estágio</th><th>Descrição</th><th>Tempo médio</th><th>Ação da liderança</th></tr>
+<tr><td><strong>1. Cobrança</strong></td><td>A equipe só segue o padrão quando cobrada</td><td>Meses 1-6</td><td>Presença constante, auditorias semanais, feedback imediato</td></tr>
+<tr><td><strong>2. Consciência</strong></td><td>A equipe entende o porqu e segue com menos cobrança</td><td>Meses 6-18</td><td>Reconhecimento, autonomia gradual, auditorias quinzenais</td></tr>
+<tr><td><strong>3. Hábito</strong></td><td>O padrão é seguido naturalmente, faz parte da cultura</td><td>Após 18 meses</td><td>Manter auditorias mensais, inovar, celebrar resultados</td></tr>
 </table>
 
 <div class="diagram">
@@ -1153,15 +1153,15 @@ export async function seedCourse4(sql) {
 </div>
 
 <h3>O papel da liderança — o fator mais crítico</h3>
-<p>Pesquisas de campo em indústrias brasileiras revelam um padrão claro: <strong>onde a liderança prática o 5S, o programa funciona; onde não prática, o programa morre</strong>. Não importa quanto treinamento você deu. Se o supervisor tem a mesa bagunçada, se o gerente ignora o chao sujo, o operador entende que "5S não é de verdade".</p>
+<p>Pesquisas de campo em indústrias brasileiras revelam um padrão claro: <strong>onde a liderança prática o 5S, o programa funciona; onde não prática, o programa morre</strong>. Não importa quanto treinamento você deu. Se o supervisor tem a mesa bagunçada, se o gerente ignora o chão sujo, o operador entende que "5S não é de verdade".</p>
 
 <div class="callout"><strong>Regra de ouro:</strong> A liderança deve ser a primeira a ser auditada no 5S. Se a sala da direção não está no padrão, nenhuma área de produção estara. Comece de cima para baixo — sempre.</div>
 
 <h3>Ações práticas da liderança para sustentar o 5S</h3>
 <ol>
-<li><strong>Gemba walk semanal:</strong> O gestor caminha pela fábrica com o checklist de 5S, conversa com operadores, reconhece melhorias e aponta desvios. Não e inspeção punitiva — e demonstracao de interesse.</li>
+<li><strong>Gemba walk semanal:</strong> O gestor caminha pela fábrica com o checklist de 5S, conversa com operadores, reconhece melhorias e aponta desvios. Não é inspeção punitiva — e demonstração de interesse.</li>
 <li><strong>Feedback imediato:</strong> Quando encontrar algo fora do padrão, corrija na hora com a equipe (sem armazenar para a reunião mensal).</li>
-<li><strong>Reconhecimento público:</strong> Destaque as áreas que melhoraram. Use fotos antes/depois no quadro de gestão visual. Reconhecimento é mais poderoso que punicao.</li>
+<li><strong>Reconhecimento público:</strong> Destaque as áreas que melhoraram. Use fotos antes/depois no quadro de gestão visual. Reconhecimento é mais poderoso que punição.</li>
 <li><strong>Recursos disponíveis:</strong> Se a equipe precisa de uma estante, um rolo de fita ou uma lata de tinta para manter o padrão, forneça rapidamente. Demora em liberar recursos mata a motivação.</li>
 <li><strong>Exemplo pessoal:</strong> Mantenha sua mesa, seu escritório e suas áreas no padrão. Participe do Dia D. Use os EPIs corretamente.</li>
 </ol>
@@ -1199,15 +1199,15 @@ export async function seedCourse4(sql) {
   </div>
 </div>
 
-<div class="example"><strong>Caso real:</strong> Uma indústria grafica de Blumenau (SC) implantou o 5S em 2019. Em 6 meses, a nota média subiu de 35% para 78%. Então o gerente de produção foi transferido e o substituto "não acreditava em 5S". Em 4 meses, a nota caiu para 42%. A empresa só recuperou quando o diretor assumiu pessoalmente as auditorias e cobrou o novo gerente. Licao: a sustentação depende da <strong>estrutura</strong> (auditorias, metas, reconhecimento), não de uma única pessoa.</div>
+<div class="example"><strong>Caso real:</strong> Uma indústria gráfica de Blumenau (SC) implantou o 5S em 2019. Em 6 meses, a nota média subiu de 35% para 78%. Então o gerente de produção foi transferido e o substituto "não acreditava em 5S". Em 4 meses, a nota caiu para 42%. A empresa só recuperou quando o diretor assumiu pessoalmente as auditorias e cobrou o novo gerente. Lição: a sustentação depende da <strong>estrutura</strong> (auditorias, metas, reconhecimento), não de uma única pessoa.</div>
 
-<h3>Integracao de novos funcionários</h3>
-<p>Todo novo funcionário deve passar por uma <strong>íntegração de 5S</strong> no primeiro dia:</p>
+<h3>Integração de novos funcionários</h3>
+<p>Todo novo funcionário deve passar por uma <strong>integração de 5S</strong> no primeiro dia:</p>
 <ul>
-<li>Explicacao dos 5 sensos (15 minutos)</li>
+<li>Explicação dos 5 sensos (15 minutos)</li>
 <li>Tour pela fábrica mostrando os padrões visuais</li>
 <li>Apresentação do shadow board e do checklist da área</li>
-<li>Designacao de um "padrinho de 5S" (colega experiente) na primeira semana</li>
+<li>Designação de um "padrinho de 5S" (colega experiente) na primeira semana</li>
 </ul>
 
 <div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A liderança pelo exemplo é o fator mais crítico para a sustentação do 5S." data-fb-nok="Incorreto. Pesquisas de campo mostram que onde a liderança pratica o 5S, o programa funciona; onde não pratica, morre.">
@@ -1295,10 +1295,10 @@ export async function seedCourse4(sql) {
   <figcaption>Layout de fábrica com elementos de gestão visual: corredores, sinalização, shadow boards e quadros</figcaption>
 </div>
 
-<h3>Princípios da gestão visual indústrial</h3>
+<h3>Princípios da gestão visual industrial</h3>
 <ol>
 <li><strong>Informação no ponto de uso:</strong> A informação deve estar onde é necessária, não num escritório distante</li>
-<li><strong>Compreensao imediata:</strong> Qualquer pessoa deve entender em até 5 segundos</li>
+<li><strong>Compreensão imediata:</strong> Qualquer pessoa deve entender em até 5 segundos</li>
 <li><strong>Anomalia visível:</strong> Quando algo está fora do padrão, deve ser óbvio</li>
 <li><strong>Atualização fácil:</strong> Se e difícil atualizar, ninguém atualiza</li>
 </ol>
@@ -1319,37 +1319,37 @@ export async function seedCourse4(sql) {
 </table>
 </div>
 
-<h3>Tipos de sinalização indústrial</h3>
+<h3>Tipos de sinalização industrial</h3>
 <table>
 <tr><th>Tipo</th><th>Exemplos</th><th>Material</th><th>Custo médio</th></tr>
-<tr><td>Sinalização de chao</td><td>Faixas de corredor, demarcação de equipamentos, áreas de estoque</td><td>Fita adesiva ou pintura epoxy</td><td>R$ 15-40/m (fita) ou R$ 30-60/m2 (pintura)</td></tr>
+<tr><td>Sinalização de chão</td><td>Faixas de corredor, demarcação de equipamentos, áreas de estoque</td><td>Fita adesiva ou pintura epoxy</td><td>R$ 15-40/m (fita) ou R$ 30-60/m2 (pintura)</td></tr>
 <tr><td>Placas de identificação</td><td>Nome do setor, função do equipamento, nome da estante</td><td>PVC, acrílico ou alumínio</td><td>R$ 20-80/placa</td></tr>
 <tr><td>Etiquetas de prateleira</td><td>Nome do item, código, quantidade min/max, foto</td><td>Papel plastificado ou PVC fino</td><td>R$ 2-8/etiqueta</td></tr>
-<tr><td>Andon (semáforo)</td><td>Verde (normal), amarelo (atenção), vermelho (parada)</td><td>LED indústrial</td><td>R$ 150-600/unidade</td></tr>
+<tr><td>Andon (semáforo)</td><td>Verde (normal), amarelo (atenção), vermelho (parada)</td><td>LED industrial</td><td>R$ 150-600/unidade</td></tr>
 <tr><td>Marcadores de nível</td><td>Nível min/max em recipientes de líquidos ou estoque</td><td>Fita colorida ou pintura</td><td>R$ 5-15/marcador</td></tr>
 </table>
 
-<div class="example"><strong>Caso prático:</strong> Uma fábrica de alimentos de Marília (SP) implantou gestão visual completa em 45 dias. Investimento: R$ 14.000 (quadros, placas, sinalização de chao, etiquetas). Resultado: o tempo de treinamento de novos operadores na linha de produção caiu de 2 semanas para 5 dias, porque o ambiente "ensina" sozinho. Auditores da ANVISA elogiaram especificamente a identificação de áreas e o controle visual de validade.</div>
+<div class="example"><strong>Caso prático:</strong> Uma fábrica de alimentos de Marília (SP) implantou gestão visual completa em 45 dias. Investimento: R$ 14.000 (quadros, placas, sinalização de chão, etiquetas). Resultado: o tempo de treinamento de novos operadores na linha de produção caiu de 2 semanas para 5 dias, porque o ambiente "ensina" sozinho. Auditores da ANVISA elogiaram especificamente a identificação de áreas e o controle visual de validade.</div>
 
 <h3>Sinalização de segurança integrada ao 5S</h3>
 <p>O 5S é a sinalização de segurança (NR-26, NBR 7195) se complementam. Ao implantar o 5S, aproveite para revisar e melhorar a sinalização de segurança:</p>
 <ul>
-<li><strong>Rotas de fuga:</strong> Setas fotoluminescentes no chao e nas paredes</li>
-<li><strong>Extintores:</strong> Demarcacao de chao vermelha, placa de identificação com tipo e validade</li>
-<li><strong>Painéis eletricos:</strong> Identificação de circuitos, aviso de risco de choque</li>
+<li><strong>Rotas de fuga:</strong> Setas fotoluminescentes no chão e nas paredes</li>
+<li><strong>Extintores:</strong> Demarcação de chão vermelha, placa de identificação com tipo e validade</li>
+<li><strong>Painéis elétricos:</strong> Identificação de circuitos, aviso de risco de choque</li>
 <li><strong>Áreas de risco:</strong> Zebrado amarelo/preto, placa com tipo de risco e EPI obrigatório</li>
-<li><strong>Saida de emergência:</strong> Sinalização verde com pictograma e seta direcional</li>
+<li><strong>Saída de emergência:</strong> Sinalização verde com pictograma e seta direcional</li>
 </ul>
 
 <h3>Gestão visual digital</h3>
-<p>Empresas mais avancadas estão complementando a gestão visual física com ferramentas digitais:</p>
+<p>Empresas mais avançadas estão complementando a gestão visual física com ferramentas digitais:</p>
 <ul>
 <li><strong>TV/monitor no setor:</strong> Exibindo indicadores em tempo real (OEE, produção, qualidade)</li>
 <li><strong>Apps de auditoria 5S:</strong> Fotos com geolocalização, pontuação automática, histórico de evolução</li>
 <li><strong>QR codes:</strong> Nas máquinas e estantes, linkando para instrução de trabalho, ficha técnica ou histórico de manutenção</li>
 </ul>
 
-<div class="callout"><strong>Equilibrio:</strong> A gestão visual física (quadros, placas, cores) e insubstituivel — funciona sem energia, sem wifi, sem celular. A digital complementa, mas não substitui. Comece pelo físico, depois adicione o digital onde agregar valor.</div>
+<div class="callout"><strong>Equilíbrio:</strong> A gestão visual física (quadros, placas, cores) e insubstituível — funciona sem energia, sem wifi, sem celular. A digital complementa, mas não substitui. Comece pelo físico, depois adicione o digital onde agregar valor.</div>
 
 <div class="tabs">
   <div class="tab-btns"><button class="tab-btn active">Gestão Visual Física</button><button class="tab-btn">Gestão Visual Digital</button></div>
@@ -1374,7 +1374,7 @@ export async function seedCourse4(sql) {
 
   (${m3.id}, '3-4-engajamento-equipe-comunicação', 'Engajamento de equipe e comunicação', '20 min', 4, ${`
 <h2>Engajamento de equipe e comunicação</h2>
-<p>O 5S só funciona se as <strong>pessoas acreditarem no programa</strong>. Não se implanta 5S por decreto — se implanta por <strong>convencimento, envolvimento e comunicação</strong>. Esta aula aborda as estratégias práticas para engajar todos os niveis da organização.</p>
+<p>O 5S só funciona se as <strong>pessoas acreditarem no programa</strong>. Não se implanta 5S por decreto — se implanta por <strong>convencimento, envolvimento e comunicação</strong>. Esta aula aborda as estratégias práticas para engajar todos os níveis da organização.</p>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> "As pessoas apoiam o que ajudam a construir." Quanto mais a equipe participar das decisões do 5S (onde guardar, como organizar, que padrão definir), mais ela vai defender o programa. Faça com eles, nunca para eles.</div></div>
 
@@ -1385,8 +1385,8 @@ export async function seedCourse4(sql) {
 <tr><td>Medo de mudança</td><td>"Vai mudar minha rotina e eu não sei se vou me adaptar"</td><td>Envolver na decisão, treinar antes de cobrar</td></tr>
 <tr><td>Experiência negativa anterior</td><td>"Já tentaram 5S aqui e não funcionou"</td><td>Reconhecer o passado, mostrar o que será diferente desta vez</td></tr>
 <tr><td>Falta de tempo</td><td>"Mal dou conta da produção, agora querem que eu limpe?"</td><td>Mostrar que 5 min de organização economizam 30 min de busca</td></tr>
-<tr><td>Senso de propriedade</td><td>"Ninguem vai mexer nas minhas coisas"</td><td>Participacao na classificação, respeito ao conhecimento do operador</td></tr>
-<tr><td>Descrenca na liderança</td><td>"Eles nem arrumam o escritório deles"</td><td>Liderança pelo exemplo — comece de cima</td></tr>
+<tr><td>Senso de propriedade</td><td>"Ninguém vai mexer nas minhas coisas"</td><td>Participação na classificação, respeito ao conhecimento do operador</td></tr>
+<tr><td>Descrença na liderança</td><td>"Eles nem arrumam o escritório deles"</td><td>Liderança pelo exemplo — comece de cima</td></tr>
 </table>
 
 <h3>Estratégias de engajamento por nível</h3>
@@ -1416,26 +1416,26 @@ export async function seedCourse4(sql) {
 <p>A comunicação deve ser constante, não só no lançamento:</p>
 <table>
 <tr><th>Momento</th><th>Canal</th><th>Mensagem</th></tr>
-<tr><td>Antes do lançamento</td><td>Reuniao geral, cartazes</td><td>"O que é 5S, por que estamos fazendo, como vai funcionar"</td></tr>
+<tr><td>Antes do lançamento</td><td>Reunião geral, cartazes</td><td>"O que é 5S, por que estamos fazendo, como vai funcionar"</td></tr>
 <tr><td>Dia D</td><td>Presencial, fotos</td><td>"Estamos transformando nosso ambiente juntos"</td></tr>
 <tr><td>Primeiras semanas</td><td>Mural, e-mail, app</td><td>Fotos antes/depois, resultados iniciais</td></tr>
 <tr><td>Mensal</td><td>Quadro de gestão visual</td><td>Nota da auditoria, ranking de áreas, evolução</td></tr>
-<tr><td>Trimestral</td><td>Reuniao geral</td><td>Resultados consolidados, reconhecimento das melhores áreas</td></tr>
+<tr><td>Trimestral</td><td>Reunião geral</td><td>Resultados consolidados, reconhecimento das melhores áreas</td></tr>
 </table>
 
 <h3>Programa de reconhecimento 5S</h3>
-<p>O reconhecimento é mais eficaz que a punicao para manter o programa vivo. Modelos que funcionam:</p>
+<p>O reconhecimento é mais eficaz que a punição para manter o programa vivo. Modelos que funcionam:</p>
 <ul>
 <li><strong>Área destaque do mês:</strong> A área com melhor nota na auditoria ganha um troféu simbólico (um selo, uma bandeira, um quadro) que fica exposto até a próxima avaliação. Custo: zero.</li>
 <li><strong>Foto no quadro:</strong> A equipe da melhor área tem foto no quadro de gestão visual. Orgulho visível.</li>
 <li><strong>Café com a direção:</strong> A equipe vencedora toma um café com o diretor, que pessoalmente agradece o esforço. Custo: R$ 50. Impacto: enorme.</li>
-<li><strong>Prêmio trimestral:</strong> A melhor área do trimestre recebe um prêmio coletivo (churrasco, cesta básica extra, folga). Custo: R$ 500-1.500. Retorno: incalculavel em motivação.</li>
+<li><strong>Prêmio trimestral:</strong> A melhor área do trimestre recebe um prêmio coletivo (churrasco, cesta básica extra, folga). Custo: R$ 500-1.500. Retorno: incalculável em motivação.</li>
 </ul>
 
 <div class="example"><strong>Caso real:</strong> Uma metalúrgica de Piracicaba (SP) com 180 funcionários criou o "Torneio 5S". As 6 áreas de produção competem mensalmente. A vencedora ganha uma estrela no quadro. Ao final de 6 meses, a área com mais estrelas ganha um churrasco pago pela empresa. Em 2 anos de programa, a nota média subiu de 45% para 87%, e a rotatividade de pessoal caiu 18% (as pessoas passaram a ter mais orgulho do ambiente de trabalho).</div>
 
 <h3>O papel do comitê 5S</h3>
-<p>O comitê 5S é o grupo responsável por coordenar o programa. Composicao ideal:</p>
+<p>O comitê 5S é o grupo responsável por coordenar o programa. Composição ideal:</p>
 <ul>
 <li>1 coordenador (preferencialmente da área de qualidade ou produção)</li>
 <li>1 representante de cada setor principal</li>
@@ -1490,12 +1490,12 @@ export async function seedCourse4(sql) {
 `}, 'Modelo de programa de reconhecimento 5S')`;
 
   // ── Module 4: Sustentação e Melhoria ──
-  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Sustentação e Melhoria', 'Auditoria, indicadores, melhoria contínua e íntegração com outros programas', 4) RETURNING id`;
+  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Sustentação e Melhoria', 'Auditoria, indicadores, melhoria contínua e integração com outros programas', 4) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m4.id}, '4-1-auditoria-5s-checklist-pontuacao', 'Auditoria 5S: checklist e pontuação', '25 min', 1, ${`
 <h2>Auditoria 5S: checklist e pontuação</h2>
-<p>A auditoria 5S é o <strong>instrumento que mantem o programa vivo</strong>. Sem auditoria, não há medição. Sem medição, não há gestão. Sem gestão, o 5S desaparece em semanas. A auditoria não é "fiscalização" — é um <strong>diagnóstico periódico</strong> que mostra onde a área está e para onde precisa ir.</p>
+<p>A auditoria 5S é o <strong>instrumento que mantém o programa vivo</strong>. Sem auditoria, não há medição. Sem medição, não há gestão. Sem gestão, o 5S desaparece em semanas. A auditoria não é "fiscalização" — é um <strong>diagnóstico periódico</strong> que mostra onde a área está e para onde precisa ir.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
@@ -1543,11 +1543,11 @@ export async function seedCourse4(sql) {
 <h3>Checklist de auditoria 5S — modelo completo</h3>
 
 <div class="template-box">
-<h3>Template: Auditoria 5S — Checklist de Pontuacao</h3>
+<h3>Template: Auditoria 5S — Checklist de Pontuação</h3>
 <p><strong>Área:</strong> _____________ | <strong>Auditor:</strong> _____________ | <strong>Data:</strong> ___/___/___</p>
 <p><strong>Escala:</strong> 0 = Não atende | 1 = Atende parcialmente | 2 = Atende plenamente</p>
 
-<p><strong>SEIRI (Utilizacao)</strong></p>
+<p><strong>SEIRI (Utilização)</strong></p>
 <table>
 <tr><th>N</th><th>Critério</th><th>0</th><th>1</th><th>2</th></tr>
 <tr><td>1.1</td><td>Não há itens desnecessários na área de trabalho</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
@@ -1564,7 +1564,7 @@ export async function seedCourse4(sql) {
 <tr><td>2.1</td><td>Cada item tem local definido e identificado</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>2.2</td><td>Itens estão efetivamente nos locais definidos</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>2.3</td><td>Shadow board ou sistema equivalente em uso</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
-<tr><td>2.4</td><td>Demarcacao de chao íntegra e respeitada</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
+<tr><td>2.4</td><td>Demarcação de chão íntegra e respeitada</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>2.5</td><td>Item localizado em até 30 segundos</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 </table>
 <p><strong>Subtotal Seiton: ___/10</strong></p>
@@ -1597,7 +1597,7 @@ export async function seedCourse4(sql) {
 <tr><td>5.1</td><td>A equipe demonstra conhecimento dos padrões 5S</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>5.2</td><td>O check diário é feito sem cobrança</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>5.3</td><td>Novos funcionários receberam treinamento 5S</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
-<tr><td>5.4</td><td>Ações corretivas de auditorias anteriores foram concluidas</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
+<tr><td>5.4</td><td>Ações corretivas de auditorias anteriores foram concluídas</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 <tr><td>5.5</td><td>A área demonstra melhoria em relação a última auditoria</td><td>[ ]</td><td>[ ]</td><td>[ ]</td></tr>
 </table>
 <p><strong>Subtotal Shitsuke: ___/10</strong></p>
@@ -1612,15 +1612,15 @@ export async function seedCourse4(sql) {
 <h3>Conduzindo a auditoria</h3>
 <p>Dicas para uma auditoria eficaz:</p>
 <ol>
-<li><strong>Caminhe pela área:</strong> Não audite de longe. Entre, olhe atras das máquinas, abra armarios, verifique gavetas.</li>
-<li><strong>Converse com operadores:</strong> Pergunte: "Onde fica tal ferramenta? Qual e a rotina de limpeza?" Se o operador sabe responder, o 5S está funcionando.</li>
+<li><strong>Caminhe pela área:</strong> Não audite de longe. Entre, olhe atrás das máquinas, abra armários, verifique gavetas.</li>
+<li><strong>Converse com operadores:</strong> Pergunte: "Onde fica tal ferramenta? Qual é a rotina de limpeza?" Se o operador sabe responder, o 5S está funcionando.</li>
 <li><strong>Teste os 30 segundos:</strong> Peça para localizar um item específico. Cronometre.</li>
 <li><strong>Fotografe desvios:</strong> Foto com data e hora e evidência objetiva.</li>
 <li><strong>Feedback imediato:</strong> Ao final, converse com o líder da área sobre os achados. Não espere o relatório formal.</li>
 <li><strong>Registre pontos positivos:</strong> A auditoria não é só para achar defeitos. Reconheca o que está bom.</li>
 </ol>
 
-<div class="example"><strong>Benchmark:</strong> Empresas com programa 5S maduro costumam ter nota média entre 80% e 92%. Notas acima de 95% por períodos longos podem indicar auditoria branda (complacência). O ideal e que haja sempre oportunidades de melhoria identificadas — isso mostra que o olhar crítico contínua ativo.</div>
+<div class="example"><strong>Benchmark:</strong> Empresas com programa 5S maduro costumam ter nota média entre 80% e 92%. Notas acima de 95% por períodos longos podem indicar auditoria branda (complacência). O ideal é que haja sempre oportunidades de melhoria identificadas — isso mostra que o olhar crítico contínua ativo.</div>
 
 <div class="step-flow">
   <div class="step-item"><div class="step-content"><strong>1. Caminhe pela área</strong><br>Entre, olhe atrás das máquinas, abra armários, verifique gavetas</div></div>
@@ -1648,7 +1648,7 @@ export async function seedCourse4(sql) {
 
   (${m4.id}, '4-2-indicadores-5s-acompanhamento', 'Indicadores de 5S é acompanhamento', '20 min', 2, ${`
 <h2>Indicadores de 5S é acompanhamento</h2>
-<p>O 5S, como qualquer programa de gestão, precisa de <strong>indicadores para ser gerênciado</strong>. Sem números, não há como saber se o programa está avancando, estagnado ou regredindo. Os indicadores transformam percepção em <strong>fatos</strong>.</p>
+<p>O 5S, como qualquer programa de gestão, precisa de <strong>indicadores para ser gerenciado</strong>. Sem números, não há como saber se o programa está avançando, estagnado ou regredindo. Os indicadores transformam percepção em <strong>fatos</strong>.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
@@ -1692,19 +1692,19 @@ export async function seedCourse4(sql) {
 <table>
 <tr><th>Indicador</th><th>O que mede</th><th>Meta sugerida</th><th>Frequência</th></tr>
 <tr><td><strong>Nota de auditoria 5S (%)</strong></td><td>Aderência ao padrão geral</td><td>Acima de 80% após 12 meses</td><td>Mensal</td></tr>
-<tr><td><strong>Nota por senso (%)</strong></td><td>Pontuacao de cada S separadamente</td><td>Nenhum senso abaixo de 60%</td><td>Mensal</td></tr>
-<tr><td><strong>Tendência de evolução</strong></td><td>A nota está subindo, estavel ou caindo?</td><td>Tendência de alta nos primeiros 12 meses</td><td>Trimestral</td></tr>
-<tr><td><strong>Taxa de fechamento de ações</strong></td><td>% de ações corretivas da auditoria concluidas no prazo</td><td>Acima de 90%</td><td>Mensal</td></tr>
+<tr><td><strong>Nota por senso (%)</strong></td><td>Pontuação de cada S separadamente</td><td>Nenhum senso abaixo de 60%</td><td>Mensal</td></tr>
+<tr><td><strong>Tendência de evolução</strong></td><td>A nota está subindo, estável ou caindo?</td><td>Tendência de alta nos primeiros 12 meses</td><td>Trimestral</td></tr>
+<tr><td><strong>Taxa de fechamento de ações</strong></td><td>% de ações corretivas da auditoria concluídas no prazo</td><td>Acima de 90%</td><td>Mensal</td></tr>
 </table>
 
 <h3>Indicadores secundários (impacto do 5S)</h3>
 <p>Além dos indicadores diretos do programa, é importante medir o <strong>impacto do 5S nos resultados da operação</strong>:</p>
 <table>
-<tr><th>Indicador</th><th>Relacao com o 5S</th><th>Como medir</th></tr>
+<tr><th>Indicador</th><th>Relação com o 5S</th><th>Como medir</th></tr>
 <tr><td>Tempo de setup</td><td>Seiton reduz busca de ferramentas e materiais</td><td>Cronometrar setup antes e depois do 5S</td></tr>
 <tr><td>Acidentes de trabalho</td><td>Seiso elimina riscos; Seiton libera corredores</td><td>Registros de SST (CAT, quase-acidentes)</td></tr>
 <tr><td>Retrabalho / refugo</td><td>Organização reduz troca de material e erros</td><td>Índice de rejeição por área</td></tr>
-<tr><td>Reclamações de clientes</td><td>Ambiente organizado reduz erros de expedicao</td><td>SAC / sistema de reclamações</td></tr>
+<tr><td>Reclamações de clientes</td><td>Ambiente organizado reduz erros de expedição</td><td>SAC / sistema de reclamações</td></tr>
 <tr><td>Área útil disponível</td><td>Seiri libera espaço</td><td>Medição em m2 recuperados</td></tr>
 <tr><td>Custo de manutenção corretiva</td><td>Seiso como inspeção previne quebras</td><td>Ordens de serviço corretivas vs. preventivas</td></tr>
 </table>
@@ -1714,15 +1714,15 @@ export async function seedCourse4(sql) {
 <h3>Dashboard de 5S — como montar</h3>
 <p>O acompanhamento deve ser visual e acessível. Opções:</p>
 
-<h3>Opcao 1 — Quadro físico (recomendado para início)</h3>
+<h3>Opção 1 — Quadro físico (recomendado para início)</h3>
 <ul>
-<li>Gráfico de barras mensal com a nota de cada área (desenhado a mao ou impresso)</li>
+<li>Gráfico de barras mensal com a nota de cada área (desenhado a mão ou impresso)</li>
 <li>Semáforo por área: verde (acima de 80%), amarelo (60-80%), vermelho (abaixo de 60%)</li>
 <li>Fotos antes/depois das 3 maiores melhorias do mês</li>
 <li>Lista de ações pendentes com responsável e prazo</li>
 </ul>
 
-<h3>Opcao 2 — Planilha compartilhada (Google Sheets / Excel Online)</h3>
+<h3>Opção 2 — Planilha compartilhada (Google Sheets / Excel Online)</h3>
 <ul>
 <li>Aba de registro de auditorias (data, área, nota por senso, nota total)</li>
 <li>Aba de gráfico de evolução (linha do tempo com notas mensais por área)</li>
@@ -1730,17 +1730,17 @@ export async function seedCourse4(sql) {
 <li>Dashboard automático com gráficos</li>
 </ul>
 
-<h3>Opcao 3 — App especializado</h3>
+<h3>Opção 3 — App especializado</h3>
 <p>Para empresas maiores (100+ funcionários), apps como ChecklistFacil, iAuditor ou Auditoria Digital permitem:</p>
 <ul>
 <li>Auditorias no celular com fotos geolocalizadas</li>
-<li>Pontuacao automática</li>
+<li>Pontuação automática</li>
 <li>Geração de relatórios em PDF</li>
 <li>Notificações de ações vencidas</li>
 <li>Custo: R$ 100 a R$ 500/mês dependendo do plano</li>
 </ul>
 
-<div class="example"><strong>Caso prático:</strong> Uma fábrica de peças em Manaus (AM) migrou das auditorias em papel para o app ChecklistFacil. O tempo de auditoria por área caiu de 45 minutos para 20 minutos (porque o app já tem os critérios pre-carregados). O tempo de compilacao dos resultados caiu de 4 horas/mês para zero (o app gera o relatório automaticamente). É o histórico de fotos permitiu criar um "album de evolução" que impressiona clientes em visitas a fábrica.</div>
+<div class="example"><strong>Caso prático:</strong> Uma fábrica de peças em Manaus (AM) migrou das auditorias em papel para o app ChecklistFacil. O tempo de auditoria por área caiu de 45 minutos para 20 minutos (porque o app já tem os critérios pre-carregados). O tempo de compilação dos resultados caiu de 4 horas/mês para zero (o app gera o relatório automaticamente). É o histórico de fotos permitiu criar um "album de evolução" que impressiona clientes em visitas a fábrica.</div>
 
 <div class="kpi-grid">
   <div class="kpi-card"><div class="kpi-value">>80%</div><div class="kpi-label">Meta nota auditoria (12 meses)</div></div>
@@ -1763,7 +1763,7 @@ export async function seedCourse4(sql) {
   <div class="qi-feedback"></div>
 </div>
 
-<h3>Reuniao mensal de 5S</h3>
+<h3>Reunião mensal de 5S</h3>
 <p>Uma boa prática e realizar uma reunião mensal de 15-30 minutos para revisar os indicadores:</p>
 <ol>
 <li>Apresentar nota de auditoria de cada área (5 min)</li>
@@ -1815,7 +1815,7 @@ export async function seedCourse4(sql) {
 
 <p>O 5S segue naturalmente o ciclo PDCA:</p>
 <table>
-<tr><th>Fase</th><th>Aplicacao no 5S</th><th>Ferramentas</th></tr>
+<tr><th>Fase</th><th>Aplicação no 5S</th><th>Ferramentas</th></tr>
 <tr><td><strong>Plan (Planejar)</strong></td><td>Diagnóstico, definição de padrões, metas, cronograma</td><td>Checklist de diagnóstico, plano de implantação</td></tr>
 <tr><td><strong>Do (Executar)</strong></td><td>Dia D, organização, limpeza, sinalização</td><td>Etiqueta vermelha, shadow board, demarcação</td></tr>
 <tr><td><strong>Check (Verificar)</strong></td><td>Auditorias, indicadores, feedback dos operadores</td><td>Checklist de auditoria, dashboard, reunião mensal</td></tr>
@@ -1827,17 +1827,17 @@ export async function seedCourse4(sql) {
 <ol>
 <li><strong>Registrar:</strong> O que foi encontrado, onde, quando (com foto)</li>
 <li><strong>Analisar causa:</strong> Por que aconteceu? (use os 5 Por ques)</li>
-<li><strong>Definir ação:</strong> O que fazer para corrigir e prevenir recorrencia</li>
+<li><strong>Definir ação:</strong> O que fazer para corrigir e prevenir recorrência</li>
 <li><strong>Definir responsável e prazo:</strong> Quem faz e até quando</li>
 <li><strong>Executar:</strong> Realizar a ação</li>
 <li><strong>Verificar eficácia:</strong> Na próxima auditoria, o desvio desapareceu?</li>
 </ol>
 
 <div class="template-box">
-<h3>Template: Plano de Acao 5S (5W2H simplificado)</h3>
+<h3>Template: Plano de Ação 5S (5W2H simplificado)</h3>
 <table>
 <tr><th>Campo</th><th>Descrição</th><th>Preenchimento</th></tr>
-<tr><td><strong>O que? (What)</strong></td><td>Qual e o desvio/oportunidade?</td><td>______________________________</td></tr>
+<tr><td><strong>O que? (What)</strong></td><td>Qual é o desvio/oportunidade?</td><td>______________________________</td></tr>
 <tr><td><strong>Por que? (Why)</strong></td><td>Qual a causa raiz?</td><td>______________________________</td></tr>
 <tr><td><strong>Onde? (Where)</strong></td><td>Em qual área/setor?</td><td>______________________________</td></tr>
 <tr><td><strong>Quem? (Who)</strong></td><td>Responsável pela ação</td><td>______________________________</td></tr>
@@ -1845,7 +1845,7 @@ export async function seedCourse4(sql) {
 <tr><td><strong>Como? (How)</strong></td><td>Descrição da ação</td><td>______________________________</td></tr>
 <tr><td><strong>Quanto? (How much)</strong></td><td>Custo estimado (se houver)</td><td>R$ ________</td></tr>
 </table>
-<p><strong>Status:</strong> [ ] Pendente | [ ] Em andamento | [ ] Concluida | [ ] Verificada eficaz</p>
+<p><strong>Status:</strong> [ ] Pendente | [ ] Em andamento | [ ] Concluída | [ ] Verificada eficaz</p>
 </div>
 
 <h3>Os 5 Por ques — análise de causa raiz no 5S</h3>
@@ -1858,7 +1858,7 @@ export async function seedCourse4(sql) {
 <p><strong>3o Por que?</strong> O shadow board foi instalado na parede mais conveniente durante o Dia D, sem consultar os operadores.</p>
 <p><strong>4o Por que?</strong> Não houve critério de proximidade ao definir a posição do shadow board.</p>
 <p><strong>Causa raiz:</strong> Shadow board mal posicionado.</p>
-<p><strong>Acao:</strong> Relocar o shadow board para a parede ao lado das máquinas CNC (distância máxima de 3 metros). Custo: R$ 120 (parafusos e mao de obra). Prazo: 5 dias.</p></div>
+<p><strong>Ação:</strong> Relocar o shadow board para a parede ao lado das máquinas CNC (distância máxima de 3 metros). Custo: R$ 120 (parafusos e mão de obra). Prazo: 5 dias.</p></div>
 
 <h3>Kaizen no 5S — pequenas melhorias continuas</h3>
 <p>Além de corrigir desvios, o 5S pode (e deve) evoluir continuamente. Ideias de Kaizen no 5S:</p>
@@ -1875,11 +1875,11 @@ export async function seedCourse4(sql) {
 <h3>Quando o 5S regride — plano de recuperação</h3>
 <p>Se a nota de auditoria cair abaixo de 60% após já ter estado acima de 80%, é necessário um plano de recuperação:</p>
 <ol>
-<li><strong>Diagnóstico rapido:</strong> Identificar a causa da regressão (mudança de líder? Rotatividade alta? Perda de interesse?)</li>
-<li><strong>Reuniao com a equipe:</strong> Não para punir, mas para entender e replanejar</li>
-<li><strong>Mini Dia D:</strong> Um mutirao de 2-3 horas para restaurar o padrão</li>
-<li><strong>Aumento temporario de auditorias:</strong> Voltar para semanal até estabilizar acima de 70%</li>
-<li><strong>Reforco da liderança:</strong> O gestor deve estar mais presente na área</li>
+<li><strong>Diagnóstico rápido:</strong> Identificar a causa da regressão (mudança de líder? Rotatividade alta? Perda de interesse?)</li>
+<li><strong>Reunião com a equipe:</strong> Não para punir, mas para entender e replanejar</li>
+<li><strong>Mini Dia D:</strong> Um mutirão de 2-3 horas para restaurar o padrão</li>
+<li><strong>Aumento temporário de auditorias:</strong> Voltar para semanal até estabilizar acima de 70%</li>
+<li><strong>Reforço da liderança:</strong> O gestor deve estar mais presente na área</li>
 </ol>
 
 <div class="callout"><strong>Dado real:</strong> Em uma pesquisa com 45 indústrias brasileiras que implantaram 5S (SENAI-PR, 2021), 62% relataram pelo menos uma regressão significativa nos primeiros 2 anos. Das que se recuperaram, 100% tinham sistema de auditoria ativo. Das que não se recuperaram, apenas 15% faziam auditorias regulares. A auditoria é o "seguro de vida" do programa 5S.</div>
@@ -1904,8 +1904,8 @@ export async function seedCourse4(sql) {
 </div>
 `}, 'Modelo de plano de ação 5W2H para 5S'),
 
-  (${m4.id}, '4-4-íntegração-5s-iso-outros-programas', 'Integracao do 5S com ISO 9001 e outros programas', '22 min', 4, ${`
-<h2>Integracao do 5S com ISO 9001 e outros programas</h2>
+  (${m4.id}, '4-4-integração-5s-iso-outros-programas', 'Integracao do 5S com ISO 9001 e outros programas', '22 min', 4, ${`
+<h2>Integração do 5S com ISO 9001 e outros programas</h2>
 <p>O 5S não existe isolado. Ele é a <strong>base sobre a qual outros programas de gestão se apoiam</strong>. Nesta aula, vamos explorar como integrar o 5S com ISO 9001, ISO 14001, Lean Manufacturing, TPM e outros programas comuns na indústria brasileira.</p>
 
 <div class="diagram">
@@ -1943,32 +1943,32 @@ export async function seedCourse4(sql) {
 </div>
 
 <h3>5S é ISO 9001:2015</h3>
-<p>A ISO 9001 não menciona o 5S explicitamente, mas vários requisitos são atendidos ou fácilitados pelo programa:</p>
+<p>A ISO 9001 não menciona o 5S explicitamente, mas vários requisitos são atendidos ou facilitados pelo programa:</p>
 <table>
 <tr><th>Cláusula ISO 9001</th><th>Requisito</th><th>Contribuição do 5S</th></tr>
-<tr><td>7.1.3</td><td>Infraestrutura</td><td>Seiso mantem infraestrutura limpa e funcional; Seiton garante organização</td></tr>
+<tr><td>7.1.3</td><td>Infraestrutura</td><td>Seiso mantém infraestrutura limpa e funcional; Seiton garante organização</td></tr>
 <tr><td>7.1.4</td><td>Ambiente para operação de processos</td><td>5S cria ambiente físico adequado (limpo, organizado, seguro)</td></tr>
 <tr><td>7.1.5</td><td>Recursos de monitoramento e medição</td><td>Seiton garante rastreabilidade e localização de instrumentos calibrados</td></tr>
 <tr><td>7.1.6</td><td>Conhecimento organizacional</td><td>Gestão visual e padrões escritos preservam o conhecimento no ambiente</td></tr>
 <tr><td>7.3</td><td>Conscientizacao</td><td>Treinamento 5S é auditorias promovem conscientização da qualidade</td></tr>
-<tr><td>8.5.2</td><td>Identificação e rastreabilidade</td><td>Seiton com etiquetas e enderecamento garante identificação</td></tr>
+<tr><td>8.5.2</td><td>Identificação e rastreabilidade</td><td>Seiton com etiquetas e endereçamento garante identificação</td></tr>
 <tr><td>8.5.4</td><td>Preservacao de saídas</td><td>Organização e limpeza preservam produto durante manuseio e armazenamento</td></tr>
 <tr><td>8.7</td><td>Controle de saídas não conformes</td><td>Área vermelha demarcada para produto não conforme (gestão visual)</td></tr>
 </table>
 
-<div class="callout"><strong>Dica para auditoria de certificação:</strong> Auditores de ISO 9001 sempre observam o ambiente durante a auditoria. Uma fábrica com 5S bem implantado causa impressão positiva imediata e fácilita a demonstracao de vários requisitos. Muitos auditores relatam que "uma fábrica organizada raramente tem não-conformidades graves".</div>
+<div class="callout"><strong>Dica para auditoria de certificação:</strong> Auditores de ISO 9001 sempre observam o ambiente durante a auditoria. Uma fábrica com 5S bem implantado causa impressão positiva imediata e facilita a demonstração de vários requisitos. Muitos auditores relatam que "uma fábrica organizada raramente tem não-conformidades graves".</div>
 
 <h3>5S é Lean Manufacturing</h3>
 <p>No Lean, o 5S é considerado <strong>a fundação da casa Toyota</strong> (Toyota Production System). Sem 5S, não se implanta:</p>
 <ul>
 <li><strong>Trabalho padronizado:</strong> Requer ambiente organizado e ferramentas no lugar certo</li>
 <li><strong>Kanban:</strong> Requer sinalização visual clara e limites de estoque definidos</li>
-<li><strong>SMED (troca rapida):</strong> Requer ferramentas organizadas e acessíveis (shadow board)</li>
+<li><strong>SMED (troca rápida):</strong> Requer ferramentas organizadas e acessíveis (shadow board)</li>
 <li><strong>Fluxo contínuo:</strong> Requer corredores livres e áreas demarcadas</li>
 <li><strong>Kaizen:</strong> 5S é o primeiro Kaizen — a melhoria mais visível e imediata</li>
 </ul>
 
-<div class="example"><strong>Sequência recomendada de implantação Lean:</strong> 5S → Trabalho padronizado → Gestão visual → SMED → Kanban → Fluxo contínuo → Heijunka. O 5S é sempre o primeiro passo. Tentar implantar Kanban sem 5S é como construir um predio sem fundação.</div>
+<div class="example"><strong>Sequência recomendada de implantação Lean:</strong> 5S → Trabalho padronizado → Gestão visual → SMED → Kanban → Fluxo contínuo → Heijunka. O 5S é sempre o primeiro passo. Tentar implantar Kanban sem 5S é como construir um prédio sem fundação.</div>
 
 <div class="step-flow">
   <div class="step-item"><div class="step-content"><strong>1. 5S</strong><br>Base: organização, limpeza, padrão</div></div>
@@ -1993,7 +1993,7 @@ export async function seedCourse4(sql) {
 <li><strong>Seiton = Organização de ferramentas de manutenção:</strong> Chaves, graxeiras e lubrificantes organizados no ponto de uso</li>
 <li><strong>Seiketsu = Checklists de manutenção autônoma:</strong> Rotina padronizada de inspeção diária</li>
 </ul>
-<p>Na prática, muitas empresas implantam "5S + Manutenção Autonoma" como um programa único, otimizando recursos e treinamento.</p>
+<p>Na prática, muitas empresas implantam "5S + Manutenção Autônoma" como um programa único, otimizando recursos e treinamento.</p>
 
 <h3>5S é ISO 14001 (Meio Ambiente)</h3>
 <p>O 5S contribui para a gestão ambiental de diversas formas:</p>
@@ -2001,7 +2001,7 @@ export async function seedCourse4(sql) {
 <li><strong>Seiri:</strong> Descarte controlado de resíduos e materiais obsoletos</li>
 <li><strong>Seiso:</strong> Identificação de vazamentos de óleo, produtos químicos, água</li>
 <li><strong>Seiton:</strong> Armazenamento correto de produtos químicos (compatibilidade, contenção)</li>
-<li><strong>Gestão visual:</strong> Identificação de lixeiras por tipo de resíduo (coleta seletiva indústrial)</li>
+<li><strong>Gestão visual:</strong> Identificação de lixeiras por tipo de resíduo (coleta seletiva industrial)</li>
 </ul>
 
 <h3>5S é NRs de Segurança do Trabalho</h3>
@@ -2010,11 +2010,11 @@ export async function seedCourse4(sql) {
 <tr><td>NR-12</td><td>Segurança em máquinas</td><td>Seiton: áreas demarcadas; Seiso: máquinas inspecionadas</td></tr>
 <tr><td>NR-17</td><td>Ergonomia</td><td>Seiton: organização ergonômica de postos de trabalho</td></tr>
 <tr><td>NR-23</td><td>Proteção contra incêndio</td><td>Seiton: corredores livres; Seiso: sem materiais inflamáveis soltos</td></tr>
-<tr><td>NR-25</td><td>Residuos indústriais</td><td>Seiri: segregação; Seiso: controle de fontes; Seiton: armazenamento correto</td></tr>
+<tr><td>NR-25</td><td>Resíduos indústriais</td><td>Seiri: segregação; Seiso: controle de fontes; Seiton: armazenamento correto</td></tr>
 <tr><td>NR-26</td><td>Sinalização de segurança</td><td>Seiketsu: padronização de cores conforme norma</td></tr>
 </table>
 
-<h3>Roadmap de íntegração — do 5S ao sistema de gestão integrado</h3>
+<h3>Roadmap de integração — do 5S ao sistema de gestão integrado</h3>
 <p>Para empresas que querem evoluir do 5S para programas mais abrangentes:</p>
 <table>
 <tr><th>Fase</th><th>Programa</th><th>Prazo típico</th><th>Investimento estimado (PME)</th></tr>
@@ -2025,9 +2025,9 @@ export async function seedCourse4(sql) {
 <tr><td>5</td><td>ISO 14001 / ISO 45001</td><td>8-14 meses cada</td><td>R$ 15.000 - R$ 50.000 cada</td></tr>
 </table>
 
-<div class="callout"><strong>Mensagem final:</strong> O 5S é simultaneamente o programa mais simples é o mais transformador da gestão indústrial. Simples porque não exige tecnologia, investimento alto ou conhecimento avancado. Transformador porque muda a cultura, o ambiente e os resultados de forma visível e rapida. O segredo está em tres palavras: <strong>método, liderança e persistencia</strong>.</div>
+<div class="callout"><strong>Mensagem final:</strong> O 5S é simultaneamente o programa mais simples é o mais transformador da gestão industrial. Simples porque não exige tecnologia, investimento alto ou conhecimento avançado. Transformador porque muda a cultura, o ambiente e os resultados de forma visível e rápida. O segredo está em três palavras: <strong>método, liderança e persistência</strong>.</div>
 
-<div class="example"><strong>Caso inspirador:</strong> Uma pequena metalúrgica de Novo Hamburgo (RS), com 28 funcionários, implantou o 5S em 2020 como primeiro projeto de gestão. Em 3 anos, o 5S levou a ISO 9001 (2021), que levou ao Lean (2022), que levou a IATF 16949 (2023). A empresa triplicou o faturamento, entrou na cadeia automotiva e recebeu prêmio de fornecedor destaque de um fábricante multinacional. Tudo começou com etiquetas vermelhas e um shadow board de R$ 150.</div>
+<div class="example"><strong>Caso inspirador:</strong> Uma pequena metalúrgica de Novo Hamburgo (RS), com 28 funcionários, implantou o 5S em 2020 como primeiro projeto de gestão. Em 3 anos, o 5S levou a ISO 9001 (2021), que levou ao Lean (2022), que levou a IATF 16949 (2023). A empresa triplicou o faturamento, entrou na cadeia automotiva e recebeu prêmio de fornecedor destaque de um fabricante multinacional. Tudo começou com etiquetas vermelhas e um shadow board de R$ 150.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
@@ -2051,68 +2051,68 @@ export async function seedCourse4(sql) {
 </div>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight final:</strong> O 5S é simultaneamente o programa mais simples e o mais transformador da gestão industrial. O segredo está em três palavras: <strong>método, liderança e persistência</strong>. Comece pequeno, meça tudo, e nunca pare de melhorar.</div></div>
-`}, 'Roadmap de íntegração 5S + ISO + Lean')`;
+`}, 'Roadmap de integração 5S + ISO + Lean')`;
 
   // ── Module 1 quiz ──
   const m1q = [
-    ['Em que contexto histórico surgiu o programa 5S?', ['Europa pós-Revolução Indústrial','Japao pós-Segunda Guerra Mundial','Estados Unidos nos anos 1980','Brasil nos anos 1970'], 1, 'O 5S nasceu no Japao após a Segunda Guerra Mundial, num contexto de reconstrução econômica e necessidade de maximizar recursos.'],
-    ['Qual e a traducao correta do senso Seiri?', ['Senso de limpeza','Senso de disciplina','Senso de útilização','Senso de padronização'], 2, 'Seiri é o senso de útilização — separar o necessário do desnecessário.'],
+    ['Em que contexto histórico surgiu o programa 5S?', ['Europa pós-Revolução Industrial','Japao pós-Segunda Guerra Mundial','Estados Unidos nos anos 1980','Brasil nos anos 1970'], 1, 'O 5S nasceu no Japão após a Segunda Guerra Mundial, num contexto de reconstrução econômica e necessidade de maximizar recursos.'],
+    ['Qual é a tradução correta do senso Seiri?', ['Senso de limpeza','Senso de disciplina','Senso de utilização','Senso de padronização'], 2, 'Seiri é o senso de utilização — separar o necessário do desnecessário.'],
     ['Segundo dados apresentados, qual a redução tipica no tempo para localizar ferramentas após o 5S?', ['Cerca de 30%','Cerca de 50%','Cerca de 80%','Cerca de 95%'], 2, 'Os dados mostram redução de 4,2 min para 0,8 min, ou seja, aproximadamente 81%.'],
-    ['Qual e o principal erro ao implantar o 5S?', ['Investir demais em sinalização','Reduzi-lo a dia de faxina sem continuidade','Fazer auditorias muito frequentes','Treinar demais os operadores'], 1, 'O maior erro é tratar o 5S como faxina pontual, sem o programa de padronização e disciplina que sustenta os resultados.'],
+    ['Qual é o principal erro ao implantar o 5S?', ['Investir demais em sinalização','Reduzi-lo a dia de faxina sem continuidade','Fazer auditorias muito frequentes','Treinar demais os operadores'], 1, 'O maior erro é tratar o 5S como faxina pontual, sem o programa de padronização e disciplina que sustenta os resultados.'],
     ['No diagnóstico inicial, quando se deve avaliar a fábrica para obter resultados realistas?', ['Na segunda-feira de manhã, após o fim de semana','Após avisar a equipe com 1 semana de antecedência','Numa sexta-feira a tarde, sem aviso prévio','Durante uma auditoria externa'], 2, 'Avaliar sem aviso prévio, numa sexta-feira a tarde, mostra a realidade do dia a dia, não uma área arrumada para a avaliação.'],
   ];
   for (const [p, a, r, e] of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 2 quiz ──
   const m2q = [
-    ['Qual e a principal ferramenta útilizada no Seiri?', ['Shadow board','Etiqueta vermelha','Checklist de limpeza','Quadro de gestão visual'], 1, 'A etiqueta vermelha (red tag) e o método padrão para identificar e classificar itens questionáveis no Seiri.'],
+    ['Qual é a principal ferramenta utilizada no Seiri?', ['Shadow board','Etiqueta vermelha','Checklist de limpeza','Quadro de gestão visual'], 1, 'A etiqueta vermelha (red tag) e o método padrão para identificar e classificar itens questionáveis no Seiri.'],
     ['Pela regra dos 12 meses, o que fazer com um item que não foi usado nesse período?', ['Manter no setor por segurança','Transferir para o almoxarifado central','Descartar, vender ou doar','Etiquetar e aguardar mais 12 meses'], 2, 'Itens sem uso por 12 meses devem ser descartados, vendidos ou doados, salvo exceções de peças críticas.'],
     ['O que significa a "regra dos 30 segundos" no Seiton?', ['A limpeza de cada área deve levar 30 segundos','Qualquer item deve ser encontrado em até 30 segundos','O setup deve ser reduzido em 30 segundos','A auditoria de cada critério leva 30 segundos'], 1, 'No Seiton bem implantado, qualquer pessoa deve localizar qualquer item em até 30 segundos.'],
-    ['No conceito de "limpeza como inspeção" do Seiso, o que o operador faz além de limpar?', ['Preenche relatório de produção','Observa anomalias como vazamentos e folgas','Calibra os instrumentos de medição','Atualiza o quadro de gestão visual'], 1, 'No Seiso indústrial, ao limpar o operador inspeciona a máquina buscando vazamentos, folgas, fissuras e anomalias.'],
-    ['Qual e o investimento total estimado em materiais para o Dia D de uma fábrica de 50-100 funcionários?', ['Menos de R$ 500','Cerca de R$ 2.400','Cerca de R$ 10.000','Mais de R$ 20.000'], 1, 'O material para o Dia D (etiquetas, fita, tinta, material de limpeza, EPIs, lanche) custa aproximadamente R$ 2.360 para esse porte.'],
+    ['No conceito de "limpeza como inspeção" do Seiso, o que o operador faz além de limpar?', ['Preenche relatório de produção','Observa anomalias como vazamentos e folgas','Calibra os instrumentos de medição','Atualiza o quadro de gestão visual'], 1, 'No Seiso industrial, ao limpar o operador inspeciona a máquina buscando vazamentos, folgas, fissuras e anomalias.'],
+    ['Qual é o investimento total estimado em materiais para o Dia D de uma fábrica de 50-100 funcionários?', ['Menos de R$ 500','Cerca de R$ 2.400','Cerca de R$ 10.000','Mais de R$ 20.000'], 1, 'O material para o Dia D (etiquetas, fita, tinta, material de limpeza, EPIs, lanche) custa aproximadamente R$ 2.360 para esse porte.'],
   ];
   for (const [p, a, r, e] of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 3 quiz ──
   const m3q = [
     ['Qual é a ferramenta mais simples é eficaz do Seiketsu?', ['Checklist de 50 itens','Foto do estado padrão fixada no local','Sistema ERP de controle','App de auditoria digital'], 1, 'A foto do estado padrão é a referência visual mais simples é eficaz — custa R$ 8-15 e qualquer pessoa pode comparar o estado atual com o padrão.'],
     ['Quanto tempo leva em média para o 5S se tornar hábito (Shitsuke)?', ['3 meses','6 meses','18 a 24 meses','5 anos'], 2, 'Pesquisas mostram que o 5S leva de 18 a 24 meses para se tornar hábito numa organização.'],
-    ['Qual dos itens abaixo NÃO é um dos "7 assassinos do 5S"?', ['Falta de exemplo da liderança','Dia D sem continuidade','Auditorias muito frequentes','Programa visto como responsabilidade só da qualidade'], 2, 'Auditorias frequentes sustentam o programa. Os assassinos são: falta de exemplo, sem continuidade, punicao sem reconhecimento, falta de tempo, rotatividade sem treinamento, sem medição e programa "da qualidade".'],
+    ['Qual dos itens abaixo NÃO é um dos "7 assassinos do 5S"?', ['Falta de exemplo da liderança','Dia D sem continuidade','Auditorias muito frequentes','Programa visto como responsabilidade só da qualidade'], 2, 'Auditorias frequentes sustentam o programa. Os assassinos são: falta de exemplo, sem continuidade, punição sem reconhecimento, falta de tempo, rotatividade sem treinamento, sem medição e programa "da qualidade".'],
     ['O que deve conter o quadro de gestão visual de cada setor?', ['Apenas indicadores de produção','Segurança, qualidade, produção, 5S, pessoas e ações','Apenas fotos de antes e depois do 5S','Apenas o checklist diário de limpeza'], 1, 'O quadro completo íntegra segurança, qualidade, produção, 5S, pessoas e plano de ações pendentes.'],
     ['Qual estrategia de reconhecimento é citada como altamente eficaz e de custo quase zero?', ['Bônus salarial mensal','Área destaque do mês com troféu simbólico','Viagem de premiações','Promoção de cargo'], 1, 'Um troféu ou selo simbólico que fica exposto na área vencedora até a próxima avaliação tem custo zero e impacto significativo na motivação.'],
   ];
   for (const [p, a, r, e] of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 4 quiz ──
   const m4q = [
-    ['Qual e a frequência de auditoria recomendada nos primeiros 3 meses do programa 5S?', ['Diária','Semanal','Mensal','Trimestral'], 1, 'Nos primeiros 3 meses, a auditoria deve ser semanal para reforcar o padrão e corrigir desvios rapidamente.'],
+    ['Qual é a frequência de auditoria recomendada nos primeiros 3 meses do programa 5S?', ['Diária','Semanal','Mensal','Trimestral'], 1, 'Nos primeiros 3 meses, a auditoria deve ser semanal para reforçar o padrão e corrigir desvios rapidamente.'],
     ['O que é uma auditoria cruzada no contexto do 5S?', ['Auditoria feita por empresa externa','O líder de um setor audita outro setor','Auditoria que avalia dois programas simultaneamente','Auditoria feita por dois auditores ao mesmo tempo'], 1, 'Na auditoria cruzada, líderes de diferentes setores auditam as áreas uns dos outros, trazendo olhar externo e disseminando boas práticas.'],
     ['Qual ferramenta é recomendada para analisar a causa raiz de desvios encontrados na auditoria 5S?', ['Diagrama de Gantt','5 Por ques','Análise SWOT','Balanced Scorecard'], 1, 'A técnica dos 5 Por ques permite ir além do sintoma e encontrar a causa raiz do desvio de forma simples e eficaz.'],
-    ['Qual cláusula da ISO 9001 é diretamente fácilitada pelo Seiton (identificação e rastreabilidade)?', ['4.1','7.1.3','8.5.2','10.2'], 2, 'A cláusula 8.5.2 trata de identificação e rastreabilidade, que é diretamente apoiada pelo sistema de enderecamento e etiquetagem do Seiton.'],
-    ['Na íntegração 5S + TPM, qual senso equivale a manutenção autônoma?', ['Seiri','Seiton','Seiso','Seiketsu'], 2, 'Seiso (limpeza como inspeção) e a essencia da manutenção autônoma do TPM — o operador limpa e ao mesmo tempo inspeciona a máquina.'],
+    ['Qual cláusula da ISO 9001 é diretamente facilitada pelo Seiton (identificação e rastreabilidade)?', ['4.1','7.1.3','8.5.2','10.2'], 2, 'A cláusula 8.5.2 trata de identificação e rastreabilidade, que é diretamente apoiada pelo sistema de endereçamento e etiquetagem do Seiton.'],
+    ['Na integração 5S + TPM, qual senso equivale a manutenção autônoma?', ['Seiri','Seiton','Seiso','Seiketsu'], 2, 'Seiso (limpeza como inspeção) e a essencia da manutenção autônoma do TPM — o operador limpa e ao mesmo tempo inspeciona a máquina.'],
   ];
   for (const [p, a, r, e] of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Final quiz (20 questions, is_final: true) ──
   const finalQ = [
-    ['O programa 5S surgiu em qual país e decada?', ['EUA, anos 1950','Japao, anos 1950','Alemanha, anos 1960','Brasil, anos 1990'], 1, 'O 5S nasceu no Japao pós-Segunda Guerra Mundial (decada de 1950), num contexto de reconstrução indústrial.'],
+    ['O programa 5S surgiu em qual país e década?', ['EUA, anos 1950','Japao, anos 1950','Alemanha, anos 1960','Brasil, anos 1990'], 1, 'O 5S nasceu no Japão pós-Segunda Guerra Mundial (década de 1950), num contexto de reconstrução industrial.'],
     ['Qual a sequência correta dos 5 sensos?', ['Seiri, Seiso, Seiton, Seiketsu, Shitsuke','Seiton, Seiri, Seiso, Shitsuke, Seiketsu','Seiri, Seiton, Seiso, Seiketsu, Shitsuke','Seiso, Seiri, Seiton, Shitsuke, Seiketsu'], 2, 'A sequência correta e: Seiri (utilização), Seiton (organização), Seiso (limpeza), Seiketsu (padronização), Shitsuke (disciplina).'],
-    ['Qual e o ROI típico do 5S no primeiro ano, conforme o caso da metalúrgica de Joinville apresentado?', ['1,5x','3x','5,3x','10x'], 2, 'A metalúrgica de Joinville investiu R$ 18.000 e obteve R$ 95.000 em economia de peças rejeitadas — ROI de 5,3x.'],
+    ['Qual é o ROI típico do 5S no primeiro ano, conforme o caso da metalúrgica de Joinville apresentado?', ['1,5x','3x','5,3x','10x'], 2, 'A metalúrgica de Joinville investiu R$ 18.000 e obteve R$ 95.000 em economia de peças rejeitadas — ROI de 5,3x.'],
     ['No checklist de diagnóstico inicial, uma nota de 32% classifica a área como:', ['Critica','Insuficiente','Regular','Boa'], 1, 'A faixa de 21-40% e classificada como "Insuficiente", exigindo implantação estruturada em 90 dias.'],
-    ['Qual e o prazo padrão da "área de quarentena" na técnica da etiqueta vermelha?', ['7 dias','15 dias','30 dias','60 dias'], 2, 'Itens etiquetados ficam na área de quarentena por 30 dias. Se ninguém reclamar, são descartados ou realocados.'],
+    ['Qual é o prazo padrão da "área de quarentena" na técnica da etiqueta vermelha?', ['7 dias','15 dias','30 dias','60 dias'], 2, 'Itens etiquetados ficam na área de quarentena por 30 dias. Se ninguém reclamar, são descartados ou realocados.'],
     ['Segundo a NBR 7195, qual cor e padrão para demarcação de corredores de circulação?', ['Branco','Verde','Amarelo','Azul'], 2, 'A cor amarela e usada para corredores de circulação e áreas de atenção conforme a norma brasileira.'],
-    ['O conceito de "limpeza como inspeção" do Seiso tem origem em qual métodologia?', ['ISO 9001','Lean Manufacturing','TPM (Total Productive Maintenance)','Six Sigma'], 2, 'O conceito de limpeza como inspeção vem diretamente do pilar de manutenção autônoma do TPM.'],
-    ['Qual o custo médio de um shadow board feito internamente?', ['R$ 20 a R$ 50','R$ 80 a R$ 200','R$ 500 a R$ 1.000','R$ 2.000 a R$ 5.000'], 1, 'Um shadow board feito com MDF, tinta e ganchos custa entre R$ 80 e R$ 200 com mao de obra interna.'],
-    ['No Dia D, qual e a atividade que deve acontecer ANTES de qualquer outra?', ['Limpeza profunda','Fotografar o estado atual (antes)','Organizar as ferramentas','Pintar o chao'], 1, 'Fotografar o "antes" é essencial e deve ser feito antes de qualquer atividade, pois a comparação antes/depois é a ferramenta mais poderosa de motivação.'],
-    ['Qual e o custo médio de uma foto do estado padrão (A3 plastificada)?', ['R$ 1 a R$ 3','R$ 8 a R$ 15','R$ 50 a R$ 80','R$ 100 a R$ 200'], 1, 'Impressão A3 colorida + plastificação custa entre R$ 8 e R$ 15 por unidade.'],
+    ['O conceito de "limpeza como inspeção" do Seiso tem origem em qual metodologia?', ['ISO 9001','Lean Manufacturing','TPM (Total Productive Maintenance)','Six Sigma'], 2, 'O conceito de limpeza como inspeção vem diretamente do pilar de manutenção autônoma do TPM.'],
+    ['Qual o custo médio de um shadow board feito internamente?', ['R$ 20 a R$ 50','R$ 80 a R$ 200','R$ 500 a R$ 1.000','R$ 2.000 a R$ 5.000'], 1, 'Um shadow board feito com MDF, tinta e ganchos custa entre R$ 80 e R$ 200 com mão de obra interna.'],
+    ['No Dia D, qual é a atividade que deve acontecer ANTES de qualquer outra?', ['Limpeza profunda','Fotografar o estado atual (antes)','Organizar as ferramentas','Pintar o chao'], 1, 'Fotografar o "antes" é essencial e deve ser feito antes de qualquer atividade, pois a comparação antes/depois é a ferramenta mais poderosa de motivação.'],
+    ['Qual é o custo médio de uma foto do estado padrão (A3 plastificada)?', ['R$ 1 a R$ 3','R$ 8 a R$ 15','R$ 50 a R$ 80','R$ 100 a R$ 200'], 1, 'Impressão A3 colorida + plastificação custa entre R$ 8 e R$ 15 por unidade.'],
     ['Em quanto tempo o 5S tipicamente se torna hábito organizacional?', ['1 a 3 meses','6 a 12 meses','18 a 24 meses','3 a 5 anos'], 2, 'Pesquisas indicam que o 5S leva de 18 a 24 meses para se tornar hábito. Nos primeiros 6 meses e esforço consciente.'],
     ['Qual é o fator mais crítico para a sustentação do programa 5S?', ['Investimento em tecnologia','Exemplo e envolvimento da liderança','Contratacao de consultoria externa','Implantação de app de auditoria'], 1, 'A liderança pelo exemplo é o fator mais crítico. Onde a liderança prática o 5S, o programa funciona; onde não prática, morre.'],
     ['Na auditoria 5S, uma nota consistentemente acima de 95% pode indicar:', ['Excelencia máxima do programa','Auditoria branda (complacência)','Necessidade de suspender auditorias','Que o programa pode ser encerrado'], 1, 'Notas constantemente acima de 95% podem indicar complacência na auditoria. O ideal é sempre haver oportunidades de melhoria identificadas.'],
@@ -2120,11 +2120,11 @@ export async function seedCourse4(sql) {
     ['Qual cláusula da ISO 9001:2015 o 5S ajuda a atender ao criar um ambiente físico adequado?', ['4.1 — Contexto da organização','7.1.4 — Ambiente para operação de processos','8.1 — Planejamento operacional','9.1 — Monitoramento'], 1, 'A cláusula 7.1.4 exige que a organização proporcione ambiente adequado para a operação, o que o 5S atende diretamente.'],
     ['No Lean Manufacturing, o 5S é considerado:', ['Uma ferramenta complementar opcional','A fundação da casa Toyota','Um substituto do Kaizen','Uma alternativa ao Kanban'], 1, 'No Sistema Toyota de Produção, o 5S é a fundação sobre a qual todas as outras ferramentas Lean se apoiam.'],
     ['Segundo a pesquisa do SENAI-PR citada, qual percentual de indústrias que mantiveram auditorias regulares conseguiu se recuperar de regressoes no 5S?', ['50%','75%','90%','100%'], 3, 'Das empresas que se recuperaram de regressoes, 100% tinham sistema de auditoria ativo, versus apenas 15% das que não se recuperaram.'],
-    ['Qual e a sequência recomendada de implantação após o 5S no roadmap de melhoria?', ['TPM, depois ISO 9001, depois Lean','ISO 9001, depois Lean básico, depois TPM','Lean, depois TPM, depois ISO 9001','ISO 14001, depois ISO 9001, depois Lean'], 1, 'O roadmap recomendado e: 5S → ISO 9001 → Lean básico → TPM → ISO 14001/45001.'],
-    ['Qual e o investimento típico para implantar 5S numa pequena indústria (20-99 funcionários)?', ['R$ 500 a R$ 2.000','R$ 5.000 a R$ 20.000','R$ 50.000 a R$ 100.000','R$ 200.000 ou mais'], 1, 'Para pequenas indústrias, o investimento típico fica entre R$ 5.000 e R$ 20.000, incluindo estantes, shadow boards, sinalização e consultoria pontual.'],
+    ['Qual é a sequência recomendada de implantação após o 5S no roadmap de melhoria?', ['TPM, depois ISO 9001, depois Lean','ISO 9001, depois Lean básico, depois TPM','Lean, depois TPM, depois ISO 9001','ISO 14001, depois ISO 9001, depois Lean'], 1, 'O roadmap recomendado e: 5S → ISO 9001 → Lean básico → TPM → ISO 14001/45001.'],
+    ['Qual é o investimento típico para implantar 5S numa pequena indústria (20-99 funcionários)?', ['R$ 500 a R$ 2.000','R$ 5.000 a R$ 20.000','R$ 50.000 a R$ 100.000','R$ 200.000 ou mais'], 1, 'Para pequenas indústrias, o investimento típico fica entre R$ 5.000 e R$ 20.000, incluindo estantes, shadow boards, sinalização e consultoria pontual.'],
     ['No caso da metalúrgica de Novo Hamburgo citada, qual foi o primeiro programa implantado que desencadeou toda a evolução da empresa?', ['ISO 9001','Lean Manufacturing','5S','IATF 16949'], 2, 'A empresa começou com o 5S em 2020, que levou a ISO 9001, depois Lean e finalmente IATF 16949, triplicando o faturamento em 3 anos.'],
   ];
   for (const [p, a, r, e] of finalQ) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
   }
 }
