@@ -39,9 +39,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
 /* Main content — slide layout */
 .main-content{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.lesson-header{padding:28px 48px 16px;flex-shrink:0;border-bottom:1px solid #e5e7eb;background:#fff}
-.lesson-header .mod-label{font-family:var(--ff-mono);font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600}
-.lesson-header h1{font-size:clamp(22px,2.8vw,30px);font-weight:700;line-height:1.3}
+.lesson-header{padding:16px 48px 12px;flex-shrink:0;border-bottom:1px solid #e5e7eb;background:#fff;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.lesson-header .mod-label{font-family:var(--ff-mono);font-size:11px;color:var(--red);text-transform:uppercase;letter-spacing:.08em;font-weight:600;flex-shrink:0}
+.lesson-header h1{font-size:clamp(18px,2.2vw,24px);font-weight:700;line-height:1.3}
 
 /* Slide viewport */
 .slide-viewport{flex:1;overflow-y:auto;padding:32px 48px 40px}
@@ -106,9 +106,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration p{color:rgba(255,255,255,.9);margin-bottom:10px}
 .lesson-body .narration p:last-child{margin-bottom:0}
 
-.lesson-body .diagram{background:#fff;border:1px solid #e5e7eb;padding:28px;margin:28px 0;text-align:center}
+.lesson-body .diagram{background:var(--navy);border:none;padding:28px;margin:28px 0;text-align:center}
 .lesson-body .diagram svg{max-width:100%;height:auto}
-.lesson-body .diagram figcaption{font-size:13px;color:var(--mute);margin-top:14px;font-family:var(--ff-mono)}
+.lesson-body .diagram figcaption{font-size:13px;color:rgba(255,255,255,.6);margin-top:14px;font-family:var(--ff-mono)}
 
 .lesson-body .checklist{list-style:none;margin:24px 0;padding:0}
 .lesson-body .checklist li{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--card);border:1px solid #e5e7eb;margin-bottom:8px;font-size:16px;cursor:pointer;transition:all .2s;user-select:none}
@@ -292,7 +292,23 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     html=html.replace(/^\s*<h2[^>]*>[\s\S]*?<\/h2>\s*/i,'');
     var parts=html.split(/(?=<h3[\s>])/i);
     parts=parts.filter(function(p){return p.trim().length>20});
-    return parts.length?parts:[html];
+    if(!parts.length)parts=[html];
+    var final=[];
+    parts.forEach(function(s){
+      if(s.length<1200){final.push(s);return}
+      var blocks=s.split(/(?=<(?:div class="|<p>|<ul|<ol|<blockquote|<table))/i);
+      var chunk='',count=0;
+      blocks.forEach(function(b){
+        if(chunk.length+b.length>1200&&chunk.length>100){
+          final.push(chunk);
+          chunk=b;
+        }else{
+          chunk+=b;
+        }
+      });
+      if(chunk.trim().length>20)final.push(chunk);
+    });
+    return final.length?final:[html];
   }
 
   function hasInteractive(html){
