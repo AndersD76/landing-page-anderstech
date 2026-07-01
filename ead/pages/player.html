@@ -225,6 +225,40 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
 @media(max-width:640px){.lesson-body .comparison{grid-template-columns:1fr}.lesson-body .comp-col:first-child{border-right:none;border-bottom:1px solid #e5e7eb}.lesson-body .kpi-grid{grid-template-columns:1fr 1fr}}
 
+/* Final exam */
+.exam-container{max-width:720px;margin:0 auto;padding:40px 24px 60px}
+.exam-header{text-align:center;margin-bottom:32px}
+.exam-header h1{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.exam-header p{color:var(--mute);font-size:15px}
+.exam-info{display:flex;gap:24px;justify-content:center;margin-top:16px;font-family:var(--ff-mono);font-size:12px;color:var(--mute)}
+.exam-info span{background:#f1f5f9;padding:6px 14px;border-radius:4px}
+.exam-progress{text-align:center;font-family:var(--ff-mono);font-size:13px;color:var(--mute);padding:8px;background:#f1f5f9;margin-bottom:24px;position:sticky;top:0;z-index:5}
+.exam-question{background:var(--card);padding:28px;margin-bottom:20px;border:1px solid #e5e7eb}
+.exam-question .eq-num{font-family:var(--ff-mono);font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;font-weight:600}
+.exam-question .eq-text{font-size:17px;font-weight:600;color:var(--navy);margin-bottom:20px;line-height:1.5}
+.exam-question label{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;margin-bottom:8px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:16px;transition:all .15s}
+.exam-question label:hover{border-color:var(--navy);background:#f0f4ff}
+.exam-question label.selected{border-color:var(--navy);background:#eef2ff}
+.exam-question label.correct{background:#f0fdf4;border-color:var(--green)}
+.exam-question label.wrong{background:#fef2f2;border-color:#ef4444}
+.exam-question input[type=radio]{margin-top:3px;accent-color:var(--navy)}
+.exam-submit{text-align:center;margin-top:32px}
+.exam-submit button{padding:16px 40px;background:var(--red);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:16px;font-family:var(--ff-display);transition:background .2s}
+.exam-submit button:hover{background:#a52e32}
+.exam-submit button:disabled{opacity:.4;cursor:default}
+.exam-result{text-align:center;padding:40px;margin:32px 0}
+.exam-result.passed{background:#f0fdf4;border:2px solid var(--green)}
+.exam-result.failed{background:#fef2f2;border:2px solid #ef4444}
+.exam-result h2{font-size:24px;margin-bottom:8px}
+.exam-result .score{font-family:var(--ff-mono);font-size:40px;font-weight:700;margin:12px 0}
+.exam-result.passed .score{color:var(--green)}
+.exam-result.failed .score{color:#ef4444}
+.exam-result p{color:var(--mute);font-size:15px;margin-bottom:16px}
+.exam-result .btn-cert{display:inline-block;padding:14px 32px;background:var(--green);color:#fff;text-decoration:none;font-weight:700;font-size:15px;margin-top:8px}
+.exam-result .btn-retry{padding:14px 32px;background:var(--navy);color:#fff;border:none;cursor:pointer;font-weight:700;font-size:15px;font-family:var(--ff-display);margin-top:8px}
+.eq-explanation{display:none;padding:12px 18px;margin-top:8px;font-size:14px;line-height:1.6;background:#fffbeb;border-left:3px solid #eab308;color:#713f12}
+.eq-explanation.show{display:block}
+
 .loading{text-align:center;padding:80px 24px;color:var(--mute);font-size:16px}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;font-size:14px;opacity:0;transition:opacity .3s;z-index:100}
 .toast.show{opacity:1}
@@ -290,14 +324,17 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     document.title=data.course.titulo+' — Anders Tech EAD';
     renderSidebar();
     var firstLesson=null;
+    var allDone=true;
     for(var m=0;m<data.modules.length;m++){
       var aulas=data.modules[m].aulas||[];
       for(var a=0;a<aulas.length;a++){
         if(!firstLesson)firstLesson=aulas[a].id;
-        if(!aulas[a].completed){loadLesson(aulas[a].id);return}
+        if(!aulas[a].completed){allDone=false;loadLesson(aulas[a].id);return}
       }
     }
-    if(firstLesson)loadLesson(firstLesson);
+    if(allDone&&new URLSearchParams(window.location.search).get('exam')==='1'){
+      loadFinalExam();
+    }else if(firstLesson){loadLesson(firstLesson);}
   }).catch(function(){main.innerHTML='<div class="loading">Erro ao carregar curso.</div>'});
 
   function renderSidebar(){
@@ -325,6 +362,133 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     });
   }
 
+  function allLessonsComplete(){
+    if(!courseData||!courseData.modules)return false;
+    for(var m=0;m<courseData.modules.length;m++){
+      var aulas=courseData.modules[m].aulas||[];
+      for(var a=0;a<aulas.length;a++){
+        if(!aulas[a].completed)return false;
+      }
+    }
+    return courseData.modules.length>0;
+  }
+
+  function loadFinalExam(){
+    if(keyHandler){document.removeEventListener('keydown',keyHandler);keyHandler=null}
+    currentLessonId=null;
+    renderSidebar();
+    main.style.overflow='auto';
+    main.innerHTML='<div class="loading" style="padding-top:120px">Carregando prova final...</div>';
+    fetch('/ead/api/quiz/'+slug+'?final=1').then(function(r){
+      if(!r.ok)throw new Error();
+      return r.json();
+    }).then(function(data){
+      var questions=data.questions;
+      if(!questions||!questions.length){
+        main.innerHTML='<div class="exam-container"><div class="exam-header"><h1>Prova Final</h1><p>Nenhuma pergunta disponível para este curso ainda.</p></div></div>';
+        return;
+      }
+      var html='<div class="exam-container">'
+        +'<div class="exam-header"><h1>Prova Final</h1>'
+        +'<p>'+courseData.course.titulo+'</p>'
+        +'<div class="exam-info"><span>'+questions.length+' questões</span><span>Aprovação: 70%</span></div></div>'
+        +'<div class="exam-progress" id="examProgress">0 / '+questions.length+' respondidas</div>';
+      questions.forEach(function(q,i){
+        var alts=Array.isArray(q.alternativas)?q.alternativas:JSON.parse(q.alternativas);
+        html+='<div class="exam-question" data-qid="'+q.id+'">'
+          +'<div class="eq-num">Questão '+(i+1)+'</div>'
+          +'<div class="eq-text">'+q.pergunta+'</div>';
+        alts.forEach(function(alt,j){
+          html+='<label data-idx="'+j+'"><input type="radio" name="q'+q.id+'" value="'+j+'"><span>'+alt+'</span></label>';
+        });
+        html+='<div class="eq-explanation"></div></div>';
+      });
+      html+='<div class="exam-submit"><button id="examSubmit">Enviar respostas</button></div>'
+        +'<div id="examResult" style="display:none"></div></div>';
+      main.innerHTML=html;
+      main.scrollTop=0;
+      function updateProgress(){
+        var count=main.querySelectorAll('.exam-question input:checked').length;
+        var el=document.getElementById('examProgress');
+        if(el)el.textContent=count+' / '+questions.length+' respondidas';
+      }
+      main.querySelectorAll('.exam-question label').forEach(function(lbl){
+        lbl.addEventListener('click',function(){
+          var q=lbl.closest('.exam-question');
+          q.querySelectorAll('label').forEach(function(l){l.classList.remove('selected')});
+          lbl.classList.add('selected');
+          setTimeout(updateProgress,10);
+        });
+      });
+      document.getElementById('examSubmit').addEventListener('click',function(){
+        var answers={};
+        var answered=0;
+        main.querySelectorAll('.exam-question').forEach(function(q){
+          var checked=q.querySelector('input:checked');
+          if(checked){answers[q.dataset.qid]=parseInt(checked.value);answered++}
+        });
+        if(answered<questions.length){
+          showToast('Responda todas as '+questions.length+' questões.');
+          var firstUnanswered=null;
+          main.querySelectorAll('.exam-question').forEach(function(q){
+            if(!firstUnanswered&&!q.querySelector('input:checked'))firstUnanswered=q;
+          });
+          if(firstUnanswered)firstUnanswered.scrollIntoView({behavior:'smooth',block:'center'});
+          return;
+        }
+        var btn=document.getElementById('examSubmit');
+        btn.disabled=true;btn.textContent='Enviando...';
+        fetch('/ead/api/quiz/'+slug+'/submit',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({answers:answers,isFinal:true})
+        }).then(function(r){return r.json()}).then(function(res){
+          res.results.forEach(function(r){
+            var q=main.querySelector('[data-qid="'+r.questionId+'"]');
+            if(!q)return;
+            q.querySelectorAll('label').forEach(function(lbl){
+              lbl.querySelector('input').disabled=true;
+              lbl.style.cursor='default';
+              var idx=parseInt(lbl.dataset.idx);
+              if(idx===r.correctAnswer)lbl.classList.add('correct');
+              else if(lbl.classList.contains('selected')&&!r.correct)lbl.classList.add('wrong');
+            });
+            if(r.explicacao){
+              var exp=q.querySelector('.eq-explanation');
+              exp.textContent=r.explicacao;exp.classList.add('show');
+            }
+          });
+          var rd=document.getElementById('examResult');
+          rd.style.display='block';
+          if(res.passed){
+            rd.className='exam-result passed';
+            rd.innerHTML='<h2>Aprovado!</h2>'
+              +'<div class="score">'+Math.round(res.score)+'%</div>'
+              +'<p>'+res.correct+' de '+res.total+' questões corretas</p>'
+              +(res.certificateCode?'<a href="/ead/api/certificate/'+res.certificateCode+'" target="_blank" class="btn-cert">Baixar certificado (PDF)</a><br><a href="/ead/certificado/'+res.certificateCode+'" style="display:inline-block;margin-top:12px;color:var(--mute);font-size:13px">Verificar certificado</a>':'');
+          }else{
+            rd.className='exam-result failed';
+            rd.innerHTML='<h2>Nota insuficiente</h2>'
+              +'<div class="score">'+Math.round(res.score)+'%</div>'
+              +'<p>Necessário 70% para aprovação ('+res.correct+'/'+res.total+' corretas). Revise o conteúdo e tente novamente.</p>'
+              +'<button class="btn-retry" id="examRetry">Tentar novamente</button>';
+            document.getElementById('examRetry').addEventListener('click',loadFinalExam);
+          }
+          rd.scrollIntoView({behavior:'smooth'});
+          btn.style.display='none';
+          var prog=document.getElementById('examProgress');
+          if(prog)prog.style.display='none';
+        }).catch(function(){
+          btn.disabled=false;btn.textContent='Enviar respostas';
+          showToast('Erro ao enviar. Tente novamente.');
+        });
+      });
+    }).catch(function(){
+      main.innerHTML='<div class="exam-container" style="text-align:center;padding:80px 24px"><p style="color:var(--mute);margin-bottom:20px">Erro ao carregar a prova.</p><button id="examRetryLoad" style="padding:10px 24px;background:var(--red);color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:600">Tentar novamente</button></div>';
+      document.getElementById('examRetryLoad').addEventListener('click',loadFinalExam);
+    });
+  }
+
   function splitSlides(html){
     if(!html)return['<p>Conteúdo em produção.</p>'];
     html=html.replace(/^\s*<h2[^>]*>[\s\S]*?<\/h2>\s*/i,'');
@@ -332,7 +496,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     parts=parts.filter(function(p){return p.trim().length>20});
     if(!parts.length)parts=[html];
     var final=[];
-    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box))/i;
+    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box|example|callout))/i;
     var BLOCK_RE=/(?=<(?:p>|p |ul[\s>]|ol[\s>]|blockquote|table[\s>]|div class="))/i;
     parts.forEach(function(s){
       var visBlocks=s.split(VISUAL_RE);
@@ -357,6 +521,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
   function loadLesson(id){
     currentLessonId=id;
+    main.style.overflow='';
     main.innerHTML='<div class="loading" style="padding-top:120px">Carregando aula...</div>';
     if(keyHandler){document.removeEventListener('keydown',keyHandler);keyHandler=null}
 
@@ -432,6 +597,11 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
                   nextBtn.textContent=l.next.titulo+' →';
                   nextBtn.className='slide-btn';
                   nextBtn.onclick=function(){loadLesson(l.next.id)};
+                }else if(allLessonsComplete()){
+                  nextBtn.textContent='Fazer prova final →';
+                  nextBtn.className='slide-btn green';
+                  nextBtn.disabled=false;
+                  nextBtn.onclick=function(){loadFinalExam()};
                 }else{
                   nextBtn.textContent='Aula concluída';
                   nextBtn.className='slide-btn green';
@@ -444,6 +614,11 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
             nextBtn.className='slide-btn';
             nextBtn.disabled=false;
             nextBtn.onclick=function(){loadLesson(l.next.id)};
+          }else if(allLessonsComplete()){
+            nextBtn.textContent='Fazer prova final →';
+            nextBtn.className='slide-btn green';
+            nextBtn.disabled=false;
+            nextBtn.onclick=function(){loadFinalExam()};
           }else{
             nextBtn.textContent='Aula concluída';
             nextBtn.className='slide-btn green';

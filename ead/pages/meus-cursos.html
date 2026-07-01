@@ -96,6 +96,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
       if(completed&&c.certificate_code){
         actions='<div><a href="/ead/api/certificate/'+c.certificate_code+'" target="_blank" class="btn-certificate">Certificado</a>'
           +'<a href="/ead/player/'+c.slug+'" class="btn-continue" style="margin-left:8px;background:var(--navy)">Revisar</a></div>';
+      }else if(completed){
+        actions='<div><a href="/ead/player/'+c.slug+'?exam=1" class="btn-continue" style="background:var(--green)">Fazer prova final</a>'
+          +'<a href="/ead/player/'+c.slug+'" class="btn-continue" style="margin-left:8px;background:var(--navy)">Revisar</a></div>';
       }else{
         actions='<a href="/ead/player/'+c.slug+'" class="btn-continue">'+(c.aulas_completas>0?'Continuar':'Começar')+'</a>';
       }

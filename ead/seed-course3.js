@@ -2,7 +2,7 @@
   const [course] = await sql`
     INSERT INTO ead_courses (slug, titulo, subtitulo, descricao, carga_horaria, preco, preco_original, publico, prerequisito, objetivo, ordem)
     VALUES (
-      'gestão-processos-indicadores',
+      'gestao-processos-indicadores',
       'Gestão de Processos e Indicadores',
       'Mapeie, meça e melhore seus processos com indicadores que geram resultado.',
       'Curso prático de gestão por processos: mapeamento SIPOC e fluxograma, definição de KPIs, dashboards, ferramentas de análise de causa raiz e melhoria contínua aplicada.',
