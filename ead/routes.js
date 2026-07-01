@@ -657,7 +657,7 @@ router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
     const course = courses[0];
 
     const existing = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
-    if (existing.length) return res.status(400).json({ error: 'Você já está matriculado neste curso' });
+    if (existing.length) return res.json({ ok: true, status: 'aprovado', redirect: '/ead/player/' + courseSlug });
 
     if (promoAtiva()) {
       const order = await sql`

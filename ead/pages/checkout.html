@@ -83,9 +83,11 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
   var slug=window.location.pathname.split('/').pop();
   function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 
+  window.addEventListener('pageshow',function(e){if(e.persisted)window.location.reload()});
+
   fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
     if(!c.id){document.getElementById('checkout').innerHTML='<div class="loading">Curso não encontrado.</div>';return}
-    if(c.enrolled){window.location.href='/ead/player/'+slug;return}
+    if(c.enrolled){window.location.replace('/ead/player/'+slug);return}
 
     document.title='Checkout: '+c.titulo+' — Anders Tech EAD';
 
