@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════
 // seed-course1.js — ISO 9001:2015 Interpretação dos Requisitos
 // Curso completo: 6 módulos, 24 aulas, 30 quiz de módulo + 30 quiz final
 // ═══════════════════════════════════════════════════════════════════════════
@@ -56,6 +56,8 @@ export async function seedCourse1(sql) {
 
 <p>Ate 2024, mais de 1,1 milhão de certificados ISO 9001 estavam ativos em 170 países. No Brasil, segundo dados do Inmetro/ABNT, há mais de 20.000 certificados válidos, com forte concentração na indústria metalmecânica, alimentícia e de construção civil.</p>
 
+<div class="kpi-grid"><div class="kpi-card"><div class="kpi-value">1,1M</div><div class="kpi-label">Certificados ativos no mundo</div></div><div class="kpi-card"><div class="kpi-value">170</div><div class="kpi-label">Países com certificação</div></div><div class="kpi-card"><div class="kpi-value">20.000+</div><div class="kpi-label">Certificados no Brasil</div></div><div class="kpi-card"><div class="kpi-value">1987</div><div class="kpi-label">Primeira publicação</div></div></div>
+
 <h3>Uma breve história</h3>
 
 <p>A primeira versão da ISO 9001 foi publicada em 1987, baseada em normas militares britanicas (BS 5750). Desde entao, passou por revisoes em 1994, 2000, 2008 e a versão atual de 2015. Cada revisão tornou a norma mais orientada a resultados e menos burocratica.</p>
@@ -68,6 +70,8 @@ export async function seedCourse1(sql) {
   <tr><td>2008</td><td>Compatibilidade com ISO 14001</td><td>Ajustes de clareza</td></tr>
   <tr><td>2015</td><td>Mentalidade de risco e contexto</td><td>Estrutura de Alto Nível (Anexo SL)</td></tr>
 </table>
+
+<div class="diagram"><svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect x="100" y="10" width="200" height="40" rx="8" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/><text x="200" y="35" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="bold">PLAN (Planejar)</text><text x="200" y="48" text-anchor="middle" font-size="9" fill="#0b1730">Cl. 4, 5, 6</text><path d="M300 30 L340 80" stroke="#0b1730" stroke-width="1.5" marker-end="url(#arr1)"/><rect x="280" y="70" width="110" height="40" rx="8" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1.5"/><text x="335" y="90" text-anchor="middle" font-size="13" fill="#16a34a" font-weight="bold">DO (Fazer)</text><text x="335" y="103" text-anchor="middle" font-size="9" fill="#0b1730">Cl. 7, 8</text><path d="M335 110 L270 160" stroke="#0b1730" stroke-width="1.5" marker-end="url(#arr1)"/><rect x="170" y="150" width="120" height="40" rx="8" fill="#eab308" opacity="0.15" stroke="#eab308" stroke-width="1.5"/><text x="230" y="170" text-anchor="middle" font-size="13" fill="#eab308" font-weight="bold">CHECK (Verificar)</text><text x="230" y="183" text-anchor="middle" font-size="9" fill="#0b1730">Cl. 9</text><path d="M170 170 L90 130" stroke="#0b1730" stroke-width="1.5" marker-end="url(#arr1)"/><rect x="10" y="110" width="100" height="40" rx="8" fill="#c5383c" opacity="0.15" stroke="#c5383c" stroke-width="1.5"/><text x="60" y="130" text-anchor="middle" font-size="13" fill="#c5383c" font-weight="bold">ACT (Agir)</text><text x="60" y="143" text-anchor="middle" font-size="9" fill="#0b1730">Cl. 10</text><path d="M60 110 L130 50" stroke="#0b1730" stroke-width="1.5" marker-end="url(#arr1)"/><text x="200" y="220" text-anchor="middle" font-size="11" fill="#0b1730">Melhoria Continua</text><path d="M140 230 Q200 250 260 230" stroke="#0b1730" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#arr1)"/><defs><marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0 L8 3 L0 6" fill="#0b1730"/></marker></defs></svg><figcaption>Ciclo PDCA — base do SGQ ISO 9001:2015</figcaption></div>
 
 <h3>O que a ISO 9001 NÃO e</h3>
 
@@ -85,6 +89,8 @@ export async function seedCourse1(sql) {
 </ul>
 
 <div class="example"><strong>Exemplo prático:</strong> Uma metalúrgica em Caxias do Sul fábricava eixos para transmissoes. O principal cliente (uma montadora) notificou que a partir do próximo contrato exigiria ISO 9001. A empresa tinha 8 meses para se certificar. O projeto envolveu mapear 14 processos, definir indicadores e treinar 45 colaboradores. Resultado: certificação obtida em 7 meses, redução de 32% no índice de refugo e abertura de mais 3 clientes no setor automotivo.</div>
+
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>Em 2019, a Tramontina — gigante gaucha de utensilios domesticos — renovou sua certificacao ISO 9001 em 9 unidades fabris simultaneamente. A empresa credita ao SGQ a padronizacao que permite produzir mais de 22.000 itens com consistencia, exportando para mais de 120 paises. O diretor industrial declarou: "Sem o sistema de gestao, seria impossivel manter a qualidade nessa escala."</p></div>
 
 <h3>A estrutura básica do SGQ</h3>
 
@@ -105,6 +111,8 @@ export async function seedCourse1(sql) {
 
 <div class="callout"><strong>Importante:</strong> A certificação e voluntária. Nenhuma lei brasileira obriga uma empresa a ser ISO 9001. Porém, o mercado — especialmente em cadeias de fornecimento indústriais — frequentemente a torna uma exigência contratual.</div>
 
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A ISO 9001 cuida do sistema de gestao, nao especifica requisitos de produto." data-fb-nok="Incorreto. Reveja: a ISO 9001 define requisitos para o sistema de gestao, nao para produtos especificos."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">O que a ISO 9001 define?</div><button class="qi-option" data-key="a">Especificacoes tecnicas de produto (composicao, dimensoes)</button><button class="qi-option" data-key="b">Leis trabalhistas aplicaveis a industria</button><button class="qi-option" data-key="c">Requisitos para um Sistema de Gestao da Qualidade</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Checklist - Beneficios da ISO 9001 para apresentar a direção</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -113,6 +121,8 @@ export async function seedCourse1(sql) {
 <h2>Os 7 Princípios de Gestão da Qualidade</h2>
 
 <p>A ISO 9001:2015 e construida sobre sete princípios de gestão da qualidade. Eles não são requisitos auditaveis diretamente, mas formam a base filosofica de toda a norma. Entender esses princípios e fundamental para interpretar os requisitos de forma inteligente — e não apenas "cumprir tabela".</p>
+
+<div class="diagram"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg"><circle cx="200" cy="150" r="45" fill="#0b1730" opacity="0.08" stroke="#0b1730" stroke-width="1.5"/><text x="200" y="147" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">7 Principios</text><text x="200" y="160" text-anchor="middle" font-size="9" fill="#0b1730">ISO 9001</text><circle cx="200" cy="30" r="32" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="200" y="28" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Foco no</text><text x="200" y="39" text-anchor="middle" font-size="9" fill="#c5383c">Cliente</text><line x1="200" y1="62" x2="200" y2="105" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="330" cy="70" r="32" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="330" y="73" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Lideranca</text><line x1="305" y1="92" x2="240" y2="120" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="370" cy="170" r="32" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="370" y="167" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Engajamento</text><text x="370" y="178" text-anchor="middle" font-size="8" fill="#16a34a">de Pessoas</text><line x1="340" y1="160" x2="245" y2="150" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="310" cy="260" r="32" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1.5"/><text x="310" y="257" text-anchor="middle" font-size="8" fill="#eab308" font-weight="bold">Abordagem</text><text x="310" y="268" text-anchor="middle" font-size="8" fill="#eab308">de Processo</text><line x1="285" y1="240" x2="225" y2="185" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="90" cy="260" r="32" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="90" y="263" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Melhoria</text><line x1="115" y1="240" x2="175" y2="185" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="30" cy="170" r="32" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="30" y="167" text-anchor="middle" font-size="8" fill="#c5383c" font-weight="bold">Decisao por</text><text x="30" y="178" text-anchor="middle" font-size="8" fill="#c5383c">Evidencia</text><line x1="60" y1="160" x2="155" y2="150" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/><circle cx="70" cy="70" r="32" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="70" y="67" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Gestao de</text><text x="70" y="78" text-anchor="middle" font-size="8" fill="#16a34a">Relacionam.</text><line x1="95" y1="92" x2="160" y2="120" stroke="#0b1730" stroke-width="1" stroke-dasharray="3 2"/></svg><figcaption>Os 7 Principios de Gestao da Qualidade — base filosofica da ISO 9001</figcaption></div>
 
 <h3>1. Foco no cliente</h3>
 
@@ -131,6 +141,8 @@ export async function seedCourse1(sql) {
 <p>Pessoas competentes, habilitadas e engajadas são essênciais. Não basta ter processos documentados se as pessoas não entendem seu papel, não tem treinamento adequado ou não se sentem parte do sistema.</p>
 
 <div class="example"><strong>Exemplo prático:</strong> Uma construtora em Curitiba tinha procedimentos detalhados para controle de concreto, mas os mestrês de obra não participaram da elaboração e não viam valor nos formularios. O índice de preenchimento era de 30%. Após envolver os mestrês na revisão dos formularios — simplificando e tornando relevantes para o dia a dia deles — o preenchimento subiu para 92% em dois meses.</div>
+
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A WEG, multinacional catarinense de motores eletricos, atribui ao principio de "engajamento de pessoas" boa parte do seu sucesso. A empresa mantem um programa onde operadores de chao de fabrica podem propor melhorias de processo e recebem reconhecimento financeiro pelas ideias implementadas. Em um unico ano, mais de 3.000 sugestoes foram implementadas, gerando economia estimada em R$ 15 milhoes. O engajamento real — nao apenas treinamento formal — transforma qualidade em cultura.</p></div>
 
 <h3>4. Abordagem de processo</h3>
 
@@ -175,7 +187,48 @@ export async function seedCourse1(sql) {
   <tr><td>Gestão de relacionamento</td><td>8.4</td></tr>
 </table>
 
+<h3>Aplicacao por setor: como os principios funcionam na pratica</h3>
+
+<div class="tabs">
+  <div class="tab-btns">
+    <button class="tab-btn active">Metalurgia</button>
+    <button class="tab-btn">Alimentos</button>
+    <button class="tab-btn">Construcao</button>
+  </div>
+  <div class="tab-panel active">
+    <p><strong>Foco no cliente:</strong> controle dimensional de pecas conforme especificacao do cliente, zerando devolucoes por nao conformidade geometrica.</p>
+    <p><strong>Abordagem de processo:</strong> mapeamento da cadeia usinagem → tratamento termico → inspecao → expedicao com indicadores em cada etapa.</p>
+    <p><strong>Gestao de relacionamento:</strong> qualificacao de fornecedores de aco, ensaios periodicos de materia-prima para garantir composicao certificada.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Foco no cliente:</strong> rastreabilidade de lote garante recall eficiente e fortalece confianca do varejista na cadeia de fornecimento.</p>
+    <p><strong>Tomada de decisao por evidencia:</strong> analise de dados de validade, temperatura de armazenamento e indice de devolucoes orientam producao e logistica.</p>
+    <p><strong>Melhoria:</strong> kaizen aplicado a linha de embalagem reduziu perdas por vazamento em 60% em uma fabrica de sucos no Parana.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Engajamento de pessoas:</strong> mestres de obra envolvidos na criacao de instrucoes de trabalho aumentam adesao aos procedimentos de seguranca e qualidade.</p>
+    <p><strong>Lideranca:</strong> gerente de obra lidera reunioes diarias de qualidade, nao delega tudo ao RD.</p>
+    <p><strong>Gestao de relacionamento:</strong> subcontratados avaliados por criterios de qualidade — nao apenas preco — antes de cada contratacao.</p>
+  </div>
+</div>
+
+<h3>Autoavaliacao: quantos principios sua organizacao ja pratica?</h3>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Medimos a satisfacao dos clientes de forma sistematica (nao apenas esperamos reclamacoes)</li>
+  <li><span class="ck-box"></span>A alta direcao participa ativamente de reunioes de qualidade (nao delega tudo ao RD)</li>
+  <li><span class="ck-box"></span>Os colaboradores entendem como seu trabalho afeta a qualidade do produto final</li>
+  <li><span class="ck-box"></span>Nossos processos tem entradas, saidas e indicadores definidos</li>
+  <li><span class="ck-box"></span>Buscamos ativamente oportunidades de melhoria (nao so corrigimos problemas)</li>
+  <li><span class="ck-box"></span>Decisoes importantes sao baseadas em dados, nao em opiniao</li>
+  <li><span class="ck-box"></span>Avaliamos e desenvolvemos fornecedores de forma proativa</li>
+</ul>
+
 <div class="callout"><strong>Importante:</strong> Auditores não auditam "princípios" diretamente. Porém, se você entender os princípios, vai interpretar os requisitos com muito mais profundidade. Um auditor experiente percebe rápidamente se a organização realmente internalizou esses conceitos ou se esta apenas "jogando papel".</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A versao 2015 distribuiu a responsabilidade pela qualidade para a alta direcao." data-fb-nok="Incorreto. Reveja o principio de Lideranca: na versao 2015, a responsabilidade e da alta direcao, nao de uma unica pessoa."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Na ISO 9001:2015, o principio de Lideranca implica que:</div><button class="qi-option" data-key="a">O Representante da Direcao (RD) e o unico responsavel pelo SGQ</button><button class="qi-option" data-key="b">A alta direcao deve demonstrar comprometimento direto com o SGQ</button><button class="qi-option" data-key="c">Apenas gerentes de qualidade precisam conhecer a politica</button><div class="qi-feedback"></div></div>
+
+<div class="comparison"><div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Principios na teoria</h4><ul><li>Politica da qualidade na parede, ninguem le</li><li>Treinamento obrigatorio sem contexto pratico</li><li>Indicadores que ninguem analisa</li></ul></div><div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Principios na pratica</h4><ul><li>Decisoes do dia a dia refletem a politica</li><li>Pessoas entendem seu papel no SGQ</li><li>Dados orientam acoes de melhoria reais</li></ul></div></div>
 
 <div class="template-box"><span>Download: Quadro-resumo dos 7 princípios com aplicação prática</span><a href="#">Baixar template</a></div>
 `})`;
@@ -203,6 +256,8 @@ export async function seedCourse1(sql) {
 
 <div class="callout"><strong>Importante:</strong> As cláusulas 1 a 3 são informativas (não contem requisitos auditaveis). Os requisitos que você precisa implementar estão nas cláusulas 4 a 10.</div>
 
+<div class="diagram"><svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="390" height="270" rx="10" fill="none" stroke="#0b1730" stroke-width="1" stroke-dasharray="4 2"/><text x="200" y="25" text-anchor="middle" font-size="12" fill="#0b1730" font-weight="bold">Estrutura de 10 Clausulas — Anexo SL</text><rect x="20" y="40" width="105" height="22" rx="4" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="0.5"/><text x="72" y="55" text-anchor="middle" font-size="8" fill="#0b1730">1. Escopo</text><rect x="135" y="40" width="120" height="22" rx="4" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="0.5"/><text x="195" y="55" text-anchor="middle" font-size="8" fill="#0b1730">2. Ref. normativa</text><rect x="265" y="40" width="120" height="22" rx="4" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="0.5"/><text x="325" y="55" text-anchor="middle" font-size="8" fill="#0b1730">3. Termos/definicoes</text><text x="200" y="78" text-anchor="middle" font-size="8" fill="#0b1730" font-style="italic">Clausulas informativas (sem requisitos auditaveis)</text><line x1="20" y1="85" x2="380" y2="85" stroke="#0b1730" stroke-width="0.5" stroke-dasharray="3 2"/><rect x="20" y="95" width="115" height="35" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="77" y="112" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">4. Contexto</text><text x="77" y="124" text-anchor="middle" font-size="8" fill="#2563eb">PLAN</text><rect x="145" y="95" width="100" height="35" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="195" y="112" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">5. Lideranca</text><text x="195" y="124" text-anchor="middle" font-size="8" fill="#2563eb">PLAN</text><rect x="255" y="95" width="125" height="35" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="317" y="112" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">6. Planejamento</text><text x="317" y="124" text-anchor="middle" font-size="8" fill="#2563eb">PLAN</text><rect x="20" y="145" width="170" height="35" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="105" y="162" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">7. Apoio (Recursos)</text><text x="105" y="174" text-anchor="middle" font-size="8" fill="#16a34a">DO</text><rect x="200" y="145" width="180" height="35" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="290" y="162" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">8. Operacao</text><text x="290" y="174" text-anchor="middle" font-size="8" fill="#16a34a">DO</text><rect x="20" y="195" width="170" height="35" rx="6" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1.5"/><text x="105" y="212" text-anchor="middle" font-size="9" fill="#eab308" font-weight="bold">9. Avaliacao desempenho</text><text x="105" y="224" text-anchor="middle" font-size="8" fill="#eab308">CHECK</text><rect x="200" y="195" width="180" height="35" rx="6" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="290" y="212" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">10. Melhoria</text><text x="290" y="224" text-anchor="middle" font-size="8" fill="#c5383c">ACT</text><text x="200" y="258" text-anchor="middle" font-size="9" fill="#0b1730" font-style="italic">Clausulas 4-10: requisitos auditaveis</text></svg><figcaption>Mapa das 10 clausulas da ISO 9001:2015 organizadas pelo ciclo PDCA</figcaption></div>
+
 <h3>A lógica do PDCA nas cláusulas</h3>
 
 <p>A norma organiza os requisitos seguindo o ciclo PDCA:</p>
@@ -229,6 +284,10 @@ export async function seedCourse1(sql) {
 
 <div class="example"><strong>Exemplo prático:</strong> Em uma auditoria numa fábrica de estruturas metalicas, o auditor encontrou que a empresa tinha uma otima gestão de riscos documentada (cláusula 6.1), mas na operação (cláusula 8) não havia evidência de que esses riscos eram considerados no planejamento da produção. Resultado: não conformidade menor. A empresa tinha "papel" mas não tinha "conexao" entre as cláusulas.</div>
 
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A Gerdau, maior produtora de acos longos das Americas, foi uma das primeiras siderurgicas brasileiras a adotar a estrutura do Anexo SL para integrar ISO 9001, ISO 14001 e ISO 45001 em um sistema de gestao unico. Com mais de 30 unidades, a padronizacao das 10 clausulas permitiu que auditorias internas cruzadas entre plantas usassem o mesmo roteiro, reduzindo o tempo de auditoria em 40% e facilitando a transferencia de boas praticas entre unidades.</p></div>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> A leitura cruzada entre clausulas e o que separa um SGQ "de papel" de um SGQ que realmente funciona. Quando voce ve que a clausula 6.1 (riscos) alimenta a 8.1 (operacao), que a 9.1.2 (satisfacao) alimenta a 10.3 (melhoria), voce entende que a norma e um sistema vivo, nao uma lista de tarefas.</div></div>
+
 <h3>Terminologia essêncial</h3>
 
 <p>Antes de avancar, alinhe o vocabulario. Termos que você vai encontrar em toda a norma:</p>
@@ -246,6 +305,8 @@ export async function seedCourse1(sql) {
 <h3>Beneficios da Estrutura de Alto Nível</h3>
 
 <p>Se sua empresa já tem ou pretende ter ISO 14001 (meio ambiente) ou ISO 45001 (saude e segurança), a estrutura comum fácilita enormemente a integração. Os requisitos de contexto, liderança, planejamento, apoio, avaliação e melhoria são identicos em estrutura — muda apenas o foco técnico.</p>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! As clausulas 1 a 3 sao informativas e nao contem requisitos auditaveis." data-fb-nok="Incorreto. As clausulas 1, 2 e 3 sao informativas. Os requisitos auditaveis comecam na clausula 4."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Quais clausulas da ISO 9001:2015 NAO contem requisitos auditaveis?</div><button class="qi-option" data-key="a">Clausulas 1, 2 e 3</button><button class="qi-option" data-key="b">Clausulas 9 e 10</button><button class="qi-option" data-key="c">Clausulas 4 e 5</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Mapa visual das 10 cláusulas x PDCA</span><a href="#">Baixar template</a></div>
 `})`;
@@ -268,6 +329,8 @@ export async function seedCourse1(sql) {
   <tr><td>Exclusoes</td><td>Permitidas (cláusula 7)</td><td>Não há "exclusoes" — usa-se "aplicabilidade" (cláusula 4.3)</td></tr>
 </table>
 
+<div class="diagram"><svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><text x="200" y="20" text-anchor="middle" font-size="12" fill="#0b1730" font-weight="bold">ISO 9001:2008 vs 2015 — Evolucao Estrutural</text><rect x="20" y="35" width="160" height="150" rx="8" fill="#c5383c" opacity="0.06" stroke="#c5383c" stroke-width="1.5"/><text x="100" y="55" text-anchor="middle" font-size="11" fill="#c5383c" font-weight="bold">Versao 2008</text><text x="100" y="75" text-anchor="middle" font-size="9" fill="#0b1730">8 clausulas</text><text x="100" y="90" text-anchor="middle" font-size="9" fill="#0b1730">Manual obrigatorio</text><text x="100" y="105" text-anchor="middle" font-size="9" fill="#0b1730">RD obrigatorio</text><text x="100" y="120" text-anchor="middle" font-size="9" fill="#0b1730">6 proc. documentados</text><text x="100" y="135" text-anchor="middle" font-size="9" fill="#0b1730">Acao preventiva</text><text x="100" y="150" text-anchor="middle" font-size="9" fill="#0b1730">Exclusoes (cl. 7)</text><text x="100" y="170" text-anchor="middle" font-size="9" fill="#0b1730" font-style="italic">Foco: conformidade</text><path d="M185 110 L215 110" stroke="#0b1730" stroke-width="2" marker-end="url(#arr14)"/><rect x="220" y="35" width="165" height="150" rx="8" fill="#16a34a" opacity="0.06" stroke="#16a34a" stroke-width="1.5"/><text x="302" y="55" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">Versao 2015</text><text x="302" y="75" text-anchor="middle" font-size="9" fill="#0b1730">10 clausulas (Anexo SL)</text><text x="302" y="90" text-anchor="middle" font-size="9" fill="#0b1730">Manual nao obrigatorio</text><text x="302" y="105" text-anchor="middle" font-size="9" fill="#0b1730">Lideranca distribuida</text><text x="302" y="120" text-anchor="middle" font-size="9" fill="#0b1730">Info documentada flexivel</text><text x="302" y="135" text-anchor="middle" font-size="9" fill="#0b1730">Mentalidade de risco</text><text x="302" y="150" text-anchor="middle" font-size="9" fill="#0b1730">Aplicabilidade (cl. 4.3)</text><text x="302" y="170" text-anchor="middle" font-size="9" fill="#0b1730" font-style="italic">Foco: resultado + risco</text><defs><marker id="arr14" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0 L8 3 L0 6" fill="#0b1730"/></marker></defs></svg><figcaption>Principais mudancas estruturais entre as versoes 2008 e 2015</figcaption></div>
+
 <h3>Novidades conceituais da versão 2015</h3>
 
 <h3>1. Contexto da organização (cláusula 4)</h3>
@@ -275,6 +338,8 @@ export async function seedCourse1(sql) {
 <p>Na versão 2008, não existia nenhum requisito para entender o ambiente externo e interno da organização. A versão 2015 exige que a empresa análise fatores como mercado, tecnologia, legislação, cultura organizacional e expectativas das partes interessadas. E a norma reconhecendo que qualidade não existe no vacuo — ela depende do contexto.</p>
 
 <div class="example"><strong>Exemplo prático:</strong> Uma construtora que atuava só em obras residenciais decidiu entrar no mercado de obras publicas. O contexto mudou completamente: novas legislações (Lei de Licitações), novos requisitos de documentação, novos riscos. A análise de contexto da cláusula 4 obriga a empresa a reconhecer e tratar essas mudanças formalmente.</div>
+
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A Marcopolo, fabricante gaucha de onibus com presenca em mais de 100 paises, migrou da ISO 9001:2008 para a 2015 em todas as suas plantas entre 2017 e 2018. O gerente de qualidade corporativo relatou que a maior conquista da transicao foi eliminar o "manual da qualidade de 200 paginas que ninguem lia" e substituir por documentacao enxuta e conectada ao dia a dia. A mentalidade de risco, antes inexistente na pratica, passou a ser discutida nas reunioes semanais de producao — nao como burocracia, mas como ferramenta de decisao.</p></div>
 
 <h3>2. Mentalidade de risco</h3>
 
@@ -319,6 +384,10 @@ export async function seedCourse1(sql) {
 
 <p>Não tente "converter" os documentos antigos palavra por palavra. Use a transição como oportunidade para simplificar. Muitas empresas tinham documentação excessiva na versão 2008 que não agregava valor. A versão 2015 e a chance de ter um SGQ mais enxuto, prático e realmente útil para a gestão.</p>
 
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A acao preventiva formal foi substituida pela mentalidade de risco integrada a toda a norma." data-fb-nok="Incorreto. Na versao 2015, a acao preventiva deixou de existir como clausula especifica e foi substituida pela mentalidade de risco (clausula 6.1)."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">O que substituiu a "acao preventiva" da versao 2008 na ISO 9001:2015?</div><button class="qi-option" data-key="a">Acao corretiva ampliada (clausula 10.2)</button><button class="qi-option" data-key="b">Analise critica pela direcao (clausula 9.3)</button><button class="qi-option" data-key="c">Mentalidade de risco integrada a toda a norma (clausula 6.1)</button><div class="qi-feedback"></div></div>
+
+<div class="step-flow"><div class="step-item"><div class="step-content"><strong>1. Avaliar o SGQ atual</strong><br>Identifique o que ja atende a versao 2015 (geralmente 60-70%)</div></div><div class="step-item"><div class="step-content"><strong>2. Criar analise de contexto</strong><br>SWOT + partes interessadas (novidade da 2015)</div></div><div class="step-item"><div class="step-content"><strong>3. Reformular riscos</strong><br>Sair da acao preventiva generica para risco por processo</div></div><div class="step-item"><div class="step-content"><strong>4. Engajar a direcao</strong><br>Alta direcao deve participar ativamente, nao apenas delegar</div></div><div class="step-item"><div class="step-content"><strong>5. Simplificar documentacao</strong><br>Eliminar excesso, manter apenas informacao documentada necessaria</div></div></div>
+
 <div class="template-box"><span>Download: Tabela comparativa detalhada 2008 vs 2015</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -343,6 +412,8 @@ export async function seedCourse1(sql) {
 <p>O requisito e direto: "A organização deve determinar questões externas e internas que sejam pertinentes para seu propósito e sua direção estratégica e que afetem sua capacidade de alcancar os resultados pretendidos de seu SGQ."</p>
 
 <p>Traduzindo: você precisa saber o que esta acontecendo dentro e fora da empresa que impacta a qualidade dos seus produtos e serviços.</p>
+
+<div class="diagram"><svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><text x="200" y="20" text-anchor="middle" font-size="12" fill="#0b1730" font-weight="bold">Analise SWOT — Fatores Internos e Externos</text><rect x="20" y="35" width="175" height="95" rx="8" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1.5"/><text x="107" y="55" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">S - Forcas</text><text x="107" y="72" text-anchor="middle" font-size="8" fill="#0b1730">Parque de maquinas moderno</text><text x="107" y="84" text-anchor="middle" font-size="8" fill="#0b1730">Equipe experiente</text><text x="107" y="96" text-anchor="middle" font-size="8" fill="#0b1730">Localizacao estrategica</text><text x="30" y="118" text-anchor="start" font-size="7" fill="#16a34a" font-style="italic">INTERNO / POSITIVO</text><rect x="205" y="35" width="175" height="95" rx="8" fill="#c5383c" opacity="0.1" stroke="#c5383c" stroke-width="1.5"/><text x="292" y="55" text-anchor="middle" font-size="11" fill="#c5383c" font-weight="bold">W - Fraquezas</text><text x="292" y="72" text-anchor="middle" font-size="8" fill="#0b1730">Alta rotatividade</text><text x="292" y="84" text-anchor="middle" font-size="8" fill="#0b1730">Documentacao informal</text><text x="292" y="96" text-anchor="middle" font-size="8" fill="#0b1730">Concentracao de clientes</text><text x="215" y="118" text-anchor="start" font-size="7" fill="#c5383c" font-style="italic">INTERNO / NEGATIVO</text><rect x="20" y="140" width="175" height="95" rx="8" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1.5"/><text x="107" y="160" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="bold">O - Oportunidades</text><text x="107" y="177" text-anchor="middle" font-size="8" fill="#0b1730">Novos mercados (eolica)</text><text x="107" y="189" text-anchor="middle" font-size="8" fill="#0b1730">Industria 4.0</text><text x="107" y="201" text-anchor="middle" font-size="8" fill="#0b1730">Demanda por alta precisao</text><text x="30" y="223" text-anchor="start" font-size="7" fill="#2563eb" font-style="italic">EXTERNO / POSITIVO</text><rect x="205" y="140" width="175" height="95" rx="8" fill="#eab308" opacity="0.1" stroke="#eab308" stroke-width="1.5"/><text x="292" y="160" text-anchor="middle" font-size="11" fill="#eab308" font-weight="bold">T - Ameacas</text><text x="292" y="177" text-anchor="middle" font-size="8" fill="#0b1730">Importados chineses</text><text x="292" y="189" text-anchor="middle" font-size="8" fill="#0b1730">Escassez de mao de obra</text><text x="292" y="201" text-anchor="middle" font-size="8" fill="#0b1730">Variacao cambial</text><text x="215" y="223" text-anchor="start" font-size="7" fill="#eab308" font-style="italic">EXTERNO / NEGATIVO</text></svg><figcaption>Matriz SWOT — ferramenta pratica para atender a clausula 4.1</figcaption></div>
 
 <h3>Questoes externas</h3>
 
@@ -372,6 +443,10 @@ export async function seedCourse1(sql) {
 
 <div class="example"><strong>Exemplo prático — Indústria alimentícia:</strong> Uma fábrica de embutidos identificou como questao interna crítica a alta rotatividade na linha de produção (turnover de 35% ao ano). Isso impactava diretamente a qualidade: operadores novos cometiam mais erros de dosagem e temperatura. A ação foi criar um programa de integração mais robusto e um plano de carreira para operadores, reduzindo o turnover para 18% em um ano.</div>
 
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A Tupy S.A., maior fabricante mundial de blocos e cabecotes de motor em ferro fundido (Joinville-SC), usa a analise de contexto como ferramenta estrategica real. Quando a tendencia global de eletrificacao veicular comecou a ameacar a demanda por motores a combustao, a empresa identificou isso na clausula 4.1 e redirecionou investimentos para componentes de veiculos hibridos e infraestrutura de energia. A analise de contexto deixou de ser "papel para auditor" e virou bussola estrategica.</p></div>
+
+<div class="tabs"><div class="tab-btns"><button class="tab-btn active">PESTEL</button><button class="tab-btn">5 Forcas Porter</button></div><div class="tab-panel active"><p><strong>P</strong>olitico: politicas industriais, incentivos fiscais<br><strong>E</strong>conomico: inflacao, cambio, custo de insumos<br><strong>S</strong>ocial: escassez de mao de obra, cultura regional<br><strong>T</strong>ecnologico: Industria 4.0, automacao, IoT<br><strong>E</strong>cologico: regulamentacao ambiental, ESG<br><strong>L</strong>egal: NRs, normas tecnicas, LGPD</p></div><div class="tab-panel"><p><strong>1.</strong> Rivalidade entre concorrentes existentes<br><strong>2.</strong> Ameaca de novos entrantes (ex: importados)<br><strong>3.</strong> Poder de barganha dos fornecedores<br><strong>4.</strong> Poder de barganha dos clientes<br><strong>5.</strong> Ameaca de produtos substitutos</p></div></div>
+
 <h3>Ferramentas práticas para análise de contexto</h3>
 
 <p>A norma não exige nenhuma ferramenta específica. As mais usadas na prática sao:</p>
@@ -392,6 +467,8 @@ export async function seedCourse1(sql) {
 
 <div class="callout"><strong>Importante:</strong> A análise de contexto não precisa ser um documento extenso. Para uma empresa de 50 funcionários, uma ou duas páginas com os principais fatores, seus impactos e as ações planejadas já e suficiente. O auditor quer ver que você PENSOU sobre isso e tomou decisões com base nessa análise — não quer um relatório academico.</div>
 
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A SWOT analisa fatores internos (forcas/fraquezas) e externos (oportunidades/ameacas)." data-fb-nok="Incorreto. A analise SWOT cobre fatores internos (S e W) e externos (O e T), sendo a ferramenta mais usada para a clausula 4.1."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual ferramenta e mais indicada para PMEs atenderem a clausula 4.1 de forma pratica?</div><button class="qi-option" data-key="a">FMEA (Analise de Modos de Falha e Efeitos)</button><button class="qi-option" data-key="b">Analise SWOT (Forcas, Fraquezas, Oportunidades, Ameacas)</button><button class="qi-option" data-key="c">Diagrama de Ishikawa (Causa e Efeito)</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Template de análise de contexto (SWOT + fatores internos/externos)</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -406,6 +483,8 @@ export async function seedCourse1(sql) {
 <p>"A organização deve determinar: (a) as partes interessadas que sejam pertinentes para o SGQ; (b) os requisitos dessas partes interessadas que sejam pertinentes para o SGQ."</p>
 
 <p>A palavra-chave e <strong>pertinente</strong>. Você não precisa listar todas as partes interessadas do universo — apenas aquelas que realmente impactam ou são impactadas pelo seu sistema de gestão da qualidade.</p>
+
+<div class="diagram"><svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"><text x="200" y="20" text-anchor="middle" font-size="12" fill="#0b1730" font-weight="bold">Mapa de Partes Interessadas</text><circle cx="200" cy="150" r="40" fill="#0b1730" opacity="0.08" stroke="#0b1730" stroke-width="2"/><text x="200" y="147" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">Organizacao</text><text x="200" y="160" text-anchor="middle" font-size="8" fill="#0b1730">(SGQ)</text><ellipse cx="200" cy="50" rx="55" ry="22" fill="#c5383c" opacity="0.1" stroke="#c5383c" stroke-width="1.5"/><text x="200" y="54" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Clientes</text><line x1="200" y1="72" x2="200" y2="110" stroke="#c5383c" stroke-width="1.5"/><ellipse cx="340" cy="90" rx="50" ry="22" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1.5"/><text x="340" y="94" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Fornecedores</text><line x1="300" y1="100" x2="240" y2="130" stroke="#2563eb" stroke-width="1.5"/><ellipse cx="360" cy="180" rx="45" ry="22" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1.5"/><text x="360" y="184" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">Reguladores</text><line x1="320" y1="175" x2="240" y2="160" stroke="#16a34a" stroke-width="1.5"/><ellipse cx="300" cy="255" rx="55" ry="22" fill="#eab308" opacity="0.1" stroke="#eab308" stroke-width="1.5"/><text x="300" y="259" text-anchor="middle" font-size="9" fill="#eab308" font-weight="bold">Comunidade</text><line x1="260" y1="245" x2="220" y2="185" stroke="#eab308" stroke-width="1.5"/><ellipse cx="100" cy="255" rx="55" ry="22" fill="#2563eb" opacity="0.1" stroke="#2563eb" stroke-width="1.5"/><text x="100" y="259" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Colaboradores</text><line x1="140" y1="245" x2="180" y2="185" stroke="#2563eb" stroke-width="1.5"/><ellipse cx="45" cy="180" rx="45" ry="22" fill="#c5383c" opacity="0.1" stroke="#c5383c" stroke-width="1.5"/><text x="45" y="184" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Acionistas</text><line x1="85" y1="175" x2="160" y2="160" stroke="#c5383c" stroke-width="1.5"/><ellipse cx="60" cy="90" rx="50" ry="22" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1.5"/><text x="60" y="94" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">Certificadora</text><line x1="100" y1="100" x2="160" y2="130" stroke="#16a34a" stroke-width="1.5"/></svg><figcaption>Mapa de partes interessadas tipicas de uma organizacao industrial</figcaption></div>
 
 <h3>Quem são as partes interessadas tipicas</h3>
 
@@ -451,6 +530,16 @@ export async function seedCourse1(sql) {
   <li><strong>Cláusula 9.3 (análise crítica):</strong> mudanças nas partes interessadas são entrada obrigatória para a análise crítica.</li>
 </ul>
 
+<ul class="checklist">
+  <li><span class="ck-box"></span>Listamos todas as partes interessadas pertinentes ao SGQ</li>
+  <li><span class="ck-box"></span>Para cada parte, identificamos os requisitos relevantes</li>
+  <li><span class="ck-box"></span>Diferenciamos requisitos obrigatorios (legais/contratuais) dos voluntarios</li>
+  <li><span class="ck-box"></span>Revisamos a matriz de partes interessadas pelo menos anualmente</li>
+  <li><span class="ck-box"></span>A analise critica pela direcao inclui mudancas nas partes interessadas</li>
+</ul>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A palavra-chave e pertinente — so as partes interessadas que realmente impactam o SGQ precisam ser consideradas." data-fb-nok="Incorreto. A norma nao exige listar todas as partes interessadas, apenas as pertinentes ao SGQ."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">A clausula 4.2 exige que a organizacao identifique:</div><button class="qi-option" data-key="a">Todas as partes interessadas existentes no mercado</button><button class="qi-option" data-key="b">As partes interessadas pertinentes ao SGQ e seus requisitos relevantes</button><button class="qi-option" data-key="c">Apenas clientes e fornecedores diretos</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Matriz de partes interessadas com prioridade e requisitos</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -473,6 +562,8 @@ export async function seedCourse1(sql) {
 <p>O escopo deve ser mantido como informação documentada e deve declarar os tipos de produtos e serviços cobertos. Se algum requisito da norma não for aplicável, a organização deve justificar — e essa não aplicabilidade não pode afetar a conformidade dos produtos/serviços.</p>
 
 <div class="example"><strong>Exemplo prático — Metalurgica:</strong> "O SGQ da MetalForte Ltda. abrange o projeto, fábricação e comercialização de peças usinadas em açoe alumínio para a indústria automotiva e de máquinas agrícolas, realizadas na unidade de Caxias do Sul - RS." Note como o escopo e específico: diz O QUE faz, PARA QUEM faz e ONDE faz.</div>
+
+<div class="comparison"><div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Escopo mal definido</h4><ul><li>Prestacao de servicos industriais</li><li>Fabricacao de pecas em geral</li><li>Servicos diversos de engenharia</li></ul></div><div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Escopo bem definido</h4><ul><li>Usinagem de precisao em aco e aluminio para industria automotiva</li><li>Projeto, fabricacao e ensaio de estruturas metalicas para construcao civil</li><li>Producao e envase de sucos naturais na unidade de Chapeco-SC</li></ul></div></div>
 
 <div class="callout"><strong>Importante:</strong> Um escopo generico demais ("prestação de serviços") sera questionado pelo auditor. Um escopo específico demais pode limitar desnecessáriamente o SGQ. Encontre o equilibrio: seja claro o suficiente para que qualquer pessoa entenda o que a empresa faz e o que o certificado cobre.</div>
 
@@ -514,6 +605,8 @@ export async function seedCourse1(sql) {
 
 <div class="example"><strong>Exemplo prático — Cooperativa agrícola:</strong> Uma cooperativa de grãos mapeou 11 processos: Governança (gestão), Recepção de grãos, Classificação, Armazenamento, Beneficiamento, Comercialização (core), Compras, Manutenção, Gestão de pessoas, Financeiro, Qualidade (apoio). Cada processo tinha um dono, indicadores, entradas e saídas definidos. Isso fácilitou tanto a gestão diária quanto as auditorias.</div>
 
+<div class="diagram"><svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><text x="200" y="18" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Mapa de Processos — Estrutura Tipica</text><rect x="120" y="28" width="160" height="30" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="200" y="48" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Processos de Gestao</text><text x="200" y="26" text-anchor="middle" font-size="7" fill="#2563eb">Planej. Estrategico | Gestao da Qualidade</text><rect x="20" y="75" width="80" height="80" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="60" y="95" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Vendas</text><rect x="110" y="75" width="80" height="80" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="150" y="95" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Producao</text><rect x="200" y="75" width="80" height="80" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="240" y="95" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Inspecao</text><rect x="290" y="75" width="90" height="80" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="335" y="95" text-anchor="middle" font-size="8" fill="#16a34a" font-weight="bold">Expedicao</text><text x="200" y="110" text-anchor="middle" font-size="8" fill="#16a34a">Processos Core (realizacao)</text><defs><marker id="arrMP" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0 0 L6 2.5 L0 5" fill="#0b1730"/></marker></defs><line x1="100" y1="115" x2="110" y2="115" stroke="#0b1730" stroke-width="1" marker-end="url(#arrMP)"/><line x1="190" y1="115" x2="200" y2="115" stroke="#0b1730" stroke-width="1" marker-end="url(#arrMP)"/><line x1="280" y1="115" x2="290" y2="115" stroke="#0b1730" stroke-width="1" marker-end="url(#arrMP)"/><text x="15" y="118" text-anchor="start" font-size="7" fill="#0b1730">CLIENTE</text><text x="385" y="118" text-anchor="end" font-size="7" fill="#0b1730">CLIENTE</text><rect x="60" y="172" width="280" height="30" rx="6" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1.5"/><text x="200" y="192" text-anchor="middle" font-size="9" fill="#eab308" font-weight="bold">Processos de Apoio</text><text x="200" y="170" text-anchor="middle" font-size="7" fill="#eab308">Compras | RH | Manutencao | TI | Qualidade</text></svg><figcaption>Estrutura tipica de mapa de processos: gestao, core e apoio</figcaption></div>
+
 <h3>Dicas para montar o mapa de processos</h3>
 
 <ul>
@@ -522,6 +615,8 @@ export async function seedCourse1(sql) {
   <li>Cada processo precisa de pelo menos um indicador mensurável.</li>
   <li>O mapa deve refletir a realidade, não um ideal. Mapeie como a empresa realmente funciona, depois melhore.</li>
 </ul>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Na versao 2015, nao existem mais exclusoes — usa-se o conceito de nao aplicabilidade, que deve ser justificado." data-fb-nok="Incorreto. A versao 2015 substituiu o conceito de exclusoes pelo de nao aplicabilidade (clausula 4.3), que exige justificativa."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Na ISO 9001:2015, quando um requisito nao se aplica a organizacao, o que deve ser feito?</div><button class="qi-option" data-key="a">Justificar a nao aplicabilidade, garantindo que nao afete a conformidade dos produtos</button><button class="qi-option" data-key="b">Simplesmente excluir o requisito sem necessidade de justificativa</button><button class="qi-option" data-key="c">Solicitar autorizacao do organismo certificador para a exclusao</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Modelo de mapa de processos e ficha de processo</span><a href="#">Baixar template</a></div>
 `})`;
@@ -553,6 +648,8 @@ export async function seedCourse1(sql) {
 
 <div class="callout"><strong>Importante:</strong> O verbo e "demonstrar" — não basta dizer que apoia. O auditor vai procurar evidências: atas de análise crítica com participação da direção, alocação de recursos para projetos de qualidade, comúnicações da direção sobre qualidade, decisões que priorizaram qualidade sobre custo de curto prazo.</div>
 
+<div class="diagram"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><text x="200" y="18" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Clausula 5 — Pilares da Lideranca no SGQ</text><rect x="20" y="35" width="110" height="55" rx="8" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="75" y="55" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">5.1 Lideranca e</text><text x="75" y="67" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Comprometimento</text><text x="75" y="82" text-anchor="middle" font-size="7" fill="#0b1730">Responsabilidade pela</text><text x="75" y="90" text-anchor="middle" font-size="7" fill="#0b1730">eficacia do SGQ</text><rect x="145" y="35" width="110" height="55" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="200" y="55" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">5.2 Politica da</text><text x="200" y="67" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Qualidade</text><text x="200" y="82" text-anchor="middle" font-size="7" fill="#0b1730">Direcao estrategica</text><text x="200" y="90" text-anchor="middle" font-size="7" fill="#0b1730">+ melhoria continua</text><rect x="270" y="35" width="110" height="55" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="325" y="55" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">5.3 Papeis e</text><text x="325" y="67" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">Autoridades</text><text x="325" y="82" text-anchor="middle" font-size="7" fill="#0b1730">Responsabilidades</text><text x="325" y="90" text-anchor="middle" font-size="7" fill="#0b1730">claras e comunicadas</text><rect x="60" y="120" width="280" height="50" rx="8" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="1"/><text x="200" y="142" text-anchor="middle" font-size="9" fill="#0b1730" font-weight="bold">Evidencias de lideranca que o auditor busca:</text><text x="200" y="158" text-anchor="middle" font-size="8" fill="#0b1730">Atas de analise critica | Recursos alocados | Decisoes documentadas | Foco no cliente</text><line x1="75" y1="90" x2="120" y2="120" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/><line x1="200" y1="90" x2="200" y2="120" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/><line x1="325" y1="90" x2="280" y2="120" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/></svg><figcaption>Os tres pilares da clausula 5: lideranca, politica e papeis organizacionais</figcaption></div>
+
 <h3>5.1.2 — Foco no cliente</h3>
 
 <p>A alta direção deve demonstrar liderança e comprometimento com relação ao foco no cliente, assegurando que:</p>
@@ -577,6 +674,8 @@ export async function seedCourse1(sql) {
 </ol>
 
 <p>Alem disso, a política deve ser mantida como informação documentada, comunicada e entendida na organização e disponível para partes interessadas pertinentes.</p>
+
+<div class="comparison"><div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Politica generica</h4><ul><li>Buscamos a excelencia na satisfacao dos clientes</li><li>Comprometidos com a melhoria continua</li><li>Valorizamos nossos colaboradores</li></ul></div><div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Politica especifica</h4><ul><li>Entregar pecas dentro das tolerancias especificadas, no prazo acordado</li><li>Reduzir refugo e retrabalho continuamente com base em dados</li><li>Qualificar operadores CNC com 40h/ano de treinamento</li></ul></div></div>
 
 <div class="callout"><strong>Importante:</strong> Políticas genéricas como "Buscamos a excelencia na satisfação dos nossos clientes atraves da melhoria contínua" não agregam nada. Uma boa política e específica para a empresa, reflete seus valores reais e serve como guia para decisões. Compare: "A MetalForte se compromete a entregar peças usinadas dentro das tolerâncias específicadas, no prazo acordado, buscando continuamente reduzir refugo e retrabalho, com respeito a segurança dos colaboradores e ao meio ambiente."</div>
 
@@ -605,6 +704,8 @@ export async function seedCourse1(sql) {
   <li>Verifica se recursos foram alocados quando necessário.</li>
   <li>Checa se a análise crítica foi conduzida com participação real da direção.</li>
 </ol>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A norma exige que a alta direcao demonstre lideranca e comprometimento com acoes concretas, nao apenas delegue ao RD." data-fb-nok="Incorreto. Na ISO 9001:2015, a responsabilidade e da alta direcao — ela deve demonstrar comprometimento ativo, nao apenas nomear um responsavel."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual e a principal exigencia da clausula 5.1 sobre lideranca?</div><button class="qi-option" data-key="a">Nomear um Representante da Direcao (RD) para cuidar do SGQ</button><button class="qi-option" data-key="b">Publicar a politica da qualidade no site da empresa</button><button class="qi-option" data-key="c">A alta direcao deve demonstrar lideranca e comprometimento com acoes concretas</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Modelo de política da qualidade + checklist de liderança</span><a href="#">Baixar template</a></div>
 `})`;
@@ -641,6 +742,8 @@ export async function seedCourse1(sql) {
 <h3>Mentalidade de risco vs. gestão formal de riscos</h3>
 
 <div class="callout"><strong>Importante:</strong> A norma NÃO exige gestão formal de riscos (ISO 31000) nem métodologias específicas como FMEA. O que ela exige e a "mentalidade de risco" — que significa considerar riscos e oportunidades nas decisões. Para uma micro/pequena empresa, isso pode ser tao simples quanto uma planilha com os principais riscos, probabilidade, impacto e ações planejadas.</div>
+
+<div class="diagram"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><text x="200" y="18" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Matriz de Probabilidade x Impacto</text><rect x="80" y="30" width="100" height="50" rx="4" fill="#eab308" opacity="0.2" stroke="#eab308" stroke-width="1"/><text x="130" y="58" text-anchor="middle" font-size="9" fill="#0b1730">MEDIO</text><rect x="180" y="30" width="100" height="50" rx="4" fill="#c5383c" opacity="0.2" stroke="#c5383c" stroke-width="1"/><text x="230" y="58" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">ALTO</text><rect x="280" y="30" width="100" height="50" rx="4" fill="#c5383c" opacity="0.35" stroke="#c5383c" stroke-width="2"/><text x="330" y="58" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">CRITICO</text><rect x="80" y="80" width="100" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1"/><text x="130" y="108" text-anchor="middle" font-size="9" fill="#16a34a">BAIXO</text><rect x="180" y="80" width="100" height="50" rx="4" fill="#eab308" opacity="0.2" stroke="#eab308" stroke-width="1"/><text x="230" y="108" text-anchor="middle" font-size="9" fill="#0b1730">MEDIO</text><rect x="280" y="80" width="100" height="50" rx="4" fill="#c5383c" opacity="0.2" stroke="#c5383c" stroke-width="1"/><text x="330" y="108" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">ALTO</text><rect x="80" y="130" width="100" height="50" rx="4" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="130" y="158" text-anchor="middle" font-size="9" fill="#16a34a">ACEITAR</text><rect x="180" y="130" width="100" height="50" rx="4" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="1"/><text x="230" y="158" text-anchor="middle" font-size="9" fill="#16a34a">BAIXO</text><rect x="280" y="130" width="100" height="50" rx="4" fill="#eab308" opacity="0.2" stroke="#eab308" stroke-width="1"/><text x="330" y="158" text-anchor="middle" font-size="9" fill="#0b1730">MEDIO</text><text x="40" y="58" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Alta</text><text x="40" y="108" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Media</text><text x="40" y="158" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Baixa</text><text x="15" y="108" text-anchor="middle" font-size="8" fill="#0b1730" transform="rotate(-90 15 108)">PROBABILIDADE</text><text x="130" y="195" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Baixo</text><text x="230" y="195" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Medio</text><text x="330" y="195" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Alto</text><text x="230" y="208" text-anchor="middle" font-size="8" fill="#0b1730">IMPACTO</text></svg><figcaption>Matriz de probabilidade x impacto — ferramenta pratica para classificar riscos</figcaption></div>
 
 <p>Dito isso, para organizações mais complexas, métodologias estruturadas agregam muito valor:</p>
 
@@ -683,6 +786,10 @@ export async function seedCourse1(sql) {
 <h3>Integração com outros processos</h3>
 
 <p>As ações para riscos devem ser integradas nos processos operacionais, não ficar numa planilha isolada. Se o risco e "fornecedor entregar material fora de especificação", a ação (inspeção de recebimento) deve estar no processo de recebimento de materiais, não apenas na planilha de riscos.</p>
+
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A Randon S.A., fabricante gaucha de implementos rodoviarios, integrou a gestao de riscos da clausula 6.1 diretamente no seu planejamento estrategico. Quando a crise de 2015-2016 reduziu drasticamente a demanda por caminhoes, a analise de riscos ja havia previsto o cenario e a empresa tinha acoes preparadas: diversificacao para mercado externo, reducao controlada de custos e investimento em inovacao. A empresa saiu da crise com market share maior do que antes, enquanto concorrentes que nao tinham gestao de riscos estruturada fecharam.</p></div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A norma pede mentalidade de risco — considerar riscos nas decisoes — sem exigir metodologia formal." data-fb-nok="Incorreto. A ISO 9001:2015 nao exige metodologia formal como FMEA ou ISO 31000. Ela pede que a organizacao considere riscos e oportunidades de forma proporcional."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">O que a ISO 9001:2015 exige em relacao a gestao de riscos?</div><button class="qi-option" data-key="a">Implementacao obrigatoria da ISO 31000 ou FMEA</button><button class="qi-option" data-key="b">Mentalidade de risco integrada as decisoes, sem metodologia formal obrigatoria</button><button class="qi-option" data-key="c">Apenas documentar riscos, sem necessidade de acoes</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Planilha de gestão de riscos e oportunidades</span><a href="#">Baixar template</a></div>
 `})`;
@@ -742,15 +849,13 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>Uma referência útil (embora não mencionada na norma) e o critério SMART:</p>
 
-<ul>
-  <li><strong>S</strong>pecific (Especifico)</li>
-  <li><strong>M</strong>easurable (Mensurável)</li>
-  <li><strong>A</strong>chievable (Alcancavel)</li>
-  <li><strong>R</strong>elevant (Relevante)</li>
-  <li><strong>T</strong>ime-bound (Com prazo)</li>
-</ul>
+<div class="step-flow"><div class="step-item"><div class="step-content"><strong>S — Specific (Especifico)</strong><br>O objetivo deve ser claro e sem ambiguidade. "Reduzir refugo na linha 2" e especifico.</div></div><div class="step-item"><div class="step-content"><strong>M — Measurable (Mensuravel)</strong><br>Deve ter indicador numerico. "De 4% para 2,5%" e mensuravel.</div></div><div class="step-item"><div class="step-content"><strong>A — Achievable (Alcancavel)</strong><br>Deve ser desafiador mas realista. "Zero defeitos" quando o indice e 5% desmotiva.</div></div><div class="step-item"><div class="step-content"><strong>R — Relevant (Relevante)</strong><br>Deve ser pertinente para a qualidade e satisfacao do cliente.</div></div><div class="step-item"><div class="step-content"><strong>T — Time-bound (Com prazo)</strong><br>Deve ter data limite. "Ate 31/12/2025" cria senso de urgencia.</div></div></div>
 
 <div class="callout"><strong>Importante:</strong> Os objetivos devem ser desdobrados para as funções e processos pertinentes. O objetivo corporativo de "reduzir refugo para 2,5%" pode se desdobrar em metas específicas por linha, por turno ou por produto. Quanto mais próximo do chão de fábrica, mais efetivo.</div>
+
+<div class="diagram"><svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><text x="200" y="18" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Desdobramento de Objetivos da Qualidade</text><rect x="130" y="28" width="140" height="32" rx="6" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="200" y="48" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Objetivo Corporativo</text><text x="200" y="25" text-anchor="middle" font-size="7" fill="#0b1730">Refugo &lt; 2,5%</text><defs><marker id="arrOQ" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0 0 L6 2.5 L0 5" fill="#0b1730"/></marker></defs><line x1="160" y1="60" x2="100" y2="78" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><line x1="200" y1="60" x2="200" y2="78" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><line x1="240" y1="60" x2="300" y2="78" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><rect x="30" y="80" width="120" height="32" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="90" y="100" text-anchor="middle" font-size="8" fill="#2563eb" font-weight="bold">Linha 1: &lt; 2,0%</text><rect x="160" y="80" width="120" height="32" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="220" y="100" text-anchor="middle" font-size="8" fill="#2563eb" font-weight="bold">Linha 2: &lt; 3,0%</text><rect x="290" y="80" width="120" height="32" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="350" y="100" text-anchor="middle" font-size="8" fill="#2563eb" font-weight="bold">Linha 3: &lt; 2,5%</text><line x1="90" y1="112" x2="90" y2="128" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><line x1="220" y1="112" x2="220" y2="128" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><line x1="350" y1="112" x2="350" y2="128" stroke="#0b1730" stroke-width="1" marker-end="url(#arrOQ)"/><rect x="20" y="130" width="140" height="28" rx="4" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="90" y="148" text-anchor="middle" font-size="7" fill="#16a34a">Acao: CEP + troca preventiva</text><rect x="170" y="130" width="120" height="28" rx="4" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="230" y="148" text-anchor="middle" font-size="7" fill="#16a34a">Acao: Retreinar setup</text><rect x="300" y="130" width="120" height="28" rx="4" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="360" y="148" text-anchor="middle" font-size="7" fill="#16a34a">Acao: Novo ferramental</text></svg><figcaption>Objetivos corporativos devem ser desdobrados por linha, turno ou produto</figcaption></div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Objetivos devem ser mensuraveis, com indicador numerico, prazo e plano de acao associado." data-fb-nok="Incorreto. A norma exige que objetivos sejam mensuraveis e tenham planejamento (o que, quem, quando, como avaliar)."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual dos seguintes e um objetivo da qualidade bem formulado conforme a clausula 6.2?</div><button class="qi-option" data-key="a">Reduzir o indice de refugo de 3,8% para 2,5% ate dezembro de 2025</button><button class="qi-option" data-key="b">Melhorar a qualidade dos nossos produtos</button><button class="qi-option" data-key="c">Buscar a excelencia na satisfacao dos clientes</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Planilha de objetivos da qualidade com plano de ação 5W2H</span><a href="#">Baixar template</a></div>
 `})`;
@@ -790,14 +895,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>Um fluxo prático para gestão de mudanças:</p>
 
-<ol>
-  <li><strong>Identificar a mudança:</strong> o que vai mudar, por que e quando.</li>
-  <li><strong>Avaliar impactos:</strong> quais processos, documentos, competências e recursos são afetados.</li>
-  <li><strong>Planejar ações:</strong> o que precisa ser feito antes, durante e depois da mudança.</li>
-  <li><strong>Aprovar:</strong> quem autoriza a mudança (geralmente o dono do processo + coordenador de qualidade).</li>
-  <li><strong>Implementar:</strong> executar as ações planejadas.</li>
-  <li><strong>Verificar:</strong> confirmar que a mudança foi eficaz e não gerou efeitos colaterais.</li>
-</ol>
+<div class="step-flow"><div class="step-item"><div class="step-content"><strong>1. Identificar</strong><br>O que vai mudar, por que e quando. Registrar a solicitacao de mudanca.</div></div><div class="step-item"><div class="step-content"><strong>2. Avaliar impactos</strong><br>Quais processos, documentos, competencias e recursos sao afetados.</div></div><div class="step-item"><div class="step-content"><strong>3. Planejar acoes</strong><br>O que precisa ser feito antes, durante e depois da mudanca.</div></div><div class="step-item"><div class="step-content"><strong>4. Aprovar</strong><br>Dono do processo + coordenador de qualidade autorizam a mudanca.</div></div><div class="step-item"><div class="step-content"><strong>5. Implementar</strong><br>Executar as acoes planejadas conforme cronograma.</div></div><div class="step-item"><div class="step-content"><strong>6. Verificar</strong><br>Confirmar que a mudanca foi eficaz e nao gerou efeitos colaterais.</div></div></div>
 
 <div class="callout"><strong>Importante:</strong> Mudanças não planejadas são a maior fonte de não conformidades em auditorias. O clássico: a empresa troca de fornecedor de materia-prima "porque ficou mais barato" sem avaliar impacto na qualidade do produto final. Tres meses depois, as reclamações de clientes triplicam. Se a mudança tivesse sido planejada conforme 6.3, o impacto teria sido avaliado antes.</div>
 
@@ -806,6 +904,10 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 <p>A cláusula 8.5.6 trata específicamente do controle de mudanças na produção/provisão de serviços. A lógica e a mesma: qualquer mudança na produção deve ser analisada, aprovada e verificada antes de ser liberada. A 6.3 e mais ampla (mudanças no SGQ como um todo) e a 8.5.6 e específica para mudanças operacionais.</p>
 
 <div class="example"><strong>Exemplo prático — Cooperativa agrícola:</strong> A cooperativa decidiu ampliar a capacidade de secagem de grãos, instalando um novo secador com tecnologia diferente da existente. O plano de mudança incluiu: treinamento de 3 operadores no novo equipamento, revisão da instrução de operação, definição de novos parâmetros de temperatura e umidade, período de operação assistida de 30 dias com monitoramento intensivo, e válidação do produto final (grãos secos conforme padrão). A mudança foi bem-sucedida sem perdas de qualidade.</div>
+
+<div class="diagram"><svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg"><text x="200" y="18" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Gestao de Mudancas — Clausulas 6.3 e 8.5.6</text><rect x="20" y="35" width="160" height="50" rx="8" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="100" y="55" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">6.3 — Mudancas no SGQ</text><text x="100" y="72" text-anchor="middle" font-size="8" fill="#0b1730">Escopo amplo: qualquer</text><text x="100" y="82" text-anchor="middle" font-size="8" fill="#0b1730">mudanca no sistema</text><rect x="220" y="35" width="160" height="50" rx="8" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="300" y="55" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">8.5.6 — Mudancas Operac.</text><text x="300" y="72" text-anchor="middle" font-size="8" fill="#0b1730">Escopo especifico: mudancas</text><text x="300" y="82" text-anchor="middle" font-size="8" fill="#0b1730">na producao/provisao</text><rect x="60" y="110" width="280" height="45" rx="8" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="1"/><text x="200" y="128" text-anchor="middle" font-size="9" fill="#0b1730" font-weight="bold">Ambas exigem: avaliar impacto + planejar + aprovar + verificar</text><text x="200" y="145" text-anchor="middle" font-size="8" fill="#0b1730">Mudancas nao planejadas = maior fonte de nao conformidades</text><line x1="100" y1="85" x2="140" y2="110" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/><line x1="300" y1="85" x2="260" y2="110" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/></svg><figcaption>As duas clausulas de gestao de mudancas: 6.3 (SGQ) e 8.5.6 (operacional)</figcaption></div>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A clausula 6.3 exige que mudancas no SGQ sejam planejadas considerando proposito, consequencias, integridade e recursos." data-fb-nok="Incorreto. Mudancas no SGQ devem ser planejadas — avaliar proposito, consequencias, integridade do sistema e recursos disponiveis."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Ao trocar um fornecedor de materia-prima, o que a clausula 6.3 exige?</div><button class="qi-option" data-key="a">Apenas comunicar o organismo certificador sobre a troca</button><button class="qi-option" data-key="b">Nenhuma acao especifica — fornecedores sao tratados so na clausula 8.4</button><button class="qi-option" data-key="c">Planejar a mudanca avaliando proposito, impactos, integridade do SGQ e recursos</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Formulario de gestão de mudanças</span><a href="#">Baixar template</a></div>
 `})`;
@@ -868,6 +970,8 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <h3>Passo 4 — Mapa de processos (cláusula 4.4)</h3>
 
+<div class="diagram"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><text x="200" y="16" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">UsinaMax — Mapa de Processos (12 processos)</text><rect x="100" y="24" width="200" height="24" rx="5" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="200" y="40" text-anchor="middle" font-size="8" fill="#2563eb" font-weight="bold">GESTAO: Planej. Estrategico | Gestao Qualidade</text><rect x="10" y="60" width="65" height="50" rx="5" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="42" y="80" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Vendas/</text><text x="42" y="90" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Orcamento</text><rect x="82" y="60" width="55" height="50" rx="5" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="109" y="80" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Progr.</text><text x="109" y="90" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">CNC</text><rect x="144" y="60" width="60" height="50" rx="5" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="174" y="85" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Usinagem</text><rect x="211" y="60" width="60" height="50" rx="5" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="241" y="80" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Inspecao/</text><text x="241" y="90" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Metrologia</text><rect x="278" y="60" width="60" height="50" rx="5" fill="#16a34a" opacity="0.1" stroke="#16a34a" stroke-width="1"/><text x="308" y="85" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Expedicao</text><defs><marker id="arrCS" markerWidth="5" markerHeight="4" refX="5" refY="2" orient="auto"><path d="M0 0 L5 2 L0 4" fill="#0b1730"/></marker></defs><line x1="75" y1="85" x2="82" y2="85" stroke="#0b1730" stroke-width="0.8" marker-end="url(#arrCS)"/><line x1="137" y1="85" x2="144" y2="85" stroke="#0b1730" stroke-width="0.8" marker-end="url(#arrCS)"/><line x1="204" y1="85" x2="211" y2="85" stroke="#0b1730" stroke-width="0.8" marker-end="url(#arrCS)"/><line x1="271" y1="85" x2="278" y2="85" stroke="#0b1730" stroke-width="0.8" marker-end="url(#arrCS)"/><text x="200" y="125" text-anchor="middle" font-size="8" fill="#16a34a">CORE (realizacao de valor)</text><rect x="30" y="138" width="340" height="24" rx="5" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1.5"/><text x="200" y="154" text-anchor="middle" font-size="8" fill="#eab308" font-weight="bold">APOIO: Compras | Almoxarifado | Manutencao | RH | Terceirizados</text><text x="5" y="85" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">C</text><text x="5" y="92" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">L</text><text x="345" y="85" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">C</text><text x="345" y="92" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">L</text><text x="200" y="185" text-anchor="middle" font-size="8" fill="#0b1730" font-style="italic">CL = Cliente (entrada e saida do fluxo de valor)</text></svg><figcaption>Mapa de processos da UsinaMax: 2 de gestao, 5 core e 5 de apoio</figcaption></div>
+
 <p>12 processos mapeados:</p>
 
 <ul>
@@ -902,7 +1006,9 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   <tr><td>Capacitar equipe</td><td>40h/funcionario/ano</td><td>Horas treinamento</td><td>RH</td></tr>
 </table>
 
-<div class="callout"><strong>Importante:</strong> Observe como cada passo se conecta ao anterior. O contexto revela a escassez de mao de obra, que vira risco, que vira objetivo de treinamento. A dependencia de poucos clientes aparece na SWOT, vira risco e vira ação estratégica de diversificação. Isso e a norma funcionando como sistema integrado — não como lista de requisitos isolados.</div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> Observe como cada passo se conecta ao anterior. O contexto revela a escassez de mao de obra, que vira risco, que vira objetivo de treinamento. A dependencia de poucos clientes aparece na SWOT, vira risco e vira acao estrategica de diversificacao. Isso e a norma funcionando como sistema integrado — nao como lista de requisitos isolados.</div></div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A analise de contexto (SWOT) alimenta a identificacao de riscos, que alimenta os objetivos e planos de acao — tudo conectado." data-fb-nok="Incorreto. O planejamento do SGQ e integrado: contexto → riscos → objetivos → acoes. Cada passo alimenta o seguinte."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">No caso da UsinaMax, como a alta rotatividade de operadores (identificada na SWOT) se conecta ao planejamento do SGQ?</div><button class="qi-option" data-key="a">Nao se conecta — rotatividade e problema de RH, nao do SGQ</button><button class="qi-option" data-key="b">Aparece como fraqueza na SWOT, vira risco na clausula 6.1 e gera objetivo de treinamento na 6.2</button><button class="qi-option" data-key="c">E tratada apenas na politica da qualidade como declaracao de intencao</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Kit completo de planejamento do SGQ (contexto + partes interessadas + riscos + objetivos)</span><a href="#">Baixar template</a></div>
 `})`;
@@ -921,7 +1027,40 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'recursos-competencia', 'Cláusula 7 — Recursos, Competência e Conscientização', '40 min', 1, ${`
 <h2>Cláusula 7 — Apoio: Recursos, Competência e Conscientização</h2>
 
-<p>A cláusula 7 trata de tudo que a organização precisa disponibilizar para que o SGQ funcione: pessoas, infraestrutura, ambiente, recursos de monitoramento, conhecimento organizacional, competência, conscientização e comúnicação.</p>
+<p>A cláusula 7 trata de tudo que a organização precisa disponibilizar para que o SGQ funcione: pessoas, infraestrutura, ambiente, recursos de monitoramento, conhecimento organizacional, competência, conscientização e comunicação.</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg">
+    <rect x="155" y="75" width="130" height="50" rx="6" fill="#0b1730" stroke="#c5383c" stroke-width="2"/>
+    <text x="220" y="97" text-anchor="middle" fill="#ffffff" font-size="11" font-weight="bold">Cláusula 7</text>
+    <text x="220" y="113" text-anchor="middle" fill="#ffffff" font-size="10">Apoio ao SGQ</text>
+    <rect x="10" y="10" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="65" y="27" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.1 Recursos</text>
+    <text x="65" y="41" text-anchor="middle" fill="#93c5fd" font-size="8">Pessoas · Infra · Ambiente</text>
+    <rect x="130" y="10" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="185" y="27" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.1.5 Calibração</text>
+    <text x="185" y="41" text-anchor="middle" fill="#93c5fd" font-size="8">Monitoramento · Medição</text>
+    <rect x="250" y="10" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="305" y="27" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.1.6 Conhecimento</text>
+    <text x="305" y="41" text-anchor="middle" fill="#93c5fd" font-size="8">Organizacional</text>
+    <rect x="10" y="150" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="65" y="167" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.2 Competência</text>
+    <text x="65" y="181" text-anchor="middle" fill="#86efac" font-size="8">Matriz · Treinamento</text>
+    <rect x="130" y="150" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="185" y="167" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.3 Conscientização</text>
+    <text x="185" y="181" text-anchor="middle" fill="#86efac" font-size="8">Política · Objetivos</text>
+    <rect x="250" y="150" width="110" height="40" rx="4" fill="#1e3a5f" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="305" y="167" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="bold">7.4 Comunicação</text>
+    <text x="305" y="181" text-anchor="middle" fill="#86efac" font-size="8">Interna · Externa</text>
+    <line x1="65" y1="50" x2="180" y2="75" stroke="#2563eb" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="185" y1="50" x2="210" y2="75" stroke="#2563eb" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="305" y1="50" x2="245" y2="75" stroke="#2563eb" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="65" y1="150" x2="180" y2="125" stroke="#16a34a" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="185" y1="150" x2="210" y2="125" stroke="#16a34a" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="305" y1="150" x2="245" y2="125" stroke="#16a34a" stroke-width="1" stroke-dasharray="3,3"/>
+  </svg>
+  <figcaption>Estrutura da Cláusula 7 — subcláusulas de Apoio do SGQ</figcaption>
+</div>
 
 <h3>7.1 — Recursos</h3>
 
@@ -929,43 +1068,43 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>A organização deve determinar e prover os recursos necessários para o SGQ. Isso inclui considerar as capacidades e restrições dos recursos internos existentes e o que precisa ser obtido de provedores externos.</p>
 
-<h3>7.1.2 — Pessoas</h3>
-
-<p>A organização deve determinar e prover as pessoas necessárias para a implementação eficaz do SGQ e para a operação e controle de seus processos. Na prática: você tem gente suficiente e qualificada para fazer o que precisa ser feito?</p>
-
-<h3>7.1.3 — Infraestrutura</h3>
-
-<p>Edificios, útilidades, equipamentos (hardware e software), transporte, tecnologia da informação e comúnicação. A infraestrutura deve ser determinada, provida e mantida.</p>
-
-<div class="example"><strong>Exemplo prático — Metalurgica:</strong> Um torno CNC que quebra frequentemente e gera peças fora de tolerância e um problema de infraestrutura. A norma exige que a empresa identifique a infraestrutura necessária para a conformidade dos produtos e a mantenha — o que se traduz em programas de manutenção preventiva, calibração de máquinas e atualização de software CAM.</div>
-
-<h3>7.1.4 — Ambiente para a operação de processos</h3>
-
-<p>Combinação de fatores humanos e físicos: temperatura, umidade, iluminação, fluxo de ar, higiene, ruido, mas também fatores psicologicos como estrêsse, burnout, conflitos. A organização deve determinar, prover e manter o ambiente necessário.</p>
-
-<div class="example"><strong>Exemplo prático — Indústria alimentícia:</strong> A sala de embalagem precisa de temperatura controlada (max. 15 graus C), pressão positiva (evitar entrada de contaminantes), iluminação adequada para inspeção visual e operadores sem estrêsse excessivo (para não cometerem erros de rotulagem). Tudo isso e "ambiente para operação de processos".</div>
+<div class="accordion-lesson">
+  <div class="acc-item">
+    <button class="acc-trigger">7.1.2 — Pessoas <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>A organização deve determinar e prover as pessoas necessárias para a implementação eficaz do SGQ e para a operação e controle de seus processos. Na prática: você tem gente suficiente e qualificada para fazer o que precisa ser feito?</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">7.1.3 — Infraestrutura <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Edifícios, utilidades, equipamentos (hardware e software), transporte, tecnologia da informação e comunicação. A infraestrutura deve ser determinada, provida e mantida.</p><div class="example"><strong>Exemplo prático — Metalúrgica:</strong> Um torno CNC que quebra frequentemente e gera peças fora de tolerância é um problema de infraestrutura. A norma exige que a empresa identifique a infraestrutura necessária para a conformidade dos produtos e a mantenha — traduzindo-se em programas de manutenção preventiva, calibração de máquinas e atualização de software CAM.</div></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">7.1.4 — Ambiente para operação de processos <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Combinação de fatores humanos e físicos: temperatura, umidade, iluminação, fluxo de ar, higiene, ruído — mas também fatores psicológicos como estresse, burnout, conflitos. A organização deve determinar, prover e manter o ambiente necessário.</p><div class="example"><strong>Exemplo prático — Indústria alimentícia:</strong> A sala de embalagem precisa de temperatura controlada (máx. 15 °C), pressão positiva, iluminação adequada para inspeção visual e operadores sem estresse excessivo (para não cometerem erros de rotulagem). Tudo isso é "ambiente para operação de processos".</div></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">7.1.6 — Conhecimento organizacional <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Novidade da versão 2015. A organização deve determinar o conhecimento necessário para a operação de seus processos e para alcançar conformidade. Esse conhecimento deve ser mantido e disponibilizado na extensão necessária.</p><p>Na prática, isso trata do problema do "conhecimento na cabeça das pessoas". Se o único operador que sabe programar uma máquina específica sair da empresa, o que acontece?</p><div class="example"><strong>Exemplo prático — Construtora:</strong> Um mestre de obra com 30 anos de experiência sabia "de cabeça" a dosagem ideal de concreto para cada tipo de obra. Quando se aposentou, a empresa teve problemas sérios de qualidade por 3 meses até treinar um substituto. Isso é falha na gestão do conhecimento organizacional. A ação: documentar as dosagens, criar banco de dados de lições aprendidas e implantar programa de mentoria entre mestres experientes e novos.</div></div>
+  </div>
+</div>
 
 <h3>7.1.5 — Recursos de monitoramento e medição</h3>
 
-<p>Quando monitoramento ou medição e usado para verificar a conformidade de produtos/serviços, a organização deve assegurar que os recursos sejam adequados e mantidos. Isso inclui a famosa <strong>calibração</strong>.</p>
+<p>Quando monitoramento ou medição é usado para verificar a conformidade de produtos/serviços, a organização deve assegurar que os recursos sejam adequados e mantidos. Isso inclui a famosa <strong>calibração</strong>.</p>
 
-<p>Quando a rastreabilidade de medição e um requisito (legal, do cliente ou definido pela organização), os instrumentos de medição devem ser:</p>
+<p>Quando a rastreabilidade de medição é um requisito (legal, do cliente ou definido pela organização), os instrumentos de medição devem ser:</p>
 
 <ul>
-  <li>Calibrados ou verificados em intervalos específicados, contra padrões rastreaveis.</li>
-  <li>Identificados quanto a sua situação de calibração.</li>
+  <li>Calibrados ou verificados em intervalos especificados, contra padrões rastreáveis.</li>
+  <li>Identificados quanto à sua situação de calibração.</li>
   <li>Protegidos contra ajustes, danos ou deterioração que invalidem a calibração.</li>
 </ul>
 
-<div class="callout"><strong>Importante:</strong> A calibração e um dos itens mais auditados. O auditor vai ao chão de fábrica, pega um paquímetro da bancada do operador e verifica: esta identificado? A etiqueta de calibração esta válida? Onde esta o certificado de calibração? Se o instrumento estiver com calibração vencida e estiver sendo usado para inspeção de produto, e não conformidade imediata.</div>
+<div class="callout"><strong>Importante:</strong> A calibração é um dos itens mais auditados. O auditor vai ao chão de fábrica, pega um paquímetro da bancada do operador e verifica: está identificado? A etiqueta de calibração está válida? Onde está o certificado de calibração? Se o instrumento estiver com calibração vencida e estiver sendo usado para inspeção de produto, é não conformidade imediata.</div>
 
-<h3>7.1.6 — Conhecimento organizacional</h3>
-
-<p>Novidade da versão 2015. A organização deve determinar o conhecimento necessário para a operação de seus processos e para alcancar conformidade. Esse conhecimento deve ser mantido e disponibilizado na extensão necessária.</p>
-
-<p>Na prática, isso trata do problema do "conhecimento na cabeca das pessoas". Se o único operador que sabe programar uma máquina específica sair da empresa, o que acontece?</p>
-
-<div class="example"><strong>Exemplo prático — Construtora:</strong> Um mestre de obra com 30 anos de experiência sabia "de cabeca" a dosagem ideal de concreto para cada tipo de obra. Quando ele se aposentou, a empresa teve problemas serios de qualidade por 3 meses até treinar um substituto. Isso e falha na gestão do conhecimento organizacional. A ação: documentar as dosagens, criar um banco de dados de licoes aprendidas e implantar programa de mentoria entre mestrês experientes e novos.</div>
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Uma metalúrgica no interior de São Paulo produzia eixos de transmissão para montadoras. Durante três meses, o paquímetro principal da linha de inspeção final estava com calibração vencida há 47 dias — ninguém percebeu porque a etiqueta ficava encoberta pela capa de proteção. Resultado: 1.200 peças entregues com folga dimensional fora do especificado. A montadora detectou na auditoria de recebimento, gerou uma devolução total e exigiu análise de causa raiz formal. O custo de retrabalho e transporte reverso superou R$ 85 mil. A causa raiz? Falta de controle de vencimento no sistema — a empresa registrava calibração em planilha Excel sem alertas automáticos.</p>
+</div>
 
 <h3>7.2 — Competência</h3>
 
@@ -980,13 +1119,36 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   <li><strong>Registros:</strong> certificados, listas de presença, avaliações de eficácia.</li>
 </ul>
 
+<p>O que incluir em uma matriz de competências eficaz:</p>
+<ul class="checklist">
+  <li><span class="ck-box"></span>Lista de funções/cargos que impactam a qualidade</li>
+  <li><span class="ck-box"></span>Competências técnicas obrigatórias por função</li>
+  <li><span class="ck-box"></span>Nível exigido por competência (básico / intermediário / avançado)</li>
+  <li><span class="ck-box"></span>Avaliação individual de cada colaborador frente ao nível exigido</li>
+  <li><span class="ck-box"></span>Gap identificado e ação prevista (treinamento, mentoria, remanejamento)</li>
+  <li><span class="ck-box"></span>Evidência do treinamento realizado (certificado, lista de presença)</li>
+  <li><span class="ck-box"></span>Avaliação de eficácia do treinamento</li>
+</ul>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A cláusula 7.2 exige evidência de competência — registros como certificados, listas de presença e avaliações de eficácia são obrigatórios." data-fb-nok="Não é isso. Além do treinamento, a cláusula 7.2 exige que a organização retenha informação documentada como evidência de competência.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Uma empresa treinou todos os operadores de solda em um novo processo. Para atender a cláusula 7.2 da ISO 9001:2015, o que é obrigatório além do treinamento em si?</div>
+  <button class="qi-option" data-key="a">Publicar os certificados no mural da fábrica</button>
+  <button class="qi-option" data-key="b">Contratar uma empresa externa para conduzir o treinamento</button>
+  <button class="qi-option" data-key="c">Reter registros como evidência de competência (certificados, lista de presença, avaliação de eficácia)</button>
+  <button class="qi-option" data-key="d">Repetir o treinamento semestralmente independentemente dos resultados</button>
+  <div class="qi-feedback"></div>
+</div>
+
 <h3>7.3 — Conscientização</h3>
 
 <p>As pessoas que trabalham sob o controle da organização devem estar conscientes da política da qualidade, dos objetivos pertinentes, da sua contribuição para o SGQ e das consequências de não atender os requisitos. Não basta treinar — a pessoa precisa entender o "por que".</p>
 
-<h3>7.4 — Comúnicação</h3>
+<h3>7.4 — Comunicação</h3>
 
-<p>A organização deve determinar as comúnicações internas e externas pertinentes ao SGQ: o que comúnicar, quando, para quem, como e quem comúnica. Um quadro de gestão a vista no chão de fábricacom indicadores atualizados e um exemplo simples e eficaz de comúnicação do SGQ.</p>
+<p>A organização deve determinar as comunicações internas e externas pertinentes ao SGQ: o que comunicar, quando, para quem, como e quem comunica. Um quadro de gestão à vista no chão de fábrica com indicadores atualizados é um exemplo simples e eficaz de comunicação do SGQ.</p>
+
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> Conscientização não é sinônimo de treinamento. Um operador pode ter participado do treinamento sobre a política da qualidade e mesmo assim não saber como seu trabalho impacta a satisfação do cliente. A pergunta que o auditor faz diretamente ao operador é: "O que acontece se você não seguir esta instrução de trabalho?" A resposta precisa ser concreta — não apenas "fica ruim".</div></div>
 
 <div class="template-box"><span>Download: Matriz de competências + plano de treinamento anual</span><a href="#">Baixar template</a></div>
 `})`;
@@ -995,9 +1157,32 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'informacao-documentada', 'Cláusula 7.5 — Informação Documentada', '30 min', 2, ${`
 <h2>Cláusula 7.5 — Informação Documentada</h2>
 
-<p>A informação documentada e o "esqueleto" do SGQ. E tudo aquilo que precisa ser registrado, controlado e mantido acessível. Na versão 2015, esse conceito ficou muito mais flexível — e isso e uma grande vantagem, se bem útilizado.</p>
+<p>A informação documentada é o "esqueleto" do SGQ. É tudo aquilo que precisa ser registrado, controlado e mantido acessível. Na versão 2015, esse conceito ficou muito mais flexível — e isso é uma grande vantagem, se bem utilizado.</p>
 
-<h3>O que mudou em relação a versão 2008</h3>
+<div class="diagram">
+  <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="20" width="170" height="140" rx="8" fill="#1e3a5f" stroke="#2563eb" stroke-width="2"/>
+    <text x="95" y="45" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="bold">MANTER</text>
+    <text x="95" y="60" text-anchor="middle" fill="#ffffff" font-size="9">(antigo: Documento)</text>
+    <text x="95" y="82" text-anchor="middle" fill="#e2e8f0" font-size="8">· Política da qualidade</text>
+    <text x="95" y="96" text-anchor="middle" fill="#e2e8f0" font-size="8">· Procedimentos</text>
+    <text x="95" y="110" text-anchor="middle" fill="#e2e8f0" font-size="8">· Instruções de trabalho</text>
+    <text x="95" y="124" text-anchor="middle" fill="#e2e8f0" font-size="8">· Escopo do SGQ</text>
+    <text x="95" y="138" text-anchor="middle" fill="#93c5fd" font-size="8">→ Você ATUALIZA</text>
+    <rect x="220" y="20" width="170" height="140" rx="8" fill="#1e3a5f" stroke="#16a34a" stroke-width="2"/>
+    <text x="305" y="45" text-anchor="middle" fill="#86efac" font-size="10" font-weight="bold">RETER</text>
+    <text x="305" y="60" text-anchor="middle" fill="#ffffff" font-size="9">(antigo: Registro)</text>
+    <text x="305" y="82" text-anchor="middle" fill="#e2e8f0" font-size="8">· Certificados de calibração</text>
+    <text x="305" y="96" text-anchor="middle" fill="#e2e8f0" font-size="8">· Relatórios de inspeção</text>
+    <text x="305" y="110" text-anchor="middle" fill="#e2e8f0" font-size="8">· Atas de reunião</text>
+    <text x="305" y="124" text-anchor="middle" fill="#e2e8f0" font-size="8">· Evidências de competência</text>
+    <text x="305" y="138" text-anchor="middle" fill="#86efac" font-size="8">→ Você PRESERVA</text>
+    <text x="200" y="10" text-anchor="middle" fill="#c5383c" font-size="11" font-weight="bold">Informação Documentada</text>
+  </svg>
+  <figcaption>Distinção entre "manter" (documentos vivos) e "reter" (registros históricos) na ISO 9001:2015</figcaption>
+</div>
+
+<h3>O que mudou em relação à versão 2008</h3>
 
 <p>Na versão 2008, existiam três termos distintos: "documento", "registro" e "procedimento documentado" (6 obrigatórios). Na versão 2015, tudo foi unificado sob o termo <strong>informação documentada</strong>. A norma usa dois verbos para diferenciar:</p>
 
@@ -1008,13 +1193,13 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <h3>O que a norma obriga a documentar</h3>
 
-<p>A ISO 9001:2015 exige informação documentada em pontos específicos. Aqui esta a lista completa:</p>
+<p>A ISO 9001:2015 exige informação documentada em pontos específicos. Aqui está a lista completa:</p>
 
 <table>
   <tr><th>Cláusula</th><th>Tipo</th><th>O que documentar</th></tr>
   <tr><td>4.3</td><td>Manter</td><td>Escopo do SGQ</td></tr>
   <tr><td>4.4</td><td>Manter</td><td>Informação para apoiar a operação dos processos</td></tr>
-  <tr><td>4.4</td><td>Reter</td><td>Confianca de que os processos são realizados conforme planejado</td></tr>
+  <tr><td>4.4</td><td>Reter</td><td>Confiança de que os processos são realizados conforme planejado</td></tr>
   <tr><td>5.2</td><td>Manter</td><td>Política da qualidade</td></tr>
   <tr><td>6.2</td><td>Manter</td><td>Objetivos da qualidade</td></tr>
   <tr><td>7.1.5</td><td>Reter</td><td>Adequação dos recursos de monitoramento e medição</td></tr>
@@ -1032,6 +1217,15 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   <tr><td>10.2</td><td>Reter</td><td>Não conformidades e ações corretivas</td></tr>
 </table>
 
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Criar</strong><br>Elaborar o documento seguindo modelo padrão</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Revisar</strong><br>Verificação técnica pelo responsável da área</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Aprovar</strong><br>Autoridade competente assina/valida</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Distribuir</strong><br>Disponibilizar para quem precisa usar</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Revisar</strong><br>Atualizar quando necessário, controlar versão</div></div>
+  <div class="step-item"><div class="step-content"><strong>6. Arquivar</strong><br>Obsoletos identificados e segregados; registros retidos pelo prazo definido</div></div>
+</div>
+
 <h3>Controle de informação documentada (7.5.3)</h3>
 
 <p>A informação documentada deve ser controlada para assegurar que esteja:</p>
@@ -1043,20 +1237,48 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>O controle inclui: distribuição, acesso, recuperação, armazenamento, preservação (incluindo legibilidade), controle de mudanças e retenção/disposição.</p>
 
-<div class="callout"><strong>Importante:</strong> Não existe mais obrigação de ter um "procedimento de controle de documentos" formal. Porém, a organização precisa demonstrar que controla sua informação documentada de alguma forma. Um sistema eletronico com controle de versão e permissoes de acesso atende perfeitamente. Uma pasta de rede com pasta "VIGENTE" e "OBSOLETO" também pode funcionar para empresas menores.</div>
+<div class="tabs">
+  <div class="tab-btns">
+    <button class="tab-btn active">Sistema em papel</button>
+    <button class="tab-btn">Sistema digital</button>
+  </div>
+  <div class="tab-panel active">
+    <p><strong>Controle em papel:</strong> Funciona para empresas pequenas com poucos documentos. Requer: carimbo "cópia controlada", lista de distribuição manual, pasta física "VIGENTE" separada de "OBSOLETO", registro de quem tem cópia. Principal risco: alguém usa versão desatualizada sem saber.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Controle digital (SharePoint, GED, etc.):</strong> Controle de versão automático, notificações de atualização, acesso por perfil, histórico de alterações. Operadores acessam em tablet no chão de fábrica — sempre a versão vigente. Custo: muitas vezes zero com ferramentas já contratadas (Microsoft 365, Google Workspace).</p>
+  </div>
+</div>
 
-<div class="example"><strong>Exemplo prático — Metalurgica:</strong> A UsinaMax migrou de documentos Word impressos (com carimbo "copia controlada") para um sistema digital. Todos os documentos ficam no SharePoint com controle de versão automatico, aprovação por workflow e acesso restrito por função. Os operadores acessam instruções de trabalho em tablets no chão de fábrica— sempre a versão vigente, sem risco de usar documento obsoleto. Custo: R$ 0 (ja tinham licenca Microsoft 365).</div>
+<div class="callout"><strong>Importante:</strong> Não existe mais obrigação de ter um "procedimento de controle de documentos" formal. Porém, a organização precisa demonstrar que controla sua informação documentada de alguma forma. Um sistema eletrônico com controle de versão e permissões de acesso atende perfeitamente.</div>
+
+<div class="example"><strong>Exemplo prático — Metalúrgica:</strong> A UsinaMax migrou de documentos Word impressos (com carimbo "cópia controlada") para um sistema digital. Todos os documentos ficam no SharePoint com controle de versão automático, aprovação por workflow e acesso restrito por função. Os operadores acessam instruções de trabalho em tablets no chão de fábrica — sempre a versão vigente, sem risco de usar documento obsoleto. Custo: R$ 0 (já tinham licença Microsoft 365).</div>
 
 <h3>Quanto documentar?</h3>
 
-<p>A norma da liberdade, mas isso não significa "não documentar nada". A regra prática:</p>
+<p>A norma dá liberdade, mas isso não significa "não documentar nada". A regra prática:</p>
 
 <ul>
   <li>Documente tudo que a norma exige (tabela acima).</li>
   <li>Documente processos onde o erro tem alto impacto (instruções de trabalho críticas).</li>
   <li>Documente o que precisa ser consistente entre turnos/pessoas.</li>
-  <li>NÃO documente o que e obvio para profissionais qualificados.</li>
+  <li>NÃO documente o que é óbvio para profissionais qualificados.</li>
 </ul>
+
+<div class="comparison">
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Excesso de documentação</h4><ul><li>Procedimento de "como usar a impressora"</li><li>Instrução para tarefas triviais e óbvias</li><li>Documentos nunca atualizados (ficam obsoletos)</li><li>Burocracia que atrasa o trabalho real</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Documentação adequada</h4><ul><li>Tudo que a norma exige explicitamente</li><li>Processos críticos e de alto risco</li><li>Atividades que precisam ser consistentes</li><li>Documentos vivos, atualizados e usados</li></ul></div>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Exato! Certificado de calibração é um registro que evidencia que algo foi feito — portanto você RETÉM (não atualiza, mas preserva como evidência histórica)." data-fb-nok="Pense assim: você volta a um certificado de calibração e o reescreve? Não — você guarda como evidência do que foi feito. Isso é RETER.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Um certificado de calibração de um paquímetro é um exemplo de informação documentada que a organização deve:</div>
+  <button class="qi-option" data-key="a">Manter — porque precisa ser atualizado periodicamente</button>
+  <button class="qi-option" data-key="b">Reter — porque é evidência de que a calibração foi realizada</button>
+  <button class="qi-option" data-key="c">Destruir após nova calibração ser feita</button>
+  <button class="qi-option" data-key="d">Publicar no site da empresa para transparência</button>
+  <div class="qi-feedback"></div>
+</div>
 
 <div class="template-box"><span>Download: Lista mestra de informação documentada + template de controle</span><a href="#">Baixar template</a></div>
 `})`;
@@ -1065,7 +1287,38 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'operacao-requisitos', 'Cláusula 8.1 a 8.4 — Planejamento Operacional e Fornecedores', '40 min', 3, ${`
 <h2>Cláusula 8 — Operação (Parte 1: Planejamento, Requisitos e Fornecedores)</h2>
 
-<p>A cláusula 8 e a mais extensa da norma e cobre toda a operação — desde a determinação dos requisitos do produto/serviço até a entrega e pos-entrega. E aqui que "a borracha encontra o asfalto".</p>
+<p>A cláusula 8 é a mais extensa da norma e cobre toda a operação — desde a determinação dos requisitos do produto/serviço até a entrega e pós-entrega. É aqui que "a borracha encontra o asfalto".</p>
+
+<div class="diagram">
+  <svg viewBox="0 0 440 160" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="65" width="70" height="40" rx="4" fill="#0b1730" stroke="#2563eb" stroke-width="2"/>
+    <text x="40" y="82" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Cliente</text>
+    <text x="40" y="96" text-anchor="middle" fill="#93c5fd" font-size="7">Requisitos</text>
+    <polygon points="80,85 90,80 90,90" fill="#2563eb"/>
+    <rect x="93" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="130" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">8.2</text>
+    <text x="130" y="87" text-anchor="middle" fill="#93c5fd" font-size="7">Análise crítica</text>
+    <text x="130" y="99" text-anchor="middle" fill="#93c5fd" font-size="7">requisitos</text>
+    <polygon points="173,85 183,80 183,90" fill="#2563eb"/>
+    <rect x="186" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="223" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">8.4</text>
+    <text x="223" y="87" text-anchor="middle" fill="#93c5fd" font-size="7">Controle de</text>
+    <text x="223" y="99" text-anchor="middle" fill="#93c5fd" font-size="7">fornecedores</text>
+    <polygon points="266,85 276,80 276,90" fill="#2563eb"/>
+    <rect x="279" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="314" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">8.1</text>
+    <text x="314" y="87" text-anchor="middle" fill="#93c5fd" font-size="7">Planejamento</text>
+    <text x="314" y="99" text-anchor="middle" fill="#93c5fd" font-size="7">operacional</text>
+    <polygon points="359,85 369,80 369,90" fill="#16a34a"/>
+    <rect x="372" y="65" width="63" height="40" rx="4" fill="#0b1730" stroke="#16a34a" stroke-width="2"/>
+    <text x="403" y="82" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Produto</text>
+    <text x="403" y="96" text-anchor="middle" fill="#86efac" font-size="7">Serviço OK</text>
+    <rect x="138" y="125" width="88" height="22" rx="3" fill="#1a1a2e" stroke="#c5383c" stroke-width="1"/>
+    <line x1="138" y1="115" x2="138" y2="125" stroke="#c5383c" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="182" y="140" text-anchor="middle" fill="#fca5a5" font-size="7">Insumos externos</text>
+  </svg>
+  <figcaption>Fluxo do planejamento operacional: do requisito do cliente ao produto entregue</figcaption>
+</div>
 
 <h3>8.1 — Planejamento e controle operacional</h3>
 
@@ -1083,9 +1336,9 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <h3>8.2 — Requisitos para produtos e serviços</h3>
 
-<h3>8.2.1 — Comúnicação com o cliente</h3>
+<h3>8.2.1 — Comunicação com o cliente</h3>
 
-<p>A comúnicação deve incluir: informações sobre produtos/serviços, consultas/contratos/pedidos (incluindo mudanças), retroalimentação do cliente (incluindo reclamações), propriedade do cliente e requisitos de contingencia.</p>
+<p>A comunicação deve incluir: informações sobre produtos/serviços, consultas/contratos/pedidos (incluindo mudanças), retroalimentação do cliente (incluindo reclamações), propriedade do cliente e requisitos de contingência.</p>
 
 <h3>8.2.2 — Determinação de requisitos</h3>
 
@@ -1098,11 +1351,25 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <h3>8.2.3 — Análise crítica dos requisitos</h3>
 
-<p>Antes de se comprometer a fornecer, a organização deve fazer uma análise crítica para assegurar que tem capacidade de atender. Essa análise deve cobrir: requisitos específicados pelo cliente, requisitos não declarados mas necessários, requisitos legais e requisitos da propria organização.</p>
+<p>Antes de se comprometer a fornecer, a organização deve fazer uma análise crítica para assegurar que tem capacidade de atender. Essa análise deve cobrir: requisitos especificados pelo cliente, requisitos não declarados mas necessários, requisitos legais e requisitos da própria organização.</p>
 
-<div class="example"><strong>Exemplo prático — Metalurgica:</strong> Um cliente envia desenho de uma peça com tolerância de 0,005mm. Antes de aceitar o pedido, o setor técnico analisa: temos máquina capaz dessa tolerância? O material esta disponível? O prazo e viavel? Ha requisitos especiais (tratamento térmico, revestimento)? Essa e a análise crítica de requisitos. Se for aprovada, gera-se a ordem de produção. Se houver divergencia, negocia-se com o cliente ANTES de aceitar.</div>
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Receber pedido/consulta</strong><br>Cliente envia especificação, desenho ou escopo do serviço</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Verificar capacidade técnica</strong><br>Temos máquinas, processos e competência para atender?</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Verificar requisitos legais</strong><br>Há normas técnicas, certificações ou laudos obrigatórios?</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Verificar prazo e disponibilidade</strong><br>Conseguimos entregar no prazo com os recursos atuais?</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Negociar divergências</strong><br>Se houver diferença entre o solicitado e o possível, alinhar ANTES de aceitar</div></div>
+  <div class="step-item"><div class="step-content"><strong>6. Registrar e aceitar</strong><br>Reter evidência da análise realizada (8.2.3 exige registro)</div></div>
+</div>
+
+<div class="example"><strong>Exemplo prático — Metalúrgica:</strong> Um cliente envia desenho de uma peça com tolerância de 0,005 mm. Antes de aceitar o pedido, o setor técnico analisa: temos máquina capaz dessa tolerância? O material está disponível? O prazo é viável? Há requisitos especiais (tratamento térmico, revestimento)? Essa é a análise crítica de requisitos. Se for aprovada, gera-se a ordem de produção. Se houver divergência, negocia-se com o cliente ANTES de aceitar.</div>
 
 <div class="callout"><strong>Importante:</strong> Um erro clássico: aceitar o pedido do cliente sem análise crítica ("o vendedor prometeu, agora a produção se vira"). Isso gera atraso, retrabalho e insatisfação. A análise crítica evita que a empresa se comprometa com algo que não pode entregar.</div>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Uma empresa de serviços de engenharia aceitou um contrato de retrofit elétrico em uma planta industrial. O vendedor garantiu prazo de 45 dias sem consultar a equipe técnica. Ao iniciar, descobriu-se que parte dos equipamentos precisava de aprovação pela concessionária de energia — processo que levaria 60 dias sozinho. A obra atrasou 3 meses, gerou multa contratual de R$ 120 mil e perdeu a indicação do cliente para outros projetos. Uma análise crítica de requisitos de 2 horas teria identificado o gargalo antes da assinatura do contrato.</p>
+</div>
 
 <h3>8.4 — Controle de processos, produtos e serviços providos externamente</h3>
 
@@ -1111,38 +1378,100 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 <ul>
   <li>São incorporados nos próprios produtos/serviços.</li>
   <li>São fornecidos diretamente ao cliente em nome da organização.</li>
-  <li>Um processo e fornecido externamente por decisão da organização.</li>
+  <li>Um processo é fornecido externamente por decisão da organização.</li>
 </ul>
 
 <h3>8.4.1 — Critérios de avaliação, seleção e monitoramento</h3>
 
-<p>A organização deve definir critérios para avaliar, selecionar, monitorar e reavaliar fornecedores. Os critérios tipicos:</p>
+<p>A organização deve definir critérios para avaliar, selecionar, monitorar e reavaliar fornecedores. Os critérios típicos:</p>
 
 <table>
   <tr><th>Critério</th><th>O que avaliar</th><th>Evidência</th></tr>
   <tr><td>Qualidade</td><td>Histórico de não conformidades, certificações</td><td>IQF (Índice de Qualidade do Fornecedor), % rejeição</td></tr>
   <tr><td>Prazo</td><td>Pontualidade de entrega</td><td>% entregas no prazo</td></tr>
-  <tr><td>Capacidade técnica</td><td>Parque de máquinas, equipe técnica</td><td>Auditoria de segunda parte, questionario</td></tr>
-  <tr><td>Preco</td><td>Competitividade, estabilidade</td><td>Comparativo de mercado</td></tr>
+  <tr><td>Capacidade técnica</td><td>Parque de máquinas, equipe técnica</td><td>Auditoria de segunda parte, questionário</td></tr>
+  <tr><td>Preço</td><td>Competitividade, estabilidade</td><td>Comparativo de mercado</td></tr>
   <tr><td>Atendimento</td><td>Responsividade, resolução de problemas</td><td>Avaliação qualitativa</td></tr>
 </table>
 
-<div class="example"><strong>Exemplo prático — Construtora:</strong> Uma construtora classifica seus fornecedores em três categorias: A (aprovado sem restrição), B (aprovado com monitoramento intensificado) e C (reprovado/suspenso). A avaliação e semestral, baseada em: qualidade do material entregue (40%), pontualidade (30%), preco (15%) e atendimento (15%). Fornecedores com nota abaixo de 60 são suspensos. Fornecedores de materiais críticos (concreto, aco) passam por auditoria de segunda parte antes da aprovação.</div>
+<div class="tabs">
+  <div class="tab-btns">
+    <button class="tab-btn active">Classe A — Aprovado</button>
+    <button class="tab-btn">Classe B — Monitorado</button>
+    <button class="tab-btn">Classe C — Suspenso</button>
+  </div>
+  <div class="tab-panel active">
+    <p><strong>Fornecedor Classe A (nota ≥ 80):</strong> Aprovado sem restrição. Inspeção de recebimento reduzida. Pode ser indicado para novos contratos. Reavaliação anual.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Fornecedor Classe B (nota 60–79):</strong> Aprovado com monitoramento intensificado. Inspeção de recebimento 100%. Plano de ação exigido para melhoria. Reavaliação semestral.</p>
+  </div>
+  <div class="tab-panel">
+    <p><strong>Fornecedor Classe C (nota &lt; 60):</strong> Suspenso — nenhum pedido novo até reabilitação. Deve apresentar plano de ação corretiva com prazo. Nova avaliação após implementação das ações.</p>
+  </div>
+</div>
+
+<div class="example"><strong>Exemplo prático — Construtora:</strong> Uma construtora classifica seus fornecedores em três categorias: A (aprovado sem restrição), B (aprovado com monitoramento intensificado) e C (reprovado/suspenso). A avaliação é semestral, baseada em: qualidade do material entregue (40%), pontualidade (30%), preço (15%) e atendimento (15%). Fornecedores com nota abaixo de 60 são suspensos. Fornecedores de materiais críticos (concreto, aço) passam por auditoria de segunda parte antes da aprovação.</div>
 
 <h3>8.4.2 — Tipo e extensão do controle</h3>
 
-<p>O nível de controle sobre o fornecedor deve ser proporcional ao impacto do produto/serviço fornecido na conformidade do produto final. Um fornecedor de canetas para o escritório não precisa do mesmo nível de controle que um fornecedor de materia-prima crítica.</p>
+<p>O nível de controle sobre o fornecedor deve ser proporcional ao impacto do produto/serviço fornecido na conformidade do produto final. Um fornecedor de canetas para o escritório não precisa do mesmo nível de controle que um fornecedor de matéria-prima crítica.</p>
 
 <h3>8.4.3 — Informação para provedores externos</h3>
 
-<p>A organização deve comúnicar claramente ao fornecedor: requisitos do produto/serviço, métodos e processos, requisitos de aprovação, competência necessária, interações com o SGQ da organização e controle/monitoramento que sera aplicado.</p>
+<p>A organização deve comunicar claramente ao fornecedor: requisitos do produto/serviço, métodos e processos, requisitos de aprovação, competência necessária, interações com o SGQ da organização e controle/monitoramento que será aplicado.</p>
 
-<div class="template-box"><span>Download: Formulario de avaliação de fornecedores + lista de fornecedores aprovados</span><a href="#">Baixar template</a></div>
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! O nível de controle deve ser proporcional ao risco — fornecedor de material crítico exige muito mais rigor que fornecedor de itens de escritório." data-fb-nok="Reveja a cláusula 8.4.2: o controle deve ser proporcional ao impacto na conformidade do produto final. Não faz sentido aplicar o mesmo nível para todos.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Uma indústria alimentícia tem dois fornecedores: um de embalagem primária (contato direto com o alimento) e um de material de limpeza para o escritório. Como a ISO 9001:2015 orienta o controle desses fornecedores?</div>
+  <button class="qi-option" data-key="a">Controle proporcional ao risco: embalagem primária exige critérios muito mais rigorosos</button>
+  <button class="qi-option" data-key="b">Ambos devem passar pelo mesmo processo de avaliação e aprovação</button>
+  <button class="qi-option" data-key="c">Somente fornecedores com ISO 9001 precisam ser avaliados</button>
+  <button class="qi-option" data-key="d">Fornecedores de serviços não precisam de controle formal</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="template-box"><span>Download: Formulário de avaliação de fornecedores + lista de fornecedores aprovados</span><a href="#">Baixar template</a></div>
 `})`;
 
   // --- Aula 4.4 ---
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo) VALUES (${mod4}, 'producao-liberacao', 'Cláusula 8.5 a 8.7 — Produção, Liberação e Controle de Não Conformes', '40 min', 4, ${`
-<h2>Cláusula 8 — Operação (Parte 2: Produção, Liberação e Saidas Não Conformes)</h2>
+<h2>Cláusula 8 — Operação (Parte 2: Produção, Liberação e Saídas Não Conformes)</h2>
+
+<div class="diagram">
+  <svg viewBox="0 0 440 170" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="65" width="70" height="40" rx="4" fill="#0b1730" stroke="#2563eb" stroke-width="2"/>
+    <text x="40" y="82" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Insumos</text>
+    <text x="40" y="96" text-anchor="middle" fill="#93c5fd" font-size="7">Matéria-prima</text>
+    <polygon points="80,85 90,80 90,90" fill="#2563eb"/>
+    <rect x="93" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="130" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Produção</text>
+    <text x="130" y="87" text-anchor="middle" fill="#93c5fd" font-size="7">8.5.1 Condições</text>
+    <text x="130" y="99" text-anchor="middle" fill="#93c5fd" font-size="7">controladas</text>
+    <rect x="100" y="118" width="60" height="15" rx="2" fill="#1a1a2e" stroke="#c5383c" stroke-width="1"/>
+    <text x="130" y="129" text-anchor="middle" fill="#fca5a5" font-size="6">Inspeção processo</text>
+    <polygon points="173,85 183,80 183,90" fill="#2563eb"/>
+    <rect x="186" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="223" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Liberação</text>
+    <text x="223" y="87" text-anchor="middle" fill="#86efac" font-size="7">8.6 Verificação</text>
+    <text x="223" y="99" text-anchor="middle" fill="#86efac" font-size="7">final</text>
+    <rect x="193" y="118" width="60" height="15" rx="2" fill="#1a1a2e" stroke="#16a34a" stroke-width="1"/>
+    <text x="223" y="129" text-anchor="middle" fill="#86efac" font-size="6">Checklist OK?</text>
+    <polygon points="266,85 276,80 276,90" fill="#16a34a"/>
+    <rect x="279" y="65" width="70" height="40" rx="4" fill="#0b1730" stroke="#16a34a" stroke-width="2"/>
+    <text x="314" y="82" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">Entrega</text>
+    <text x="314" y="96" text-anchor="middle" fill="#86efac" font-size="7">Produto OK</text>
+    <line x1="223" y1="133" x2="223" y2="155" stroke="#c5383c" stroke-width="1" stroke-dasharray="2,2"/>
+    <rect x="163" y="155" width="120" height="15" rx="3" fill="#c5383c" fill-opacity="0.2" stroke="#c5383c" stroke-width="1"/>
+    <text x="223" y="166" text-anchor="middle" fill="#fca5a5" font-size="7">8.7 Não conforme: segregar / reparar / informar cliente</text>
+    <rect x="360" y="55" width="75" height="60" rx="4" fill="#1e3a5f" stroke="#c5383c" stroke-width="1.5"/>
+    <text x="397" y="74" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="bold">8.5.2</text>
+    <text x="397" y="87" text-anchor="middle" fill="#fca5a5" font-size="7">Identificação e</text>
+    <text x="397" y="99" text-anchor="middle" fill="#fca5a5" font-size="7">rastreabilidade</text>
+    <line x1="354" y1="85" x2="360" y2="85" stroke="#c5383c" stroke-width="1" stroke-dasharray="2,2"/>
+  </svg>
+  <figcaption>Fluxo de controle da produção: insumos → produção controlada → liberação → entrega (com desvio para não conformes)</figcaption>
+</div>
 
 <h3>8.5 — Produção e provisão de serviço</h3>
 
@@ -1151,55 +1480,83 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 <p>A produção deve ser realizada sob condições controladas, incluindo:</p>
 
 <ul>
-  <li>Disponibilidade de informação documentada que defina as caracteristicas do produto e as atividades a serem realizadas.</li>
+  <li>Disponibilidade de informação documentada que defina as características do produto e as atividades a serem realizadas.</li>
   <li>Disponibilidade e uso de recursos de monitoramento e medição adequados.</li>
-  <li>Implementação de atividades de monitoramento e medição em estagios apropriados.</li>
+  <li>Implementação de atividades de monitoramento e medição em estágios apropriados.</li>
   <li>Uso de infraestrutura e ambiente adequados.</li>
   <li>Designação de pessoas competentes.</li>
-  <li>Validação (e reválidação periodica) de processos cuja saida não possa ser verificada por monitoramento/medição subsequente.</li>
+  <li>Validação (e revalidação periódica) de processos cuja saída não possa ser verificada por monitoramento/medição subsequente.</li>
   <li>Implementação de ações para prevenir erro humano.</li>
-  <li>Implementação de atividades de liberação, entrega e pos-entrega.</li>
+  <li>Implementação de atividades de liberação, entrega e pós-entrega.</li>
 </ul>
 
-<div class="example"><strong>Exemplo prático — Metalurgica:</strong> Na linha de usinagem, "condições controladas" significa: (1) programa CNC válidado e bloqueado (sem edicao pelo operador), (2) instrução de trabalho visual na estação com sequência de operações, (3) paquímetro e micrometro calibrados disponíveis, (4) medição a cada 10 peças conforme plano de controle, (5) operador treinado e qualificado para aquela operação, (6) ficha de setup preenchida antes de iniciar o lote.</div>
+<div class="example"><strong>Exemplo prático — Metalúrgica:</strong> Na linha de usinagem, "condições controladas" significa: (1) programa CNC validado e bloqueado (sem edição pelo operador), (2) instrução de trabalho visual na estação com sequência de operações, (3) paquímetro e micrômetro calibrados disponíveis, (4) medição a cada 10 peças conforme plano de controle, (5) operador treinado e qualificado para aquela operação, (6) ficha de setup preenchida antes de iniciar o lote.</div>
 
 <h3>8.5.1 f — Validação de processos especiais</h3>
 
-<div class="callout"><strong>Importante:</strong> Processos "especiais" são aqueles cujo resultado não pode ser verificado por inspeção depois. Exemplos clássicos: solda, tratamento térmico, pintura, colagem, pasteurização. Nesses processos, você precisa VALIDAR o processo (provar que ele e capaz de produzir resultados conformes) e controlar os parâmetros durante a execução, porque depois não há como verificar 100% sem destruir o produto.</div>
+<div class="callout"><strong>Importante:</strong> Processos "especiais" são aqueles cujo resultado não pode ser verificado por inspeção depois. Exemplos clássicos: solda, tratamento térmico, pintura, colagem, pasteurização. Nesses processos, você precisa VALIDAR o processo (provar que ele é capaz de produzir resultados conformes) e controlar os parâmetros durante a execução, porque depois não há como verificar 100% sem destruir o produto.</div>
+
+<div class="accordion-lesson">
+  <div class="acc-item">
+    <button class="acc-trigger">Solda — processo especial <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Qualificação do soldador (ex: AWS, ASME), procedimento de solda qualificado (WPS), registro de qualificação (PQR), controle de temperatura de pré e pós-aquecimento, inspeção por líquido penetrante ou ultrassom. Não dá para "abrir" a solda para ver se ficou boa — por isso o processo é validado antes.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">Tratamento térmico — processo especial <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Validação do forno (uniformidade de temperatura — AMS2750 para aeroespacial), registro dos ciclos (tempo, temperatura, atmosfera), teste de dureza em corpos de prova ou peças do lote. A variação de temperatura no forno pode comprometer todo o lote sem que seja visível externamente.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">Pintura eletrostática / anticorrosiva — processo especial <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Controle de espessura de camada (medidor de película seca), aderência (corte cruzado), preparação de superfície (jateamento grau Sa 2½), controle de temperatura e umidade ambiente durante aplicação. A falha de adesão só aparece meses depois em campo — quando a garantia já está em jogo.</p></div>
+  </div>
+</div>
 
 <h3>8.5.2 — Identificação e rastreabilidade</h3>
 
 <p>A organização deve usar meios adequados para identificar as saídas dos processos e identificar o status de monitoramento/medição (aprovado, reprovado, em análise). Quando a rastreabilidade for um requisito, a organização deve controlar a identificação única das saídas e reter informação documentada.</p>
 
-<div class="example"><strong>Exemplo prático — Indústria alimentícia:</strong> Cada lote de produção recebe um código único (ex: EMB-2025-0342) que permite rastrear: quais materias-primas foram usadas (lote do fornecedor), qual linha de produção, qual turno, quais parâmetros de processo (temperatura, tempo), quais resultados de análise e para quais clientes o lote foi enviado. Se houver um recall, a empresa consegue identificar em minutos todos os clientes afetados.</div>
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
+  <p>Uma indústria de laticínios recebeu uma reclamação de cliente sobre sabor estranho em iogurte. Graças ao sistema de rastreabilidade por lote, em menos de 2 horas identificaram que o problema era do leite in natura do lote 2025-A-047, entregue por um fornecedor específico, processado na linha 3 no turno da tarde do dia 14. O recall foi cirúrgico: 3.200 unidades afetadas de um total de 180.000 em estoque — sem retirar o restante do mercado. Sem rastreabilidade, o recall teria sido total, com perda estimada de R$ 2,4 milhões. Com rastreabilidade: R$ 85 mil. O investimento no sistema: R$ 18 mil em etiquetas e software.</p>
+</div>
+
+<div class="example"><strong>Exemplo prático — Indústria alimentícia:</strong> Cada lote de produção recebe um código único (ex: EMB-2025-0342) que permite rastrear: quais matérias-primas foram usadas (lote do fornecedor), qual linha de produção, qual turno, quais parâmetros de processo (temperatura, tempo), quais resultados de análise e para quais clientes o lote foi enviado. Se houver um recall, a empresa consegue identificar em minutos todos os clientes afetados.</div>
 
 <h3>8.5.3 — Propriedade pertencente a clientes ou provedores externos</h3>
 
-<p>Se a organização usa algo que pertence ao cliente ou ao fornecedor (materia-prima do cliente, ferramental, propriedade intelectual, dados pessoais), deve identificar, verificar, proteger e salvaguardar essa propriedade. Se algo for perdido, danificado ou inadequado, deve comúnicar ao proprietario e reter registros.</p>
+<p>Se a organização usa algo que pertence ao cliente ou ao fornecedor (matéria-prima do cliente, ferramental, propriedade intelectual, dados pessoais), deve identificar, verificar, proteger e salvaguardar essa propriedade. Se algo for perdido, danificado ou inadequado, deve comunicar ao proprietário e reter registros.</p>
 
 <h3>8.5.4 — Preservação</h3>
 
 <p>A organização deve preservar as saídas durante produção e provisão de serviço, na extensão necessária para assegurar conformidade. Isso inclui identificação, manuseio, embalagem, armazenamento e proteção.</p>
 
-<h3>8.5.5 — Atividades pos-entrega</h3>
+<h3>8.5.5 — Atividades pós-entrega</h3>
 
 <p>Quando aplicável: garantia, assistência técnica, manutenção, reciclagem, disposição final. Deve considerar requisitos legais, consequências potenciais, vida útil, requisitos do cliente e retroalimentação.</p>
 
 <h3>8.5.6 — Controle de mudanças</h3>
 
-<p>Mudanças na produção devem ser analisadas críticamente e controladas para assegurar continuidade da conformidade. Reter informação documentada descrevendo os resultados da análise, as pessoas que autorizaram e as ações tomadas.</p>
+<p>Mudanças na produção devem ser analisadas criticamente e controladas para assegurar continuidade da conformidade. Reter informação documentada descrevendo os resultados da análise, as pessoas que autorizaram e as ações tomadas.</p>
 
 <h3>8.6 — Liberação de produtos e serviços</h3>
 
-<p>A organização deve implementar arranjos planejados para verificar que os requisitos foram atendidos. A liberação não deve prosseguir até que os arranjos planejados tenham sido satisfatoriamente concluidos, a menos que aprovado por autoridade pertinente (e pelo cliente, quando aplicável).</p>
+<p>A organização deve implementar arranjos planejados para verificar que os requisitos foram atendidos. A liberação não deve prosseguir até que os arranjos planejados tenham sido satisfatoriamente concluídos, a menos que aprovado por autoridade pertinente (e pelo cliente, quando aplicável).</p>
 
 <p>A informação documentada de liberação deve incluir: evidência de conformidade com critérios de aceitação e rastreabilidade a quem autorizou a liberação.</p>
 
-<div class="example"><strong>Exemplo prático — Construtora:</strong> Antes de concretar uma laje, o engenheiro confere: armadura conforme projeto (inspeção visual + medição), formas niveladas e estanques, escoramentos verificados, concreto testado (slump test no recebimento). So após todas as verificações estarem OK e o engenheiro assinar a checklist, a concretagem e liberada. Esse e o processo de liberação — e se não for seguido, os riscos estruturais são gravíssimos.</div>
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>1. Verificar critérios de aceitação</strong><br>Comparar resultado com especificação (dimensional, visual, funcional)</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Preencher checklist de liberação</strong><br>Todos os pontos do plano de controle foram executados?</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Identificar status</strong><br>Produto aprovado → etiqueta verde / aprovado no sistema</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Assinar/registrar autorização</strong><br>Quem liberou, quando, contra qual critério</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Liberar para expedição</strong><br>Somente após registro de liberação — nunca "informalizado"</div></div>
+</div>
+
+<div class="example"><strong>Exemplo prático — Construtora:</strong> Antes de concretar uma laje, o engenheiro confere: armadura conforme projeto (inspeção visual + medição), formas niveladas e estanques, escoramentos verificados, concreto testado (slump test no recebimento). Somente após todas as verificações estarem OK e o engenheiro assinar a checklist, a concretagem é liberada. Esse é o processo de liberação — e se não for seguido, os riscos estruturais são gravíssimos.</div>
 
 <h3>8.7 — Controle de saídas não conformes</h3>
 
-<p>Quando uma saida não atende aos requisitos, a organização deve assegurar que seja identificada e controlada para prevenir uso ou entrega não intencional. As disposicoes possiveis:</p>
+<p>Quando uma saída não atende aos requisitos, a organização deve assegurar que seja identificada e controlada para prevenir uso ou entrega não intencional. As disposições possíveis:</p>
 
 <ul>
   <li><strong>Correção:</strong> retrabalhar ou reparar para tornar conforme.</li>
@@ -1208,9 +1565,24 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
   <li><strong>Obter autorização de aceitação sob concessão:</strong> o cliente aceita o produto mesmo fora da especificação.</li>
 </ul>
 
-<div class="callout"><strong>Importante:</strong> A segregação e identificação de produto não conforme e crítica. Peças rejeitadas devem ir para uma área identificada (caixa vermelha, prateleira demarcada) para que ninguem as use por engano. Misturar peças boas com ruins e um dos erros mais graves que pode ocorrer numa operação.</div>
+<div class="comparison">
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Segregação inadequada</h4><ul><li>Peças reprovadas misturadas com aprovadas</li><li>Sem identificação visual clara (etiqueta, cor)</li><li>Área de não conformes sem delimitação física</li><li>Produto não conforme sem registro de disposição</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Segregação adequada</h4><ul><li>Área física demarcada (caixa vermelha, prateleira "REJEITADO")</li><li>Etiqueta de não conforme com número de RNC</li><li>Registro do defeito, quantidade e data</li><li>Disposição documentada (sucata, retrabalho, devolução, concessão)</li></ul></div>
+</div>
 
-<div class="template-box"><span>Download: Plano de controle de produção + formulario de produto não conforme</span><a href="#">Baixar template</a></div>
+<div class="callout"><strong>Importante:</strong> A segregação e identificação de produto não conforme é crítica. Peças rejeitadas devem ir para uma área identificada (caixa vermelha, prateleira demarcada) para que ninguém as use por engano. Misturar peças boas com ruins é um dos erros mais graves que pode ocorrer numa operação.</div>
+
+<div class="quiz-inline" data-correct="d" data-fb-ok="Correto! A concessão (aceitação sob desvio) é uma opção válida, mas exige autorização formal e registro — e quando aplicável, aprovação do cliente. Não é 'aceitar e ignorar'." data-fb-nok="Reveja a cláusula 8.7. A concessão é a aceitação formal de um produto fora de especificação, com registro e, quando necessário, aprovação do cliente. Não é sinônimo de liberar sem documentar.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Uma peça saiu com diâmetro de 50,08 mm, mas a especificação é 50,00 ± 0,05 mm. A empresa decide aceitar assim mesmo pois o cliente disse que "pode passar dessa vez". Como a ISO 9001:2015 trata essa situação?</div>
+  <button class="qi-option" data-key="a">É proibido — produto fora de especificação nunca pode ser entregue</button>
+  <button class="qi-option" data-key="b">Pode ser entregue sem registro, já que o cliente autorizou verbalmente</button>
+  <button class="qi-option" data-key="c">Deve ser sucateado imediatamente conforme cláusula 8.7</button>
+  <button class="qi-option" data-key="d">É uma concessão — deve ser registrada formalmente com autorização do cliente e retida como evidência</button>
+  <div class="qi-feedback"></div>
+</div>
+
+<div class="template-box"><span>Download: Plano de controle de produção + formulário de produto não conforme</span><a href="#">Baixar template</a></div>
 `})`;
 
   // ═══════════════════════════════════════════════════════════════════
@@ -1229,6 +1601,38 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>A cláusula 9 marca a transição do "fazer" para o "verificar" no ciclo PDCA. De nada adianta ter processos bem planejados e executados se você não mede os resultados. A cláusula 9.1 trata exatamente disso: como monitorar, medir, analisar e avaliar o desempenho do SGQ.</p>
 
+<div class="diagram">
+  <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr51" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+      </marker>
+    </defs>
+    <rect x="10" y="20" width="85" height="60" rx="8" fill="#0b1730" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="52" y="46" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">PLAN</text>
+    <text x="52" y="60" text-anchor="middle" fill="#93c5fd" font-size="9">Definir o que</text>
+    <text x="52" y="72" text-anchor="middle" fill="#93c5fd" font-size="9">medir e como</text>
+    <rect x="115" y="20" width="85" height="60" rx="8" fill="#0b1730" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="157" y="46" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">DO</text>
+    <text x="157" y="60" text-anchor="middle" fill="#93c5fd" font-size="9">Executar e</text>
+    <text x="157" y="72" text-anchor="middle" fill="#93c5fd" font-size="9">coletar dados</text>
+    <rect x="220" y="20" width="85" height="60" rx="8" fill="#c5383c" stroke="#c5383c" stroke-width="1.5"/>
+    <text x="262" y="46" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">CHECK</text>
+    <text x="262" y="60" text-anchor="middle" fill="#fecaca" font-size="9">Medir, analisar</text>
+    <text x="262" y="72" text-anchor="middle" fill="#fecaca" font-size="9">e avaliar — 9.1</text>
+    <rect x="325" y="20" width="85" height="60" rx="8" fill="#0b1730" stroke="#2563eb" stroke-width="1.5"/>
+    <text x="367" y="46" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">ACT</text>
+    <text x="367" y="60" text-anchor="middle" fill="#93c5fd" font-size="9">Corrigir e</text>
+    <text x="367" y="72" text-anchor="middle" fill="#93c5fd" font-size="9">melhorar</text>
+    <polyline points="95,50 115,50" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr51)"/>
+    <polyline points="200,50 220,50" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr51)"/>
+    <polyline points="305,50 325,50" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arr51)"/>
+    <path d="M367,80 Q367,140 210,148 Q52,140 52,80" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr51)"/>
+    <text x="210" y="158" text-anchor="middle" fill="#93c5fd" font-size="9">Ciclo contínuo de aprendizado</text>
+  </svg>
+  <figcaption>A cláusula 9.1 ocupa o CHECK do PDCA — sem medir, o ciclo de melhoria não fecha</figcaption>
+</div>
+
 <h3>9.1.1 — Generalidades</h3>
 
 <p>A organização deve determinar:</p>
@@ -1245,6 +1649,13 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 <h3>Indicadores-chave (KPIs) do SGQ</h3>
 
 <p>Embora a norma não liste indicadores específicos, a prática mostra que toda organização precisa de um conjunto mínimo de indicadores:</p>
+
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-value">≤ 2%</div><div class="kpi-label">Refugo — meta típica industria</div></div>
+  <div class="kpi-card"><div class="kpi-value">≥ 95%</div><div class="kpi-label">Pontualidade de entrega</div></div>
+  <div class="kpi-card"><div class="kpi-value">≥ 85</div><div class="kpi-label">Satisfação do cliente (0–100)</div></div>
+  <div class="kpi-card"><div class="kpi-value">100%</div><div class="kpi-label">NCs fechadas no prazo</div></div>
+</div>
 
 <table>
   <tr><th>Categoria</th><th>Indicador</th><th>Formula tipica</th><th>Frequência</th></tr>
@@ -1292,6 +1703,8 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <p>Na prática, isso se traduz em reuniões periodicas de análise de indicadores onde a equipe de gestão avalia os dados, identifica tendências e define ações.</p>
 
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A ausencia de reclamacoes nao e evidencia de satisfacao. A organizacao deve buscar ativamente a percepcao dos clientes." data-fb-nok="Incorreto. A norma exige que a organizacao monitore ATIVAMENTE a percepcao dos clientes — nao apenas espere reclamacoes."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Uma empresa nao recebe reclamacoes de clientes ha 6 meses. O que isso significa para a clausula 9.1.2?</div><button class="qi-option" data-key="a">Os clientes estao plenamente satisfeitos — nenhuma acao necessaria</button><button class="qi-option" data-key="b">A empresa pode pular a medicao de satisfacao na proxima analise critica</button><button class="qi-option" data-key="c">Ausencia de reclamacoes nao e evidencia de satisfacao — e preciso buscar ativamente a percepcao</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Painel de indicadores do SGQ (modelo Excel/Google Sheets)</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -1337,15 +1750,7 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <h3>Etapas de uma auditoria interna</h3>
 
-<ol>
-  <li><strong>Planejamento:</strong> definir escopo, critérios, equipe auditora, cronograma e checklist.</li>
-  <li><strong>Reuniao de abertura:</strong> alinhar com o auditado escopo, objetivo, agenda e método.</li>
-  <li><strong>Execução:</strong> coleta de evidências por entrevistas, observação e análise documental.</li>
-  <li><strong>Classificação de achados:</strong> não conformidade maior, não conformidade menor, oportunidade de melhoria ou conformidade.</li>
-  <li><strong>Reuniao de encerramento:</strong> apresentar achados ao auditado, alinhar entendimento.</li>
-  <li><strong>Relatório:</strong> formalizar achados, classificação e prazo para tratamento.</li>
-  <li><strong>Acompanhamento:</strong> verificar se as ações corretivas foram implementadas e são eficazes.</li>
-</ol>
+<div class="step-flow"><div class="step-item"><div class="step-content"><strong>1. Planejamento</strong><br>Definir escopo, criterios, equipe auditora, cronograma e checklist.</div></div><div class="step-item"><div class="step-content"><strong>2. Reuniao de abertura</strong><br>Alinhar com o auditado escopo, objetivo, agenda e metodo.</div></div><div class="step-item"><div class="step-content"><strong>3. Execucao</strong><br>Coleta de evidencias por entrevistas, observacao e analise documental.</div></div><div class="step-item"><div class="step-content"><strong>4. Classificacao de achados</strong><br>NC maior, NC menor, oportunidade de melhoria ou conformidade.</div></div><div class="step-item"><div class="step-content"><strong>5. Reuniao de encerramento</strong><br>Apresentar achados ao auditado, alinhar entendimento.</div></div><div class="step-item"><div class="step-content"><strong>6. Relatorio</strong><br>Formalizar achados, classificacao e prazo para tratamento.</div></div><div class="step-item"><div class="step-content"><strong>7. Acompanhamento</strong><br>Verificar se as acoes corretivas foram implementadas e sao eficazes.</div></div></div>
 
 <div class="example"><strong>Exemplo prático — Metalurgica:</strong> O programa anual de auditoria da UsinaMax distribui auditorias ao longo de 10 meses (janeiro e dezembro ficam livres). Cada mes audita 1-2 processos. O setor de metrologia e auditado 2x ao ano (por ser crítico). A equipe de auditores internos tem 4 pessoas de setores diferentes, todas com curso de auditor interno. O coordenador de qualidade coordena o programa mas não participa como auditor (para manter imparcialidade, exceto para auditar processos onde não tem envolvimento direto).</div>
 
@@ -1365,6 +1770,10 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 
 <div class="callout"><strong>Importante:</strong> A auditoria interna deve ser vista como uma ferramenta de MELHORIA, não de PUNICAO. Se as pessoas tiverem medo da auditoria, vao esconder problemas em vez de mostra-los. A cultura da organização deve incentivar a transparencia: encontrar um problema na auditoria e BOM — significa que podemos corrigi-lo antes que vire uma reclamação do cliente ou uma não conformidade na auditoria de certificação.</div>
 
+<div class="comparison"><div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Auditoria ineficaz</h4><ul><li>Auditoria anual tudo de uma vez em 1 dia</li><li>Auditor audita seu proprio setor</li><li>Perguntas fechadas: "voce segue o procedimento?"</li><li>Achados genericos sem evidencia</li></ul></div><div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Auditoria eficaz</h4><ul><li>Distribuida ao longo do ano por processo</li><li>Auditores imparciais (de outros setores)</li><li>Perguntas abertas: "me mostre como faz..."</li><li>Achados com evidencia objetiva e rastreavel</li></ul></div></div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O principio de imparcialidade exige que ninguem audite seu proprio trabalho. O gerente de producao nao pode auditar a producao." data-fb-nok="Incorreto. A imparcialidade e requisito fundamental: auditores nao podem auditar seus proprios processos."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Quem pode auditar o processo de producao numa auditoria interna?</div><button class="qi-option" data-key="a">O gerente de producao, pois conhece melhor o processo</button><button class="qi-option" data-key="b">Um auditor treinado de outro setor, garantindo imparcialidade</button><button class="qi-option" data-key="c">Qualquer pessoa da empresa, sem necessidade de treinamento</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Programa anual de auditoria + checklist de auditoria por cláusula</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -1377,6 +1786,8 @@ Cada objetivo tinha plano de ação detalhado, responsável e prazo. A análise 
 <h3>Frequência</h3>
 
 <p>A norma diz "em intervalos planejados". O padrão de mercado e pelo menos anual, mas muitas organizações fazem semestral ou trimestral — e isso e altamente recomendado. Quanto mais frequente, mais agil a resposta a problemas.</p>
+
+<div class="diagram"><svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg"><text x="200" y="16" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">Analise Critica pela Direcao — Entradas e Saidas</text><rect x="10" y="30" width="155" height="155" rx="8" fill="#2563eb" opacity="0.08" stroke="#2563eb" stroke-width="1.5"/><text x="87" y="48" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">ENTRADAS (9.3.2)</text><text x="20" y="65" font-size="7" fill="#0b1730">• Acoes de analises anteriores</text><text x="20" y="78" font-size="7" fill="#0b1730">• Mudancas no contexto</text><text x="20" y="91" font-size="7" fill="#0b1730">• Satisfacao do cliente</text><text x="20" y="104" font-size="7" fill="#0b1730">• Objetivos alcancados?</text><text x="20" y="117" font-size="7" fill="#0b1730">• Desempenho de processos</text><text x="20" y="130" font-size="7" fill="#0b1730">• NCs e acoes corretivas</text><text x="20" y="143" font-size="7" fill="#0b1730">• Resultados de auditorias</text><text x="20" y="156" font-size="7" fill="#0b1730">• Fornecedores</text><text x="20" y="169" font-size="7" fill="#0b1730">• Recursos adequados?</text><text x="20" y="182" font-size="7" fill="#0b1730">• Riscos e oportunidades</text><defs><marker id="arrACD" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0 L8 3 L0 6" fill="#0b1730"/></marker></defs><line x1="165" y1="110" x2="178" y2="110" stroke="#0b1730" stroke-width="2" marker-end="url(#arrACD)"/><rect x="180" y="75" width="50" height="70" rx="25" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="2"/><text x="205" y="107" text-anchor="middle" font-size="8" fill="#c5383c" font-weight="bold">ACD</text><text x="205" y="118" text-anchor="middle" font-size="7" fill="#c5383c">9.3</text><line x1="230" y1="110" x2="243" y2="110" stroke="#0b1730" stroke-width="2" marker-end="url(#arrACD)"/><rect x="245" y="55" width="145" height="110" rx="8" fill="#16a34a" opacity="0.08" stroke="#16a34a" stroke-width="1.5"/><text x="317" y="73" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">SAIDAS (9.3.3)</text><text x="255" y="92" font-size="7" fill="#0b1730">• Oportunidades de melhoria</text><text x="255" y="108" font-size="7" fill="#0b1730">• Necessidade de mudancas</text><text x="255" y="124" font-size="7" fill="#0b1730">• Necessidade de recursos</text><text x="255" y="145" font-size="8" fill="#16a34a" font-weight="bold">= DECISOES concretas</text><text x="255" y="158" font-size="7" fill="#0b1730">Quem? O que? Ate quando?</text><text x="200" y="210" text-anchor="middle" font-size="8" fill="#0b1730" font-style="italic">ACD = Analise Critica pela Direcao (minimo anual)</text></svg><figcaption>A analise critica transforma dados em decisoes — com entradas obrigatorias e saidas concretas</figcaption></div>
 
 <h3>9.3.2 — Entradas da análise crítica</h3>
 
@@ -1438,6 +1849,17 @@ Participam: presidente, diretor técnico, gerente de operações, coordenador de
   <li><strong>Acompanhe na próxima reunião</strong> — a primeira entrada da próxima análise crítica e o status das ações anteriores.</li>
 </ol>
 
+<div class="checklist"><ul class="checklist">
+  <li><span class="ck-box"></span>Material enviado com antecedencia (minimo 5 dias antes)</li>
+  <li><span class="ck-box"></span>Todas as entradas obrigatorias (9.3.2) incluidas na pauta</li>
+  <li><span class="ck-box"></span>Alta direcao presente e participando ativamente</li>
+  <li><span class="ck-box"></span>Graficos de tendencia, nao apenas numeros absolutos</li>
+  <li><span class="ck-box"></span>Ata registra DECISOES com responsavel e prazo (nao apenas "manter monitoramento")</li>
+  <li><span class="ck-box"></span>Status das acoes da reuniao anterior e a primeira pauta</li>
+</ul></div>
+
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A ata deve registrar decisoes concretas com responsavel e prazo — nao apenas discussoes ou 'manter monitoramento'." data-fb-nok="Incorreto. O principal problema em analises criticas e a falta de decisoes concretas. A ata deve ter acoes com responsavel e prazo."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual e o erro mais comum na analise critica pela direcao?</div><button class="qi-option" data-key="a">A ata registra apenas "manter monitoramento" sem decisoes concretas</button><button class="qi-option" data-key="b">Usar graficos de tendencia em vez de numeros absolutos</button><button class="qi-option" data-key="c">Incluir resultados de auditoria interna na pauta</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Modelo de ata de análise crítica pela direção</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -1485,6 +1907,8 @@ Participam: presidente, diretor técnico, gerente de operações, coordenador de
 
 <h3>A diferença entre correção e ação corretiva</h3>
 
+<div class="comparison"><div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> So correcao (apagar incendio)</h4><ul><li>Retrabalhar a peca fora de tolerancia</li><li>Segregar o lote com defeito</li><li>Devolver material ao fornecedor</li><li>Problema se repete em semanas</li></ul></div><div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Correcao + acao corretiva</h4><ul><li>Retrabalhar a peca (correcao imediata)</li><li>Analisar causa raiz (5 Porques)</li><li>Recalibrar maquina + retreinar operador</li><li>Problema eliminado na raiz</li></ul></div></div>
+
 <div class="callout"><strong>Importante:</strong> Essa diferença e fundamental e frequentemente confundida.
 <ul>
   <li><strong>Correção</strong> (disposição imediata): o que você faz AGORA para resolver o problema pontual. Exemplo: retrabalhar a peça, segregar o lote, devolver ao fornecedor.</li>
@@ -1528,6 +1952,10 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   <li><strong>Sugestoes de colaboradores:</strong> programa estruturado de sugestoes.</li>
 </ul>
 
+<div class="diagram"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><text x="200" y="16" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">Fluxo de Tratamento de NC (Clausula 10.2)</text><defs><marker id="arrTNC" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0 0 L7 2.5 L0 5" fill="#0b1730"/></marker></defs><rect x="10" y="30" width="70" height="35" rx="6" fill="#c5383c" opacity="0.15" stroke="#c5383c" stroke-width="1.5"/><text x="45" y="45" text-anchor="middle" font-size="8" fill="#c5383c" font-weight="bold">NC ocorre</text><text x="45" y="58" text-anchor="middle" font-size="7" fill="#0b1730">(ou reclamacao)</text><line x1="80" y1="47" x2="95" y2="47" stroke="#0b1730" stroke-width="1" marker-end="url(#arrTNC)"/><rect x="98" y="30" width="65" height="35" rx="6" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1"/><text x="130" y="45" text-anchor="middle" font-size="7" fill="#eab308" font-weight="bold">Correcao</text><text x="130" y="58" text-anchor="middle" font-size="6" fill="#0b1730">Acao imediata</text><line x1="163" y1="47" x2="178" y2="47" stroke="#0b1730" stroke-width="1" marker-end="url(#arrTNC)"/><rect x="180" y="25" width="75" height="45" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="217" y="42" text-anchor="middle" font-size="7" fill="#2563eb" font-weight="bold">Analise de</text><text x="217" y="52" text-anchor="middle" font-size="7" fill="#2563eb" font-weight="bold">causa raiz</text><text x="217" y="64" text-anchor="middle" font-size="6" fill="#0b1730">5 Porques/Ishikawa</text><line x1="255" y1="47" x2="270" y2="47" stroke="#0b1730" stroke-width="1" marker-end="url(#arrTNC)"/><rect x="272" y="30" width="65" height="35" rx="6" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1.5"/><text x="304" y="42" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">Acao</text><text x="304" y="52" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">corretiva</text><text x="304" y="64" text-anchor="middle" font-size="6" fill="#0b1730">Eliminar causa</text><line x1="337" y1="47" x2="352" y2="47" stroke="#0b1730" stroke-width="1" marker-end="url(#arrTNC)"/><rect x="354" y="30" width="55" height="35" rx="6" fill="#0b1730" opacity="0.08" stroke="#0b1730" stroke-width="1"/><text x="381" y="42" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">Verificar</text><text x="381" y="55" text-anchor="middle" font-size="6" fill="#0b1730">eficacia</text><rect x="80" y="90" width="280" height="40" rx="6" fill="#0b1730" opacity="0.04" stroke="#0b1730" stroke-width="1"/><text x="220" y="108" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">Se eficaz: fechar NC | Se nao: reabrir e aprofundar analise</text><text x="220" y="122" text-anchor="middle" font-size="7" fill="#0b1730">Atualizar riscos e oportunidades se necessario (retroalimenta 6.1)</text><line x1="381" y1="65" x2="381" y2="88" stroke="#0b1730" stroke-width="1" marker-end="url(#arrTNC)"/></svg><figcaption>Fluxo completo de tratamento de NC: da deteccao a verificacao de eficacia</figcaption></div>
+
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A acao corretiva elimina a CAUSA do problema para evitar reincidencia. A correcao resolve apenas o problema pontual." data-fb-nok="Incorreto. Correcao resolve o problema imediato; acao corretiva elimina a causa raiz para que o problema nao se repita."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual e a diferenca entre correcao e acao corretiva?</div><button class="qi-option" data-key="a">Sao sinonimos — ambas significam resolver o problema</button><button class="qi-option" data-key="b">Correcao elimina a causa raiz; acao corretiva resolve o problema imediato</button><button class="qi-option" data-key="c">Correcao resolve o problema imediato; acao corretiva elimina a causa para evitar reincidencia</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Formulario de não conformidade e ação corretiva (RAC) + guia de 5 Porques</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -1547,6 +1975,47 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 
 <p>Agora que você conhece todos os requisitos da ISO 9001:2015, vamos montar o roteiro prático para implantar o SGQ e chegar a certificação. O prazo tipico para uma PME brasileira e de 6 a 12 meses, dependendo da complexidade e maturidade da organização.</p>
 
+<div class="diagram">
+  <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;font-size:11px">
+    <line x1="30" y1="100" x2="490" y2="100" stroke="#0b1730" stroke-width="2"/>
+    <text x="30" y="120" fill="#64748b" text-anchor="middle">M1</text>
+    <text x="112" y="120" fill="#64748b" text-anchor="middle">M2</text>
+    <text x="194" y="120" fill="#64748b" text-anchor="middle">M4</text>
+    <text x="276" y="120" fill="#64748b" text-anchor="middle">M6</text>
+    <text x="358" y="120" fill="#64748b" text-anchor="middle">M8</text>
+    <text x="440" y="120" fill="#64748b" text-anchor="middle">M10</text>
+    <text x="490" y="120" fill="#64748b" text-anchor="middle">M12</text>
+    <rect x="30" y="72" width="82" height="20" rx="4" fill="#2563eb" opacity="0.85"/>
+    <text x="71" y="86" fill="#fff" text-anchor="middle" font-weight="bold">F1 Diagnostico</text>
+    <rect x="112" y="72" width="164" height="20" rx="4" fill="#0b1730" opacity="0.85"/>
+    <text x="194" y="86" fill="#fff" text-anchor="middle" font-weight="bold">F2 Construcao SGQ</text>
+    <rect x="235" y="50" width="123" height="20" rx="4" fill="#16a34a" opacity="0.85"/>
+    <text x="296" y="64" fill="#fff" text-anchor="middle" font-weight="bold">F3 Operacao</text>
+    <rect x="358" y="72" width="82" height="20" rx="4" fill="#c5383c" opacity="0.75"/>
+    <text x="399" y="86" fill="#fff" text-anchor="middle" font-weight="bold">F4 Verificacao</text>
+    <rect x="440" y="72" width="50" height="20" rx="4" fill="#c5383c"/>
+    <text x="465" y="86" fill="#fff" text-anchor="middle" font-weight="bold">F5 Cert.</text>
+    <text x="30" y="155" fill="#0b1730" font-weight="bold">Legenda:</text>
+    <rect x="95" y="145" width="12" height="12" rx="2" fill="#2563eb"/>
+    <text x="112" y="155" fill="#475569">Diagnostico</text>
+    <rect x="185" y="145" width="12" height="12" rx="2" fill="#0b1730"/>
+    <text x="202" y="155" fill="#475569">Construcao</text>
+    <rect x="275" y="145" width="12" height="12" rx="2" fill="#16a34a"/>
+    <text x="292" y="155" fill="#475569">Operacao</text>
+    <rect x="355" y="145" width="12" height="12" rx="2" fill="#c5383c"/>
+    <text x="372" y="155" fill="#475569">Verificacao / Certificacao</text>
+  </svg>
+  <figcaption>Linha do tempo tipica de implantacao ISO 9001 para uma PME brasileira (6-12 meses)</figcaption>
+</div>
+
+<ul class="checklist">
+  <li><span class="ck-box"></span>Apoio formal da alta direcao garantido antes de iniciar</li>
+  <li><span class="ck-box"></span>Coordenador de qualidade designado com dedicacao minima de 50%</li>
+  <li><span class="ck-box"></span>Orcamento aprovado (consultoria + organismo certificador + treinamentos)</li>
+  <li><span class="ck-box"></span>Escopo do SGQ definido (quais processos e sites serao cobertos)</li>
+  <li><span class="ck-box"></span>Cronograma aprovado pela direcao com marcos e responsaveis</li>
+</ul>
+
 <h3>Fase 1 — Diagnóstico e planejamento (mes 1-2)</h3>
 
 <table>
@@ -1561,6 +2030,14 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 <div class="callout"><strong>Importante:</strong> O diagnóstico inicial e crítico. Ele mostra onde a empresa já atende (você vai se surpreender — muitas coisas já são feitas) e onde tem lacunas. Isso permite priorizar esforcos. Não comece documentando tudo — comece pelo que falta.</div>
 
 <h3>Fase 2 — Construção do SGQ (mes 2-6)</h3>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>Contexto e partes interessadas (4.1, 4.2)</strong><br>Workshop com direcao e gerencia — 4 horas. Entrega: analise SWOT + mapa de partes interessadas.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Escopo e mapeamento de processos (4.3, 4.4)</strong><br>Definir o que entra no SGQ; mapear processos, interacoes, donos e indicadores de desempenho.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Politica, objetivos e riscos (5.2, 6.1, 6.2)</strong><br>Redigir politica da qualidade; montar matriz de riscos por processo; definir objetivos com planos de acao.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Documentacao e competencias (7.5, 7.2)</strong><br>Criar/revisar procedimentos e instrucoes de trabalho; montar matriz de competencias e plano de treinamento.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Controles operacionais (8.4, 8.5, 8.7, 7.1.5)</strong><br>Qualificacao de fornecedores, planos de controle, tratamento de NC, inventario e plano de calibracao.</div></div>
+</div>
 
 <ol>
   <li><strong>Análise de contexto e partes interessadas</strong> (cláusulas 4.1, 4.2) — workshop com direção e gerencia, 4 horas.</li>
@@ -1580,6 +2057,10 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 <h3>Fase 3 — Operação e maturação (mes 5-9)</h3>
 
 <p>O SGQ precisa "rodar" por pelo menos 3 meses antes da auditoria de certificação, gerando evidências de que funciona na prática:</p>
+
+<div class="progress-visual"><div class="pv-bar"><div class="pv-fill" style="width:30%"></div></div><div class="pv-label">Mes 5 — SGQ iniciando operacao, primeiros registros gerados</div></div>
+<div class="progress-visual"><div class="pv-bar"><div class="pv-fill" style="width:60%"></div></div><div class="pv-label">Mes 7 — Indicadores consolidados, primeiras acoes corretivas concluidas</div></div>
+<div class="progress-visual"><div class="pv-bar"><div class="pv-fill" style="width:85%"></div></div><div class="pv-label">Mes 9 — SGQ maduro, evidencias solidas para auditoria de certificacao</div></div>
 
 <ul>
   <li>Indicadores sendo coletados e analisados.</li>
@@ -1607,6 +2088,20 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   <li><strong>Tratamento de não conformidades</strong> (se houver) dentro do prazo estipulado.</li>
   <li><strong>Emissao do certificado.</strong></li>
 </ol>
+
+<div class="narration">
+  <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real — MetalForte, Caxias do Sul (RS)</div>
+  <p>A MetalForte, usinagem de precisao com 60 funcionarios, iniciou o projeto em fevereiro. O diagnostico revelou que 40% dos requisitos ja eram atendidos informalmente — ninguem havia documentado. A construcao do SGQ levou de marco a julho, focando na documentacao dos processos existentes e criacao da matriz de riscos. A operacao plena rodou de agosto a outubro gerando evidencias reais. A auditoria interna em novembro identificou 8 achados, todos tratados antes de dezembro. A Fase 1 foi em dezembro com apenas 2 oportunidades de melhoria, e a Fase 2 em janeiro sem nao conformidades maiores. O certificado chegou em fevereiro: exatamente 12 meses apos o inicio.</p>
+</div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O SGQ deve rodar pelo menos 3 meses gerando indicadores, NCs tratadas e registros reais antes da auditoria de certificacao." data-fb-nok="Nao exatamente. O periodo minimo de operacao do SGQ antes da auditoria e de 3 meses, para que existam evidencias de que o sistema funciona na pratica.">
+  <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
+  <div class="qi-question">Qual e o periodo minimo recomendado de operacao do SGQ antes da auditoria de certificacao?</div>
+  <button class="qi-option" data-key="a">1 mes — tempo suficiente para gerar os primeiros registros</button>
+  <button class="qi-option" data-key="b">3 meses — o sistema precisa rodar gerando indicadores, NCs tratadas e registros reais</button>
+  <button class="qi-option" data-key="c">6 meses — o organismo certificador exige meio ano de evidencias</button>
+  <div class="qi-feedback"></div>
+</div>
 
 <div class="example"><strong>Exemplo prático — Cronograma real:</strong> A MetalForte (60 funcionários, Caxias do Sul) iníciou o projeto em fevereiro. Diagnóstico em fevereiro/marco. Construção do SGQ de marco a julho. Operação plena de agosto a outubro. Auditoria interna em novembro. Análise crítica em novembro. Auditoria de certificação Fase 1 em dezembro, Fase 2 em janeiro. Certificado emitido em fevereiro — 12 meses após o início.</div>
 
@@ -1637,6 +2132,31 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 
 <div class="callout"><strong>Importante:</strong> O organismo certificador deve ser acreditado pelo Inmetro (ou por um membro do IAF — International Accreditation Forum). Um certificado de um organismo não acreditado não tem válidade de mercado. Verifique no site do Inmetro: <em>certifiq.inmetro.gov.br</em>.</div>
 
+<div class="diagram">
+  <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;font-size:11px">
+    <rect x="20" y="20" width="165" height="130" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="102" y="42" fill="#2563eb" text-anchor="middle" font-weight="bold" font-size="12">Fase 1 — Documental</text>
+    <text x="102" y="58" fill="#475569" text-anchor="middle">Duracao: 1 dia (PME)</text>
+    <text x="35" y="78" fill="#475569">• Documentacao do SGQ</text>
+    <text x="35" y="95" fill="#475569">• Contexto e riscos</text>
+    <text x="35" y="112" fill="#475569">• Objetivos e indicadores</text>
+    <text x="35" y="129" fill="#475569">• Aud. interna e ACD</text>
+    <text x="35" y="142" fill="#475569">• Layout e infraestrutura</text>
+    <defs><marker id="arr62" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#0b1730"/></marker></defs>
+    <line x1="185" y1="85" x2="235" y2="85" stroke="#0b1730" stroke-width="2" marker-end="url(#arr62)"/>
+    <text x="210" y="78" fill="#64748b" text-anchor="middle" font-size="10">ok</text>
+    <rect x="235" y="20" width="165" height="130" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+    <text x="317" y="42" fill="#16a34a" text-anchor="middle" font-weight="bold" font-size="12">Fase 2 — No Local</text>
+    <text x="317" y="58" fill="#475569" text-anchor="middle">Duracao: 2-4 dias (PME)</text>
+    <text x="250" y="78" fill="#475569">• Reuniao de abertura</text>
+    <text x="250" y="95" fill="#475569">• Entrevista direcao</text>
+    <text x="250" y="112" fill="#475569">• Auditoria de processos</text>
+    <text x="250" y="129" fill="#475569">• Verificacao em campo</text>
+    <text x="250" y="142" fill="#475569">• Reuniao de encerramento</text>
+  </svg>
+  <figcaption>Estrutura da auditoria de certificacao ISO 9001: Fase 1 (documental) precede Fase 2 (no local)</figcaption>
+</div>
+
 <h3>Auditoria Fase 1 — Análise documental</h3>
 
 <p>O que o auditor avalia na Fase 1:</p>
@@ -1656,6 +2176,14 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 <p>E a auditoria completa. O auditor passa por todos os processos do escopo, entrevista pessoas em todos os niveis (direção, gerencia, operação) e verifica evidências de implementação e eficácia. Duração tipica: 2 a 4 dias para PMEs.</p>
 
 <p>O que o auditor faz na prática:</p>
+
+<div class="step-flow">
+  <div class="step-item"><div class="step-content"><strong>Reuniao de abertura</strong><br>Apresentacao do auditor, confirmacao do escopo e agenda do dia. Todos os acompanhantes sao apresentados.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Auditoria da direcao</strong><br>Entrevista com alta direcao: contexto, politica da qualidade, objetivos, resultados da analise critica.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Auditoria de processos</strong><br>Percorre cada processo do escopo, entrevista responsaveis e operadores, verifica registros e evidencias de implementacao.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Verificacao em campo</strong><br>Observa operacoes reais, verifica calibracao de instrumentos, identificacao de produtos e rastreabilidade.</div></div>
+  <div class="step-item"><div class="step-content"><strong>Reuniao de encerramento</strong><br>Apresenta achados e os classifica: NC maior, NC menor ou oportunidade de melhoria. Define prazos para tratamento.</div></div>
+</div>
 
 <ol>
   <li><strong>Reuniao de abertura:</strong> apresentação, escopo, agenda.</li>
@@ -1694,6 +2222,8 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   <li>Mantenha a calma. O auditor não e um inimigo — e um profissional fazendo seu trabalho.</li>
 </ul>
 
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Uma NC maior indica falha sistematica ou ausencia total de requisito e impede a certificacao ate ser resolvida." data-fb-nok="Incorreto. NC maior = falha sistematica que impede a certificacao. NC menor = falha pontual que nao bloqueia, mas deve ser tratada."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Qual e a consequencia de uma nao conformidade maior na auditoria de certificacao?</div><button class="qi-option" data-key="a">A certificacao nao e concedida ate a NC ser resolvida (prazo de 90 dias)</button><button class="qi-option" data-key="b">A certificacao e concedida normalmente, com observacao no certificado</button><button class="qi-option" data-key="c">A empresa e automaticamente reprovada e deve reiniciar todo o processo</button><div class="qi-feedback"></div></div>
+
 <div class="template-box"><span>Download: Checklist de preparação pre-auditoria de certificação</span><a href="#">Baixar template</a></div>
 `})`;
 
@@ -1704,6 +2234,8 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 <p>Conseguir o certificado e importante, mas mante-lo e o verdadeiro desafio. O certificado ISO 9001 tem válidade de 3 anos, com auditorias de manutenção anuais. Se a organização relaxar após a certificação, a próxima auditoria vai revelar a deterioração — e o certificado pode ser suspenso.</p>
 
 <h3>Ciclo de certificação (3 anos)</h3>
+
+<div class="diagram"><svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg"><text x="200" y="16" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">Ciclo de Certificacao ISO 9001 (3 anos)</text><defs><marker id="arrCiclo" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><path d="M0 0 L7 2.5 L0 5" fill="#0b1730"/></marker></defs><rect x="15" y="35" width="85" height="45" rx="6" fill="#16a34a" opacity="0.15" stroke="#16a34a" stroke-width="2"/><text x="57" y="52" text-anchor="middle" font-size="9" fill="#16a34a" font-weight="bold">Ano 1</text><text x="57" y="65" text-anchor="middle" font-size="7" fill="#0b1730">Certificacao</text><text x="57" y="75" text-anchor="middle" font-size="7" fill="#0b1730">Fase 1 + Fase 2</text><line x1="100" y1="57" x2="115" y2="57" stroke="#0b1730" stroke-width="1.2" marker-end="url(#arrCiclo)"/><rect x="118" y="35" width="85" height="45" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="160" y="52" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Ano 2</text><text x="160" y="65" text-anchor="middle" font-size="7" fill="#0b1730">Manutencao 1</text><text x="160" y="75" text-anchor="middle" font-size="7" fill="#0b1730">Parcial (1-2 dias)</text><line x1="203" y1="57" x2="218" y2="57" stroke="#0b1730" stroke-width="1.2" marker-end="url(#arrCiclo)"/><rect x="221" y="35" width="85" height="45" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1.5"/><text x="263" y="52" text-anchor="middle" font-size="9" fill="#2563eb" font-weight="bold">Ano 3</text><text x="263" y="65" text-anchor="middle" font-size="7" fill="#0b1730">Manutencao 2</text><text x="263" y="75" text-anchor="middle" font-size="7" fill="#0b1730">Parcial (1-2 dias)</text><line x1="306" y1="57" x2="321" y2="57" stroke="#0b1730" stroke-width="1.2" marker-end="url(#arrCiclo)"/><rect x="324" y="35" width="70" height="45" rx="6" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/><text x="359" y="52" text-anchor="middle" font-size="9" fill="#c5383c" font-weight="bold">Ano 4</text><text x="359" y="65" text-anchor="middle" font-size="7" fill="#0b1730">Recertificacao</text><text x="359" y="75" text-anchor="middle" font-size="7" fill="#0b1730">Completa</text><path d="M359 80 Q359 120 200 130 Q40 120 57 80" fill="none" stroke="#0b1730" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#arrCiclo)"/><text x="200" y="148" text-anchor="middle" font-size="8" fill="#0b1730" font-style="italic">Ciclo se repete a cada 3 anos</text></svg><figcaption>Ciclo trienal: certificacao → 2 manutencoes anuais → recertificacao</figcaption></div>
 
 <table>
   <tr><th>Ano</th><th>Tipo de auditoria</th><th>Escopo</th><th>Duração tipica (PME)</th></tr>
@@ -1750,6 +2282,10 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   <li><strong>FSSC 22000:</strong> Seguranca de Alimentos — para indústria alimentícia.</li>
   <li><strong>ISO 19011:</strong> Diretrizes para auditoria de sistemas de gestão — aprofundar competência de auditoria.</li>
 </ul>
+
+<div class="narration"><div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div><p>A Tigre S.A., fabricante catarinense de tubos e conexoes com mais de 7.000 funcionarios, mantem certificacao ISO 9001 ha mais de 25 anos consecutivos. O segredo, segundo o diretor de qualidade, e que o SGQ nunca foi tratado como "projeto com data de fim". A empresa integrou os indicadores do SGQ no painel de gestao do dia a dia — nao existe "reuniao de qualidade" separada, porque qualidade faz parte de cada reuniao operacional. Quando o SGQ e parte da cultura, a manutencao acontece naturalmente.</p></div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! Se o certificado tiver sido suspenso ou se a empresa relaxar apos a certificacao, a proxima auditoria revelara a deterioracao do sistema." data-fb-nok="Incorreto. O certificado tem validade de 3 anos com auditorias de manutencao anuais. Relaxar apos a certificacao leva a suspensao."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">O que pode acontecer se a organizacao relaxar o SGQ apos obter a certificacao?</div><button class="qi-option" data-key="a">Nada — o certificado e valido por 3 anos independente do estado do SGQ</button><button class="qi-option" data-key="b">O certificado pode ser suspenso ou nao renovado na auditoria de manutencao anual</button><button class="qi-option" data-key="c">O organismo certificador oferece um periodo de graca automatico de 6 meses</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Calendario anual de manutenção do SGQ</span><a href="#">Baixar template</a></div>
 `})`;
@@ -1812,17 +2348,11 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
 
 <p>Antes de fazer a prova, relembre:</p>
 
-<ul>
-  <li>A ISO 9001:2015 tem 10 cláusulas, sendo que 4 a 10 contem requisitos auditaveis.</li>
-  <li>A estrutura segue o ciclo PDCA: Plan (4-6), Do (7-8), Check (9), Act (10).</li>
-  <li>Os 7 princípios são a base filosofica; os requisitos são a implementação prática.</li>
-  <li>Mentalidade de risco substitui a antiga ação preventiva.</li>
-  <li>Informação documentada substitui documentos + registros + procedimentos obrigatórios.</li>
-  <li>A alta direção deve demonstrar comprometimento com ações concretas.</li>
-  <li>A correção resolve o problema imediato; a ação corretiva elimina a causa.</li>
-  <li>A auditoria interna e ferramenta de melhoria, não de púnicao.</li>
-  <li>A análise crítica pela direção deve ter todas as entradas obrigatórias e gerar decisões e ações.</li>
-</ul>
+<div class="accordion-lesson"><div class="acc-item"><button class="acc-trigger">Modulo 1 — Fundamentos <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>A ISO 9001:2015 tem 10 clausulas, sendo que 4 a 10 contem requisitos auditaveis. A estrutura segue o ciclo PDCA: Plan (4-6), Do (7-8), Check (9), Act (10). Os 7 principios sao a base filosofica; os requisitos sao a implementacao pratica.</p></div></div><div class="acc-item"><button class="acc-trigger">Modulo 2 — Contexto e Lideranca <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>Analise de contexto (SWOT/PESTEL) e partes interessadas pertinentes. Escopo claro e especifico. Mapa de processos com entradas, saidas e indicadores. Alta direcao demonstra lideranca com acoes concretas.</p></div></div><div class="acc-item"><button class="acc-trigger">Modulo 3 — Planejamento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>Mentalidade de risco substitui a antiga acao preventiva. Objetivos SMART com plano de acao. Mudancas no SGQ devem ser planejadas avaliando impacto e integridade do sistema.</p></div></div><div class="acc-item"><button class="acc-trigger">Modulo 4 — Apoio e Operacao <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>Informacao documentada substitui documentos + registros + procedimentos obrigatorios. Calibracao e um dos itens mais auditados. Analise critica de requisitos antes de aceitar pedidos. Fornecedores avaliados por criterios objetivos.</p></div></div><div class="acc-item"><button class="acc-trigger">Modulo 5 — Avaliacao e Melhoria <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>Correcao resolve o problema imediato; acao corretiva elimina a causa. Auditoria interna e ferramenta de melhoria, nao de punicao. Analise critica pela direcao deve ter todas as entradas obrigatorias e gerar decisoes concretas.</p></div></div><div class="acc-item"><button class="acc-trigger">Modulo 6 — Integracao e Certificacao <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button><div class="acc-body"><p>Implantacao tipica: 6-12 meses. SGQ deve rodar 3 meses antes da auditoria. Certificado valido por 3 anos com auditorias de manutencao anuais. Organismo certificador deve ser acreditado pelo Inmetro/IAF.</p></div></div></div>
+
+<div class="diagram"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg"><text x="200" y="16" text-anchor="middle" font-size="10" fill="#0b1730" font-weight="bold">Mapa Mental — ISO 9001:2015 Completa</text><circle cx="200" cy="105" r="30" fill="#0b1730" opacity="0.08" stroke="#0b1730" stroke-width="1.5"/><text x="200" y="102" text-anchor="middle" font-size="8" fill="#0b1730" font-weight="bold">ISO 9001</text><text x="200" y="114" text-anchor="middle" font-size="7" fill="#0b1730">PDCA</text><rect x="10" y="25" width="80" height="25" rx="4" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/><text x="50" y="42" text-anchor="middle" font-size="7" fill="#2563eb" font-weight="bold">4. Contexto</text><line x1="90" y1="37" x2="172" y2="85" stroke="#2563eb" stroke-width="0.8"/><rect x="110" y="25" width="80" height="25" rx="4" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/><text x="150" y="42" text-anchor="middle" font-size="7" fill="#2563eb" font-weight="bold">5. Lideranca</text><line x1="150" y1="50" x2="185" y2="78" stroke="#2563eb" stroke-width="0.8"/><rect x="210" y="25" width="80" height="25" rx="4" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="1"/><text x="250" y="42" text-anchor="middle" font-size="7" fill="#2563eb" font-weight="bold">6. Planejamento</text><line x1="250" y1="50" x2="215" y2="78" stroke="#2563eb" stroke-width="0.8"/><rect x="310" y="25" width="80" height="25" rx="4" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/><text x="350" y="42" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">7. Apoio</text><line x1="310" y1="37" x2="228" y2="85" stroke="#16a34a" stroke-width="0.8"/><rect x="310" y="90" width="80" height="25" rx="4" fill="#16a34a" opacity="0.12" stroke="#16a34a" stroke-width="1"/><text x="350" y="107" text-anchor="middle" font-size="7" fill="#16a34a" font-weight="bold">8. Operacao</text><line x1="310" y1="102" x2="230" y2="105" stroke="#16a34a" stroke-width="0.8"/><rect x="280" y="155" width="100" height="25" rx="4" fill="#eab308" opacity="0.12" stroke="#eab308" stroke-width="1"/><text x="330" y="172" text-anchor="middle" font-size="7" fill="#eab308" font-weight="bold">9. Avaliacao</text><line x1="280" y1="167" x2="222" y2="130" stroke="#eab308" stroke-width="0.8"/><rect x="130" y="155" width="100" height="25" rx="4" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1"/><text x="180" y="172" text-anchor="middle" font-size="7" fill="#c5383c" font-weight="bold">10. Melhoria</text><line x1="180" y1="155" x2="192" y2="135" stroke="#c5383c" stroke-width="0.8"/><rect x="10" y="90" width="95" height="25" rx="4" fill="#0b1730" opacity="0.06" stroke="#0b1730" stroke-width="1"/><text x="57" y="107" text-anchor="middle" font-size="7" fill="#0b1730" font-weight="bold">7 Principios</text><line x1="105" y1="102" x2="170" y2="105" stroke="#0b1730" stroke-width="0.8" stroke-dasharray="3 2"/></svg><figcaption>Visao geral: todas as clausulas da ISO 9001:2015 conectadas pelo ciclo PDCA</figcaption></div>
+
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A ISO 9001:2015 tem 10 clausulas, sendo que as clausulas 4 a 10 contem os requisitos auditaveis." data-fb-nok="Incorreto. A norma tem 10 clausulas no total. As 3 primeiras sao informativas; as clausulas 4 a 10 contem requisitos auditaveis."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">Quantas clausulas tem a ISO 9001:2015 e quantas contem requisitos auditaveis?</div><button class="qi-option" data-key="a">8 clausulas, todas com requisitos auditaveis</button><button class="qi-option" data-key="b">10 clausulas, sendo que 4 a 10 contem requisitos auditaveis</button><button class="qi-option" data-key="c">10 clausulas, todas com requisitos auditaveis</button><div class="qi-feedback"></div></div>
 
 <div class="callout"><strong>Importante:</strong> Este curso ensinou a interpretar os requisitos. Para auditar, você precisara de um curso específico de auditor interno (ISO 19011). Para implantar, a prática e o melhor professor — aplique o que aprendeu, comece pelo básico e va evoluindo. A Anders Tech oferece consultoria para apoiar sua empresa na implantação e certificação.</div>
 

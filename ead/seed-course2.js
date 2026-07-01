@@ -664,7 +664,8 @@
 <li>Mudancas significativas (novo equipamento, novo fornecedor, novo turno)</li>
 <li>Criticidade do processo para o produto/servico final</li>
 <li>Riscos identificados pela organizacao</li>
-</ul>}, NULL),
+</ul>
+`}, NULL),
 
   (${m2.id}, '2-2-3-competência-auditores', 'Competência e avaliação de auditores', '20 min', 3, ${`
 <h2>Competência e avaliação de auditores</h2>
@@ -779,7 +780,8 @@
 <li>Conduzir as reunioes de abertura e encerramento</li>
 <li>Resolver impasses e tomar decisoes</li>
 <li>Aprovar o relatorio final</li>
-</ul>}, 'Matriz de competência de auditores'),
+</ul>
+`}, 'Matriz de competência de auditores'),
 
   (${m2.id}, '2-2-4-monitoramento-melhoria', 'Monitoramento e melhoria do programa', '15 min', 4, ${`
 <h2>Monitoramento e melhoria do programa de auditoria</h2>
@@ -882,7 +884,8 @@
 
 <div class="callout"><strong>Ciclo PDCA do programa:</strong> <strong>P</strong> = definir objetivos, cronograma, auditores. <strong>D</strong> = executar as auditorias conforme planejado. <strong>C</strong> = monitorar indicadores e analisar resultados. <strong>A</strong> = ajustar o programa para o proximo ciclo.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria continua real:</strong> O programa de auditoria nao e um documento estatico. Cada ciclo deve alimentar o proximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitacao adicional. O programa que nao muda nao esta sendo monitorado.</div></div>}, NULL)`;
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria continua real:</strong> O programa de auditoria nao e um documento estatico. Cada ciclo deve alimentar o proximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitacao adicional. O programa que nao muda nao esta sendo monitorado.</div></div>
+`}, NULL)`;
 
   // ── Module 3: Planejamento da Auditoria ──
   const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Planejamento da Auditoria', 'Análise documental, plano de auditoria, checklists e amostragem', 3) RETURNING id`;
