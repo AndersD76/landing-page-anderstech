@@ -105,23 +105,17 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration p{color:rgba(255,255,255,.9);margin-bottom:10px}
 .lesson-body .narration p:last-child{margin-bottom:0}
 
-.lesson-body .diagram{background:linear-gradient(135deg,#0f1d3d,#1a2d52);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px;margin:28px 0;text-align:center}
-.lesson-body .diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.lesson-body .diagram{background:linear-gradient(135deg,#0f1d3d 0%,#1a2d52 100%);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;margin:28px 0;text-align:center;position:relative;overflow:hidden}
+.lesson-body .diagram::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(37,99,235,.06) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(197,56,60,.04) 0%,transparent 50%);pointer-events:none}
+.lesson-body .diagram svg{max-width:100%;height:auto;display:block;margin:0 auto;position:relative;z-index:1}
 .lesson-body .diagram svg [fill="#0b1730"]:not(rect){fill:#7b92b8}
 .lesson-body .diagram svg [stroke="#0b1730"]{stroke:#5a7aa8}
 .lesson-body .diagram svg marker [fill="#0b1730"]{fill:#5a7aa8}
-.lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:rgba(255,255,255,.5);margin-top:12px;letter-spacing:.02em}
-
-/* Concept display (replaces SVG diagrams) */
-.concept-display{background:linear-gradient(135deg,#0f1d3d 0%,#1a2d52 100%);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px 28px;margin:24px 0;text-align:center}
-.cd-label{font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px}
-.cd-flow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
-.cd-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;padding:8px 16px;font-size:13px;border-radius:6px;font-weight:500;transition:all .25s;cursor:default}
-.cd-chip:hover{background:rgba(255,255,255,.14);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-.cd-chip.main{background:rgba(197,56,60,.2);border-color:rgba(197,56,60,.4);color:#fff;font-weight:700;font-size:14px}
-.cd-arrow{color:rgba(255,255,255,.25);font-size:16px}
-.cd-caption{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.4);margin-top:14px;letter-spacing:.02em}
-@media(max-width:640px){.cd-flow{gap:6px}.cd-chip{padding:6px 12px;font-size:12px}}
+.lesson-body .diagram svg rect{cursor:default;transition:filter .3s,transform .3s;transform-origin:center}
+.lesson-body .diagram svg rect:hover{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,255,255,.12));transform:scale(1.04)}
+.lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:rgba(255,255,255,.45);margin-top:14px;letter-spacing:.02em;position:relative;z-index:1}
+/* Slide content transition */
+.lesson-body{transition:opacity .3s ease,transform .3s ease}
 
 /* Reflection prompt */
 .reflect-card{background:linear-gradient(135deg,#fefce8,#fef9c3);border-left:4px solid #eab308;border-radius:0 8px 8px 0;padding:18px 22px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:all .2s}
@@ -466,6 +460,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
           var rd=document.getElementById('examResult');
           rd.style.display='block';
           if(res.passed){
+            showConfetti();
             rd.className='exam-result passed';
             rd.innerHTML='<h2>Aprovado!</h2>'
               +'<div class="score">'+Math.round(res.score)+'%</div>'
@@ -578,8 +573,14 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         if(hasInteractive(content)){
           content='<div class="interact-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg> Interaja com os elementos abaixo</div>'+content;
         }
+        sc.style.transition='none';
+        sc.style.opacity='0';sc.style.transform='translateY(14px)';
         sc.innerHTML=content;
         document.getElementById('slideViewport').scrollTop=0;
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+          sc.style.transition='opacity .35s ease,transform .35s ease';
+          sc.style.opacity='1';sc.style.transform='translateY(0)';
+        })});
 
         var isLast=idx===slides.length-1;
         document.getElementById('slidePrev').disabled=idx===0;
@@ -593,7 +594,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
             nextBtn.onclick=function(){
               fetch('/ead/api/lesson/'+id+'/complete',{method:'POST'}).then(function(r){return r.json()}).then(function(){
                 l.completed=true;
-                showToast('Aula concluída!');
+                showToast('Aula concluída!');showConfetti();
                 courseData.modules.forEach(function(m){
                   (m.aulas||[]).forEach(function(a){if(a.id===id)a.completed=true});
                 });
@@ -647,7 +648,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         });
 
         initInteractive();
-        upgradeDiagrams();
+        main.querySelectorAll('.diagram').forEach(animateDiagram);
+        animateKpis();
         addSlideInteractions(content,idx);
       }
 
@@ -761,7 +763,96 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     });
   }
 
-  function upgradeDiagrams(){}
+  function animateDiagram(d){
+    var svg=d.querySelector('svg');
+    if(!svg||d.dataset.animated)return;
+    d.dataset.animated='1';
+    var rects=[],texts=[],lines=[];
+    svg.querySelectorAll('rect').forEach(function(r){rects.push(r)});
+    svg.querySelectorAll('text').forEach(function(t){texts.push(t)});
+    svg.querySelectorAll('path,line,polyline').forEach(function(el){
+      var p=el.parentNode;
+      while(p&&p!==svg){if(p.tagName==='defs'||p.tagName==='marker')return;p=p.parentNode}
+      lines.push(el);
+    });
+    rects.forEach(function(r){r.style.transform='scale(0)';r.style.transformOrigin='center'});
+    texts.forEach(function(t){t.style.opacity='0'});
+    lines.forEach(function(l){
+      var len;
+      if(l.tagName.toLowerCase()==='line'){
+        var dx=parseFloat(l.getAttribute('x2')||0)-parseFloat(l.getAttribute('x1')||0);
+        var dy=parseFloat(l.getAttribute('y2')||0)-parseFloat(l.getAttribute('y1')||0);
+        len=Math.sqrt(dx*dx+dy*dy);
+      }else{try{len=l.getTotalLength()}catch(e){len=200}}
+      if(len>0){l.style.strokeDasharray=len;l.style.strokeDashoffset=len}
+    });
+    var delay=100;
+    rects.forEach(function(r){
+      setTimeout(function(){r.style.transition='transform .5s cubic-bezier(.34,1.56,.64,1)';r.style.transform='scale(1)'},delay);
+      delay+=80;
+    });
+    texts.forEach(function(t){
+      setTimeout(function(){t.style.transition='opacity .3s ease';t.style.opacity='1'},delay);
+      delay+=30;
+    });
+    lines.forEach(function(l){
+      setTimeout(function(){l.style.transition='stroke-dashoffset .6s ease-out';l.style.strokeDashoffset='0'},delay);
+      delay+=100;
+    });
+  }
+
+  function showConfetti(){
+    var canvas=document.createElement('canvas');
+    canvas.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999';
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    document.body.appendChild(canvas);
+    var ctx=canvas.getContext('2d');
+    var colors=['#c5383c','#2563eb','#16a34a','#eab308','#8b5cf6','#ec4899'];
+    var pieces=[];
+    for(var i=0;i<100;i++){
+      pieces.push({x:canvas.width*.5+(Math.random()-.5)*300,y:canvas.height*.35,
+        vx:(Math.random()-.5)*16,vy:-Math.random()*22-4,
+        w:5+Math.random()*7,h:3+Math.random()*4,
+        color:colors[Math.floor(Math.random()*colors.length)],
+        rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.3,life:1});
+    }
+    function frame(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      var alive=false;
+      pieces.forEach(function(p){
+        if(p.life<=0)return;alive=true;
+        p.x+=p.vx;p.y+=p.vy;p.vy+=.45;p.rot+=p.rv;p.life-=.007;p.vx*=.99;
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+        ctx.globalAlpha=Math.min(p.life*2,1);ctx.fillStyle=p.color;
+        ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+      });
+      if(alive)requestAnimationFrame(frame);else canvas.remove();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function animateKpis(){
+    main.querySelectorAll('.kpi-value').forEach(function(el){
+      var text=el.textContent.trim();
+      var match=text.match(/^([\d.,]+)(.*)$/);
+      if(!match)return;
+      var numStr=match[1];var suffix=match[2];
+      var hasComma=numStr.indexOf(',')>=0;
+      var target=parseFloat(numStr.replace(/\./g,'').replace(',','.'));
+      if(isNaN(target))return;
+      var startTime=null;
+      function step(ts){
+        if(!startTime)startTime=ts;
+        var p=Math.min((ts-startTime)/1200,1);
+        var e=1-Math.pow(1-p,3);
+        var v=target*e;
+        if(hasComma)el.textContent=v.toFixed(1).replace('.',',')+suffix;
+        else el.textContent=Math.round(v).toLocaleString('pt-BR')+suffix;
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
 
   function addSlideInteractions(content,idx){
     var sc=document.getElementById('slideContent');
