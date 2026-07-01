@@ -850,10 +850,10 @@ router.get('/ead/registro', (req, res) => {
 });
 router.get('/ead/meus-cursos', requireEadAuth, (req, res) => { if (!sendEadPage('meus-cursos.html', res)) res.redirect('/ead/cursos'); });
 router.get('/ead/player/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('player.html', res)) res.redirect('/ead/meus-cursos'); });
-router.get('/ead/checkout/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('checkout.html', res)) res.redirect('/ead/cursos'); });
 router.get('/ead/checkout/sucesso', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-sucesso.html', res)) res.redirect('/ead/meus-cursos'); });
 router.get('/ead/checkout/erro', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-erro.html', res)) res.redirect('/ead/cursos'); });
 router.get('/ead/checkout/pendente', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-pendente.html', res)) res.redirect('/ead/meus-cursos'); });
+router.get('/ead/checkout/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('checkout.html', res)) res.redirect('/ead/cursos'); });
 router.get('/ead/certificado/:code', (req, res) => { if (!sendEadPage('certificado.html', res)) res.redirect('/ead/cursos'); });
 
 export { router as eadRouter, initEadDB };

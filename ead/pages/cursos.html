@@ -88,7 +88,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 .ead-header{background:var(--navy);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .ead-header .left{display:flex;align-items:center;gap:16px}
 .ead-header a.brand{color:#fff;text-decoration:none;font-weight:600;font-size:18px;display:flex;align-items:center;gap:10px}
-.ead-header img{height:40px}
+.ead-header img{height:56px}
 .ead-header .tag{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
 .ead-header .right{display:flex;align-items:center;gap:12px}
 .ead-header .right a{color:rgba(255,255,255,.7);text-decoration:none;font-size:14px;padding:8px 16px;transition:color .2s}
@@ -219,7 +219,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
         +'<p class="desc">'+(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
         +'<div class="bottom">'
         +priceHtml
-        +(c.enrolled?'<a href="/ead/player/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar curso</a>':'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Acessar grátis</a>')
+        +(c.enrolled?'<a href="/ead/player/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar curso</a>':(c.promo_gratuito?'<a href="/ead/checkout/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar grátis</a>':'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Ver detalhes</a>'))
         +'</div></div></div>';
     }).join('');
   }).catch(function(){
