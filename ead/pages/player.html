@@ -45,8 +45,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
 /* Slide viewport */
 .slide-viewport{flex:1;overflow-y:auto;padding:32px 48px 40px}
-.slide-viewport .lesson-body{max-width:960px;animation:slideFadeIn .35s ease}
-@keyframes slideFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.slide-viewport .lesson-body{max-width:960px}
 
 /* Slide navigation bar */
 .slide-bar{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:#fff;border-top:1px solid #e5e7eb;gap:16px}
@@ -106,9 +105,47 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration p{color:rgba(255,255,255,.9);margin-bottom:10px}
 .lesson-body .narration p:last-child{margin-bottom:0}
 
-.lesson-body .diagram{background:var(--navy);border:none;padding:28px;margin:28px 0;text-align:center}
-.lesson-body .diagram svg{max-width:100%;height:auto}
-.lesson-body .diagram figcaption{font-size:13px;color:rgba(255,255,255,.6);margin-top:14px;font-family:var(--ff-mono)}
+.lesson-body .diagram{background:var(--navy);border:none;padding:28px;margin:28px 0;text-align:center;display:none}
+
+/* Concept display (replaces SVG diagrams) */
+.concept-display{background:linear-gradient(135deg,#0f1d3d 0%,#1a2d52 100%);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px 28px;margin:24px 0;text-align:center}
+.cd-label{font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);margin-bottom:14px}
+.cd-flow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.cd-chip{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;padding:8px 16px;font-size:13px;border-radius:6px;font-weight:500;transition:all .25s;cursor:default}
+.cd-chip:hover{background:rgba(255,255,255,.14);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.cd-chip.main{background:rgba(197,56,60,.2);border-color:rgba(197,56,60,.4);color:#fff;font-weight:700;font-size:14px}
+.cd-arrow{color:rgba(255,255,255,.25);font-size:16px}
+.cd-caption{font-family:var(--ff-mono);font-size:11px;color:rgba(255,255,255,.4);margin-top:14px;letter-spacing:.02em}
+@media(max-width:640px){.cd-flow{gap:6px}.cd-chip{padding:6px 12px;font-size:12px}}
+
+/* Reflection prompt */
+.reflect-card{background:linear-gradient(135deg,#fefce8,#fef9c3);border-left:4px solid #eab308;border-radius:0 8px 8px 0;padding:18px 22px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:all .2s}
+.reflect-card:hover{box-shadow:0 2px 12px rgba(234,179,8,.15)}
+.reflect-card .rc-icon{background:#fbbf24;color:#78350f;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-family:var(--ff-mono);font-size:16px}
+.reflect-card .rc-text{font-size:14px;line-height:1.6;color:#713f12}
+.reflect-card .rc-text strong{color:#92400e}
+.reflect-card .rc-answer{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(234,179,8,.3);font-style:italic;color:#92400e}
+.reflect-card.open .rc-answer{display:block}
+
+/* Narration expandable */
+.lesson-body .narration{cursor:pointer;position:relative}
+.lesson-body .narration .narr-expand{position:absolute;bottom:8px;right:12px;font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35);transition:color .2s}
+.lesson-body .narration:hover .narr-expand{color:rgba(255,255,255,.6)}
+.lesson-body .narration.collapsed p:not(:first-of-type){display:none}
+.lesson-body .narration.collapsed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#1e3a5f)}
+
+/* Staggered entrance animation */
+@keyframes blockEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.lesson-body.animate>*{opacity:0;animation:blockEnter .4s ease forwards}
+.lesson-body.animate>*:nth-child(1){animation-delay:.05s}
+.lesson-body.animate>*:nth-child(2){animation-delay:.12s}
+.lesson-body.animate>*:nth-child(3){animation-delay:.19s}
+.lesson-body.animate>*:nth-child(4){animation-delay:.26s}
+.lesson-body.animate>*:nth-child(5){animation-delay:.33s}
+.lesson-body.animate>*:nth-child(6){animation-delay:.40s}
+.lesson-body.animate>*:nth-child(7){animation-delay:.47s}
+.lesson-body.animate>*:nth-child(8){animation-delay:.54s}
+.lesson-body.animate>*:nth-child(n+9){animation-delay:.6s}
 
 .lesson-body .checklist{list-style:none;margin:24px 0;padding:0}
 .lesson-body .checklist li{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--card);border:1px solid #e5e7eb;margin-bottom:8px;font-size:16px;cursor:pointer;transition:all .2s;user-select:none}
@@ -235,6 +272,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
   var slides=[];
   var slideIdx=0;
   var keyHandler=null;
+  var showSlideFunc=null;
 
   window.addEventListener('pageshow',function(e){if(e.persisted)window.location.reload()});
   function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3000)}
@@ -294,19 +332,21 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     parts=parts.filter(function(p){return p.trim().length>20});
     if(!parts.length)parts=[html];
     var final=[];
+    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box))/i;
+    var BLOCK_RE=/(?=<(?:p>|p |ul[\s>]|ol[\s>]|blockquote|table[\s>]|div class="))/i;
     parts.forEach(function(s){
-      if(s.length<1200){final.push(s);return}
-      var blocks=s.split(/(?=<(?:div class="|<p>|<ul|<ol|<blockquote|<table))/i);
-      var chunk='',count=0;
-      blocks.forEach(function(b){
-        if(chunk.length+b.length>1200&&chunk.length>100){
-          final.push(chunk);
-          chunk=b;
-        }else{
-          chunk+=b;
-        }
+      var visBlocks=s.split(VISUAL_RE);
+      visBlocks.forEach(function(vb){
+        if(vb.length<600){if(vb.trim().length>20)final.push(vb);return}
+        var subs=vb.split(BLOCK_RE);
+        var chunk='';
+        subs.forEach(function(sub){
+          if(chunk.length+sub.length>600&&chunk.length>60){
+            final.push(chunk);chunk=sub;
+          }else{chunk+=sub;}
+        });
+        if(chunk.trim().length>20)final.push(chunk);
       });
-      if(chunk.trim().length>20)final.push(chunk);
     });
     return final.length?final:[html];
   }
@@ -361,7 +401,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
       function showSlide(idx){
         if(idx<0||idx>=slides.length)return;
-        slideIdx=idx;
+        slideIdx=idx;showSlideFunc=showSlide;
         if(visited.indexOf(idx)===-1)visited.push(idx);
         var sc=document.getElementById('slideContent');
         var content=slides[idx];
@@ -369,9 +409,6 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
           content='<div class="interact-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg> Interaja com os elementos abaixo</div>'+content;
         }
         sc.innerHTML=content;
-        sc.style.animation='none';
-        sc.offsetHeight;
-        sc.style.animation='';
         document.getElementById('slideViewport').scrollTop=0;
 
         var isLast=idx===slides.length-1;
@@ -430,6 +467,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         });
 
         initInteractive();
+        upgradeDiagrams();
+        addSlideInteractions(content,idx);
       }
 
       document.querySelectorAll('.slide-dot').forEach(function(dot){
@@ -496,6 +535,22 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
         });
       });
     });
+    // Narration: make expandable if multiple paragraphs
+    main.querySelectorAll('.narration').forEach(function(n){
+      var ps=n.querySelectorAll('p');
+      if(ps.length>2){
+        n.classList.add('collapsed');
+        var exp=document.createElement('span');
+        exp.className='narr-expand';
+        exp.textContent='Clique para expandir';
+        n.appendChild(exp);
+        n.addEventListener('click',function(){
+          n.classList.toggle('collapsed');
+          exp.textContent=n.classList.contains('collapsed')?'Clique para expandir':'Clique para recolher';
+        });
+      }
+    });
+
     main.querySelectorAll('.template-box').forEach(function(tb){
       if(tb.querySelector('.template-copy-btn'))return;
       var btn=document.createElement('button');
@@ -525,6 +580,99 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
       tb.appendChild(btn);
     });
   }
+
+  function upgradeDiagrams(){
+    main.querySelectorAll('.diagram').forEach(function(d){
+      var svg=d.querySelector('svg');
+      var cap=d.querySelector('figcaption');
+      if(!svg)return;
+      var items=[];
+      svg.querySelectorAll('text').forEach(function(t){
+        var txt=t.textContent.trim();
+        if(!txt||txt.length<2)return;
+        items.push({t:txt,x:parseFloat(t.getAttribute('x')||0),y:parseFloat(t.getAttribute('y')||0),b:t.getAttribute('font-weight')==='bold',s:parseInt(t.getAttribute('font-size')||'10')});
+      });
+      if(!items.length)return;
+      var merged=[];
+      items.forEach(function(it){
+        var found=false;
+        for(var m=0;m<merged.length;m++){
+          if(Math.abs(it.x-merged[m].x)<15&&Math.abs(it.y-merged[m].y)<18){
+            merged[m].t+=' '+it.t;
+            if(it.b)merged[m].b=true;
+            if(it.s>merged[m].s)merged[m].s=it.s;
+            merged[m].y=Math.max(merged[m].y,it.y);
+            found=true;break;
+          }
+        }
+        if(!found)merged.push({t:it.t,x:it.x,y:it.y,b:it.b,s:it.s});
+      });
+      var concepts=[];var seen={};
+      merged.forEach(function(m){
+        var k=m.t.toLowerCase().trim();
+        if(!seen[k]&&m.t.length>2){seen[k]=true;concepts.push({text:m.t,main:m.b&&m.s>=10});}
+      });
+      if(!concepts.length)return;
+      var h='<div class="concept-display"><div class="cd-label">Mapa conceitual</div><div class="cd-flow">';
+      concepts.forEach(function(c,i){
+        if(i>0&&concepts.length<=12)h+='<span class="cd-arrow">→</span>';
+        h+='<span class="cd-chip'+(c.main?' main':'')+'">'+c.text+'</span>';
+      });
+      h+='</div>';
+      if(cap)h+='<div class="cd-caption">'+cap.textContent+'</div>';
+      h+='</div>';
+      d.outerHTML=h;
+    });
+  }
+
+  function addSlideInteractions(content,idx){
+    var sc=document.getElementById('slideContent');
+    if(!sc)return;
+    // Staggered entrance animation
+    sc.classList.add('animate');
+    setTimeout(function(){sc.classList.remove('animate')},1200);
+
+    // Reflection prompt on content-only slides (no quiz, every 3rd)
+    if(idx>0&&idx%3===0&&!hasInteractive(content)){
+      var strongMatch=content.match(/<strong>([^<]{8,60})<\/strong>/);
+      if(strongMatch){
+        var topic=strongMatch[1].replace(/^\w/,function(c){return c.toLowerCase()});
+        var prompts=['Como '+topic+' se aplica na sua realidade?','Você consegue dar um exemplo prático de '+topic+'?','Na sua empresa, como '+topic+' é tratado hoje?','Que dificuldades você já enfrentou com '+topic+'?'];
+        var prompt=prompts[idx%prompts.length];
+        var card=document.createElement('div');
+        card.className='reflect-card';
+        card.innerHTML='<div class="rc-icon">?</div><div class="rc-text"><strong>Reflita:</strong> '+prompt+'<div class="rc-answer">Anote suas ideias! Usar exemplos reais ajuda a fixar o conceito.</div></div>';
+        card.addEventListener('click',function(){card.classList.toggle('open')});
+        sc.appendChild(card);
+      }
+    }
+
+    // Make insight boxes clickable (toggle highlight)
+    sc.querySelectorAll('.insight-box').forEach(function(ib){
+      ib.style.cursor='pointer';
+      ib.addEventListener('click',function(){
+        if(ib.style.borderLeftColor==='rgb(22, 163, 74)'){
+          ib.style.borderLeftColor='';ib.style.background='';
+        }else{
+          ib.style.borderLeftColor='#16a34a';ib.style.background='#f0fdf4';
+        }
+      });
+    });
+  }
+
+  // Touch swipe navigation
+  var swipeStartX=0,swipeStartY=0;
+  document.addEventListener('touchstart',function(e){
+    swipeStartX=e.changedTouches[0].screenX;
+    swipeStartY=e.changedTouches[0].screenY;
+  },{passive:true});
+  document.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].screenX-swipeStartX;
+    var dy=e.changedTouches[0].screenY-swipeStartY;
+    if(Math.abs(dx)<60||Math.abs(dy)>Math.abs(dx))return;
+    if(dx>0&&slideIdx>0&&showSlideFunc){showSlideFunc(slideIdx-1)}
+    else if(dx<0&&slideIdx<slides.length-1&&showSlideFunc){showSlideFunc(slideIdx+1)}
+  },{passive:true});
 })();
 </script>
 </body>
