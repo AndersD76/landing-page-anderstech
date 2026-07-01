@@ -496,16 +496,16 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     parts=parts.filter(function(p){return p.trim().length>20});
     if(!parts.length)parts=[html];
     var final=[];
-    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box|example|callout))/i;
+    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box))/i;
     var BLOCK_RE=/(?=<(?:p>|p |ul[\s>]|ol[\s>]|blockquote|table[\s>]|div class="))/i;
     parts.forEach(function(s){
       var visBlocks=s.split(VISUAL_RE);
       visBlocks.forEach(function(vb){
-        if(vb.length<600){if(vb.trim().length>20)final.push(vb);return}
+        if(vb.length<1000){if(vb.trim().length>20)final.push(vb);return}
         var subs=vb.split(BLOCK_RE);
         var chunk='';
         subs.forEach(function(sub){
-          if(chunk.length+sub.length>600&&chunk.length>60){
+          if(chunk.length+sub.length>1000&&chunk.length>60){
             final.push(chunk);chunk=sub;
           }else{chunk+=sub;}
         });
