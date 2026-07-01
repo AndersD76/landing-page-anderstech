@@ -105,7 +105,12 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration p{color:rgba(255,255,255,.9);margin-bottom:10px}
 .lesson-body .narration p:last-child{margin-bottom:0}
 
-.lesson-body .diagram{background:var(--navy);border:none;padding:28px;margin:28px 0;text-align:center;display:none}
+.lesson-body .diagram{background:linear-gradient(135deg,#0f1d3d,#1a2d52);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px;margin:28px 0;text-align:center}
+.lesson-body .diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.lesson-body .diagram svg [fill="#0b1730"]:not(rect){fill:#7b92b8}
+.lesson-body .diagram svg [stroke="#0b1730"]{stroke:#5a7aa8}
+.lesson-body .diagram svg marker [fill="#0b1730"]{fill:#5a7aa8}
+.lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:rgba(255,255,255,.5);margin-top:12px;letter-spacing:.02em}
 
 /* Concept display (replaces SVG diagrams) */
 .concept-display{background:linear-gradient(135deg,#0f1d3d 0%,#1a2d52 100%);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px 28px;margin:24px 0;text-align:center}
@@ -756,49 +761,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
     });
   }
 
-  function upgradeDiagrams(){
-    main.querySelectorAll('.diagram').forEach(function(d){
-      var svg=d.querySelector('svg');
-      var cap=d.querySelector('figcaption');
-      if(!svg)return;
-      var items=[];
-      svg.querySelectorAll('text').forEach(function(t){
-        var txt=t.textContent.trim();
-        if(!txt||txt.length<2)return;
-        items.push({t:txt,x:parseFloat(t.getAttribute('x')||0),y:parseFloat(t.getAttribute('y')||0),b:t.getAttribute('font-weight')==='bold',s:parseInt(t.getAttribute('font-size')||'10')});
-      });
-      if(!items.length)return;
-      var merged=[];
-      items.forEach(function(it){
-        var found=false;
-        for(var m=0;m<merged.length;m++){
-          if(Math.abs(it.x-merged[m].x)<15&&Math.abs(it.y-merged[m].y)<18){
-            merged[m].t+=' '+it.t;
-            if(it.b)merged[m].b=true;
-            if(it.s>merged[m].s)merged[m].s=it.s;
-            merged[m].y=Math.max(merged[m].y,it.y);
-            found=true;break;
-          }
-        }
-        if(!found)merged.push({t:it.t,x:it.x,y:it.y,b:it.b,s:it.s});
-      });
-      var concepts=[];var seen={};
-      merged.forEach(function(m){
-        var k=m.t.toLowerCase().trim();
-        if(!seen[k]&&m.t.length>2){seen[k]=true;concepts.push({text:m.t,main:m.b&&m.s>=10});}
-      });
-      if(!concepts.length)return;
-      var h='<div class="concept-display"><div class="cd-label">Mapa conceitual</div><div class="cd-flow">';
-      concepts.forEach(function(c,i){
-        if(i>0&&concepts.length<=12)h+='<span class="cd-arrow">→</span>';
-        h+='<span class="cd-chip'+(c.main?' main':'')+'">'+c.text+'</span>';
-      });
-      h+='</div>';
-      if(cap)h+='<div class="cd-caption">'+cap.textContent+'</div>';
-      h+='</div>';
-      d.outerHTML=h;
-    });
-  }
+  function upgradeDiagrams(){}
 
   function addSlideInteractions(content,idx){
     var sc=document.getElementById('slideContent');
