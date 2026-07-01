@@ -193,6 +193,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
   var courseData=null;
   var currentLessonId=null;
 
+  window.addEventListener('pageshow',function(e){if(e.persisted)window.location.reload()});
   function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},3000)}
 
   // Sidebar toggle
@@ -249,8 +250,17 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
   function loadLesson(id){
     currentLessonId=id;
     main.innerHTML='<div class="loading">Carregando aula...</div>';
-    fetch('/ead/api/lesson/'+id).then(function(r){return r.json()}).then(function(l){
-      if(!l.id){main.innerHTML='<div class="loading">Aula não encontrada.</div>';return}
+    fetch('/ead/api/lesson/'+id).then(function(r){
+      if(r.status===401){window.location.href='/ead/login?redirect='+encodeURIComponent(window.location.pathname);return}
+      if(r.status===403){window.location.href='/ead/checkout/'+slug;return}
+      return r.json();
+    }).then(function(l){
+      if(!l)return;
+      if(!l.id){
+        main.innerHTML='<div class="loading">'+(l.error||'Aula não encontrada.')+'<br><br><button id="retryBtn" style="padding:10px 24px;background:var(--red);color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:600">Tentar novamente</button></div>';
+        document.getElementById('retryBtn').addEventListener('click',function(){loadLesson(id)});
+        return;
+      }
 
       var navHtml='<div class="nav-btns">';
       if(l.prev)navHtml+='<a href="#" class="nav-btn" data-id="'+l.prev.id+'">&larr; '+l.prev.titulo+'</a>';
@@ -287,7 +297,10 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
       main.querySelectorAll('.nav-btn').forEach(function(btn){
         btn.addEventListener('click',function(e){e.preventDefault();loadLesson(parseInt(btn.dataset.id))});
       });
-    }).catch(function(){main.innerHTML='<div class="loading">Erro ao carregar aula.</div>'});
+    }).catch(function(){
+      main.innerHTML='<div class="loading">Erro de conexão.<br><br><button id="retryBtn2" style="padding:10px 24px;background:var(--red);color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:600">Tentar novamente</button></div>';
+      document.getElementById('retryBtn2').addEventListener('click',function(){loadLesson(id)});
+    });
   }
 
   function initInteractive(){
