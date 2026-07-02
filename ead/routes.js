@@ -574,6 +574,201 @@ router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res)
 });
 
 // ═══════════════════════════════════════════════════════════════════
+// Template PDF download
+// ═══════════════════════════════════════════════════════════════════
+
+router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
+  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
+  try {
+    const lessonId = parseInt(req.params.lessonId);
+    const rows = await sql`
+      SELECT l.titulo AS lesson_titulo, l.conteudo,
+             m.titulo AS module_titulo, c.titulo AS course_titulo
+      FROM ead_lessons l
+      JOIN ead_modules m ON m.id = l.module_id
+      JOIN ead_courses c ON c.id = m.course_id
+      WHERE l.id = ${lessonId}
+    `;
+    if (!rows.length) return res.status(404).json({ error: 'Aula não encontrada' });
+    const row = rows[0];
+
+    const templateTitle = req.query.t || 'Template';
+    const cleanTitle = templateTitle.replace(/^Download:\s*/i, '').trim();
+
+    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const safeFilename = cleanTitle.replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-').substring(0, 60);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="template-${safeFilename}.pdf"`);
+    doc.pipe(res);
+
+    const NAVY = '#0b1730';
+    const RED = '#c5383c';
+    const GRAY = '#666666';
+    const LIGHT = '#f4f5f7';
+    const pw = doc.page.width - 100;
+
+    doc.rect(0, 0, doc.page.width, 80).fill(NAVY);
+    doc.fontSize(16).font('Helvetica-Bold').fillColor('#ffffff').text('ANDERS TECH', 50, 25);
+    doc.fontSize(9).font('Helvetica').fillColor('rgba(255,255,255,0.6)').text('Gestao com Tecnologia', 50, 45);
+    doc.fillColor(RED).rect(50, 65, 60, 3).fill(RED);
+
+    doc.moveDown(4);
+    doc.fontSize(18).font('Helvetica-Bold').fillColor(NAVY).text(cleanTitle, 50, 100, { width: pw });
+    doc.moveDown(0.5);
+    doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(`Curso: ${row.course_titulo}  |  Modulo: ${row.module_titulo}  |  Aula: ${row.lesson_titulo}`, 50, doc.y, { width: pw });
+    doc.moveDown(0.3);
+    doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.5).stroke('#e5e7eb');
+    doc.moveDown(1);
+
+    const t = cleanTitle.toLowerCase();
+    const startY = doc.y;
+
+    if (t.includes('checklist') || t.includes('check-list')) {
+      const items = extractListItems(row.conteudo, cleanTitle);
+      doc.fontSize(11).font('Helvetica').fillColor('#333');
+      items.forEach((item, i) => {
+        if (doc.y > 720) { doc.addPage(); }
+        const y = doc.y;
+        doc.rect(50, y, 14, 14).lineWidth(1).stroke(NAVY);
+        doc.text(item, 72, y + 1, { width: pw - 22 });
+        doc.moveDown(0.6);
+      });
+    } else if (t.includes('tabela comparativa') || t.includes('comparativo') || t.includes('comparacao')) {
+      const cols = ['Aspecto', 'Antes / Versao anterior', 'Depois / Versao atual', 'Impacto'];
+      drawTable(doc, cols, 8, pw, NAVY);
+    } else if (t.includes('matriz') || t.includes('planilha')) {
+      const cols = detectColumns(cleanTitle);
+      drawTable(doc, cols, 10, pw, NAVY);
+    } else if (t.includes('mapa') || t.includes('quadro')) {
+      const items = extractListItems(row.conteudo, cleanTitle);
+      doc.fontSize(11).font('Helvetica').fillColor('#333');
+      items.forEach((item, i) => {
+        if (doc.y > 720) { doc.addPage(); }
+        doc.font('Helvetica-Bold').fillColor(NAVY).text(`${i + 1}. ${item}`, 50, doc.y, { width: pw });
+        doc.moveDown(0.2);
+        doc.font('Helvetica').fillColor(GRAY).text('Observacoes: ________________________________________________________', 66, doc.y, { width: pw - 16 });
+        doc.moveDown(0.8);
+      });
+    } else if (t.includes('modelo') || t.includes('template') || t.includes('ficha')) {
+      const fields = detectFields(cleanTitle);
+      doc.fontSize(11).font('Helvetica');
+      fields.forEach(f => {
+        if (doc.y > 700) { doc.addPage(); }
+        doc.font('Helvetica-Bold').fillColor(NAVY).text(f, 50, doc.y, { width: pw });
+        doc.moveDown(0.3);
+        doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
+        doc.moveDown(0.2);
+        doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
+        doc.moveDown(0.8);
+      });
+    } else {
+      const cols = detectColumns(cleanTitle);
+      drawTable(doc, cols, 10, pw, NAVY);
+    }
+
+    const pageCount = doc.bufferedPageRange().count;
+    for (let i = 0; i < pageCount; i++) {
+      doc.switchToPage(i);
+      doc.fontSize(8).fillColor('#999').text(
+        `Anders Tech  ·  ${cleanTitle}  ·  Pagina ${i + 1}/${pageCount}`,
+        50, doc.page.height - 35, { width: pw, align: 'center' }
+      );
+    }
+
+    doc.end();
+  } catch (err) {
+    console.error('EAD template error:', err);
+    res.status(500).json({ error: 'Erro ao gerar template' });
+  }
+});
+
+function extractListItems(conteudo, title) {
+  if (!conteudo) return defaultItems(title);
+  const items = [];
+  const liMatches = conteudo.match(/<li[^>]*>([\s\S]*?)<\/li>/gi) || [];
+  liMatches.forEach(li => {
+    const text = li.replace(/<[^>]+>/g, '').trim();
+    if (text.length > 5 && text.length < 200) items.push(text);
+  });
+  const strongMatches = conteudo.match(/<strong>([\s\S]*?)<\/strong>/gi) || [];
+  strongMatches.forEach(s => {
+    const text = s.replace(/<[^>]+>/g, '').trim();
+    if (text.length > 3 && text.length < 120 && !text.toLowerCase().includes('exemplo') && !text.toLowerCase().includes('importante')) {
+      if (!items.includes(text)) items.push(text);
+    }
+  });
+  if (items.length < 5) return defaultItems(title).concat(items).slice(0, 15);
+  return items.slice(0, 20);
+}
+
+function defaultItems(title) {
+  return [
+    'Item 1: _______________________________________',
+    'Item 2: _______________________________________',
+    'Item 3: _______________________________________',
+    'Item 4: _______________________________________',
+    'Item 5: _______________________________________',
+    'Item 6: _______________________________________',
+    'Item 7: _______________________________________',
+    'Item 8: _______________________________________',
+  ];
+}
+
+function detectColumns(title) {
+  const t = title.toLowerCase();
+  if (t.includes('risco')) return ['Risco / Oportunidade', 'Probabilidade', 'Impacto', 'Acao preventiva', 'Responsavel', 'Prazo'];
+  if (t.includes('objetivo') || t.includes('5w2h')) return ['Objetivo', 'O que', 'Por que', 'Quem', 'Quando', 'Como', 'Indicador'];
+  if (t.includes('processo')) return ['Processo', 'Entrada', 'Atividades', 'Saida', 'Indicador', 'Responsavel'];
+  if (t.includes('parte') && t.includes('interessada')) return ['Parte interessada', 'Tipo', 'Requisitos', 'Prioridade', 'Acao'];
+  if (t.includes('contexto') || t.includes('swot')) return ['Fator', 'Interno/Externo', 'Descricao', 'Impacto no SGQ', 'Acao'];
+  if (t.includes('auditoria') || t.includes('audit')) return ['Requisito', 'Evidencia esperada', 'Conformidade', 'Observacao'];
+  if (t.includes('competencia') || t.includes('treinamento')) return ['Cargo/Funcao', 'Competencia necessaria', 'Atual', 'Gap', 'Acao'];
+  if (t.includes('indicador')) return ['Indicador', 'Formula', 'Meta', 'Frequencia', 'Responsavel', 'Resultado'];
+  if (t.includes('acao') || t.includes('corretiva') || t.includes('nao conformidade')) return ['NC #', 'Descricao', 'Causa raiz', 'Acao corretiva', 'Responsavel', 'Prazo', 'Status'];
+  if (t.includes('fornecedor')) return ['Fornecedor', 'Material/Servico', 'Criterio', 'Avaliacao', 'Status'];
+  if (t.includes('documento') || t.includes('registro')) return ['Documento', 'Codigo', 'Versao', 'Responsavel', 'Local', 'Retencao'];
+  if (t.includes('clausula') || t.includes('pdca')) return ['Clausula', 'Requisito-chave', 'Fase PDCA', 'Aplicacao na empresa'];
+  if (t.includes('politica')) return ['Componente', 'Descricao', 'Alinhamento estrategico', 'Responsavel'];
+  if (t.includes('5s') || t.includes('senso')) return ['Senso', 'Acao', 'Local', 'Responsavel', 'Prazo', 'Status'];
+  if (t.includes('desperdicio') || t.includes('muda')) return ['Desperdicio', 'Descricao', 'Onde ocorre', 'Impacto', 'Acao'];
+  return ['Item', 'Descricao', 'Responsavel', 'Prazo', 'Status'];
+}
+
+function detectFields(title) {
+  const t = title.toLowerCase();
+  if (t.includes('politica')) return ['Empresa:', 'Missao:', 'Visao:', 'Politica da Qualidade:', 'Objetivos:', 'Aprovacao:', 'Data:'];
+  if (t.includes('contexto') || t.includes('swot')) return ['Empresa:', 'Forcas (Strengths):', 'Fraquezas (Weaknesses):', 'Oportunidades (Opportunities):', 'Ameacas (Threats):', 'Fatores internos relevantes:', 'Fatores externos relevantes:', 'Implicacoes para o SGQ:'];
+  if (t.includes('processo') || t.includes('ficha')) return ['Nome do processo:', 'Responsavel (dono):', 'Objetivo:', 'Entradas:', 'Saidas:', 'Recursos necessarios:', 'Indicadores:', 'Riscos associados:', 'Interacao com outros processos:'];
+  if (t.includes('auditoria') || t.includes('audit')) return ['Auditoria #:', 'Data:', 'Auditor lider:', 'Equipe:', 'Escopo:', 'Criterio:', 'Resumo das constatacoes:', 'Nao conformidades:', 'Oportunidades de melhoria:', 'Conclusao:'];
+  return ['Empresa:', 'Responsavel:', 'Data:', 'Objetivo:', 'Descricao:', 'Observacoes:', 'Aprovacao:'];
+}
+
+function drawTable(doc, cols, numRows, pageWidth, headerColor) {
+  const colWidth = Math.floor(pageWidth / cols.length);
+  const startX = 50;
+  let y = doc.y;
+
+  doc.fontSize(9).font('Helvetica-Bold').fillColor('#ffffff');
+  cols.forEach((col, i) => {
+    doc.rect(startX + i * colWidth, y, colWidth, 22).fill(headerColor);
+    doc.fillColor('#ffffff').text(col, startX + i * colWidth + 4, y + 6, { width: colWidth - 8 });
+  });
+  doc.fillColor('#333');
+  y += 22;
+
+  doc.font('Helvetica').fontSize(9);
+  for (let r = 0; r < numRows; r++) {
+    if (y > 720) { doc.addPage(); y = 50; }
+    const bg = r % 2 === 0 ? '#ffffff' : '#f8fafc';
+    cols.forEach((_, i) => {
+      doc.rect(startX + i * colWidth, y, colWidth, 28).fill(bg).stroke('#e5e7eb');
+    });
+    y += 28;
+  }
+  doc.y = y + 10;
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // Certificate PDF
 // ═══════════════════════════════════════════════════════════════════
 
