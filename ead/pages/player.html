@@ -254,6 +254,90 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 
 @media(max-width:640px){.lesson-body .comparison{grid-template-columns:1fr}.lesson-body .comp-col:first-child{border-right:none;border-bottom:1px solid #e5e7eb}.lesson-body .kpi-grid{grid-template-columns:1fr 1fr}}
 
+/* ── Interactive enrichment components ── */
+.reveal-card{margin:20px 0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;background:#fff}
+.reveal-trigger{display:flex;align-items:center;gap:10px;width:100%;padding:14px 18px;background:#f8fafc;border:none;cursor:pointer;font-family:var(--ff-display);font-size:15px;font-weight:600;color:var(--navy);transition:background .2s;text-align:left}
+.reveal-trigger:hover{background:#eef2ff}
+.reveal-trigger svg{color:#2563eb;flex-shrink:0}
+.reveal-arrow{margin-left:auto;font-size:10px;transition:transform .3s;color:var(--mute)}
+.reveal-body{max-height:0;overflow:hidden;transition:max-height .5s ease,padding .3s ease;padding:0 18px}
+.reveal-card.open .reveal-body{max-height:400px;padding:14px 18px 18px}
+.reveal-card.open .reveal-arrow{transform:rotate(180deg)}
+.reveal-body p{font-size:15px;line-height:1.7;color:#475569;margin:0 0 8px}
+.reveal-body p:last-child{margin:0}
+
+.action-card{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1px solid #93c5fd;border-radius:10px;padding:22px 24px;margin:24px 0}
+.action-header{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:#1d4ed8;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--ff-mono)}
+.action-header svg{color:#2563eb}
+.action-card>p{font-size:15px;line-height:1.7;color:#1e3a5f;margin:0 0 14px}
+.action-input{width:100%;padding:12px 16px;border:1px solid #93c5fd;border-radius:6px;font-family:var(--ff-display);font-size:14px;line-height:1.6;resize:vertical;background:#fff;color:var(--text);transition:border-color .2s}
+.action-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.action-input::placeholder{color:#94a3b8}
+.action-save{margin-top:10px;padding:8px 20px;background:#2563eb;color:#fff;border:none;cursor:pointer;font-family:var(--ff-display);font-size:13px;font-weight:600;border-radius:6px;transition:all .2s}
+.action-save:hover{background:#1d4ed8}
+.action-save.saved{background:var(--green)}
+
+.flip-section{margin:28px 0}
+.flip-header{display:flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:13px;font-weight:600;color:var(--navy);margin-bottom:14px;text-transform:uppercase;letter-spacing:.05em}
+.flip-header svg{color:var(--red)}
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.flip-card{perspective:600px;cursor:pointer;height:130px}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:14px;border-radius:10px;backface-visibility:hidden;text-align:center;line-height:1.4}
+.flip-front{background:var(--navy);color:#fff;font-weight:700;font-size:16px}
+.flip-front::after{content:'clique para revelar';position:absolute;bottom:8px;font-size:10px;font-family:var(--ff-mono);opacity:.35;font-weight:400;letter-spacing:.03em}
+.flip-back{background:#f0fdf4;color:#166534;border:2px solid #86efac;transform:rotateY(180deg);font-size:13px;line-height:1.5;padding:12px}
+
+strong.key-term{cursor:pointer;position:relative;border-bottom:2px dashed rgba(37,99,235,.3);transition:all .2s;padding:1px 3px;border-radius:3px}
+strong.key-term:hover{background:rgba(37,99,235,.08)}
+strong.key-term.highlighted{background:#dbeafe;border-bottom-color:#2563eb;border-bottom-style:solid}
+
+.reminder-card{display:flex;align-items:center;gap:14px;padding:12px 18px;margin:16px 0;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;transition:all .3s}
+.reminder-card.remembered{background:#f0fdf4;border-color:#86efac}
+.reminder-icon{width:32px;height:32px;background:#fbbf24;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.reminder-card.remembered .reminder-icon{background:var(--green)}
+.reminder-icon svg{color:#78350f}
+.reminder-card.remembered .reminder-icon svg{color:#fff}
+.reminder-text{flex:1;font-size:13px;color:#92400e;line-height:1.5}
+.reminder-card.remembered .reminder-text{color:#166534}
+.reminder-btn{padding:6px 14px;border:1px solid #f59e0b;background:transparent;color:#b45309;cursor:pointer;font-family:var(--ff-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-radius:4px;transition:all .2s;white-space:nowrap}
+.reminder-btn:hover{background:#fef3c7}
+.reminder-card.remembered .reminder-btn{border-color:var(--green);color:var(--green);background:#f0fdf4}
+
+.case-card{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:1px solid #6ee7b7;border-radius:10px;overflow:hidden;margin:24px 0}
+.case-trigger{display:flex;align-items:center;gap:10px;width:100%;padding:14px 18px;background:transparent;border:none;cursor:pointer;font-family:var(--ff-display);font-size:15px;font-weight:600;color:#065f46;text-align:left;transition:background .2s}
+.case-trigger:hover{background:rgba(16,185,129,.08)}
+.case-trigger svg{color:#059669;flex-shrink:0}
+.case-trigger .reveal-arrow{margin-left:auto;color:#6ee7b7}
+.case-body{max-height:0;overflow:hidden;transition:max-height .5s ease,padding .3s ease;padding:0 18px}
+.case-card.open .case-body{max-height:400px;padding:4px 18px 18px}
+.case-card.open .case-trigger .reveal-arrow{transform:rotate(180deg)}
+.case-body p{font-size:14px;line-height:1.7;color:#065f46;margin:0}
+
+.tip-card{display:flex;gap:14px;padding:16px 20px;margin:20px 0;background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;align-items:flex-start}
+.tip-card svg{flex-shrink:0;color:#d97706;margin-top:2px}
+.tip-card p{font-size:14px;line-height:1.7;color:#92400e;margin:0}
+.tip-card strong{color:#78350f}
+
+.self-assess{background:linear-gradient(135deg,#faf5ff,#f3e8ff);border:1px solid #d8b4fe;border-radius:12px;padding:20px 24px;margin:28px 0;text-align:center}
+.assess-header{font-weight:700;font-size:15px;color:#6b21a8;margin-bottom:16px}
+.assess-options{display:flex;justify-content:center;gap:12px;margin-bottom:8px}
+.assess-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 20px;background:#fff;border:2px solid #e9d5ff;border-radius:10px;cursor:pointer;transition:all .2s;font-family:var(--ff-display);min-width:90px}
+.assess-btn:hover{border-color:#a855f7;background:#faf5ff}
+.assess-btn.selected{border-color:#a855f7;background:#f3e8ff;transform:scale(1.05)}
+.assess-emoji{font-size:26px;line-height:1}
+.assess-btn span:last-child{font-size:11px;font-weight:600;color:#7c3aed}
+.assess-feedback{font-size:14px;line-height:1.6;color:#6b21a8;padding:12px 16px;background:rgba(168,85,247,.08);border-radius:8px;display:none;margin-top:8px}
+.assess-feedback.show{display:block}
+
+.table-interactive{margin:24px 0}
+.table-hint{display:flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.table-hint svg{color:#2563eb}
+tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
+
+@media(max-width:640px){.flip-grid{grid-template-columns:1fr 1fr}.flip-card{height:110px}.assess-options{flex-wrap:wrap;gap:8px}.assess-btn{min-width:70px;padding:10px 14px}.action-card{padding:16px 18px}}
+
 /* Final exam */
 .exam-container{max-width:720px;margin:0 auto;padding:40px 24px 60px}
 .exam-header{text-align:center;margin-bottom:32px}
@@ -520,27 +604,25 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
   }
 
   function splitSlides(html){
-    if(!html)return['<p>Conteúdo em produção.</p>'];
+    if(!html)return['<p>Conteudo em producao.</p>'];
     html=html.replace(/^\s*<h2[^>]*>[\s\S]*?<\/h2>\s*/i,'');
-    var parts=html.split(/(?=<h3[\s>])/i);
-    parts=parts.filter(function(p){return p.trim().length>20});
-    if(!parts.length)parts=[html];
+    var sections=html.split(/(?=<h3[\s>])/i);
+    sections=sections.filter(function(p){return p.trim().length>20});
+    if(!sections.length)sections=[html];
     var final=[];
-    var VISUAL_RE=/(?=<div class="(?:diagram|narration|quiz-inline|template-box|comparison|kpi-grid|step-flow|checklist|tabs|accordion-lesson|insight-box))/i;
-    var BLOCK_RE=/(?=<(?:p>|p |ul[\s>]|ol[\s>]|blockquote|table[\s>]|div class="))/i;
-    parts.forEach(function(s){
-      var visBlocks=s.split(VISUAL_RE);
-      visBlocks.forEach(function(vb){
-        if(vb.length<1000){if(vb.trim().length>20)final.push(vb);return}
-        var subs=vb.split(BLOCK_RE);
-        var chunk='';
-        subs.forEach(function(sub){
-          if(chunk.length+sub.length>1000&&chunk.length>60){
-            final.push(chunk);chunk=sub;
-          }else{chunk+=sub;}
-        });
-        if(chunk.trim().length>20)final.push(chunk);
+    var THRESH=2800;
+    sections.forEach(function(sec){
+      if(sec.length<=THRESH){final.push(sec);return}
+      var blocks=sec.split(/(?=<(?:h3[\s>]|p>|p |ul[\s>]|ol[\s>]|blockquote[\s>]|table[\s>]|div class="))/i);
+      var chunk='';
+      blocks.forEach(function(blk){
+        var isVisual=/^<div class="(?:diagram|kpi-grid|comparison|step-flow|narration|insight-box)"/i.test(blk);
+        if(isVisual&&chunk.length<1200){chunk+=blk;return}
+        if(chunk.length+blk.length>THRESH&&chunk.length>600){
+          final.push(chunk);chunk=blk;
+        }else{chunk+=blk}
       });
+      if(chunk.trim().length>20)final.push(chunk);
     });
     return final.length?final:[html];
   }
@@ -973,34 +1055,259 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
   function addSlideInteractions(content,idx){
     var sc=document.getElementById('slideContent');
     if(!sc)return;
-    // Staggered entrance animation
     sc.classList.add('animate');
     setTimeout(function(){sc.classList.remove('animate')},1200);
+    var slideText=(sc.textContent||'').toLowerCase();
 
-    // Reflection prompt on content-only slides (no quiz, every 3rd)
-    if(idx>0&&idx%3===0&&!hasInteractive(content)){
-      var strongMatch=content.match(/<strong>([^<]{8,60})<\/strong>/);
-      if(strongMatch){
-        var topic=strongMatch[1].replace(/^\w/,function(c){return c.toLowerCase()});
-        var prompts=['Como '+topic+' se aplica na sua realidade?','Você consegue dar um exemplo prático de '+topic+'?','Na sua empresa, como '+topic+' é tratado hoje?','Que dificuldades você já enfrentou com '+topic+'?'];
-        var prompt=prompts[idx%prompts.length];
-        var card=document.createElement('div');
-        card.className='reflect-card';
-        card.innerHTML='<div class="rc-icon">?</div><div class="rc-text"><strong>Reflita:</strong> '+prompt+'<div class="rc-answer">Anote suas ideias! Usar exemplos reais ajuda a fixar o conceito.</div></div>';
-        card.addEventListener('click',function(){card.classList.toggle('open')});
-        sc.appendChild(card);
+    var CASES=[
+      {keys:['processo','pdca','ciclo','fluxo','sipoc'],title:'Caso real: Metalurgica no ABC Paulista',text:'Uma metalurgica de 45 funcionarios reduziu 30% dos retrabalhos em 6 meses ao mapear seus processos-chave com SIPOC. O segredo foi envolver os proprios operadores na documentacao — eles conheciam os gargalos que a gestao nao via.'},
+      {keys:['qualidade','sgq','sistema de gestao'],title:'Caso real: Industria alimenticia no RS',text:'Uma fabrica de embutidos no RS obteve a ISO 9001 em 8 meses investindo R$ 15 mil. A chave: paineis visuais no chao de fabrica mostrando indicadores em tempo real. O engajamento da equipe triplicou e o indice de reclamacoes caiu 45%.'},
+      {keys:['risco','riscos','ameaca','oportunidade','mentalidade'],title:'Caso real: Construtora em Minas Gerais',text:'Uma construtora mapeou 47 riscos antes de iniciar uma obra publica. Resultado: zero nao-conformidades na auditoria de certificacao, projeto entregue 2 semanas antes do prazo e economia de R$ 200 mil em retrabalho evitado.'},
+      {keys:['auditoria','auditor','verificar','avaliar','evidencia'],title:'Caso real: Autopecas em Sao Paulo',text:'Uma industria de pecas automotivas transformou auditorias internas de "caca as bruxas" em sessoes colaborativas de melhoria. Acoes corretivas cairam 60% em um ano e a equipe passou a solicitar mais auditorias voluntariamente.'},
+      {keys:['cliente','satisfacao','requisito','atender','expectativa'],title:'Caso real: Empresa de TI em Florianopolis',text:'Uma empresa de TI implementou pesquisas NPS trimestrais integradas ao SGQ. Em 18 meses, satisfacao subiu de 6.2 para 8.7, churn reduziu 40%, e o CEO afirma que "a ISO 9001 se pagou em 3 meses".'},
+      {keys:['lideranca','lider','direcao','alta direcao','comprometimento','engajamento'],title:'Caso real: Logistica em Santa Catarina',text:'O CEO de uma empresa de logistica passou a participar das reunioes de analise critica mensalmente. O engajamento da equipe com o SGQ dobrou em 3 meses e surgiram 22 ideias de melhoria vindas do operacional.'},
+      {keys:['melhoria','melhorar','acao corretiva','nao conformidade','desvio'],title:'Caso real: Fabrica de embalagens em Curitiba',text:'Uma fabrica criou um programa de sugestoes vinculado ao SGQ com premios mensais. Em um ano: 340 sugestoes recebidas, 78% implementadas, gerando economia de R$ 180 mil e aumento de 25% na produtividade.'},
+      {keys:['documento','documentacao','informacao documentada','registro','controle'],title:'Caso real: Engenharia civil no Rio de Janeiro',text:'Uma empresa de engenharia reduziu 70% dos documentos obsoletos ao migrar para controle digital com versionamento automatico. Auditorias ficaram 3x mais rapidas e eliminaram a eterna busca por "ultima versao".'},
+      {keys:['indicador','kpi','medicao','monitoramento','resultado','desempenho'],title:'Caso real: Farmaceutica em Goias',text:'Uma industria farmaceutica criou dashboard com 12 KPIs do SGQ atualizados em tempo real via sensores IoT. Tempo de reacao a desvios caiu de 5 dias para 4 horas. O investimento de R$ 40 mil retornou em 2 meses.'},
+      {keys:['fornecedor','fornecedores','compra','aquisicao','externo','terceiro'],title:'Caso real: Montadora no Parana',text:'Uma montadora implementou avaliacao trimestral de fornecedores criticos com criterios da ISO 9001. Em 2 anos, devolucoes por materia-prima defeituosa cairam 85% e o custo de inspecao de recebimento foi cortado pela metade.'},
+      {keys:['certificacao','certificado','organismo','acreditacao','selo'],title:'Caso real: Microempresa no Ceara',text:'Uma empresa de 15 funcionarios obteve a ISO 9001 com investimento de R$ 12 mil. O retorno veio em 4 meses: 3 novos contratos com grandes empresas que exigiam a certificacao como pre-requisito, dobrando o faturamento.'},
+      {keys:['contexto','parte interessada','ambiente','externo','interno','swot'],title:'Caso real: Startup de SaaS em Campinas',text:'Uma startup usou a analise de contexto (clausula 4.1) para identificar a LGPD como questao externa critica. Implementaram controles preventivos e fecharam 3 contratos enterprise que exigiam conformidade com protecao de dados.'},
+      {keys:['competencia','treinamento','capacitacao','conhecimento','pessoa','recurso'],title:'Caso real: Rede de clinicas em Goiania',text:'Uma rede de clinicas criou trilhas de competencia por funcao alinhadas ao requisito 7.2. A rotatividade de funcionarios caiu 35% e erros em procedimentos clinicos reduziram 50% em 12 meses.'},
+      {keys:['planejamento','objetivo','meta','estrateg'],title:'Caso real: Cooperativa agricola no Mato Grosso',text:'Uma cooperativa implementou SGQ simplificado baseado na ISO 9001 com objetivos mensuráveis por safra. Com processos padronizados, conseguiu exportar para a Europa pela primeira vez, atendendo requisitos de rastreabilidade.'}
+    ];
+    var TIPS=[
+      {keys:['processo'],tip:'Comece mapeando seus 3 processos mais criticos antes de tentar documentar tudo. Foco no que impacta diretamente o cliente.'},
+      {keys:['documento','documentacao','informacao documentada'],tip:'A ISO 9001:2015 fala em "informacao documentada", nao em "manual da qualidade". Documente o necessario, nao o burocratico.'},
+      {keys:['auditoria','auditor'],tip:'Auditor interno bom faz perguntas abertas: "Me mostre como voce faz..." revela muito mais que "Voce segue o procedimento?".'},
+      {keys:['risco','riscos'],tip:'Use a matriz Probabilidade x Impacto para priorizar. Nem todo risco precisa de plano de acao — alguns basta monitorar.'},
+      {keys:['indicador','kpi','medicao'],tip:'Indicador bom e aquele que gera acao. Se ninguem faz nada quando o numero muda, repense se vale a pena medir.'},
+      {keys:['melhoria','acao corretiva'],tip:'Registre TODAS as oportunidades de melhoria, mesmo as pequenas. As maiores inovacoes vem de sugestoes simples do operacional.'},
+      {keys:['cliente','satisfacao'],tip:'Pesquisa de satisfacao so funciona se voce fecha o ciclo: feedback negativo, implementa acao, comunica ao cliente o que mudou.'},
+      {keys:['lideranca','alta direcao'],tip:'Lideranca na ISO 9001 nao e so "dar apoio". E demonstrar comprometimento com acoes visiveis: participar, decidir, alocar recursos.'},
+      {keys:['competencia','treinamento'],tip:'Mantenha uma matriz de competencias atualizada. Ela mostra gaps antes que virem problemas em auditoria ou na operacao.'},
+      {keys:['qualidade','sgq'],tip:'SGQ nao e projeto com inicio e fim — e a forma como a empresa opera. Quando vira rotina, para de ser "mais uma coisa pra fazer".'},
+      {keys:['fornecedor'],tip:'Avalie fornecedores com criterios objetivos (prazo, qualidade, preco). Mantenha um ranking e compartilhe os resultados com eles.'},
+      {keys:['nao conformidade','desvio','problema'],tip:'Nao-conformidade nao e "erro de alguem" — e oportunidade de melhoria do sistema. Trate a causa raiz, nao o sintoma.'}
+    ];
+
+    function findMatch(arr,text){
+      var best=null,bestScore=0;
+      arr.forEach(function(item){
+        var score=0;
+        item.keys.forEach(function(k){
+          var re=new RegExp(k,'gi');var m=text.match(re);
+          if(m)score+=m.length;
+        });
+        if(score>bestScore){bestScore=score;best=item}
+      });
+      return bestScore>=1?best:null;
+    }
+
+    // 1. KEY TERM HIGHLIGHTS
+    sc.querySelectorAll('p strong, li strong').forEach(function(s){
+      if(s.closest('.reveal-card,.action-card,.reminder-card,.callout,.insight-box,.narration,.template-box,.quiz-inline,.case-card,.tip-card'))return;
+      var term=s.textContent.trim();
+      if(term.length<3||term.length>60)return;
+      s.classList.add('key-term');
+      s.setAttribute('tabindex','0');
+      s.addEventListener('click',function(){s.classList.toggle('highlighted')});
+    });
+
+    // 2. REVEAL CARDS after KPI grids
+    sc.querySelectorAll('.kpi-grid').forEach(function(kg){
+      var card=document.createElement('div');
+      card.className='reveal-card';
+      card.innerHTML='<button class="reveal-trigger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Por que esses numeros importam?<span class="reveal-arrow">&#9660;</span></button>'
+        +'<div class="reveal-body"><p>Esses indicadores mostram a relevancia global do tema que voce esta estudando. Reflita: <strong>como sua empresa se posiciona</strong> nesse cenario?</p><p>Entender o contexto macro ajuda a justificar investimentos internos e a mostrar para a direcao o valor de implementar boas praticas.</p></div>';
+      kg.after(card);
+    });
+
+    // 3. CASE STUDY CARD
+    var caseMatch=findMatch(CASES,slideText);
+    if(caseMatch&&idx>0&&!hasInteractive(content)){
+      var cc=document.createElement('div');
+      cc.className='case-card';
+      cc.innerHTML='<button class="case-trigger"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> '+caseMatch.title+'<span class="reveal-arrow">&#9660;</span></button>'
+        +'<div class="case-body"><p>'+caseMatch.text+'</p></div>';
+      sc.appendChild(cc);
+    }
+
+    // 4. ACTION CARD (apply in practice) - odd slides
+    if(idx%2===1&&!hasInteractive(content)){
+      var strongs=[];
+      sc.querySelectorAll('p strong').forEach(function(s){
+        if(s.closest('.callout,.insight-box,.narration,.template-box,.reveal-card,.action-card,.case-card,.tip-card'))return;
+        var t=s.textContent.trim();
+        if(t.length>=4&&t.length<=50)strongs.push(t);
+      });
+      if(strongs.length){
+        var topic=strongs[0];
+        var prompts=[
+          'Liste 3 exemplos de <strong>'+topic+'</strong> na realidade da sua empresa ou do seu dia a dia.',
+          'Como <strong>'+topic+'</strong> impacta o trabalho da sua equipe? Descreva uma situacao real que voce ja vivenciou.',
+          'Se voce precisasse explicar <strong>'+topic+'</strong> para um colega novo, o que diria em 3 frases?',
+          'Que acoes praticas voce pode tomar esta semana relacionadas a <strong>'+topic+'</strong>?'
+        ];
+        var ac=document.createElement('div');
+        ac.className='action-card';
+        ac.innerHTML='<div class="action-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Aplique na pratica</div>'
+          +'<p>'+prompts[idx%prompts.length]+'</p>'
+          +'<textarea class="action-input" placeholder="Escreva aqui sua resposta..." rows="3"></textarea>'
+          +'<button class="action-save">Salvar anotacao</button>';
+        sc.appendChild(ac);
       }
     }
 
-    // Make insight boxes clickable (toggle highlight)
+    // 5. FLIP CARDS - key terms quiz
+    if(idx%3===0&&idx>0){
+      var terms=[];
+      sc.querySelectorAll('p').forEach(function(p){
+        if(p.closest('.callout,.insight-box,.narration,.template-box,.reveal-card,.action-card,.case-card,.tip-card'))return;
+        p.querySelectorAll('strong').forEach(function(s){
+          var term=s.textContent.trim();
+          var ctx=p.textContent.trim();
+          if(term.length>=4&&term.length<=40&&ctx.length>term.length+30){
+            var sentences=ctx.split(/[.!?]+/);
+            var relevant=sentences.find(function(st){return st.toLowerCase().indexOf(term.toLowerCase())>=0});
+            if(relevant&&relevant.trim().length>15)terms.push({term:term,def:relevant.trim()});
+          }
+        });
+      });
+      if(terms.length>=2){
+        var flipHtml='<div class="flip-section"><div class="flip-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 12h20"/></svg> Teste seu conhecimento</div><div class="flip-grid">';
+        terms.slice(0,4).forEach(function(t){
+          flipHtml+='<div class="flip-card"><div class="flip-inner"><div class="flip-front">'+t.term+'</div><div class="flip-back">'+t.def+'</div></div></div>';
+        });
+        flipHtml+='</div></div>';
+        var flipEl=document.createElement('div');
+        flipEl.innerHTML=flipHtml;
+        sc.appendChild(flipEl.firstElementChild);
+      }
+    }
+
+    // 6. PRACTICAL TIP - even slides
+    if(idx%2===0){
+      var tipMatch=findMatch(TIPS,slideText);
+      if(tipMatch){
+        var tip=document.createElement('div');
+        tip.className='tip-card';
+        tip.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>'
+          +'<p><strong>Dica pratica:</strong> '+tipMatch.tip+'</p>';
+        sc.appendChild(tip);
+      }
+    }
+
+    // 7. SELF-ASSESSMENT - every 3rd slide
+    if(idx>0&&idx%3===2){
+      var assess=document.createElement('div');
+      assess.className='self-assess';
+      assess.innerHTML='<div class="assess-header">Como voce se sente sobre este conteudo?</div>'
+        +'<div class="assess-options">'
+        +'<button class="assess-btn" data-level="1"><span class="assess-emoji">&#128533;</span><span>Confuso</span></button>'
+        +'<button class="assess-btn" data-level="2"><span class="assess-emoji">&#129300;</span><span>Entendendo</span></button>'
+        +'<button class="assess-btn" data-level="3"><span class="assess-emoji">&#128170;</span><span>Dominei!</span></button>'
+        +'</div>'
+        +'<div class="assess-feedback"></div>';
+      sc.appendChild(assess);
+    }
+
+    // 8. REMINDER after callouts
+    sc.querySelectorAll('.callout').forEach(function(callout){
+      var txt=callout.querySelector('strong');
+      if(!txt)return;
+      var card=document.createElement('div');
+      card.className='reminder-card';
+      card.innerHTML='<div class="reminder-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div>'
+        +'<div class="reminder-text">Ponto importante — marque para revisar depois</div>'
+        +'<button class="reminder-btn">Lembrar</button>';
+      callout.after(card);
+    });
+
+    // 9. TABLE INTERACTIVITY
+    sc.querySelectorAll('table').forEach(function(table){
+      if(table.closest('.template-box'))return;
+      if(table.parentElement&&table.parentElement.classList.contains('table-interactive'))return;
+      var wrapper=document.createElement('div');
+      wrapper.className='table-interactive';
+      var hint=document.createElement('div');
+      hint.className='table-hint';
+      hint.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Clique nas linhas para destacar';
+      table.parentNode.insertBefore(wrapper,table);
+      wrapper.appendChild(hint);
+      wrapper.appendChild(table);
+      table.querySelectorAll('tr').forEach(function(tr){
+        if(tr.querySelector('th'))return;
+        tr.style.cursor='pointer';
+        tr.addEventListener('click',function(){tr.classList.toggle('row-highlight')});
+      });
+    });
+
+    // 10. INSIGHT BOXES clickable
     sc.querySelectorAll('.insight-box').forEach(function(ib){
       ib.style.cursor='pointer';
       ib.addEventListener('click',function(){
-        if(ib.style.borderLeftColor==='rgb(22, 163, 74)'){
-          ib.style.borderLeftColor='';ib.style.background='';
-        }else{
-          ib.style.borderLeftColor='#16a34a';ib.style.background='#f0fdf4';
+        if(ib.style.borderLeftColor==='rgb(22, 163, 74)'){ib.style.borderLeftColor='';ib.style.background=''}
+        else{ib.style.borderLeftColor='#16a34a';ib.style.background='#f0fdf4'}
+      });
+    });
+
+    // --- EVENT HANDLERS ---
+    // Reveal cards
+    sc.querySelectorAll('.reveal-trigger').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var card=btn.closest('.reveal-card');
+        card.classList.toggle('open');
+        var arrow=btn.querySelector('.reveal-arrow');
+        if(arrow)arrow.innerHTML=card.classList.contains('open')?'&#9650;':'&#9660;';
+      });
+    });
+    // Case cards
+    sc.querySelectorAll('.case-trigger').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var card=btn.closest('.case-card');
+        card.classList.toggle('open');
+        var arrow=btn.querySelector('.reveal-arrow');
+        if(arrow)arrow.innerHTML=card.classList.contains('open')?'&#9650;':'&#9660;';
+      });
+    });
+    // Flip cards
+    sc.querySelectorAll('.flip-card').forEach(function(fc){
+      fc.addEventListener('click',function(){fc.classList.toggle('flipped')});
+    });
+    // Action save with localStorage
+    sc.querySelectorAll('.action-save').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var ta=btn.previousElementSibling;
+        if(ta&&ta.value.trim()){
+          btn.textContent='Salvo!';btn.classList.add('saved');
+          setTimeout(function(){btn.textContent='Salvar anotacao';btn.classList.remove('saved')},2000);
+          try{localStorage.setItem('ead_note_'+currentLessonId+'_'+idx,ta.value)}catch(e){}
         }
+      });
+    });
+    // Load saved notes
+    sc.querySelectorAll('.action-input').forEach(function(ta){
+      try{var saved=localStorage.getItem('ead_note_'+currentLessonId+'_'+idx);if(saved)ta.value=saved}catch(e){}
+    });
+    // Reminder
+    sc.querySelectorAll('.reminder-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var card=btn.closest('.reminder-card');
+        card.classList.toggle('remembered');
+        btn.textContent=card.classList.contains('remembered')?'Lembrado!':'Lembrar';
+      });
+    });
+    // Self-assessment
+    sc.querySelectorAll('.assess-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        var assess=btn.closest('.self-assess');
+        assess.querySelectorAll('.assess-btn').forEach(function(b){b.classList.remove('selected')});
+        btn.classList.add('selected');
+        var fb=assess.querySelector('.assess-feedback');
+        var level=parseInt(btn.dataset.level);
+        var msgs={1:'Sem problema! Releia o conteudo acima com calma. Se a duvida persistir, anote e retome depois com mais contexto.',2:'Bom progresso! A pratica vai consolidar. Tente o exercicio "Aplique na pratica" para fixar.',3:'Excelente! Voce esta pronto para avancar. Aproveite o conhecimento e compartilhe com colegas.'};
+        fb.textContent=msgs[level]||'';
+        fb.classList.add('show');
       });
     });
   }
