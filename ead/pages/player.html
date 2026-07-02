@@ -105,15 +105,13 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration p{color:rgba(255,255,255,.9);margin-bottom:10px}
 .lesson-body .narration p:last-child{margin-bottom:0}
 
-.lesson-body .diagram{background:linear-gradient(135deg,#0f1d3d 0%,#1a2d52 100%);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px;margin:28px 0;text-align:center;position:relative;overflow:hidden}
-.lesson-body .diagram::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(37,99,235,.06) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(197,56,60,.04) 0%,transparent 50%);pointer-events:none}
-.lesson-body .diagram svg{max-width:100%;height:auto;display:block;margin:0 auto;position:relative;z-index:1}
-.lesson-body .diagram svg [fill="#0b1730"]:not(rect){fill:#7b92b8}
-.lesson-body .diagram svg [stroke="#0b1730"]{stroke:#5a7aa8}
-.lesson-body .diagram svg marker [fill="#0b1730"]{fill:#5a7aa8}
+.lesson-body .diagram{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:32px;margin:28px 0;text-align:center;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.lesson-body .diagram svg{max-width:100%;height:auto;display:block;margin:0 auto}
 .lesson-body .diagram svg rect{cursor:default;transition:filter .3s,transform .3s;transform-origin:center}
-.lesson-body .diagram svg rect:hover{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,255,255,.12));transform:scale(1.04)}
-.lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:rgba(255,255,255,.45);margin-top:14px;letter-spacing:.02em;position:relative;z-index:1}
+.lesson-body .diagram svg rect:hover{filter:brightness(1.08) drop-shadow(0 2px 8px rgba(0,0,0,.15));transform:scale(1.03)}
+.lesson-body .diagram svg circle{transition:filter .3s,transform .3s;transform-origin:center}
+.lesson-body .diagram svg circle:hover{filter:brightness(1.08) drop-shadow(0 2px 8px rgba(0,0,0,.12));transform:scale(1.03)}
+.lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:var(--mute);margin-top:14px;letter-spacing:.02em}
 
 /* -------- Upgraded diagram cards -------- */
 .vis-container{background:linear-gradient(145deg,#0b1628 0%,#152240 50%,#0d1a30 100%);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 24px 20px;margin:28px 0;position:relative;overflow:hidden}
@@ -760,9 +758,8 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         });
 
         initInteractive();
-        upgradeDiagrams();
         animateKpis();
-        addSlideInteractions(content,idx);
+        try{addSlideInteractions(content,idx)}catch(e){console.warn('enrich:',e)}
       }
 
       document.querySelectorAll('.slide-dot').forEach(function(dot){
