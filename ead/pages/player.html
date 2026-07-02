@@ -88,7 +88,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .template-box td{padding:8px 12px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
 .lesson-body .template-box ul,.lesson-body .template-box ol{margin:8px 0 8px 20px;font-size:13px;color:rgba(255,255,255,.85)}
 .lesson-body .template-box li{margin-bottom:4px}
-.lesson-body .template-box a{background:var(--red);color:#fff;padding:8px 16px;text-decoration:none;font-size:13px;font-weight:600}
+.lesson-body .template-box a{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--red);color:#fff;padding:9px 18px;text-decoration:none;font-size:13px;font-weight:600;transition:background .2s,transform .15s}
+.lesson-body .template-box a:hover{background:#a52d30;transform:translateY(-1px)}
 .template-copy-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:6px 12px;font-size:11px;font-family:var(--ff-mono);cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:background .2s}
 .template-copy-btn:hover{background:rgba(255,255,255,.25)}
 .template-copy-btn.copied{background:var(--green);border-color:var(--green)}
@@ -146,7 +147,7 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .narration.collapsed::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,#1e3a5f)}
 
 /* Staggered entrance animation */
-@keyframes blockEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframês blockEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 .lesson-body.animate>*{opacity:0;animation:blockEnter .4s ease forwards}
 .lesson-body.animate>*:nth-child(1){animation-delay:.05s}
 .lesson-body.animate>*:nth-child(2){animation-delay:.12s}
@@ -229,10 +230,12 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .template-card .tc-text{flex:1}
 .template-card .tc-text strong{display:block;font-size:17px;margin-bottom:4px}
 .template-card .tc-text span{font-size:13px;color:rgba(255,255,255,.6);font-family:var(--ff-mono)}
+.template-card .tc-download{background:var(--red);color:#fff;border:none;padding:12px 22px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .2s,transform .15s;flex-shrink:0}
+.template-card .tc-download:hover{background:#a52d30;transform:translateY(-1px)}
 
 /* Interaction hint */
 .interact-hint{display:flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 8px;animation:hintPulse 2s infinite}
-@keyframes hintPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframês hintPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
 @media(max-width:640px){.lesson-body .comparison{grid-template-columns:1fr}.lesson-body .comp-col:first-child{border-right:none;border-bottom:1px solid #e5e7eb}.lesson-body .kpi-grid{grid-template-columns:1fr 1fr}}
 
@@ -445,7 +448,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         lessons+='<div class="lesson-link'+(l.id===currentLessonId?' active':'')+'" data-id="'+l.id+'">'
           +'<span class="check'+(l.completed?' done':'')+'"></span>'
           +'<span>'+l.titulo+'</span>'
-          +'<span class="dur">'+(l.duracao||'')+'</span></div>';
+          +'<span class="dur">'+(l.duração||'')+'</span></div>';
       });
       html+='<div class="mod-header'+(isOpen||i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">Módulo '+(i+1)+': '+m.titulo+'<span>'+(m.aulas?m.aulas.length:0)+' aulas</span></div>'
         +'<div class="mod-lessons"'+(isOpen||i===0?' style="display:block"':'')+'>'+lessons+'</div>';
@@ -548,9 +551,9 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
               if(idx===r.correctAnswer)lbl.classList.add('correct');
               else if(lbl.classList.contains('selected')&&!r.correct)lbl.classList.add('wrong');
             });
-            if(r.explicacao){
+            if(r.explicação){
               var exp=q.querySelector('.eq-explanation');
-              exp.textContent=r.explicacao;exp.classList.add('show');
+              exp.textContent=r.explicação;exp.classList.add('show');
             }
           });
           var rd=document.getElementById('examResult');
@@ -586,7 +589,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
   }
 
   function splitSlides(html){
-    if(!html)return['<p>Conteudo em producao.</p>'];
+    if(!html)return['<p>Conteúdo em produção.</p>'];
     html=html.replace(/^\s*<h2[^>]*>[\s\S]*?<\/h2>\s*/i,'');
     var sections=html.split(/(?=<h3[\s>])/i);
     sections=sections.filter(function(p){return p.trim().length>20});
@@ -606,7 +609,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       });
       if(chunk.trim().length>20)final.push(chunk);
     });
-    // Merge de slides com pouco texto visivel (<500 chars) no vizinho
+    // Merge de slides com pouco texto visível (<500 chars) no vizinho
     var merged=[];
     final.forEach(function(sec){
       var txt=sec.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
@@ -652,7 +655,8 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
 
       if(l.entregavel_titulo){
         slides.push('<div class="template-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
-          +'<div class="tc-text"><strong>'+l.entregavel_titulo+'</strong><span>Incluso nesta aula</span></div></div>');
+          +'<div class="tc-text"><strong>'+l.entregavel_titulo+'</strong><span>Incluso nesta aula</span></div>'
+          +'<button class="tc-download"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Baixar PDF</button></div>');
       }
 
       slideIdx=0;
@@ -795,7 +799,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     modal=document.createElement('div');
     modal.id='diagramModal';
     modal.className='diagram-modal';
-    modal.innerHTML='<button class="dm-close" aria-label="Fechar">&times;</button><div class="dm-stage"></div><div class="dm-caption"></div>';
+    modal.innerHTML='<button class="dm-close" aria-label="Fechar">&timês;</button><div class="dm-stage"></div><div class="dm-caption"></div>';
     modal.addEventListener('click',function(e){
       if(e.target===modal||e.target.classList.contains('dm-close'))modal.classList.remove('open');
     });
@@ -921,15 +925,31 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         });
       });
       tb.appendChild(btn);
+      // Todo template-box ganha download em PDF (gera link se o conteudo não trouxer um)
       var dlLink=tb.querySelector('a[href="#"]');
+      if(!dlLink&&currentLessonId){
+        dlLink=document.createElement('a');
+        dlLink.href='#';
+        dlLink.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Baixar em PDF';
+        tb.appendChild(dlLink);
+      }
       if(dlLink&&currentLessonId){
         dlLink.addEventListener('click',function(e){
           e.preventDefault();
-          var titleEl=tb.querySelector('span')||tb.querySelector('strong');
+          var titleEl=tb.querySelector('strong');
           var t=titleEl?titleEl.textContent:'Template';
           window.open('/ead/api/template/'+currentLessonId+'?t='+encodeURIComponent(t),'_blank');
         });
       }
+    });
+    main.querySelectorAll('.tc-download').forEach(function(b){
+      if(b.dataset.wired)return;
+      b.dataset.wired='1';
+      b.addEventListener('click',function(){
+        var titleEl=b.closest('.template-card').querySelector('strong');
+        var t=titleEl?titleEl.textContent:'Template';
+        window.open('/ead/api/template/'+currentLessonId+'?t='+encodeURIComponent(t),'_blank');
+      });
     });
   }
 
@@ -994,65 +1014,65 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     var slideText=(sc.textContent||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
     var CASES=[
-      {keys:['processo','pdca','ciclo','fluxo','sipoc'],title:'Caso real: Metalurgica no ABC Paulista',text:'Uma metalurgica de 45 funcionarios reduziu 30% dos retrabalhos em 6 meses ao mapear seus processos-chave com SIPOC. O segredo foi envolver os proprios operadores na documentacao — eles conheciam os gargalos que a gestao nao via.'},
-      {keys:['qualidade','sgq','sistema de gestao'],title:'Caso real: Industria alimenticia no RS',text:'Uma fabrica de embutidos no RS obteve a ISO 9001 em 8 meses investindo R$ 15 mil. A chave: paineis visuais no chao de fabrica mostrando indicadores em tempo real. O engajamento da equipe triplicou e o indice de reclamacoes caiu 45%.'},
-      {keys:['risco','riscos','ameaca','oportunidade','mentalidade'],title:'Caso real: Construtora em Minas Gerais',text:'Uma construtora mapeou 47 riscos antes de iniciar uma obra publica. Resultado: zero nao-conformidades na auditoria de certificacao, projeto entregue 2 semanas antes do prazo e economia de R$ 200 mil em retrabalho evitado.'},
-      {keys:['auditoria','auditor','verificar','avaliar','evidencia'],title:'Caso real: Autopecas em Sao Paulo',text:'Uma industria de pecas automotivas transformou auditorias internas de "caca as bruxas" em sessoes colaborativas de melhoria. Acoes corretivas cairam 60% em um ano e a equipe passou a solicitar mais auditorias voluntariamente.'},
-      {keys:['cliente','satisfacao','requisito','atender','expectativa'],title:'Caso real: Empresa de TI em Florianopolis',text:'Uma empresa de TI implementou pesquisas NPS trimestrais integradas ao SGQ. Em 18 meses, satisfacao subiu de 6.2 para 8.7, churn reduziu 40%, e o CEO afirma que "a ISO 9001 se pagou em 3 meses".'},
-      {keys:['lideranca','lider','direcao','alta direcao','comprometimento','engajamento'],title:'Caso real: Logistica em Santa Catarina',text:'O CEO de uma empresa de logistica passou a participar das reunioes de analise critica mensalmente. O engajamento da equipe com o SGQ dobrou em 3 meses e surgiram 22 ideias de melhoria vindas do operacional.'},
-      {keys:['melhoria','melhorar','acao corretiva','nao conformidade','desvio'],title:'Caso real: Fabrica de embalagens em Curitiba',text:'Uma fabrica criou um programa de sugestoes vinculado ao SGQ com premios mensais. Em um ano: 340 sugestoes recebidas, 78% implementadas, gerando economia de R$ 180 mil e aumento de 25% na produtividade.'},
-      {keys:['documento','documentacao','informacao documentada','registro','controle'],title:'Caso real: Engenharia civil no Rio de Janeiro',text:'Uma empresa de engenharia reduziu 70% dos documentos obsoletos ao migrar para controle digital com versionamento automatico. Auditorias ficaram 3x mais rapidas e eliminaram a eterna busca por "ultima versao".'},
-      {keys:['indicador','kpi','medicao','monitoramento','resultado','desempenho'],title:'Caso real: Farmaceutica em Goias',text:'Uma industria farmaceutica criou dashboard com 12 KPIs do SGQ atualizados em tempo real via sensores IoT. Tempo de reacao a desvios caiu de 5 dias para 4 horas. O investimento de R$ 40 mil retornou em 2 meses.'},
-      {keys:['fornecedor','fornecedores','compra','aquisicao','externo','terceiro'],title:'Caso real: Montadora no Parana',text:'Uma montadora implementou avaliacao trimestral de fornecedores criticos com criterios da ISO 9001. Em 2 anos, devolucoes por materia-prima defeituosa cairam 85% e o custo de inspecao de recebimento foi cortado pela metade.'},
-      {keys:['certificacao','certificado','organismo','acreditacao','selo'],title:'Caso real: Microempresa no Ceara',text:'Uma empresa de 15 funcionarios obteve a ISO 9001 com investimento de R$ 12 mil. O retorno veio em 4 meses: 3 novos contratos com grandes empresas que exigiam a certificacao como pre-requisito, dobrando o faturamento.'},
-      {keys:['contexto','parte interessada','ambiente','externo','interno','swot'],title:'Caso real: Startup de SaaS em Campinas',text:'Uma startup usou a analise de contexto (clausula 4.1) para identificar a LGPD como questao externa critica. Implementaram controles preventivos e fecharam 3 contratos enterprise que exigiam conformidade com protecao de dados.'},
-      {keys:['competencia','treinamento','capacitacao','conhecimento','pessoa','recurso'],title:'Caso real: Rede de clinicas em Goiania',text:'Uma rede de clinicas criou trilhas de competencia por funcao alinhadas ao requisito 7.2. A rotatividade de funcionarios caiu 35% e erros em procedimentos clinicos reduziram 50% em 12 meses.'},
+      {keys:['processo','pdca','ciclo','fluxo','sipoc'],title:'Caso real: Metalúrgica no ABC Paulista',text:'Uma metalúrgica de 45 funcionários reduziu 30% dos retrabalhos em 6 mêses ao mapear seus processos-chave com SIPOC. O segredo foi envolver os próprios operadores na documentação — eles conheciam os gargalos que a gestão não via.'},
+      {keys:['qualidade','sgq','sistema de gestao'],title:'Caso real: Indústria alimenticia no RS',text:'Uma fábrica de embutidos no RS obteve a ISO 9001 em 8 mêses investindo R$ 15 mil. A chave: painéis visuais no chão de fábrica mostrando indicadores em tempo real. O engajamento da equipe triplicou e o índice de reclamações caiu 45%.'},
+      {keys:['risco','riscos','ameaca','oportunidade','mentalidade'],title:'Caso real: Construtora em Minas Gerais',text:'Uma construtora mapeou 47 riscos antes de iniciar uma obra pública. Resultado: zero não-conformidades na auditoria de certificação, projeto entregue 2 semanas antes do prazo e economia de R$ 200 mil em retrabalho evitado.'},
+      {keys:['auditoria','auditor','verificar','avaliar','evidencia'],title:'Caso real: Autopeças em São Paulo',text:'Uma indústria de peças automotivas transformou auditorias internas de "caça às bruxas" em sessões colaborativas de melhoria. Ações corretivas caíram 60% em um ano e a equipe passou a solicitar mais auditorias voluntariamente.'},
+      {keys:['cliente','satisfacao','requisito','atender','expectativa'],title:'Caso real: Empresa de TI em Florianopolis',text:'Uma empresa de TI implementou pesquisas NPS trimêstrais integradas ao SGQ. Em 18 mêses, satisfação subiu de 6.2 para 8.7, churn reduziu 40%, e o CEO afirma que "a ISO 9001 se pagou em 3 mêses".'},
+      {keys:['lideranca','lider','direcao','alta direcao','comprometimento','engajamento'],title:'Caso real: Logística em Santa Catarina',text:'O CEO de uma empresa de logística passou a participar das reuniões de análise crítica mensalmente. O engajamento da equipe com o SGQ dobrou em 3 mêses e surgiram 22 ideias de melhoria vindas do operacional.'},
+      {keys:['melhoria','melhorar','acao corretiva','nao conformidade','desvio'],title:'Caso real: Fabrica de embalagens em Curitiba',text:'Uma fábrica criou um programa de sugestões vinculado ao SGQ com prêmios mensais. Em um ano: 340 sugestões recebidas, 78% implementadas, gerando economia de R$ 180 mil e aumento de 25% na produtividade.'},
+      {keys:['documento','documentacao','informacao documentada','registro','controle'],title:'Caso real: Engenharia civil no Rio de Janeiro',text:'Uma empresa de engenharia reduziu 70% dos documentos obsoletos ao migrar para controle digital com versionamento automatico. Auditorias ficaram 3x mais rápidas e eliminaram a eterna busca por "última versão".'},
+      {keys:['indicador','kpi','medicao','monitoramento','resultado','desempenho'],title:'Caso real: Farmacêutica em Goias',text:'Uma indústria farmacêutica criou dashboard com 12 KPIs do SGQ atualizados em tempo real via sensores IoT. Tempo de reação a desvios caiu de 5 dias para 4 horas. O investimento de R$ 40 mil retornou em 2 mêses.'},
+      {keys:['fornecedor','fornecedores','compra','aquisicao','externo','terceiro'],title:'Caso real: Montadora no Parana',text:'Uma montadora implementou avaliação trimêstral de fornecedores críticos com critérios da ISO 9001. Em 2 anos, devoluções por matéria-prima defeituosa caíram 85% e o custo de inspeção de recebimento foi cortado pela metade.'},
+      {keys:['certificacao','certificado','organismo','acreditacao','selo'],title:'Caso real: Microempresa no Ceara',text:'Uma empresa de 15 funcionários obteve a ISO 9001 com investimento de R$ 12 mil. O retorno veio em 4 mêses: 3 novos contratos com grandes empresas que exigiam a certificação como pré-requisito, dobrando o faturamento.'},
+      {keys:['contexto','parte interessada','ambiente','externo','interno','swot'],title:'Caso real: Startup de SaaS em Campinas',text:'Uma startup usou a análise de contexto (cláusula 4.1) para identificar a LGPD como questão externa crítica. Implementaram controles preventivos e fecharam 3 contratos enterprise que exigiam conformidade com proteção de dados.'},
+      {keys:['competencia','treinamento','capacitacao','conhecimento','pessoa','recurso'],title:'Caso real: Rede de clínicas em Goiania',text:'Uma rede de clínicas criou trilhas de competência por função alinhadas ao requisito 7.2. A rotatividade de funcionários caiu 35% e erros em procedimentos clinicos reduziram 50% em 12 mêses.'},
       {keys:['planejamento','objetivo','meta','estrateg'],title:'Caso real: Cooperativa agricola no Mato Grosso',text:'Uma cooperativa implementou SGQ simplificado baseado na ISO 9001 com objetivos mensuráveis por safra. Com processos padronizados, conseguiu exportar para a Europa pela primeira vez, atendendo requisitos de rastreabilidade.'},
-      {keys:['auditoria interna','programa de auditoria','iso 19011','auditor interno','auditor-lider'],title:'Caso real: Quimica em Camacari (BA)',text:'Uma industria quimica formou 8 auditores internos entre os proprios engenheiros de processo. Em vez de contratar consultoria, as auditorias cruzadas entre areas revelaram 23 melhorias no primeiro ciclo — e o custo do programa foi 80% menor que a proposta externa.'},
-      {keys:['entrevista','pergunta aberta','mostre-me','coleta de evidencia','evidencia objetiva'],title:'Caso real: Frigorifico em Chapeco (SC)',text:'Um auditor interno trocou o interrogatorio de checklist por perguntas abertas ("Me mostre como voce faz..."). Os operadores pararam de "decorar respostas" e passaram a mostrar a pratica real. Resultado: 3 falhas sistemicas de rastreabilidade encontradas que 5 auditorias anteriores nao tinham visto.'},
-      {keys:['nao conformidade','nao-conformidade','constatacao','nc maior','nc menor','classificar'],title:'Caso real: Construtora em Recife (PE)',text:'Uma construtora padronizou a redacao de NCs no formato criterio-evidencia-falha. As discussoes de "isso nao e NC" em reunioes de encerramento cairam 90%, e o tempo medio de tratamento de acao corretiva caiu de 45 para 18 dias, porque a causa ficou clara desde o registro.'},
-      {keys:['relatorio de auditoria','follow-up','reuniao de encerramento','eficacia da acao'],title:'Caso real: Metalmecanica em Caxias do Sul (RS)',text:'Uma metalmecanica instituiu follow-up formal 60 dias apos cada auditoria interna. Antes, 40% das acoes corretivas "morriam" sem verificacao de eficacia. Depois de 2 ciclos, a reincidencia de NCs caiu de 35% para 8% — o follow-up virou a etapa mais valorizada do programa.'},
-      {keys:['checklist','plano de auditoria','amostragem','analise documental','preparacao'],title:'Caso real: Hospital em Belo Horizonte (MG)',text:'A equipe de qualidade de um hospital passou a dedicar 2 horas de analise documental antes de cada auditoria interna. Os checklists ficaram direcionados aos riscos reais de cada setor e a duracao das auditorias caiu 30%, com o dobro de constatacoes relevantes.'},
-      {keys:['sipoc','mapeamento de processo','entrada','saida','fornecedor interno'],title:'Caso real: Distribuidora em Uberlandia (MG)',text:'Uma distribuidora mapeou o processo de expedicao com SIPOC em um workshop de 4 horas com a propria equipe. Descobriram que 3 retrabalhos cronicos vinham de uma entrada mal definida (pedido sem horario de corte). Corrigida a interface, os erros de embarque cairam 62% em 3 meses.'},
-      {keys:['fluxograma','swimlane','raia','desenho do processo','simbolo'],title:'Caso real: Seguradora em Porto Alegre (RS)',text:'Uma seguradora desenhou o fluxo de sinistros em swimlanes e descobriu que o processo cruzava 7 departamentos com 4 aprovacoes redundantes. Eliminando 2 raias e 3 handoffs, o tempo de resposta ao cliente caiu de 12 para 5 dias uteis — sem contratar ninguem.'},
-      {keys:['leading','lagging','tendencia','balanced scorecard','bsc','dashboard'],title:'Caso real: Transportadora em Itajai (SC)',text:'Uma transportadora media so indicadores de resultado (entregas no prazo). Ao adicionar 3 indicadores de tendencia (manutencao preventiva em dia, horas de treinamento, checklist de saida), passou a agir ANTES do atraso acontecer. Pontualidade subiu de 87% para 96% em um semestre.'},
-      {keys:['gargalo','lead time','tempo de ciclo','desperdicio','fila'],title:'Caso real: Grafica em Sao Bernardo (SP)',text:'Uma grafica cronometrou o lead time de orcamento e descobriu que 70% do tempo era fila na mesa de um unico aprovador. Criaram alcada de aprovacao ate R$ 5 mil para os vendedores: o prazo de resposta caiu de 3 dias para 4 horas e a taxa de conversao de orcamentos subiu 28%.'},
-      {keys:['pop','procedimento operacional','instrucao de trabalho','padronizacao de processo'],title:'Caso real: Panificadora industrial em Fortaleza (CE)',text:'Uma panificadora industrial reescreveu 40 POPs com fotos e linguagem do chao de fabrica, validados pelos proprios operadores. O tempo de treinamento de novatos caiu pela metade e a variacao de peso do produto entre turnos praticamente desapareceu.'},
-      {keys:['seiri','etiqueta vermelha','descarte','area de quarentena','senso de utilizacao'],title:'Caso real: Autopecas em Sorocaba (SP)',text:'No primeiro Seiri, uma fabrica de autopecas etiquetou 1.200 itens e liberou 180 m2 de area util — o equivalente a um barracao que iam alugar por R$ 8 mil/mes. A venda de sucata e equipamentos parados ainda gerou R$ 34 mil de caixa.'},
-      {keys:['seiton','shadow board','enderecamento','um lugar para cada coisa','30 segundos','senso de organizacao'],title:'Caso real: Manutencao industrial em Joinville (SC)',text:'A equipe de manutencao implantou shadow boards e enderecamento de ferramentas. O tempo medio de busca caiu de 4 minutos para 30 segundos, e as compras duplicadas de ferramenta "sumida" (R$ 2 mil/mes) praticamente zeraram.'},
-      {keys:['seiso','limpeza como inspecao','vazamento','anomalia','senso de limpeza'],title:'Caso real: Textil em Americana (SP)',text:'Ao adotar o Seiso como inspecao, os operadores de uma textil passaram a reportar vazamentos e folgas durante a limpeza diaria de 10 minutos. As quebras nao programadas de teares cairam 43% em 6 meses — antes mesmo de qualquer investimento em manutencao preditiva.'},
-      {keys:['seiketsu','estado padrao','foto do padrao','gestao visual','senso de padronizacao'],title:'Caso real: Alimentos em Marilia (SP)',text:'Uma fabrica de alimentos fixou fotos do "estado padrao" em cada posto de trabalho. A pergunta da auditoria virou "esta igual a foto?" — simples o suficiente para qualquer pessoa responder. A nota media das auditorias 5S subiu de 62% para 91% em 4 meses.'},
-      {keys:['shitsuke','disciplina','auditoria 5s','habito','sustentacao'],title:'Caso real: Plasticos em Manaus (AM)',text:'Uma fabrica de plasticos manteve auditorias 5S quinzenais por 18 meses, com resultados expostos em quadro e reconhecimento simbolico por area. Quando a auditoria virou rotina esperada (e nao fiscalizacao), o 5S sobreviveu a troca de 2 gerentes e virou cultura — o teste real do Shitsuke.'},
-      {keys:['dia d','cinco sensos','implantacao do 5s','faxina'],title:'Caso real: Metalurgica em Contagem (MG)',text:'Uma metalurgica fez o Dia D do 5S com producao parada, 100% do efetivo envolvido e diretoria presente de uniforme. Custo total: R$ 2.400 em materiais e um dia de producao. Em contrapartida, o "antes e depois" fotografico engajou a equipe de um jeito que 3 anos de campanhas de cartaz nunca conseguiram.'}
+      {keys:['auditoria interna','programa de auditoria','iso 19011','auditor interno','auditor-lider'],title:'Caso real: Química em Camacari (BA)',text:'Uma indústria química formou 8 auditores internos entre os próprios engenheiros de processo. Em vez de contratar consultoria, as auditorias cruzadas entre áreas revelaram 23 melhorias no primeiro ciclo — e o custo do programa foi 80% menor que a proposta externa.'},
+      {keys:['entrevista','pergunta aberta','mostre-me','coleta de evidencia','evidencia objetiva'],title:'Caso real: Frigorifico em Chapeco (SC)',text:'Um auditor interno trocou o interrogatorio de checklist por perguntas abertas ("Me mostre como você faz..."). Os operadores pararam de "decorar respostas" e passaram a mostrar a prática real. Resultado: 3 falhas sistemicas de rastreabilidade encontradas que 5 auditorias anteriores não tinham visto.'},
+      {keys:['nao conformidade','nao-conformidade','constatacao','nc maior','nc menor','classificar'],title:'Caso real: Construtora em Recife (PE)',text:'Uma construtora padronizou a redação de NCs no formato critério-evidência-falha. As discussões de "isso não é NC" em reuniões de encerramento caíram 90%, e o tempo médio de tratamento de ação corretiva caiu de 45 para 18 dias, porque a causa ficou clara desde o registro.'},
+      {keys:['relatorio de auditoria','follow-up','reuniao de encerramento','eficacia da acao'],title:'Caso real: Metalmecânica em Caxias do Sul (RS)',text:'Uma metalmecânica instituiu follow-up formal 60 dias após cada auditoria interna. Antes, 40% das ações corretivas "morriam" sem verificação de eficácia. Depois de 2 ciclos, a reincidência de NCs caiu de 35% para 8% — o follow-up virou a etapa mais valorizada do programa.'},
+      {keys:['checklist','plano de auditoria','amostragem','analise documental','preparacao'],title:'Caso real: Hospital em Belo Horizonte (MG)',text:'A equipe de qualidade de um hospital passou a dedicar 2 horas de análise documental antes de cada auditoria interna. Os checklists ficaram direcionados aos riscos reais de cada setor e a duração das auditorias caiu 30%, com o dobro de constatações relevantes.'},
+      {keys:['sipoc','mapeamento de processo','entrada','saida','fornecedor interno'],title:'Caso real: Distribuidora em Uberlandia (MG)',text:'Uma distribuidora mapeou o processo de expedição com SIPOC em um workshop de 4 horas com a própria equipe. Descobriram que 3 retrabalhos cronicos vinham de uma entrada mal definida (pedido sem horário de corte). Corrigida a interface, os erros de embarque caíram 62% em 3 mêses.'},
+      {keys:['fluxograma','swimlane','raia','desenho do processo','simbolo'],title:'Caso real: Seguradora em Porto Alegre (RS)',text:'Uma seguradora desenhou o fluxo de sinistros em swimlanes e descobriu que o processo cruzava 7 departamentos com 4 aprovações redundantes. Eliminando 2 raias e 3 handoffs, o tempo de resposta ao cliente caiu de 12 para 5 dias úteis — sem contratar ninguém.'},
+      {keys:['leading','lagging','tendencia','balanced scorecard','bsc','dashboard'],title:'Caso real: Transportadora em Itajai (SC)',text:'Uma transportadora media só indicadores de resultado (entregas no prazo). Ao adicionar 3 indicadores de tendência (manutenção preventiva em dia, horas de treinamento, checklist de saída), passou a agir ANTES do atraso acontecer. Pontualidade subiu de 87% para 96% em um semêstre.'},
+      {keys:['gargalo','lead time','tempo de ciclo','desperdicio','fila'],title:'Caso real: Gráfica em São Bernardo (SP)',text:'Uma gráfica cronometrou o lead time de orçamento e descobriu que 70% do tempo era fila na mêsa de um único aprovador. Criaram alçada de aprovação até R$ 5 mil para os vendedores: o prazo de resposta caiu de 3 dias para 4 horas e a taxa de conversão de orçamentos subiu 28%.'},
+      {keys:['pop','procedimento operacional','instrucao de trabalho','padronizacao de processo'],title:'Caso real: Panificadora industrial em Fortaleza (CE)',text:'Uma panificadora industrial reescreveu 40 POPs com fotos e linguagem do chão de fábrica, validados pelos próprios operadores. O tempo de treinamento de novatos caiu pela metade e a variação de peso do produto entre turnos práticamente desapareceu.'},
+      {keys:['seiri','etiqueta vermelha','descarte','area de quarentena','senso de utilizacao'],title:'Caso real: Autopeças em Sorocaba (SP)',text:'No primeiro Seiri, uma fábrica de autopeças etiquetou 1.200 itens e liberou 180 m2 de area util — o equivalente a um barração que iam alugar por R$ 8 mil/mês. A venda de sucata e equipamentos parados ainda gerou R$ 34 mil de caixa.'},
+      {keys:['seiton','shadow board','endereçamento','um lugar para cada coisa','30 segundos','senso de organizacao'],title:'Caso real: Manutenção industrial em Joinville (SC)',text:'A equipe de manutencao implantou shadow boards e endereçamento de ferramentas. O tempo medio de busca caiu de 4 minutos para 30 segundos, e as compras duplicadas de ferramenta "sumida" (R$ 2 mil/mês) práticamente zeraram.'},
+      {keys:['seiso','limpeza como inspecao','vazamento','anomalia','senso de limpeza'],title:'Caso real: Têxtil em Americana (SP)',text:'Ao adotar o Seiso como inspeção, os operadores de uma têxtil passaram a reportar vazamentos e folgas durante a limpeza diária de 10 minutos. As quebras não programadas de teares caíram 43% em 6 mêses — antes mêsmo de qualquer investimento em manutenção preditiva.'},
+      {keys:['seiketsu','estado padrao','foto do padrao','gestao visual','senso de padronizacao'],title:'Caso real: Alimentos em Marilia (SP)',text:'Uma fábrica de alimentos fixou fotos do "estado padrão" em cada posto de trabalho. A pergunta da auditoria virou "está igual à foto?" — simples o suficiente para qualquer pessoa responder. A nota media das auditorias 5S subiu de 62% para 91% em 4 mêses.'},
+      {keys:['shitsuke','disciplina','auditoria 5s','habito','sustentacao'],title:'Caso real: Plasticos em Manaus (AM)',text:'Uma fábrica de plásticos manteve auditorias 5S quinzenais por 18 mêses, com resultados expostos em quadro e reconhecimento simbolico por área. Quando a auditoria virou rotina esperada (e não fiscalização), o 5S sobreviveu a troca de 2 gerentes e virou cultura — o teste real do Shitsuke.'},
+      {keys:['dia d','cinco sensos','implantacao do 5s','faxina'],title:'Caso real: Metalúrgica em Contagem (MG)',text:'Uma metalúrgica fez o Dia D do 5S com produção parada, 100% do efetivo envolvido e diretoria presente de uniforme. Custo total: R$ 2.400 em materiais e um dia de produção. Em contrapartida, o "antes e depois" fotografico engajou a equipe de um jeito que 3 anos de campanhas de cartaz nunca conseguiram.'}
     ];
     var TIPS=[
-      {keys:['processo'],tip:'Comece mapeando seus 3 processos mais criticos antes de tentar documentar tudo. Foco no que impacta diretamente o cliente.'},
-      {keys:['documento','documentacao','informacao documentada'],tip:'A ISO 9001:2015 fala em "informacao documentada", nao em "manual da qualidade". Documente o necessario, nao o burocratico.'},
-      {keys:['auditoria','auditor'],tip:'Auditor interno bom faz perguntas abertas: "Me mostre como voce faz..." revela muito mais que "Voce segue o procedimento?".'},
-      {keys:['risco','riscos'],tip:'Use a matriz Probabilidade x Impacto para priorizar. Nem todo risco precisa de plano de acao — alguns basta monitorar.'},
-      {keys:['indicador','kpi','medicao'],tip:'Indicador bom e aquele que gera acao. Se ninguem faz nada quando o numero muda, repense se vale a pena medir.'},
-      {keys:['melhoria','acao corretiva'],tip:'Registre TODAS as oportunidades de melhoria, mesmo as pequenas. As maiores inovacoes vem de sugestoes simples do operacional.'},
-      {keys:['cliente','satisfacao'],tip:'Pesquisa de satisfacao so funciona se voce fecha o ciclo: feedback negativo, implementa acao, comunica ao cliente o que mudou.'},
-      {keys:['lideranca','alta direcao'],tip:'Lideranca na ISO 9001 nao e so "dar apoio". E demonstrar comprometimento com acoes visiveis: participar, decidir, alocar recursos.'},
-      {keys:['competencia','treinamento'],tip:'Mantenha uma matriz de competencias atualizada. Ela mostra gaps antes que virem problemas em auditoria ou na operacao.'},
-      {keys:['qualidade','sgq'],tip:'SGQ nao e projeto com inicio e fim — e a forma como a empresa opera. Quando vira rotina, para de ser "mais uma coisa pra fazer".'},
-      {keys:['fornecedor'],tip:'Avalie fornecedores com criterios objetivos (prazo, qualidade, preco). Mantenha um ranking e compartilhe os resultados com eles.'},
-      {keys:['nao conformidade','desvio','problema'],tip:'Nao-conformidade nao e "erro de alguem" — e oportunidade de melhoria do sistema. Trate a causa raiz, nao o sintoma.'},
-      {keys:['checklist','plano de auditoria','analise documental'],tip:'Monte o checklist a partir da analise documental previa, nao de um modelo generico. Checklist bom aponta para os riscos reais daquele processo.'},
-      {keys:['entrevista','pergunta aberta','auditado'],tip:'Na entrevista de auditoria, prefira "Me mostre como voce faz" a "Voce segue o procedimento?". Evidencia vale mais que resposta ensaiada.'},
-      {keys:['constatacao','nc maior','nc menor','classificar'],tip:'Toda constatacao de NC precisa de 3 elementos: o criterio descumprido, a evidencia objetiva e a explicacao da falha. Faltou um, a NC e fragil.'},
-      {keys:['follow-up','eficacia','reincidencia'],tip:'Acao corretiva sem verificacao de eficacia e promessa, nao correcao. Agende o follow-up no momento em que a acao for aprovada.'},
-      {keys:['reuniao de abertura','reuniao de encerramento'],tip:'Na reuniao de encerramento, nenhuma NC deve ser surpresa. Alinhe cada constatacao com o auditado durante a auditoria, nao no final.'},
-      {keys:['sipoc','mapeamento de processo'],tip:'Faca o SIPOC com quem executa o processo, nao sozinho na sala. O mapa "oficial" quase nunca e o processo real.'},
-      {keys:['fluxograma','swimlane','raia'],tip:'No fluxograma, cada losango de decisao e um ponto potencial de fila e retrabalho. Conte quantos handoffs entre raias existem — cada um e um risco de erro.'},
-      {keys:['leading','lagging','tendencia'],tip:'Combine indicadores de resultado (lagging) com indicadores de tendencia (leading). O primeiro conta o que aconteceu; o segundo deixa voce agir antes.'},
-      {keys:['gargalo','lead time','fila'],tip:'Antes de acelerar qualquer etapa, descubra onde o trabalho fica PARADO. Na maioria dos processos, 80% do lead time e espera, nao execucao.'},
-      {keys:['seiri','etiqueta vermelha','descarte'],tip:'No Seiri, na duvida etiquete. A area de quarentena de 30 dias existe justamente para decidir sem medo de jogar fora o que faz falta.'},
-      {keys:['seiton','shadow board','30 segundos'],tip:'Teste o Seiton com a regra dos 30 segundos: chame alguem de outro setor e peca para encontrar um item. Se demorar mais, o enderecamento ainda nao esta visual.'},
-      {keys:['seiso','limpeza','anomalia'],tip:'Trate a limpeza como inspecao: ao limpar, o operador procura vazamento, folga e desgaste. Anomalia encontrada no Seiso e manutencao preventiva gratis.'},
-      {keys:['seiketsu','estado padrao','foto'],tip:'Fotografe o estado padrao de cada area e fixe no local. A auditoria vira uma pergunta que qualquer pessoa responde: "esta igual a foto?".'},
-      {keys:['shitsuke','disciplina','auditoria 5s'],tip:'Disciplina nao se cria com cobranca, mas com rotina: auditorias curtas e frequentes, resultado visivel e reconhecimento. Constancia vale mais que rigor.'},
-      {keys:['dia d','implantacao do 5s'],tip:'O Dia D nao e o 5S — e so o pontape. Sem Seiketsu e Shitsuke planejados para a semana seguinte, em 30 dias tudo volta ao estado anterior.'}
+      {keys:['processo'],tip:'Comece mapeando seus 3 processos mais críticos antes de tentar documentar tudo. Foco no que impacta diretamente o cliente.'},
+      {keys:['documento','documentacao','informacao documentada'],tip:'A ISO 9001:2015 fala em "informação documentada", não em "manual da qualidade". Documente o necessário, não o burocrático.'},
+      {keys:['auditoria','auditor'],tip:'Auditor interno bom faz perguntas abertas: "Me mostre como você faz..." revela muito mais que "Você segue o procedimento?".'},
+      {keys:['risco','riscos'],tip:'Use a matriz Probabilidade x Impacto para priorizar. Nem todo risco precisa de plano de ação — alguns basta monitorar.'},
+      {keys:['indicador','kpi','medicao'],tip:'Indicador bom é aquele que gera ação. Se ninguém faz nada quando o número muda, repense se vale a pena medir.'},
+      {keys:['melhoria','acao corretiva'],tip:'Registre TODAS as oportunidades de melhoria, mêsmo as pequenas. As maiores inovações vem de sugestões simples do operacional.'},
+      {keys:['cliente','satisfacao'],tip:'Pesquisa de satisfação só funciona se você fecha o ciclo: feedback negativo, implementa ação, comunica ao cliente o que mudou.'},
+      {keys:['lideranca','alta direcao'],tip:'Lideranca na ISO 9001 não e só "dar apoio". E demonstrar comprometimento com ações visíveis: participar, decidir, alocar recursos.'},
+      {keys:['competencia','treinamento'],tip:'Mantenha uma matriz de competências atualizada. Ela mostra gaps antes que virem problemas em auditoria ou na operação.'},
+      {keys:['qualidade','sgq'],tip:'SGQ não é projeto com início e fim — é a forma como a empresa opera. Quando vira rotina, para de ser "mais uma coisa pra fazer".'},
+      {keys:['fornecedor'],tip:'Avalie fornecedores com critérios objetivos (prazo, qualidade, preco). Mantenha um ranking e compartilhe os resultados com eles.'},
+      {keys:['nao conformidade','desvio','problema'],tip:'Não-conformidade não e "erro de alguém" — e oportunidade de melhoria do sistema. Trate a causa raiz, não o sintoma.'},
+      {keys:['checklist','plano de auditoria','analise documental'],tip:'Monte o checklist a partir da análise documental previa, não de um modelo genérico. Checklist bom aponta para os riscos reais daquele processo.'},
+      {keys:['entrevista','pergunta aberta','auditado'],tip:'Na entrevista de auditoria, prefira "Me mostre como você faz" a "Você segue o procedimento?". Evidência vale mais que resposta ensaiada.'},
+      {keys:['constatacao','nc maior','nc menor','classificar'],tip:'Toda constatação de NC precisa de 3 elementos: o critério descumprido, a evidência objetiva e a explicação da falha. Faltou um, a NC e frágil.'},
+      {keys:['follow-up','eficacia','reincidencia'],tip:'Acao corretiva sem verificação de eficácia e promêssa, não correção. Agende o follow-up no momento em que a ação for aprovada.'},
+      {keys:['reuniao de abertura','reuniao de encerramento'],tip:'Na reunião de encerramento, nenhuma NC deve ser surpresa. Alinhe cada constatação com o auditado durante a auditoria, não no final.'},
+      {keys:['sipoc','mapeamento de processo'],tip:'Faca o SIPOC com quem executa o processo, não sozinho na sala. O mapa "oficial" quase nunca e o processo real.'},
+      {keys:['fluxograma','swimlane','raia'],tip:'No fluxograma, cada losango de decisão e um ponto potencial de fila e retrabalho. Conte quantos handoffs entre raias existem — cada um e um risco de erro.'},
+      {keys:['leading','lagging','tendencia'],tip:'Combine indicadores de resultado (lagging) com indicadores de tendência (leading). O primeiro conta o que aconteceu; o segundo deixa você agir antes.'},
+      {keys:['gargalo','lead time','fila'],tip:'Antes de acelerar qualquer etapa, descubra onde o trabalho fica PARADO. Na maioria dos processos, 80% do lead time e espera, não execução.'},
+      {keys:['seiri','etiqueta vermelha','descarte'],tip:'No Seiri, na dúvida etiquete. A área de quarentena de 30 dias existe justamente para decidir sem medo de jogar fora o que faz falta.'},
+      {keys:['seiton','shadow board','30 segundos'],tip:'Teste o Seiton com a regra dos 30 segundos: chame alguém de outro setor e peça para encontrar um item. Se demorar mais, o endereçamento ainda não está visual.'},
+      {keys:['seiso','limpeza','anomalia'],tip:'Trate a limpeza como inspeção: ao limpar, o operador procura vazamento, folga e desgaste. Anomalia encontrada no Seiso e manutenção preventiva gratis.'},
+      {keys:['seiketsu','estado padrao','foto'],tip:'Fotografe o estado padrão de cada área e fixe no local. A auditoria vira uma pergunta que qualquer pessoa responde: "está igual à foto?".'},
+      {keys:['shitsuke','disciplina','auditoria 5s'],tip:'Disciplina não se cria com cobranca, mas com rotina: auditorias curtas e frequentes, resultado visível e reconhecimento. Constância vale mais que rigor.'},
+      {keys:['dia d','implantacao do 5s'],tip:'O Dia D não e o 5S — e só o pontape. Sem Seiketsu e Shitsuke planejados para a semana seguinte, em 30 dias tudo volta ao estado anterior.'}
     ];
 
     function findMatch(arr,text){
@@ -1083,7 +1103,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       var card=document.createElement('div');
       card.className='reveal-card';
       card.innerHTML='<button class="reveal-trigger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Por que esses numeros importam?<span class="reveal-arrow">&#9660;</span></button>'
-        +'<div class="reveal-body"><p>Esses indicadores mostram a relevancia global do tema que voce esta estudando. Reflita: <strong>como sua empresa se posiciona</strong> nesse cenario?</p><p>Entender o contexto macro ajuda a justificar investimentos internos e a mostrar para a direcao o valor de implementar boas praticas.</p></div>';
+        +'<div class="reveal-body"><p>Esses indicadores mostram a relevancia global do tema que voce esta estudando. Reflita: <strong>como sua empresa se posiciona</strong> nesse cenario?</p><p>Entender o contexto macro ajuda a justificar investimentos internos e a mostrar para a direcao o valor de implementar boas práticas.</p></div>';
       kg.after(card);
     });
 
@@ -1109,16 +1129,16 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         var topic=strongs[0];
         var prompts=[
           'Liste 3 exemplos de <strong>'+topic+'</strong> na realidade da sua empresa ou do seu dia a dia.',
-          'Como <strong>'+topic+'</strong> impacta o trabalho da sua equipe? Descreva uma situacao real que voce ja vivenciou.',
-          'Se voce precisasse explicar <strong>'+topic+'</strong> para um colega novo, o que diria em 3 frases?',
-          'Que acoes praticas voce pode tomar esta semana relacionadas a <strong>'+topic+'</strong>?'
+          'Como <strong>'+topic+'</strong> impacta o trabalho da sua equipe? Descreva uma situação real que voce ja vivenciou.',
+          'Se você precisasse explicar <strong>'+topic+'</strong> para um colega novo, o que diria em 3 frases?',
+          'Que ações práticas você pode tomar esta semana relacionadas a <strong>'+topic+'</strong>?'
         ];
         var ac=document.createElement('div');
         ac.className='action-card';
-        ac.innerHTML='<div class="action-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Aplique na pratica</div>'
+        ac.innerHTML='<div class="action-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Aplique na prática</div>'
           +'<p>'+prompts[idx%prompts.length]+'</p>'
           +'<textarea class="action-input" placeholder="Escreva aqui sua resposta..." rows="3"></textarea>'
-          +'<button class="action-save">Salvar anotacao</button>';
+          +'<button class="action-save">Salvar anotação</button>';
         sc.appendChild(ac);
       }
     }
@@ -1157,7 +1177,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         var tip=document.createElement('div');
         tip.className='tip-card';
         tip.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>'
-          +'<p><strong>Dica pratica:</strong> '+tipMatch.tip+'</p>';
+          +'<p><strong>Dica prática:</strong> '+tipMatch.tip+'</p>';
         sc.appendChild(tip);
       }
     }
@@ -1245,7 +1265,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         var ta=btn.previousElementSibling;
         if(ta&&ta.value.trim()){
           btn.textContent='Salvo!';btn.classList.add('saved');
-          setTimeout(function(){btn.textContent='Salvar anotacao';btn.classList.remove('saved')},2000);
+          setTimeout(function(){btn.textContent='Salvar anotação';btn.classList.remove('saved')},2000);
           try{localStorage.setItem('ead_note_'+currentLessonId+'_'+idx,ta.value)}catch(e){}
         }
       });
@@ -1270,7 +1290,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         btn.classList.add('selected');
         var fb=assess.querySelector('.assess-feedback');
         var level=parseInt(btn.dataset.level);
-        var msgs={1:'Sem problema! Releia o conteudo acima com calma. Se a duvida persistir, anote e retome depois com mais contexto.',2:'Bom progresso! A pratica vai consolidar. Tente o exercicio "Aplique na pratica" para fixar.',3:'Excelente! Voce esta pronto para avancar. Aproveite o conhecimento e compartilhe com colegas.'};
+        var msgs={1:'Sem problema! Releia o conteudo acima com calma. Se a dúvida persistir, anote e retome depois com mais contexto.',2:'Bom progresso! A prática vai consolidar. Tente o exercicio "Aplique na prática" para fixar.',3:'Excelente! Você esta pronto para avancar. Aproveite o conhecimento e compartilhe com colegas.'};
         fb.textContent=msgs[level]||'';
         fb.classList.add('show');
       });

@@ -591,11 +591,15 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
     if (!rows.length) return res.status(404).json({ error: 'Aula não encontrada' });
     const row = rows[0];
 
-    const templateTitle = req.query.t || 'Template';
-    const cleanTitle = templateTitle.replace(/^Download:\s*/i, '').trim();
+    const templateTitle = String(req.query.t || 'Template').substring(0, 120);
+    const cleanTitle = templateTitle
+      .replace(/^(download|baixar)[:\s]+/i, '')
+      .replace(/^template:\s*/i, '')
+      .trim() || 'Template';
 
     const doc = new PDFDocument({ size: 'A4', margin: 50 });
-    const safeFilename = cleanTitle.replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-').substring(0, 60);
+    const safeFilename = cleanTitle.normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-').substring(0, 60) || 'template';
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="template-${safeFilename}.pdf"`);
     doc.pipe(res);
@@ -608,18 +612,19 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
 
     doc.rect(0, 0, doc.page.width, 80).fill(NAVY);
     doc.fontSize(16).font('Helvetica-Bold').fillColor('#ffffff').text('ANDERS TECH', 50, 25);
-    doc.fontSize(9).font('Helvetica').fillColor('rgba(255,255,255,0.6)').text('Gestao com Tecnologia', 50, 45);
+    doc.fontSize(9).font('Helvetica').fillColor('rgba(255,255,255,0.6)').text('Gestão com Tecnologia', 50, 45);
     doc.fillColor(RED).rect(50, 65, 60, 3).fill(RED);
 
     doc.moveDown(4);
     doc.fontSize(18).font('Helvetica-Bold').fillColor(NAVY).text(cleanTitle, 50, 100, { width: pw });
     doc.moveDown(0.5);
-    doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(`Curso: ${row.course_titulo}  |  Modulo: ${row.module_titulo}  |  Aula: ${row.lesson_titulo}`, 50, doc.y, { width: pw });
+    doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(`Curso: ${row.course_titulo}  |  Módulo: ${row.module_titulo}  |  Aula: ${row.lesson_titulo}`, 50, doc.y, { width: pw });
     doc.moveDown(0.3);
     doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.5).stroke('#e5e7eb');
     doc.moveDown(1);
 
-    const t = cleanTitle.toLowerCase();
+    // matching sem acentos: titulos vem acentuados do conteudo ("Comparação", "Padronização")
+    const t = cleanTitle.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
     const startY = doc.y;
 
     if (t.includes('checklist') || t.includes('check-list')) {
@@ -645,7 +650,7 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
         if (doc.y > 720) { doc.addPage(); }
         doc.font('Helvetica-Bold').fillColor(NAVY).text(`${i + 1}. ${item}`, 50, doc.y, { width: pw });
         doc.moveDown(0.2);
-        doc.font('Helvetica').fillColor(GRAY).text('Observacoes: ________________________________________________________', 66, doc.y, { width: pw - 16 });
+        doc.font('Helvetica').fillColor(GRAY).text('Observações: ________________________________________________________', 66, doc.y, { width: pw - 16 });
         doc.moveDown(0.8);
       });
     } else if (t.includes('modelo') || t.includes('template') || t.includes('ficha')) {
@@ -669,7 +674,7 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
     for (let i = 0; i < pageCount; i++) {
       doc.switchToPage(i);
       doc.fontSize(8).fillColor('#999').text(
-        `Anders Tech  ·  ${cleanTitle}  ·  Pagina ${i + 1}/${pageCount}`,
+        `Anders Tech  ·  ${cleanTitle}  ·  Página ${i + 1}/${pageCount}`,
         50, doc.page.height - 35, { width: pw, align: 'center' }
       );
     }
@@ -713,33 +718,37 @@ function defaultItems(title) {
   ];
 }
 
+function normalizeTitle(title) {
+  return title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
 function detectColumns(title) {
-  const t = title.toLowerCase();
-  if (t.includes('risco')) return ['Risco / Oportunidade', 'Probabilidade', 'Impacto', 'Acao preventiva', 'Responsavel', 'Prazo'];
+  const t = normalizeTitle(title);
+  if (t.includes('risco')) return ['Risco / Oportunidade', 'Probabilidade', 'Impacto', 'Ação preventiva', 'Responsável', 'Prazo'];
   if (t.includes('objetivo') || t.includes('5w2h')) return ['Objetivo', 'O que', 'Por que', 'Quem', 'Quando', 'Como', 'Indicador'];
-  if (t.includes('processo')) return ['Processo', 'Entrada', 'Atividades', 'Saida', 'Indicador', 'Responsavel'];
-  if (t.includes('parte') && t.includes('interessada')) return ['Parte interessada', 'Tipo', 'Requisitos', 'Prioridade', 'Acao'];
-  if (t.includes('contexto') || t.includes('swot')) return ['Fator', 'Interno/Externo', 'Descricao', 'Impacto no SGQ', 'Acao'];
-  if (t.includes('auditoria') || t.includes('audit')) return ['Requisito', 'Evidencia esperada', 'Conformidade', 'Observacao'];
-  if (t.includes('competencia') || t.includes('treinamento')) return ['Cargo/Funcao', 'Competencia necessaria', 'Atual', 'Gap', 'Acao'];
-  if (t.includes('indicador')) return ['Indicador', 'Formula', 'Meta', 'Frequencia', 'Responsavel', 'Resultado'];
-  if (t.includes('acao') || t.includes('corretiva') || t.includes('nao conformidade')) return ['NC #', 'Descricao', 'Causa raiz', 'Acao corretiva', 'Responsavel', 'Prazo', 'Status'];
-  if (t.includes('fornecedor')) return ['Fornecedor', 'Material/Servico', 'Criterio', 'Avaliacao', 'Status'];
-  if (t.includes('documento') || t.includes('registro')) return ['Documento', 'Codigo', 'Versao', 'Responsavel', 'Local', 'Retencao'];
-  if (t.includes('clausula') || t.includes('pdca')) return ['Clausula', 'Requisito-chave', 'Fase PDCA', 'Aplicacao na empresa'];
-  if (t.includes('politica')) return ['Componente', 'Descricao', 'Alinhamento estrategico', 'Responsavel'];
-  if (t.includes('5s') || t.includes('senso')) return ['Senso', 'Acao', 'Local', 'Responsavel', 'Prazo', 'Status'];
-  if (t.includes('desperdicio') || t.includes('muda')) return ['Desperdicio', 'Descricao', 'Onde ocorre', 'Impacto', 'Acao'];
-  return ['Item', 'Descricao', 'Responsavel', 'Prazo', 'Status'];
+  if (t.includes('processo')) return ['Processo', 'Entrada', 'Atividades', 'Saída', 'Indicador', 'Responsável'];
+  if (t.includes('parte') && t.includes('interessada')) return ['Parte interessada', 'Tipo', 'Requisitos', 'Prioridade', 'Ação'];
+  if (t.includes('contexto') || t.includes('swot')) return ['Fator', 'Interno/Externo', 'Descrição', 'Impacto no SGQ', 'Ação'];
+  if (t.includes('auditoria') || t.includes('audit')) return ['Requisito', 'Evidência esperada', 'Conformidade', 'Observação'];
+  if (t.includes('competencia') || t.includes('treinamento')) return ['Cargo/Função', 'Competência necessária', 'Atual', 'Gap', 'Ação'];
+  if (t.includes('indicador')) return ['Indicador', 'Fórmula', 'Meta', 'Frequência', 'Responsável', 'Resultado'];
+  if (t.includes('acao') || t.includes('corretiva') || t.includes('nao conformidade')) return ['NC #', 'Descrição', 'Causa raiz', 'Ação corretiva', 'Responsável', 'Prazo', 'Status'];
+  if (t.includes('fornecedor')) return ['Fornecedor', 'Material/Serviço', 'Critério', 'Avaliação', 'Status'];
+  if (t.includes('documento') || t.includes('registro')) return ['Documento', 'Código', 'Versão', 'Responsável', 'Local', 'Retenção'];
+  if (t.includes('clausula') || t.includes('pdca')) return ['Cláusula', 'Requisito-chave', 'Fase PDCA', 'Aplicação na empresa'];
+  if (t.includes('politica')) return ['Componente', 'Descrição', 'Alinhamento estratégico', 'Responsável'];
+  if (t.includes('5s') || t.includes('senso')) return ['Senso', 'Ação', 'Local', 'Responsável', 'Prazo', 'Status'];
+  if (t.includes('desperdicio') || t.includes('muda')) return ['Desperdício', 'Descrição', 'Onde ocorre', 'Impacto', 'Ação'];
+  return ['Item', 'Descrição', 'Responsável', 'Prazo', 'Status'];
 }
 
 function detectFields(title) {
-  const t = title.toLowerCase();
-  if (t.includes('politica')) return ['Empresa:', 'Missao:', 'Visao:', 'Politica da Qualidade:', 'Objetivos:', 'Aprovacao:', 'Data:'];
-  if (t.includes('contexto') || t.includes('swot')) return ['Empresa:', 'Forcas (Strengths):', 'Fraquezas (Weaknesses):', 'Oportunidades (Opportunities):', 'Ameacas (Threats):', 'Fatores internos relevantes:', 'Fatores externos relevantes:', 'Implicacoes para o SGQ:'];
-  if (t.includes('processo') || t.includes('ficha')) return ['Nome do processo:', 'Responsavel (dono):', 'Objetivo:', 'Entradas:', 'Saidas:', 'Recursos necessarios:', 'Indicadores:', 'Riscos associados:', 'Interacao com outros processos:'];
-  if (t.includes('auditoria') || t.includes('audit')) return ['Auditoria #:', 'Data:', 'Auditor lider:', 'Equipe:', 'Escopo:', 'Criterio:', 'Resumo das constatacoes:', 'Nao conformidades:', 'Oportunidades de melhoria:', 'Conclusao:'];
-  return ['Empresa:', 'Responsavel:', 'Data:', 'Objetivo:', 'Descricao:', 'Observacoes:', 'Aprovacao:'];
+  const t = normalizeTitle(title);
+  if (t.includes('politica')) return ['Empresa:', 'Missão:', 'Visão:', 'Política da Qualidade:', 'Objetivos:', 'Aprovação:', 'Data:'];
+  if (t.includes('contexto') || t.includes('swot')) return ['Empresa:', 'Forças (Strengths):', 'Fraquezas (Weaknesses):', 'Oportunidades (Opportunities):', 'Ameaças (Threats):', 'Fatores internos relevantes:', 'Fatores externos relevantes:', 'Implicações para o SGQ:'];
+  if (t.includes('processo') || t.includes('ficha')) return ['Nome do processo:', 'Responsável (dono):', 'Objetivo:', 'Entradas:', 'Saídas:', 'Recursos necessários:', 'Indicadores:', 'Riscos associados:', 'Interação com outros processos:'];
+  if (t.includes('auditoria') || t.includes('audit')) return ['Auditoria #:', 'Data:', 'Auditor líder:', 'Equipe:', 'Escopo:', 'Critério:', 'Resumo das constatações:', 'Não conformidades:', 'Oportunidades de melhoria:', 'Conclusão:'];
+  return ['Empresa:', 'Responsável:', 'Data:', 'Objetivo:', 'Descrição:', 'Observações:', 'Aprovação:'];
 }
 
 function drawTable(doc, cols, numRows, pageWidth, headerColor) {
