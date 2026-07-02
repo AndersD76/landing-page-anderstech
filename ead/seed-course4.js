@@ -24,43 +24,7 @@ export async function seedCourse4(sql) {
 <h2>Origem e história do 5S</h2>
 <p>O programa 5S é uma das metodologias mais conhecidas e aplicadas no mundo industrial. Nasceu no <strong>Japão pós-Segunda Guerra Mundial</strong>, num contexto de reconstrução econômica em que cada recurso — material, espaço e tempo — precisava ser aproveitado ao máximo. O 5S não surgiu como teoria acadêmica: nasceu no <strong>chão de fábrica</strong>, criado por quem precisava resolver problemas reais de desorganização, desperdício e falta de padronização.</p>
 
-<div class="diagram">
-  <svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <marker id="arr1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c5383c"/></marker>
-    </defs>
-    <circle cx="210" cy="130" r="45" fill="#0b1730" stroke="#c5383c" stroke-width="2"/>
-    <text x="210" y="126" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">5S</text>
-    <text x="210" y="140" text-anchor="middle" fill="#eab308" font-size="9">Base da</text>
-    <text x="210" y="151" text-anchor="middle" fill="#eab308" font-size="9">Melhoria</text>
-    <!-- Seiri -->
-    <circle cx="210" cy="30" r="28" fill="#c5383c" opacity="0.9"/>
-    <text x="210" y="27" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIRI</text>
-    <text x="210" y="39" text-anchor="middle" fill="#fff" font-size="7">Utilização</text>
-    <line x1="210" y1="58" x2="210" y2="83" stroke="#c5383c" stroke-width="2" marker-end="url(#arr1)"/>
-    <!-- Seiton -->
-    <circle cx="380" cy="90" r="28" fill="#2563eb" opacity="0.9"/>
-    <text x="380" y="87" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEITON</text>
-    <text x="380" y="99" text-anchor="middle" fill="#fff" font-size="7">Organização</text>
-    <line x1="354" y1="100" x2="258" y2="120" stroke="#2563eb" stroke-width="2" marker-end="url(#arr1)"/>
-    <!-- Seiso -->
-    <circle cx="340" cy="210" r="28" fill="#16a34a" opacity="0.9"/>
-    <text x="340" y="207" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEISO</text>
-    <text x="340" y="219" text-anchor="middle" fill="#fff" font-size="7">Limpeza</text>
-    <line x1="316" y1="196" x2="242" y2="158" stroke="#16a34a" stroke-width="2" marker-end="url(#arr1)"/>
-    <!-- Seiketsu -->
-    <circle cx="80" cy="210" r="28" fill="#eab308" opacity="0.9"/>
-    <text x="80" y="207" text-anchor="middle" fill="#0b1730" font-size="8" font-weight="bold">SEIKETSU</text>
-    <text x="80" y="219" text-anchor="middle" fill="#0b1730" font-size="7">Padronização</text>
-    <line x1="104" y1="196" x2="178" y2="158" stroke="#eab308" stroke-width="2" marker-end="url(#arr1)"/>
-    <!-- Shitsuke -->
-    <circle cx="40" cy="90" r="28" fill="#c5383c" opacity="0.7"/>
-    <text x="40" y="87" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">SHITSUKE</text>
-    <text x="40" y="99" text-anchor="middle" fill="#fff" font-size="7">Disciplina</text>
-    <line x1="66" y1="100" x2="162" y2="120" stroke="#c5383c" stroke-width="2" marker-end="url(#arr1)"/>
-  </svg>
-  <figcaption>Os 5 sensos e sua conexão com a base de melhoria contínua</figcaption>
-</div>
+<div class="diagram"><svg viewBox="0 0 440 306" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr5s" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#64748b"/></marker></defs><circle cx="220" cy="155" r="45" fill="#0b1730" stroke="#c5383c" stroke-width="2"/><text x="220" y="149" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">5S</text><text x="220" y="163" text-anchor="middle" fill="#eab308" font-size="8">Base da</text><text x="220" y="174" text-anchor="middle" fill="#eab308" font-size="8">Melhoria</text><line x1="220" y1="86" x2="220" y2="108" stroke="#c5383c" stroke-width="2" marker-end="url(#arr5s)"/><circle cx="220" cy="55" r="31" fill="#c5383c" opacity="0.92"/><text x="220" y="54" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIRI</text><text x="220" y="66" text-anchor="middle" fill="#fff" font-size="7">Utilização</text><line x1="312.2" y1="133.7" x2="264.7" y2="140.5" stroke="#2563eb" stroke-width="2" marker-end="url(#arr5s)"/><circle cx="341.7" cy="124.1" r="31" fill="#2563eb" opacity="0.92"/><text x="341.7" y="123.1" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEITON</text><text x="341.7" y="135.1" text-anchor="middle" fill="#fff" font-size="7">Organização</text><line x1="277" y1="210.8" x2="247.6" y2="193" stroke="#16a34a" stroke-width="2" marker-end="url(#arr5s)"/><circle cx="295.2" cy="235.9" r="31" fill="#16a34a" opacity="0.92"/><text x="295.2" y="234.9" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEISO</text><text x="295.2" y="246.9" text-anchor="middle" fill="#fff" font-size="7">Limpeza</text><line x1="163" y1="210.8" x2="192.4" y2="193" stroke="#eab308" stroke-width="2" marker-end="url(#arr5s)"/><circle cx="144.8" cy="235.9" r="31" fill="#eab308" opacity="0.92"/><text x="144.8" y="234.9" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SEIKETSU</text><text x="144.8" y="246.9" text-anchor="middle" fill="#fff" font-size="7">Padronização</text><line x1="127.8" y1="133.7" x2="175.3" y2="140.5" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr5s)"/><circle cx="98.3" cy="124.1" r="31" fill="#7c3aed" opacity="0.92"/><text x="98.3" y="123.1" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SHITSUKE</text><text x="98.3" y="135.1" text-anchor="middle" fill="#fff" font-size="7">Disciplina</text></svg><figcaption>Os 5 sensos e sua conexão com a base de melhoria contínua</figcaption></div>
 
 <h3>O contexto japonês</h3>
 <p>Após 1945, o Japão estava devastado. A indústria precisava produzir mais com menos. Engenheiros e gestores japoneses, com forte influência dos consultores americanos W. Edwards Deming e Joseph Juran, desenvolveram sistemas de gestão que valorizavam a <strong>ordem, a limpeza e a disciplina</strong> como base para qualquer melhoria. O 5S foi uma das primeiras ferramentas adotadas em larga escala por empresas como Toyota, Honda e Matsushita (atual Panasonic).</p>
@@ -496,7 +460,7 @@ export async function seedCourse4(sql) {
 </div>
 
 <div class="diagram">
-  <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 412 220" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c5383c"/></marker>
     </defs>
@@ -755,7 +719,7 @@ export async function seedCourse4(sql) {
 </div>
 
 <div class="diagram">
-  <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 400 205" xmlns="http://www.w3.org/2000/svg">
     <text x="200" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Seiso: Limpeza como Inspeção — Ciclo</text>
     <!-- Ciclo circular -->
     <circle cx="200" cy="105" r="65" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="8,4"/>

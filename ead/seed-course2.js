@@ -119,51 +119,7 @@
 <h2>Os 7 princípios da auditoria</h2>
 <p>A ISO 19011:2018 estabelece 7 princípios que sustentam a prática da auditoria. Eles guiam o comportamento do auditor e garantem que os resultados sejam confiáveis e úteis. Um auditor que não segue esses princípios compromete toda a credibilidade do processo.</p>
 
-<div class="diagram">
-  <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
-    <!-- centro -->
-    <circle cx="200" cy="170" r="46" fill="#0b1730" stroke="#2563eb" stroke-width="2"/>
-    <text x="200" y="164" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="bold">7 Princípios</text>
-    <text x="200" y="178" text-anchor="middle" fill="#93c5fd" font-size="9">ISO 19011</text>
-    <!-- raios -->
-    <line x1="200" y1="124" x2="200" y2="56" stroke="#475569" stroke-width="1.5"/>
-    <line x1="240" y1="135" x2="298" y2="86" stroke="#475569" stroke-width="1.5"/>
-    <line x1="244" y1="184" x2="320" y2="192" stroke="#475569" stroke-width="1.5"/>
-    <line x1="222" y1="213" x2="254" y2="286" stroke="#475569" stroke-width="1.5"/>
-    <line x1="178" y1="213" x2="146" y2="286" stroke="#475569" stroke-width="1.5"/>
-    <line x1="156" y1="184" x2="80" y2="192" stroke="#475569" stroke-width="1.5"/>
-    <line x1="160" y1="135" x2="102" y2="86" stroke="#475569" stroke-width="1.5"/>
-    <!-- nós externos -->
-    <circle cx="200" cy="42" r="28" fill="#c5383c" opacity="0.9"/>
-    <text x="200" y="38" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">1.</text>
-    <text x="200" y="50" text-anchor="middle" fill="#fff" font-size="8">Integridade</text>
-    <circle cx="312" cy="74" r="28" fill="#2563eb" opacity="0.9"/>
-    <text x="312" y="70" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">2.</text>
-    <text x="312" y="82" text-anchor="middle" fill="#fff" font-size="8">Apresent.</text>
-    <text x="312" y="92" text-anchor="middle" fill="#fff" font-size="7">Justa</text>
-    <circle cx="340" cy="192" r="28" fill="#16a34a" opacity="0.9"/>
-    <text x="340" y="188" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">3.</text>
-    <text x="340" y="200" text-anchor="middle" fill="#fff" font-size="8">Cuidado</text>
-    <text x="340" y="210" text-anchor="middle" fill="#fff" font-size="7">Profissional</text>
-    <circle cx="266" cy="300" r="28" fill="#eab308" opacity="0.9"/>
-    <text x="266" y="296" text-anchor="middle" fill="#0b1730" font-size="9" font-weight="bold">4.</text>
-    <text x="266" y="308" text-anchor="middle" fill="#0b1730" font-size="8">Confiden-</text>
-    <text x="266" y="318" text-anchor="middle" fill="#0b1730" font-size="7">cialidade</text>
-    <circle cx="134" cy="300" r="28" fill="#7c3aed" opacity="0.9"/>
-    <text x="134" y="296" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">5.</text>
-    <text x="134" y="308" text-anchor="middle" fill="#fff" font-size="8">Indepen-</text>
-    <text x="134" y="318" text-anchor="middle" fill="#fff" font-size="7">dência</text>
-    <circle cx="60" cy="192" r="28" fill="#c5383c" opacity="0.9"/>
-    <text x="60" y="188" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">6.</text>
-    <text x="60" y="200" text-anchor="middle" fill="#fff" font-size="8">Baseada</text>
-    <text x="60" y="210" text-anchor="middle" fill="#fff" font-size="7">Evidência</text>
-    <circle cx="88" cy="74" r="28" fill="#0891b2" opacity="0.9"/>
-    <text x="88" y="70" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">7.</text>
-    <text x="88" y="82" text-anchor="middle" fill="#fff" font-size="8">Baseada</text>
-    <text x="88" y="92" text-anchor="middle" fill="#fff" font-size="7">em Risco</text>
-  </svg>
-  <figcaption>Os 7 princípios da auditoria segundo a ISO 19011:2018 — pilares da credibilidade do auditor</figcaption>
-</div>
+<div class="diagram"><svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg"><text x="250" y="16" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Os 7 Princípios da Auditoria</text><circle cx="250" cy="180" r="46" fill="#0b1730" stroke="#2563eb" stroke-width="2"/><text x="250" y="173" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">7 Princípios</text><text x="250" y="187" text-anchor="middle" font-size="9" fill="#93c5fd">ISO 19011</text><line x1="250" y1="134" x2="250" y2="104" stroke="#c5383c" stroke-width="1.8"/><circle cx="250" cy="84" r="20" fill="#c5383c" opacity="0.92"/><text x="250" y="87.5" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">1</text><text x="250" y="57" text-anchor="middle" font-size="9" fill="#0b1730" font-weight="bold">Integridade</text><line x1="286" y1="151.3" x2="326.7" y2="132.6" stroke="#2563eb" stroke-width="1.8"/><circle cx="342.3" cy="120.1" r="20" fill="#2563eb" opacity="0.92"/><text x="342.3" y="123.6" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">2</text><text x="364.1" y="104.4" text-anchor="start" font-size="9" fill="#0b1730" font-weight="bold">Apresentação justa</text><line x1="294.8" y1="190.2" x2="345.5" y2="196.9" stroke="#16a34a" stroke-width="1.8"/><circle cx="365" cy="201.4" r="20" fill="#16a34a" opacity="0.92"/><text x="365" y="204.9" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">3</text><text x="392.3" y="211" text-anchor="start" font-size="9" fill="#0b1730" font-weight="bold">Cuidado profissional</text><line x1="270" y1="221.4" x2="292.5" y2="248.5" stroke="#eab308" stroke-width="1.8"/><circle cx="301.2" cy="266.5" r="20" fill="#eab308" opacity="0.92"/><text x="301.2" y="270" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">4</text><text x="313.3" y="296.5" text-anchor="start" font-size="9" fill="#0b1730" font-weight="bold">Confidencialidade</text><line x1="230" y1="221.4" x2="207.5" y2="248.5" stroke="#7c3aed" stroke-width="1.8"/><circle cx="198.8" cy="266.5" r="20" fill="#7c3aed" opacity="0.92"/><text x="198.8" y="270" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">5</text><text x="186.7" y="296.5" text-anchor="end" font-size="9" fill="#0b1730" font-weight="bold">Independência</text><line x1="205.2" y1="190.2" x2="154.5" y2="196.9" stroke="#0891b2" stroke-width="1.8"/><circle cx="135" cy="201.4" r="20" fill="#0891b2" opacity="0.92"/><text x="135" y="204.9" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">6</text><text x="107.7" y="211" text-anchor="end" font-size="9" fill="#0b1730" font-weight="bold">Baseada em evidência</text><line x1="214" y1="151.3" x2="173.3" y2="132.6" stroke="#c5383c" stroke-width="1.8"/><circle cx="157.7" cy="120.1" r="20" fill="#c5383c" opacity="0.92"/><text x="157.7" y="123.6" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">7</text><text x="135.9" y="104.4" text-anchor="end" font-size="9" fill="#0b1730" font-weight="bold">Baseada em risco</text></svg><figcaption>Os 7 princípios da auditoria segundo a ISO 19011:2018 — a abordagem baseada em risco foi a novidade da versão 2018</figcaption></div>
 
 <h3>1. Integridade</h3>
 <p>O auditor deve ser <strong>honesto, diligente e responsável</strong>. Relatar as constatações de forma verdadeira e precisa, mesmo quando os resultados não são os que o auditado (ou o gestor do programa) gostaria de ouvir.</p>
@@ -2294,37 +2250,7 @@
 <h2>Ética e confidencialidade</h2>
 <p>A auditoria coloca o auditor numa posição de <strong>poder e confiança</strong>. Ele tem acesso a informações sensíveis, avalia o trabalho de colegas e gera constatações que podem ter consequências significativas. Sem ética e confidencialidade, esse poder se corrompe e o processo perde legitimidade.</p>
 
-<div class="diagram">
-  <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
-    <text x="210" y="22" text-anchor="middle" fill="#94a3b8" font-size="12">5 Princípios Éticos do Auditor</text>
-    <!-- center -->
-    <circle cx="210" cy="115" r="30" fill="#0b1730" stroke="#eab308" stroke-width="2"/>
-    <text x="210" y="111" text-anchor="middle" fill="#eab308" font-size="10" font-weight="bold">Auditor</text>
-    <text x="210" y="125" text-anchor="middle" fill="#eab308" font-size="10" font-weight="bold">Ético</text>
-    <!-- nodes -->
-    <circle cx="210" cy="45" r="28" fill="#0b1730" stroke="#2563eb" stroke-width="1.5"/>
-    <text x="210" y="41" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="bold">Veracidade</text>
-    <text x="210" y="55" text-anchor="middle" fill="#64748b" font-size="8">Relatar o que viu</text>
-    <line x1="210" y1="73" x2="210" y2="85" stroke="#2563eb" stroke-width="1.5"/>
-    <circle cx="100" cy="80" r="28" fill="#0b1730" stroke="#16a34a" stroke-width="1.5"/>
-    <text x="100" y="76" text-anchor="middle" fill="#86efac" font-size="9" font-weight="bold">Imparcialidade</text>
-    <text x="100" y="90" text-anchor="middle" fill="#64748b" font-size="8">Sem favoritismo</text>
-    <line x1="124" y1="92" x2="182" y2="108" stroke="#16a34a" stroke-width="1.5"/>
-    <circle cx="320" cy="80" r="28" fill="#0b1730" stroke="#c5383c" stroke-width="1.5"/>
-    <text x="320" y="76" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="bold">Objetividade</text>
-    <text x="320" y="90" text-anchor="middle" fill="#64748b" font-size="8">Evidências, não opinião</text>
-    <line x1="297" y1="92" x2="238" y2="108" stroke="#c5383c" stroke-width="1.5"/>
-    <circle cx="120" cy="175" r="28" fill="#0b1730" stroke="#eab308" stroke-width="1.5"/>
-    <text x="120" y="171" text-anchor="middle" fill="#fde68a" font-size="9" font-weight="bold">Responsabilidade</text>
-    <text x="120" y="185" text-anchor="middle" fill="#64748b" font-size="8">Qualidade do trabalho</text>
-    <line x1="145" y1="162" x2="183" y2="138" stroke="#eab308" stroke-width="1.5"/>
-    <circle cx="300" cy="175" r="28" fill="#0b1730" stroke="#16a34a" stroke-width="1.5"/>
-    <text x="300" y="171" text-anchor="middle" fill="#86efac" font-size="9" font-weight="bold">Respeito</text>
-    <text x="300" y="185" text-anchor="middle" fill="#64748b" font-size="8">Dignidade de todos</text>
-    <line x1="276" y1="162" x2="237" y2="138" stroke="#16a34a" stroke-width="1.5"/>
-  </svg>
-  <figcaption>Os 5 princípios éticos que sustentam a credibilidade do auditor interno</figcaption>
-</div>
+<div class="diagram"><svg viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg"><text x="250" y="16" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">5 Princípios Éticos do Auditor</text><circle cx="250" cy="170" r="42" fill="#0b1730" stroke="#eab308" stroke-width="2"/><text x="250" y="163" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Auditor</text><text x="250" y="177" text-anchor="middle" font-size="9" fill="#93c5fd">Ético</text><line x1="250" y1="128" x2="250" y2="102" stroke="#2563eb" stroke-width="1.8"/><circle cx="250" cy="82" r="20" fill="#2563eb" opacity="0.92"/><text x="250" y="85.5" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">1</text><text x="250" y="55" text-anchor="middle" font-size="9" fill="#0b1730" font-weight="bold">Veracidade</text><text x="250" y="66" text-anchor="middle" font-size="7.5" fill="#6b7280">Relatar o que viu</text><line x1="289.9" y1="157" x2="343.2" y2="149" stroke="#c5383c" stroke-width="1.8"/><circle cx="362.2" cy="142.8" r="20" fill="#c5383c" opacity="0.92"/><text x="362.2" y="146.3" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">2</text><text x="388.9" y="136.5" text-anchor="start" font-size="9" fill="#0b1730" font-weight="bold">Imparcialidade</text><text x="388.9" y="147.5" text-anchor="start" font-size="7.5" fill="#6b7280">Sem favoritismo</text><line x1="274.7" y1="204" x2="307.6" y2="225" stroke="#16a34a" stroke-width="1.8"/><circle cx="319.4" cy="241.2" r="20" fill="#16a34a" opacity="0.92"/><text x="319.4" y="244.7" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">3</text><text x="335.8" y="268.5" text-anchor="start" font-size="9" fill="#0b1730" font-weight="bold">Objetividade</text><text x="335.8" y="279.5" text-anchor="start" font-size="7.5" fill="#6b7280">Evidências, não opinião</text><line x1="225.3" y1="204" x2="192.4" y2="225" stroke="#eab308" stroke-width="1.8"/><circle cx="180.6" cy="241.2" r="20" fill="#eab308" opacity="0.92"/><text x="180.6" y="244.7" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">4</text><text x="164.2" y="268.5" text-anchor="end" font-size="9" fill="#0b1730" font-weight="bold">Responsabilidade</text><text x="164.2" y="279.5" text-anchor="end" font-size="7.5" fill="#6b7280">Qualidade do trabalho</text><line x1="210.1" y1="157" x2="156.8" y2="149" stroke="#7c3aed" stroke-width="1.8"/><circle cx="137.8" cy="142.8" r="20" fill="#7c3aed" opacity="0.92"/><text x="137.8" y="146.3" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">5</text><text x="111.1" y="136.5" text-anchor="end" font-size="9" fill="#0b1730" font-weight="bold">Respeito</text><text x="111.1" y="147.5" text-anchor="end" font-size="7.5" fill="#6b7280">Dignidade das pessoas</text></svg><figcaption>Os 5 princípios éticos que sustentam a credibilidade do auditor interno</figcaption></div>
 
 <h3>Princípios eticos do auditor</h3>
 <ul>
