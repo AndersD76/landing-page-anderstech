@@ -10,6 +10,11 @@ import { seedCourse2 } from './seed-course2.js';
 import { seedCourse3 } from './seed-course3.js';
 import { seedCourse4 } from './seed-course4.js';
 
+if (process.env.NODE_ENV === 'production' && !process.argv.includes('--force')) {
+  console.error('ERRO: seed destrutivo bloqueado em producao. Use --force para confirmar.');
+  process.exit(1);
+}
+
 const sql = neon(process.env.DATABASE_URL);
 
 async function main() {

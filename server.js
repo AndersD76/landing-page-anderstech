@@ -4,6 +4,7 @@ import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import session from 'express-session';
+import pgSession from 'connect-pg-simple';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
@@ -55,7 +56,11 @@ if (IS_PROD && !process.env.SESSION_SECRET) {
   console.error('FATAL: SESSION_SECRET must be set in production');
   process.exit(1);
 }
+const PgStore = pgSession(session);
 app.use(session({
+  store: process.env.DATABASE_URL
+    ? new PgStore({ conString: process.env.DATABASE_URL, createTableIfMissing: true })
+    : undefined, // sem DATABASE_URL (dev local) cai no MemoryStore
   secret: process.env.SESSION_SECRET || 'anderstech-dev-only',
   resave: false,
   saveUninitialized: false,
