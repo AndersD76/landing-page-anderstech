@@ -347,7 +347,7 @@ export async function seedCourse4(sql) {
 
 <div class="callout"><strong>Conclusão:</strong> O 5S tem um dos melhores ROIs entre todas as ferramentas de gestão industrial. Com investimento baixo (comparado a automação ou novos equipamentos), gera resultados rápidos e visíveis. O único recurso realmente caro é o <strong>tempo da liderança</strong> — e esse é inegociável.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O 5S é provavelmente a única ferramenta de gestão em que o investimento inicial pode ser inferior a R$ 5.000 (para micro e pequenas empresas) e ainda assim gerar retorno mensurável em 3 meses. A chave não é dinheiro — é liderança e disciplina.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O 5S é provávelmente a única ferramenta de gestão em que o investimento inicial pode ser inferior a R$ 5.000 (para micro e pequenas empresas) e ainda assim gerar retorno mensurável em 3 meses. A chave não é dinheiro — é liderança e disciplina.</div></div>
 `}, 'Planilha de ROI do 5S (modelo editável)'),
 
   (${m1.id}, '1-4-diagnostico-inicial', 'Diagnóstico inicial: como avaliar o estado atual', '20 min', 4, ${`
@@ -939,7 +939,7 @@ export async function seedCourse4(sql) {
 <tr><td><strong>TOTAL ESTIMADO</strong></td><td></td><td><strong>R$ 2.360</strong></td></tr>
 </table>
 
-<div class="callout"><strong>Dica crítica:</strong> O café/lanche não é luxo — é investimento. O Dia D e um evento físico e exaustivo. Oferecer alimentação mostra que a empresa valoriza o esforço. Muitas fábricas relatam que o lanche comunitário do Dia D foi um dos momentos de maior integração da equipe.</div>
+<div class="callout"><strong>Dica crítica:</strong> O café/lanche não é luxo — é investimento. O Dia D é um evento físico e exaustivo. Oferecer alimentação mostra que a empresa valoriza o esforço. Muitas fábricas relatam que o lanche comunitário do Dia D foi um dos momentos de maior integração da equipe.</div>
 
 <h3>Erros comuns no Dia D</h3>
 <ul>
@@ -1379,7 +1379,7 @@ export async function seedCourse4(sql) {
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> "As pessoas apoiam o que ajudam a construir." Quanto mais a equipe participar das decisões do 5S (onde guardar, como organizar, que padrão definir), mais ela vai defender o programa. Faça com eles, nunca para eles.</div></div>
 
 <h3>Por que as pessoas resistem ao 5S?</h3>
-<p>Entender a resistência é o primeiro passo para supera-la:</p>
+<p>Entender a resistência é o primeiro passo para superá-la:</p>
 <table>
 <tr><th>Motivo da resistência</th><th>O que a pessoa pensa</th><th>Como lidar</th></tr>
 <tr><td>Medo de mudança</td><td>"Vai mudar minha rotina e eu não sei se vou me adaptar"</td><td>Envolver na decisão, treinar antes de cobrar</td></tr>
@@ -1819,14 +1819,14 @@ export async function seedCourse4(sql) {
 <tr><td><strong>Plan (Planejar)</strong></td><td>Diagnóstico, definição de padrões, metas, cronograma</td><td>Checklist de diagnóstico, plano de implantação</td></tr>
 <tr><td><strong>Do (Executar)</strong></td><td>Dia D, organização, limpeza, sinalização</td><td>Etiqueta vermelha, shadow board, demarcação</td></tr>
 <tr><td><strong>Check (Verificar)</strong></td><td>Auditorias, indicadores, feedback dos operadores</td><td>Checklist de auditoria, dashboard, reunião mensal</td></tr>
-<tr><td><strong>Act (Agir)</strong></td><td>Ações corretivas, ajuste de padrões, melhoria</td><td>5W2H, 5 Por ques, Kaizen</td></tr>
+<tr><td><strong>Act (Agir)</strong></td><td>Ações corretivas, ajuste de padrões, melhoria</td><td>5W2H, 5 Porquês, Kaizen</td></tr>
 </table>
 
 <h3>Tratamento de não-conformidades de auditoria</h3>
 <p>Quando a auditoria identifica um desvio, o tratamento segue um fluxo simples:</p>
 <ol>
 <li><strong>Registrar:</strong> O que foi encontrado, onde, quando (com foto)</li>
-<li><strong>Analisar causa:</strong> Por que aconteceu? (use os 5 Por ques)</li>
+<li><strong>Analisar causa:</strong> Por que aconteceu? (use os 5 Porquês)</li>
 <li><strong>Definir ação:</strong> O que fazer para corrigir e prevenir recorrência</li>
 <li><strong>Definir responsável e prazo:</strong> Quem faz e até quando</li>
 <li><strong>Executar:</strong> Realizar a ação</li>
@@ -1848,8 +1848,8 @@ export async function seedCourse4(sql) {
 <p><strong>Status:</strong> [ ] Pendente | [ ] Em andamento | [ ] Concluída | [ ] Verificada eficaz</p>
 </div>
 
-<h3>Os 5 Por ques — análise de causa raiz no 5S</h3>
-<p>Muitos desvios de 5S tem causas raiz mais profundas do que parecem. A técnica dos 5 Por ques ajuda a ir além do superficial:</p>
+<h3>Os 5 Porquês — análise de causa raiz no 5S</h3>
+<p>Muitos desvios de 5S tem causas raiz mais profundas do que parecem. A técnica dos 5 Porquês ajuda a ir além do superficial:</p>
 
 <div class="example"><strong>Exemplo:</strong>
 <p><strong>Desvio:</strong> Ferramentas fora do shadow board no setor de usinagem.</p>
@@ -2093,7 +2093,7 @@ export async function seedCourse4(sql) {
   const m4q = [
     ['Qual é a frequência de auditoria recomendada nos primeiros 3 meses do programa 5S?', ['Diária','Semanal','Mensal','Trimestral'], 1, 'Nos primeiros 3 meses, a auditoria deve ser semanal para reforçar o padrão e corrigir desvios rapidamente.'],
     ['O que é uma auditoria cruzada no contexto do 5S?', ['Auditoria feita por empresa externa','O líder de um setor audita outro setor','Auditoria que avalia dois programas simultaneamente','Auditoria feita por dois auditores ao mesmo tempo'], 1, 'Na auditoria cruzada, líderes de diferentes setores auditam as áreas uns dos outros, trazendo olhar externo e disseminando boas práticas.'],
-    ['Qual ferramenta é recomendada para analisar a causa raiz de desvios encontrados na auditoria 5S?', ['Diagrama de Gantt','5 Por ques','Análise SWOT','Balanced Scorecard'], 1, 'A técnica dos 5 Por ques permite ir além do sintoma e encontrar a causa raiz do desvio de forma simples e eficaz.'],
+    ['Qual ferramenta é recomendada para analisar a causa raiz de desvios encontrados na auditoria 5S?', ['Diagrama de Gantt','5 Porquês','Análise SWOT','Balanced Scorecard'], 1, 'A técnica dos 5 Porquês permite ir além do sintoma e encontrar a causa raiz do desvio de forma simples e eficaz.'],
     ['Qual cláusula da ISO 9001 é diretamente facilitada pelo Seiton (identificação e rastreabilidade)?', ['4.1','7.1.3','8.5.2','10.2'], 2, 'A cláusula 8.5.2 trata de identificação e rastreabilidade, que é diretamente apoiada pelo sistema de endereçamento e etiquetagem do Seiton.'],
     ['Na integração 5S + TPM, qual senso equivale a manutenção autônoma?', ['Seiri','Seiton','Seiso','Seiketsu'], 2, 'Seiso (limpeza como inspeção) e a essencia da manutenção autônoma do TPM — o operador limpa e ao mesmo tempo inspeciona a máquina.'],
   ];
@@ -2106,9 +2106,9 @@ export async function seedCourse4(sql) {
     ['O programa 5S surgiu em qual país e década?', ['EUA, anos 1950','Japão, anos 1950','Alemanha, anos 1960','Brasil, anos 1990'], 1, 'O 5S nasceu no Japão pós-Segunda Guerra Mundial (década de 1950), num contexto de reconstrução industrial.'],
     ['Qual a sequência correta dos 5 sensos?', ['Seiri, Seiso, Seiton, Seiketsu, Shitsuke','Seiton, Seiri, Seiso, Shitsuke, Seiketsu','Seiri, Seiton, Seiso, Seiketsu, Shitsuke','Seiso, Seiri, Seiton, Shitsuke, Seiketsu'], 2, 'A sequência correta e: Seiri (utilização), Seiton (organização), Seiso (limpeza), Seiketsu (padronização), Shitsuke (disciplina).'],
     ['Qual é o ROI típico do 5S no primeiro ano, conforme o caso da metalúrgica de Joinville apresentado?', ['1,5x','3x','5,3x','10x'], 2, 'A metalúrgica de Joinville investiu R$ 18.000 e obteve R$ 95.000 em economia de peças rejeitadas — ROI de 5,3x.'],
-    ['No checklist de diagnóstico inicial, uma nota de 32% classifica a área como:', ['Critica','Insuficiente','Regular','Boa'], 1, 'A faixa de 21-40% e classificada como "Insuficiente", exigindo implantação estruturada em 90 dias.'],
+    ['No checklist de diagnóstico inicial, uma nota de 32% classifica a área como:', ['Critica','Insuficiente','Regular','Boa'], 1, 'A faixa de 21-40% é classificada como "Insuficiente", exigindo implantação estruturada em 90 dias.'],
     ['Qual é o prazo padrão da "área de quarentena" na técnica da etiqueta vermelha?', ['7 dias','15 dias','30 dias','60 dias'], 2, 'Itens etiquetados ficam na área de quarentena por 30 dias. Se ninguém reclamar, são descartados ou realocados.'],
-    ['Segundo a NBR 7195, qual cor e padrão para demarcação de corredores de circulação?', ['Branco','Verde','Amarelo','Azul'], 2, 'A cor amarela e usada para corredores de circulação e áreas de atenção conforme a norma brasileira.'],
+    ['Segundo a NBR 7195, qual cor e padrão para demarcação de corredores de circulação?', ['Branco','Verde','Amarelo','Azul'], 2, 'A cor amarela é usada para corredores de circulação e áreas de atenção conforme a norma brasileira.'],
     ['O conceito de "limpeza como inspeção" do Seiso tem origem em qual metodologia?', ['ISO 9001','Lean Manufacturing','TPM (Total Productive Maintenance)','Six Sigma'], 2, 'O conceito de limpeza como inspeção vem diretamente do pilar de manutenção autônoma do TPM.'],
     ['Qual o custo médio de um shadow board feito internamente?', ['R$ 20 a R$ 50','R$ 80 a R$ 200','R$ 500 a R$ 1.000','R$ 2.000 a R$ 5.000'], 1, 'Um shadow board feito com MDF, tinta e ganchos custa entre R$ 80 e R$ 200 com mão de obra interna.'],
     ['No Dia D, qual é a atividade que deve acontecer ANTES de qualquer outra?', ['Limpeza profunda','Fotografar o estado atual (antes)','Organizar as ferramentas','Pintar o chao'], 1, 'Fotografar o "antes" é essencial e deve ser feito antes de qualquer atividade, pois a comparação antes/depois é a ferramenta mais poderosa de motivação.'],
@@ -2116,7 +2116,7 @@ export async function seedCourse4(sql) {
     ['Em quanto tempo o 5S tipicamente se torna hábito organizacional?', ['1 a 3 meses','6 a 12 meses','18 a 24 meses','3 a 5 anos'], 2, 'Pesquisas indicam que o 5S leva de 18 a 24 meses para se tornar hábito. Nos primeiros 6 meses e esforço consciente.'],
     ['Qual é o fator mais crítico para a sustentação do programa 5S?', ['Investimento em tecnologia','Exemplo e envolvimento da liderança','Contratação de consultoria externa','Implantação de app de auditoria'], 1, 'A liderança pelo exemplo é o fator mais crítico. Onde a liderança prática o 5S, o programa funciona; onde não prática, morre.'],
     ['Na auditoria 5S, uma nota consistentemente acima de 95% pode indicar:', ['Excelência máxima do programa','Auditoria branda (complacência)','Necessidade de suspender auditorias','Que o programa pode ser encerrado'], 1, 'Notas constantemente acima de 95% podem indicar complacência na auditoria. O ideal é sempre haver oportunidades de melhoria identificadas.'],
-    ['A técnica dos 5 Por ques serve para:', ['Definir os 5 sensos do programa','Realizar análise de causa raiz de desvios','Pontuar a auditoria de 5S','Classificar itens para etiqueta vermelha'], 1, 'Os 5 Por ques são uma técnica de análise de causa raiz que permite ir além do sintoma superficial.'],
+    ['A técnica dos 5 Porquês serve para:', ['Definir os 5 sensos do programa','Realizar análise de causa raiz de desvios','Pontuar a auditoria de 5S','Classificar itens para etiqueta vermelha'], 1, 'Os 5 Porquês são uma técnica de análise de causa raiz que permite ir além do sintoma superficial.'],
     ['Qual cláusula da ISO 9001:2015 o 5S ajuda a atender ao criar um ambiente físico adequado?', ['4.1 — Contexto da organização','7.1.4 — Ambiente para operação de processos','8.1 — Planejamento operacional','9.1 — Monitoramento'], 1, 'A cláusula 7.1.4 exige que a organização proporcione ambiente adequado para a operação, o que o 5S atende diretamente.'],
     ['No Lean Manufacturing, o 5S é considerado:', ['Uma ferramenta complementar opcional','A fundação da casa Toyota','Um substituto do Kaizen','Uma alternativa ao Kanban'], 1, 'No Sistema Toyota de Produção, o 5S é a fundação sobre a qual todas as outras ferramentas Lean se apoiam.'],
     ['Segundo a pesquisa do SENAI-PR citada, qual percentual de indústrias que mantiveram auditorias regulares conseguiu se recuperar de regressões no 5S?', ['50%','75%','90%','100%'], 3, 'Das empresas que se recuperaram de regressões, 100% tinham sistema de auditoria ativo, versus apenas 15% das que não se recuperaram.'],
