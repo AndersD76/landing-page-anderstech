@@ -763,7 +763,7 @@
 </ul>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Formação básica</strong><br>Curso de auditor interno (mínimo 16h) com avaliação teorica e pratica</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Formação básica</strong><br>Curso de auditor interno (mínimo 16h) com avaliação teórica e prática</div></div>
   <div class="step-item"><div class="step-content"><strong>2. Auditoria como observador</strong><br>Participar de pelo menos 1 auditoria acompanhando um auditor experiente</div></div>
   <div class="step-item"><div class="step-content"><strong>3. Auditoria como membro da equipe</strong><br>Conduzir partes da auditoria sob supervisão do auditor-líder</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Avaliação de desempenho</strong><br>Feedback do auditor-líder ou gestor do programa sobre postura e técnica</div></div>
@@ -1428,7 +1428,7 @@
 
 <div class="comparison">
   <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Tom que gera defensividade</h4><ul><li>"Viemos verificar se vocês estão cumprindo a norma."</li><li>"Precisamos que todos fiquem disponíveis — não aceito ausências."</li><li>"Se encontrarmos NC, a direção será informada imediatamente."</li><li>Postura fechada, sem apresentações, tom de inspeção</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Tom que gera colaboração</h4><ul><li>"Estamos aqui para entender como o processo funciona na pratica."</li><li>"Contamos com a colaboração de todos — suas perspectivas são valiosas."</li><li>"Pontos fortes também serão registrados, não só problemas."</li><li>Apresentações individuais, linguagem acessível, postura aberta</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Tom que gera colaboração</h4><ul><li>"Estamos aqui para entender como o processo funciona na prática."</li><li>"Contamos com a colaboração de todos — suas perspectivas são valiosas."</li><li>"Pontos fortes também serão registrados, não só problemas."</li><li>Apresentações individuais, linguagem acessível, postura aberta</li></ul></div>
 </div>
 
 <div class="example"><strong>Frase de abertura eficaz:</strong> "Bom dia a todos. Nosso objetivo hoje e verificar como o processo de compras está funcionando na prática, identificar o que esta indo bem e onde podemos melhorar. Não estamos aqui para encontrar culpados — estamos aqui para ajudar o processo a ficar mais robusto."</div>
@@ -1510,8 +1510,8 @@
 
 <div class="tabs">
   <div class="tab-btns"><button class="tab-btn active">Entrevista</button><button class="tab-btn">Observação</button><button class="tab-btn">Registros</button></div>
-  <div class="tab-panel active"><p><strong>Quando usar:</strong> Para entender como o processo funciona na pratica — o que as pessoas fazem, conhecem e decidem.</p><p><strong>Vantagem:</strong> Revela o processo real, não o documentado. Permite aprofundamento imediato.</p><p><strong>Limite:</strong> O auditado pode relatar o processo como "deveria ser", não como realmente e. Sempre confirme com evidência.</p></div>
-  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar se a pratica corresponde ao documentado — ver o processo acontecendo in loco.</p><p><strong>Vantagem:</strong> Evidência direta e incontestavel. O auditor ve com os próprios olhos.</p><p><strong>Limite:</strong> O comportamento pode mudar na presença do auditor (efeito observador). Combinar com registros históricos.</p></div>
+  <div class="tab-panel active"><p><strong>Quando usar:</strong> Para entender como o processo funciona na prática — o que as pessoas fazem, conhecem e decidem.</p><p><strong>Vantagem:</strong> Revela o processo real, não o documentado. Permite aprofundamento imediato.</p><p><strong>Limite:</strong> O auditado pode relatar o processo como "deveria ser", não como realmente e. Sempre confirme com evidência.</p></div>
+  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar se a prática corresponde ao documentado — ver o processo acontecendo in loco.</p><p><strong>Vantagem:</strong> Evidência direta e incontestavel. O auditor ve com os próprios olhos.</p><p><strong>Limite:</strong> O comportamento pode mudar na presença do auditor (efeito observador). Combinar com registros históricos.</p></div>
   <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar evidências objetivas de conformidade — formulários, sistemas, certificados, ordens de produção.</p><p><strong>Vantagem:</strong> Evidência permanente, rastreável, verificavel por terceiros.</p><p><strong>Limite:</strong> Registros podem estar completos mas o processo real ser diferente. Combinar com entrevista e observação.</p></div>
 </div>
 
