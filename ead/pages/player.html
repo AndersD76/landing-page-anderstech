@@ -72,14 +72,19 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body ul,.lesson-body ol{margin:0 0 18px 28px;font-size:16px}
 .lesson-body li{margin-bottom:8px;line-height:1.7}
 .lesson-body strong{color:var(--navy)}
-.lesson-body blockquote{border-left:4px solid var(--red);padding:16px 24px;background:#fef7f7;margin:24px 0;font-style:italic;font-size:16px;color:#555;line-height:1.7}
+.lesson-body blockquote{border-left:4px solid var(--red);padding:16px 24px 16px 52px;background:#fef7f7;margin:24px 0;font-style:italic;font-size:16px;color:#555;line-height:1.7;position:relative}
+.lesson-body blockquote::before{content:'\201C';position:absolute;left:16px;top:4px;font-size:44px;color:var(--red);opacity:.35;font-family:Georgia,serif;line-height:1}
 .lesson-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px}
 .lesson-body th{background:var(--navy);color:#fff;padding:12px 16px;text-align:left;font-weight:600;font-size:14px;letter-spacing:.02em}
 .lesson-body td{padding:12px 16px;border-bottom:1px solid #e5e7eb}
 .lesson-body tr:nth-child(even) td{background:#f8fafc}
-.lesson-body .callout{background:#f0f7ff;border-left:4px solid #2563eb;padding:18px 24px;margin:24px 0;font-size:15px;line-height:1.7}
+.lesson-body table tr{transition:background .15s}
+.lesson-body table tr:hover td{background:#eef4ff}
+.lesson-body .callout{background:#f0f7ff;border-left:4px solid #2563eb;padding:18px 24px;margin:24px 0;font-size:15px;line-height:1.7;transition:transform .2s,box-shadow .2s}
+.lesson-body .callout:hover{transform:translateX(2px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
 .lesson-body .callout strong{color:#1d4ed8}
-.lesson-body .example{background:#f0fdf4;border-left:4px solid var(--green);padding:18px 24px;margin:24px 0;font-size:15px;line-height:1.7}
+.lesson-body .example{background:#f0fdf4;border-left:4px solid var(--green);padding:18px 24px;margin:24px 0;font-size:15px;line-height:1.7;transition:transform .2s,box-shadow .2s}
+.lesson-body .example:hover{transform:translateX(2px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
 .lesson-body code{font-family:var(--ff-mono);background:#f1f5f9;padding:3px 8px;font-size:14px}
 .lesson-body .template-box{background:var(--navy);color:#fff;padding:20px 24px;margin:24px 0;position:relative}
 .lesson-body .template-box>strong{display:block;font-size:15px;margin-bottom:12px;padding-right:80px}
@@ -210,12 +215,14 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .step-content strong{color:var(--navy)}
 
 .lesson-body .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:28px 0}
-.lesson-body .kpi-card{background:#fff;border:1px solid #e5e7eb;padding:24px 20px;text-align:center}
+.lesson-body .kpi-card{background:#fff;border:1px solid #e5e7eb;padding:24px 20px;text-align:center;transition:transform .2s,box-shadow .2s,border-color .2s}
+.lesson-body .kpi-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(11,23,48,.1);border-color:var(--navy)}
 .lesson-body .kpi-card .kpi-value{font-size:34px;font-weight:700;color:var(--navy);font-family:var(--ff-mono)}
 .lesson-body .kpi-card .kpi-label{font-size:13px;color:var(--mute);margin-top:6px}
 
 .lesson-body .comparison{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:28px 0;border:1px solid #e5e7eb}
-.lesson-body .comp-col{padding:24px}
+.lesson-body .comp-col{padding:24px;transition:background .2s}
+.lesson-body .comp-col:hover{background:#fafbfd}
 .lesson-body .comp-col:first-child{border-right:1px solid #e5e7eb}
 .lesson-body .comp-col.bad{background:#fef2f2}
 .lesson-body .comp-col.good{background:#f0fdf4}
