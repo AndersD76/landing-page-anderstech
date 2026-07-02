@@ -108,7 +108,7 @@ export async function seedCourse4(sql) {
 
 <div class="comparison">
   <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> 5S como faxina</h4><ul><li>Evento pontual ("Dia da Limpeza")</li><li>Resultados duram 2-3 semanas</li><li>Equipe vê como obrigação chata</li><li>Sem medição, sem padrão</li><li>Morre em 3 meses</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> 5S como programa</h4><ul><li>Mudança cultural contínua</li><li>Resultados sustentáveis por anos</li><li>Equipe engajada e orgulhosa</li><li>Auditorias, KPIs, reconhecimento</li><li>Base para Lean, TPM, ISO</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline fill="none" points="9 12 12 15 16 10"/></svg> 5S como programa</h4><ul><li>Mudança cultural contínua</li><li>Resultados sustentáveis por anos</li><li>Equipe engajada e orgulhosa</li><li>Auditorias, KPIs, reconhecimento</li><li>Base para Lean, TPM, ISO</li></ul></div>
 </div>
 
 <div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O 5S nasceu no chão de fábrica japonês pós-guerra." data-fb-nok="Incorreto. O 5S surgiu no Japão pós-Segunda Guerra Mundial.">
@@ -814,7 +814,7 @@ export async function seedCourse4(sql) {
 
 <div class="comparison">
   <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Faxina comum</h4><ul><li>Feita pela equipe de limpeza</li><li>Quando está sujo</li><li>Objetivo: estética</li><li>Limpa a sujeira</li><li>Resultado: limpo temporariamente</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Seiso Industrial</h4><ul><li>Feita pelo próprio operador</li><li>Rotina diária programada (5 min)</li><li>Objetivo: inspeção e prevenção</li><li>Elimina a fonte da sujeira</li><li>Resultado: anomalias detectadas</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline fill="none" points="9 12 12 15 16 10"/></svg> Seiso Industrial</h4><ul><li>Feita pelo próprio operador</li><li>Rotina diária programada (5 min)</li><li>Objetivo: inspeção e prevenção</li><li>Elimina a fonte da sujeira</li><li>Resultado: anomalias detectadas</li></ul></div>
 </div>
 
 <div class="narration">
@@ -1170,31 +1170,31 @@ export async function seedCourse4(sql) {
 
 <div class="accordion-lesson">
   <div class="acc-item">
-    <button class="acc-trigger">1. Falta de exemplo da liderança <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">1. Falta de exemplo da liderança <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>"Faça o que eu digo, não o que eu faço" não funciona. Se o supervisor tem a mesa bagunçada, o operador entende que "5S não é de verdade".</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">2. Dia D sem continuidade <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">2. Dia D sem continuidade <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>Fazer o evento e abandonar depois. Sem os 4º e 5º S, tudo volta ao normal em 60 dias.</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">3. Punição sem reconhecimento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">3. Punição sem reconhecimento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>Cobrar erros e ignorar acertos. Reconhecimento público é mais poderoso que qualquer punição.</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">4. Falta de tempo dedicado <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">4. Falta de tempo dedicado <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>"Não temos tempo para 5S, tem produção para entregar." Se não há 5 minutos por dia, o problema é de gestão, não de tempo.</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">5. Rotatividade sem treinamento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">5. Rotatividade sem treinamento <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>Novos funcionários que não são treinados no 5S desfazem o trabalho dos outros. Integração de 5S no primeiro dia é essencial.</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">6. Sem medição <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">6. Sem medição <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>O que não é medido não é gerenciado. Sem auditoria, sem nota, sem acompanhamento — o programa morre.</p></div>
   </div>
   <div class="acc-item">
-    <button class="acc-trigger">7. Programa "da qualidade" <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <button class="acc-trigger">7. Programa "da qualidade" <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
     <div class="acc-body"><p>Quando o 5S é visto como responsabilidade só do setor de qualidade, e não de todos, perde força e legitimidade.</p></div>
   </div>
 </div>
@@ -1886,7 +1886,7 @@ export async function seedCourse4(sql) {
 
 <div class="comparison">
   <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Sem ação corretiva</h4><ul><li>Desvios se acumulam</li><li>Nota cai progressivamente</li><li>Equipe perde credibilidade no programa</li><li>Auditoria vira "formalidade"</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Com PDCA ativo</h4><ul><li>Desvios tratados na raiz</li><li>Nota sobe consistentemente</li><li>Equipe vê resultado das ações</li><li>Melhoria contínua real</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline fill="none" points="9 12 12 15 16 10"/></svg> Com PDCA ativo</h4><ul><li>Desvios tratados na raiz</li><li>Nota sobe consistentemente</li><li>Equipe vê resultado das ações</li><li>Melhoria contínua real</li></ul></div>
 </div>
 
 <div class="narration">

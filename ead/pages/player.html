@@ -88,12 +88,13 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body code{font-family:var(--ff-mono);background:#f1f5f9;padding:3px 8px;font-size:14px}
 .lesson-body .template-box{background:var(--navy);color:#fff;padding:20px 24px;margin:24px 0;position:relative}
 .lesson-body .template-box>strong{display:block;font-size:15px;margin-bottom:12px;padding-right:80px}
+.lesson-body .template-box>span{display:block;font-size:15px;font-weight:600;margin-bottom:12px;padding-right:80px}
 .lesson-body .template-box table{width:100%;background:rgba(255,255,255,.08);border-collapse:collapse;font-size:13px}
 .lesson-body .template-box th{background:rgba(255,255,255,.15);color:#fff;padding:8px 12px;text-align:left;font-weight:600;border:1px solid rgba(255,255,255,.12)}
 .lesson-body .template-box td{padding:8px 12px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
 .lesson-body .template-box ul,.lesson-body .template-box ol{margin:8px 0 8px 20px;font-size:13px;color:rgba(255,255,255,.85)}
 .lesson-body .template-box li{margin-bottom:4px}
-.lesson-body .template-box a{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--red);color:#fff;padding:9px 18px;text-decoration:none;font-size:13px;font-weight:600;transition:background .2s,transform .15s}
+.lesson-body .template-box a{display:flex;width:max-content;align-items:center;gap:7px;margin-top:16px;background:var(--red);color:#fff;padding:10px 20px;text-decoration:none;font-size:13px;font-weight:600;transition:background .2s,transform .15s}
 .lesson-body .template-box a:hover{background:#a52d30;transform:translateY(-1px)}
 .template-copy-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:6px 12px;font-size:11px;font-family:var(--ff-mono);cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:background .2s}
 .template-copy-btn:hover{background:rgba(255,255,255,.25)}
@@ -943,7 +944,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       if(dlLink&&currentLessonId){
         dlLink.addEventListener('click',function(e){
           e.preventDefault();
-          var titleEl=tb.querySelector('strong');
+          var titleEl=tb.querySelector('strong')||tb.querySelector('span');
           var t=titleEl?titleEl.textContent:'Template';
           window.open('/ead/api/template/'+currentLessonId+'?t='+encodeURIComponent(t),'_blank');
         });
@@ -1109,8 +1110,8 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     sc.querySelectorAll('.kpi-grid').forEach(function(kg){
       var card=document.createElement('div');
       card.className='reveal-card';
-      card.innerHTML='<button class="reveal-trigger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Por que esses numeros importam?<span class="reveal-arrow">&#9660;</span></button>'
-        +'<div class="reveal-body"><p>Esses indicadores mostram a relevancia global do tema que voce esta estudando. Reflita: <strong>como sua empresa se posiciona</strong> nesse cenario?</p><p>Entender o contexto macro ajuda a justificar investimentos internos e a mostrar para a direcao o valor de implementar boas práticas.</p></div>';
+      card.innerHTML='<button class="reveal-trigger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Por que esses números importam?<span class="reveal-arrow">&#9660;</span></button>'
+        +'<div class="reveal-body"><p>Esses indicadores mostram a relevância global do tema que você está estudando. Reflita: <strong>como sua empresa se posiciona</strong> nesse cenario?</p><p>Entender o contexto macro ajuda a justificar investimentos internos e a mostrar para a direcao o valor de implementar boas práticas.</p></div>';
       kg.after(card);
     });
 
@@ -1136,7 +1137,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         var topic=strongs[0];
         var prompts=[
           'Liste 3 exemplos de <strong>'+topic+'</strong> na realidade da sua empresa ou do seu dia a dia.',
-          'Como <strong>'+topic+'</strong> impacta o trabalho da sua equipe? Descreva uma situação real que voce ja vivenciou.',
+          'Como <strong>'+topic+'</strong> impacta o trabalho da sua equipe? Descreva uma situação real que você já vivenciou.',
           'Se você precisasse explicar <strong>'+topic+'</strong> para um colega novo, o que diria em 3 frases?',
           'Que ações práticas você pode tomar esta semana relacionadas a <strong>'+topic+'</strong>?'
         ];
@@ -1193,7 +1194,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     if(idx>0&&idx%3===2){
       var assess=document.createElement('div');
       assess.className='self-assess';
-      assess.innerHTML='<div class="assess-header">Como voce se sente sobre este conteudo?</div>'
+      assess.innerHTML='<div class="assess-header">Como você se sente sobre este conteúdo?</div>'
         +'<div class="assess-options">'
         +'<button class="assess-btn" data-level="1"><span class="assess-emoji">&#128533;</span><span>Confuso</span></button>'
         +'<button class="assess-btn" data-level="2"><span class="assess-emoji">&#129300;</span><span>Entendendo</span></button>'
@@ -1297,7 +1298,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
         btn.classList.add('selected');
         var fb=assess.querySelector('.assess-feedback');
         var level=parseInt(btn.dataset.level);
-        var msgs={1:'Sem problema! Releia o conteudo acima com calma. Se a dúvida persistir, anote e retome depois com mais contexto.',2:'Bom progresso! A prática vai consolidar. Tente o exercicio "Aplique na prática" para fixar.',3:'Excelente! Você esta pronto para avancar. Aproveite o conhecimento e compartilhe com colegas.'};
+        var msgs={1:'Sem problema! Releia o conteúdo acima com calma. Se a dúvida persistir, anote e retome depois com mais contexto.',2:'Bom progresso! A prática vai consolidar. Tente o exercicio "Aplique na prática" para fixar.',3:'Excelente! Você está pronto para avançar. Aproveite o conhecimento e compartilhe com colegas.'};
         fb.textContent=msgs[level]||'';
         fb.classList.add('show');
       });
