@@ -9,7 +9,6 @@ import { dirname, join } from 'path';
 import { readFileSync, existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const projectRoot = dirname(__dirname);
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -1015,13 +1014,6 @@ router.get('/ead/api/order/:orderId/status', requireEadAuth, async (req, res) =>
 // ═══════════════════════════════════════════════════════════════════
 // Page serving
 // ═══════════════════════════════════════════════════════════════════
-
-function injectShared(html, urlPath) {
-  try {
-    const serverModule = join(projectRoot, 'server.js');
-    return html;
-  } catch { return html; }
-}
 
 function sendEadPage(filename, res) {
   try {
