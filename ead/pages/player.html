@@ -112,6 +112,19 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);height
 .lesson-body .diagram svg circle{transition:filter .3s,transform .3s;transform-origin:center}
 .lesson-body .diagram svg circle:hover{filter:brightness(1.08) drop-shadow(0 2px 8px rgba(0,0,0,.12));transform:scale(1.03)}
 .lesson-body .diagram figcaption{font-family:var(--ff-mono);font-size:12px;color:var(--mute);margin-top:14px;letter-spacing:.02em}
+.lesson-body .diagram .diagram-title{display:flex;align-items:center;gap:10px;text-align:left;font-family:var(--ff-display);font-size:15px;font-weight:700;color:var(--navy);margin:-8px -8px 18px;padding:0 8px 12px;border-bottom:1px solid #f1f5f9}
+.lesson-body .diagram .diagram-title::before{content:'';width:8px;height:8px;background:var(--red);flex-shrink:0}
+.lesson-body .diagram .diagram-zoom{position:absolute;top:12px;right:12px;width:32px;height:32px;border:1px solid #e5e7eb;background:#fff;border-radius:8px;cursor:zoom-in;display:flex;align-items:center;justify-content:center;color:var(--mute);opacity:0;transition:opacity .2s,color .2s,border-color .2s}
+.lesson-body .diagram:hover .diagram-zoom{opacity:1}
+.lesson-body .diagram .diagram-zoom:hover{color:var(--navy);border-color:var(--navy)}
+.lesson-body .diagram svg{cursor:zoom-in}
+.diagram-modal{position:fixed;inset:0;background:rgba(11,23,48,.93);z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;padding:4vh 4vw;cursor:zoom-out}
+.diagram-modal.open{display:flex}
+.diagram-modal .dm-stage{background:#fff;border-radius:12px;padding:32px;max-width:min(1100px,92vw);max-height:84vh;display:flex;align-items:center;justify-content:center;cursor:default;overflow:auto}
+.diagram-modal .dm-stage svg{width:min(1000px,88vw);height:auto;max-height:76vh}
+.diagram-modal .dm-caption{color:rgba(255,255,255,.75);font-family:var(--ff-mono);font-size:13px;margin-top:16px;text-align:center;max-width:80ch}
+.diagram-modal .dm-close{position:absolute;top:20px;right:24px;width:44px;height:44px;border:1px solid rgba(255,255,255,.25);background:transparent;border-radius:10px;color:#fff;font-size:22px;line-height:1;cursor:pointer;transition:background .2s}
+.diagram-modal .dm-close:hover{background:rgba(255,255,255,.12)}
 
 /* Slide content transition */
 .lesson-body{transition:opacity .3s ease,transform .3s ease}
@@ -593,7 +606,24 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       });
       if(chunk.trim().length>20)final.push(chunk);
     });
-    return final.length?final:[html];
+    // Merge de slides com pouco texto visivel (<500 chars) no vizinho
+    var merged=[];
+    final.forEach(function(sec){
+      var txt=sec.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+      if(merged.length&&txt.length<500&&(merged[merged.length-1].length+sec.length)<=THRESH+1400){
+        merged[merged.length-1]+=sec;
+      }else{
+        merged.push(sec);
+      }
+    });
+    if(merged.length>=2){
+      var firstTxt=merged[0].replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+      if(firstTxt.length<500&&(merged[0].length+merged[1].length)<=THRESH+1400){
+        merged[1]=merged[0]+merged[1];
+        merged.shift();
+      }
+    }
+    return merged.length?merged:[html];
   }
 
   function hasInteractive(html){
@@ -759,7 +789,57 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     });
   }
 
+  function getDiagramModal(){
+    var modal=document.getElementById('diagramModal');
+    if(modal)return modal;
+    modal=document.createElement('div');
+    modal.id='diagramModal';
+    modal.className='diagram-modal';
+    modal.innerHTML='<button class="dm-close" aria-label="Fechar">&times;</button><div class="dm-stage"></div><div class="dm-caption"></div>';
+    modal.addEventListener('click',function(e){
+      if(e.target===modal||e.target.classList.contains('dm-close'))modal.classList.remove('open');
+    });
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape')modal.classList.remove('open');
+    });
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function enhanceDiagrams(){
+    main.querySelectorAll('.diagram').forEach(function(d){
+      if(d.dataset.enhanced)return;
+      d.dataset.enhanced='1';
+      var svg=d.querySelector('svg');
+      if(!svg)return;
+      var cap=d.querySelector('figcaption');
+      var capText=cap?cap.textContent.trim():'';
+      if(capText&&!d.querySelector('.diagram-title')){
+        var title=document.createElement('div');
+        title.className='diagram-title';
+        title.textContent=capText;
+        d.insertBefore(title,d.firstChild);
+        cap.style.display='none';
+      }
+      var zoomBtn=document.createElement('button');
+      zoomBtn.className='diagram-zoom';
+      zoomBtn.setAttribute('aria-label','Ampliar diagrama');
+      zoomBtn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>';
+      d.appendChild(zoomBtn);
+      function openZoom(){
+        var modal=getDiagramModal();
+        modal.querySelector('.dm-stage').innerHTML='';
+        modal.querySelector('.dm-stage').appendChild(svg.cloneNode(true));
+        modal.querySelector('.dm-caption').textContent=capText;
+        modal.classList.add('open');
+      }
+      zoomBtn.addEventListener('click',openZoom);
+      svg.addEventListener('click',openZoom);
+    });
+  }
+
   function initInteractive(){
+    enhanceDiagrams();
     main.querySelectorAll('.tabs').forEach(function(t){
       var btns=t.querySelectorAll('.tab-btn');
       var panels=t.querySelectorAll('.tab-panel');
