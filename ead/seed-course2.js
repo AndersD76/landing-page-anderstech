@@ -884,7 +884,7 @@
 
 <div class="callout"><strong>Ciclo PDCA do programa:</strong> <strong>P</strong> = definir objetivos, cronograma, auditores. <strong>D</strong> = executar as auditorias conforme planejado. <strong>C</strong> = monitorar indicadores e analisar resultados. <strong>A</strong> = ajustar o programa para o próximo ciclo.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria continua real:</strong> O programa de auditoria não é um documento estatico. Cada ciclo deve alimentar o próximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitação adicional. O programa que não muda não está sendo monitorado.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria contínua real:</strong> O programa de auditoria não é um documento estatico. Cada ciclo deve alimentar o próximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitação adicional. O programa que não muda não está sendo monitorado.</div></div>
 `}, NULL)`;
 
   // ── Module 3: Planejamento da Auditoria ──
@@ -1415,7 +1415,7 @@
 </div>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Apresentação da equipe</strong><br>Nome, papel e organização de cada auditor — cria confianca inicial</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Apresentação da equipe</strong><br>Nome, papel e organização de cada auditor — cria confiança inicial</div></div>
   <div class="step-item"><div class="step-content"><strong>2. Confirmar escopo e objetivos</strong><br>Leia o escopo formal. Pergunte se há dúvidas antes de prosseguir</div></div>
   <div class="step-item"><div class="step-content"><strong>3. Critérios e métodos</strong><br>ISO 9001, procedimentos internos; métodos: entrevista, observação, análise de registros</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Agenda e logística</strong><br>Confirme horários, salas, guia e disponibilidade dos entrevistados</div></div>
@@ -1644,7 +1644,7 @@
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Numa metalúrgica em Caxias do Sul, o auditor Sergio encontrou um operador que não sabia recitar a politica da qualidade palavra por palavra. Sergio quase abriu uma NC de conscientização (cláusula 7.3). Antes de registrar, perguntou: "Você sabe qual é o foco principal da empresa em termos de qualidade?" O operador respondeu sem hesitar: "Zero defeito na entrega para o cliente — se o produto sair com problema, volta e a gente perde o contrato." Sergio verificou se havia treinamentos registrados, avisos vissiveis na área e reuniões de alinhamento. Tudo presente. Conclusão: conforme. A cláusula 7.3 exige consciência, não decoreba. Sergio evitou uma NC que seria facilmente derrubada no encerramento.</p>
+  <p>Numa metalúrgica em Caxias do Sul, o auditor Sergio encontrou um operador que não sabia recitar a política da qualidade palavra por palavra. Sergio quase abriu uma NC de conscientização (cláusula 7.3). Antes de registrar, perguntou: "Você sabe qual é o foco principal da empresa em termos de qualidade?" O operador respondeu sem hesitar: "Zero defeito na entrega para o cliente — se o produto sair com problema, volta e a gente perde o contrato." Sergio verificou se havia treinamentos registrados, avisos vissiveis na área e reuniões de alinhamento. Tudo presente. Conclusão: conforme. A cláusula 7.3 exige consciência, não decoreba. Sergio evitou uma NC que seria facilmente derrubada no encerramento.</p>
 </div>
 
 <div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Sem um critério claro (cláusula ou procedimento), não há base para abrir NC — pode ser no máximo uma OM ou observação." data-fb-nok="Releia a seção 'Quando NÃO abrir NC'. O critério e o fundamento de qualquer constatação negativa.">
@@ -1887,7 +1887,7 @@
 
   (${m5.id}, '2-5-3-relatorio-final', 'Elaborando o relatório final de auditoria', '20 min', 3, ${`
 <h2>Elaborando o relatório final de auditoria</h2>
-<p>O relatório e o <strong>produto final</strong> da auditoria — o documento que registra tudo o que foi feito, encontrado e concluído. Um bom relatório é claro, completo, objetivo e útil para a tomada de decisão. Um relatório ruim gera confusão, retrabalho e desconfianca no processo de auditoria.</p>
+<p>O relatório e o <strong>produto final</strong> da auditoria — o documento que registra tudo o que foi feito, encontrado e concluído. Um bom relatório é claro, completo, objetivo e útil para a tomada de decisão. Um relatório ruim gera confusão, retrabalho e desconfiança no processo de auditoria.</p>
 
 <h3>Conteúdo mínimo do relatório</h3>
 <p>Segundo a ISO 19011:2018, cláusula 6.5, o relatório deve incluir:</p>
@@ -2345,7 +2345,7 @@
 <h3>Dilemas eticos comuns</h3>
 <table>
 <tr><th>Dilema</th><th>Resposta ética</th></tr>
-<tr><td>Seu supervisor pede para "pegar leve" com certo setor</td><td>Mantenha a imparcialidade. Audite conforme os critérios, não conforme interesses politicos.</td></tr>
+<tr><td>Seu supervisor pede para "pegar leve" com certo setor</td><td>Mantenha a imparcialidade. Audite conforme os critérios, não conforme interesses políticos.</td></tr>
 <tr><td>Você descobre que um amigo próximo não segue o procedimento</td><td>Registre a constatação como faria com qualquer outro auditado. Se há conflito de interesse, solicite substituição.</td></tr>
 <tr><td>O auditado oferece um "presente" (almoço especial, brinde)</td><td>Recuse cortesmente. Aceitar pode comprometer sua independência percebida.</td></tr>
 <tr><td>Você encontra evidência de fraude (não apenas NC)</td><td>Registre e comunique ao gestor do programa e a direção. Não tente investigar além do escopo da auditoria.</td></tr>
@@ -2564,7 +2564,7 @@
 <ul>
 <li><strong>Empresa:</strong> Produção de leite pasteurizado, iogurte e queijo mussarela</li>
 <li><strong>Processo auditado:</strong> Pasteurização e envase de leite</li>
-<li><strong>Motivo da prioridade:</strong> Novo equipamento de envase instalado há 3 meses; mudanca de turno (de 2 para 3 turnos)</li>
+<li><strong>Motivo da prioridade:</strong> Novo equipamento de envase instalado há 3 meses; mudança de turno (de 2 para 3 turnos)</li>
 <li><strong>Auditor-líder:</strong> Roberto (analista de qualidade — formação em auditoria ISO 19011)</li>
 <li><strong>Critérios:</strong> ISO 9001:2015 cl. 8.5 e 8.6, PO-035 (Pasteurização), IT-040 (Envase), IN 76 MAPA (instrução normativa)</li>
 </ul>
@@ -2904,7 +2904,7 @@
   const m2q = [
     ['Qual a diferença entre programa de auditoria e plano de auditoria?', ['São sinonimos','Programa = todas as auditorias do período; Plano = uma auditoria específica','Programa e feito pelo auditor; Plano pelo gestor','Plano e mais abrangente que programa'], 1, 'Programa é o panorama geral (todas as auditorias). Plano é o detalhamento de uma auditoria individual.'],
     ['Quem normalmente e responsável por gerenciar o programa de auditoria?', ['O auditor-líder','A alta direção pessoalmente','O gestor do programa (geralmente coord. de qualidade)','O organismo certificador'], 2, 'O gestor do programa e designado pela organização, geralmente sendo o coordenador de qualidade.'],
-    ['Qual critério NÃO e válido para definir prioridades no programa de auditoria?', ['Resultados de auditorias anteriores','Preferência pessoal do auditor','Reclamações de clientes','Mudancas significativas nos processos'], 1, 'A preferência pessoal do auditor não é critério válido. As prioridades devem ser baseadas em risco, dados e requisitos.'],
+    ['Qual critério NÃO e válido para definir prioridades no programa de auditoria?', ['Resultados de auditorias anteriores','Preferência pessoal do auditor','Reclamações de clientes','Mudanças significativas nos processos'], 1, 'A preferência pessoal do auditor não é critério válido. As prioridades devem ser baseadas em risco, dados e requisitos.'],
     ['A ISO 19011 exige que o programa de auditoria considere:', ['Apenas os requisitos da norma ISO 9001','Riscos e oportunidades do programa','Apenas as reclamações de clientes','Apenas o orçamento disponível'], 1, 'A versão 2018 enfatiza que riscos e oportunidades devem ser considerados no programa de auditoria.'],
     ['Um auditor interno pode auditar seu próprio setor de trabalho?', ['Sim, sempre','Não, pois compromete a independência','Sim, se tiver mais de 5 anos de experiência','Sim, se o gestor autorizar'], 1, 'O princípio da independência exige que o auditor não audite sua própria atividade/setor.'],
   ];
