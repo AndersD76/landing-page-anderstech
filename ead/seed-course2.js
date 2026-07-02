@@ -1865,7 +1865,7 @@
 <li><strong>Multiplas NCs menores no mesmo tema indicam falha sistemática?</strong> → Considerar NC maior</li>
 </ul>
 
-<div class="example"><strong>Exemplo prático na construtora:</strong></p>
+<div class="example"><p><strong>Exemplo prático na construtora:</strong></p>
 <ul>
 <li><strong>NC maior:</strong> A empresa não realiza auditoria interna ha 18 meses. O requisito 9.2 esta totalmente descumprido.</li>
 <li><strong>NC menor:</strong> Auditoria interna e realizada regularmente, mas a auditoria de maio/2025 não cobriu o processo de compras conforme programado.</li>
@@ -2894,7 +2894,7 @@
     ['Quantos princípios de auditoria a ISO 19011:2018 estabelece?', ['5','6','7','8'], 2, 'A ISO 19011:2018 estabelece 7 princípios de auditoria, incluindo a abordagem baseada em risco (novidade da versão 2018).'],
     ['Qual princípio de auditoria foi adicionado na versão 2018 da ISO 19011?', ['Confidencialidade','Integridade','Abordagem baseada em risco','Apresentação justa'], 2, 'A abordagem baseada em risco e o sétimo princípio, incluido na versão 2018.'],
     ['Qual é a hierarquia lógica correta no processo de auditoria?', ['Evidência > Critério > Conclusão > Constatação','Criterio > Evidência > Constatação > Conclusão','Constatação > Evidência > Critério > Conclusão','Conclusão > Constatação > Critério > Evidência'], 1, 'O auditor compara a evidência com o critério para gerar constatações, e agrupa as constatações para chegar a uma conclusão.'],
-    ['Qual é a principal diferença entre auditoria é inspeção?', ['Auditoria e mais rapida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não ha diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peça específica.'],
+    ['Qual é a principal diferença entre auditoria e inspeção?', ['Auditoria e mais rapida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não ha diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peça específica.'],
   ];
   for (const [p, a, r, e] of m1q) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;

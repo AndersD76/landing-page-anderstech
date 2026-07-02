@@ -213,7 +213,7 @@ export async function seedCourse4(sql) {
 <div class="example"><strong>Exemplo real:</strong> Uma indústria alimentícia de Chapecó (SC) implantou o Seiso com foco em "limpeza como inspeção" nas linhas de embalagem. Em 60 dias, os operadores identificaram 23 pequenos vazamentos de ar comprimido que não estavam nos relatórios de manutenção. O conserto custou R$ 1.200 e gerou economia de R$ 14.000/ano em energia.</div>
 
 <h3>4. Seiketsu — Senso de padronização</h3>
-<p>O quarto senso trata de <strong>criar padrões para manter os três primeiros sensos</strong>. Sem padronização, o Seiri, Seiton é Seiso funcionam por algumas semanas e depois tudo volta ao estado anterior.</p>
+<p>O quarto senso trata de <strong>criar padrões para manter os três primeiros sensos</strong>. Sem padronização, o Seiri, Seiton e Seiso funcionam por algumas semanas e depois tudo volta ao estado anterior.</p>
 <ul>
 <li><strong>Procedimentos visuais:</strong> Fotos do "estado padrão" de cada área fixadas no local</li>
 <li><strong>Checklists diários:</strong> 5 minutos no início do turno para verificar se tudo está no padrão</li>
@@ -477,7 +477,7 @@ export async function seedCourse4(sql) {
 `}, 'Checklist de diagnóstico 5S (modelo completo)')`;
 
   // ── Module 2: Implantação dos 3 Primeiros S ──
-  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton é Seiso na prática industrial com ferramentas e templates', 2) RETURNING id`;
+  const [m2] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Implantação dos 3 Primeiros S', 'Seiri, Seiton e Seiso na prática industrial com ferramentas e templates', 2) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-1-seiri-etiqueta-vermelha', 'Seiri na prática: etiqueta vermelha e critérios de descarte', '25 min', 1, ${`
@@ -989,7 +989,7 @@ export async function seedCourse4(sql) {
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m3.id}, '3-1-seiketsu-padronização-checklists', 'Seiketsu: padronização e checklists diários', '22 min', 1, ${`
 <h2>Seiketsu: padronização e checklists diários</h2>
-<p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os três primeiros</strong>. Sem ele, o Seiri, Seiton é Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
+<p>O Seiketsu (senso de padronização) é o senso que <strong>consolida os três primeiros</strong>. Sem ele, o Seiri, Seiton e Seiso são eventos pontuais que se desfazem em semanas. O Seiketsu transforma ações em <strong>rotinas, padrões e hábitos</strong>.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
@@ -1033,7 +1033,7 @@ export async function seedCourse4(sql) {
 </ul>
 
 <h3>A foto do estado padrão</h3>
-<p>A ferramenta mais simples é eficaz do Seiketsu é a <strong>foto do estado padrão</strong>. Funciona assim:</p>
+<p>A ferramenta mais simples e eficaz do Seiketsu é a <strong>foto do estado padrão</strong>. Funciona assim:</p>
 <ol>
 <li>Após o Dia D, quando a área está no melhor estado, tire uma foto de alta qualidade</li>
 <li>Imprima em tamanho A4 ou A3 colorido</li>
@@ -1646,8 +1646,8 @@ export async function seedCourse4(sql) {
 </div>
 `}, 'Checklist de auditoria 5S (modelo completo com pontuação)'),
 
-  (${m4.id}, '4-2-indicadores-5s-acompanhamento', 'Indicadores de 5S é acompanhamento', '20 min', 2, ${`
-<h2>Indicadores de 5S é acompanhamento</h2>
+  (${m4.id}, '4-2-indicadores-5s-acompanhamento', 'Indicadores de 5S e acompanhamento', '20 min', 2, ${`
+<h2>Indicadores de 5S e acompanhamento</h2>
 <p>O 5S, como qualquer programa de gestão, precisa de <strong>indicadores para ser gerenciado</strong>. Sem números, não há como saber se o programa está avançando, estagnado ou regredindo. Os indicadores transformam percepção em <strong>fatos</strong>.</p>
 
 <div class="diagram">
@@ -1942,7 +1942,7 @@ export async function seedCourse4(sql) {
   <figcaption>O 5S é a fundação — sem ele, nenhum programa avançado se sustenta</figcaption>
 </div>
 
-<h3>5S é ISO 9001:2015</h3>
+<h3>5S e ISO 9001:2015</h3>
 <p>A ISO 9001 não menciona o 5S explicitamente, mas vários requisitos são atendidos ou facilitados pelo programa:</p>
 <table>
 <tr><th>Cláusula ISO 9001</th><th>Requisito</th><th>Contribuição do 5S</th></tr>
@@ -1950,7 +1950,7 @@ export async function seedCourse4(sql) {
 <tr><td>7.1.4</td><td>Ambiente para operação de processos</td><td>5S cria ambiente físico adequado (limpo, organizado, seguro)</td></tr>
 <tr><td>7.1.5</td><td>Recursos de monitoramento e medição</td><td>Seiton garante rastreabilidade e localização de instrumentos calibrados</td></tr>
 <tr><td>7.1.6</td><td>Conhecimento organizacional</td><td>Gestão visual e padrões escritos preservam o conhecimento no ambiente</td></tr>
-<tr><td>7.3</td><td>Conscientizacao</td><td>Treinamento 5S é auditorias promovem conscientização da qualidade</td></tr>
+<tr><td>7.3</td><td>Conscientizacao</td><td>Treinamento 5S e auditorias promovem conscientização da qualidade</td></tr>
 <tr><td>8.5.2</td><td>Identificação e rastreabilidade</td><td>Seiton com etiquetas e endereçamento garante identificação</td></tr>
 <tr><td>8.5.4</td><td>Preservacao de saídas</td><td>Organização e limpeza preservam produto durante manuseio e armazenamento</td></tr>
 <tr><td>8.7</td><td>Controle de saídas não conformes</td><td>Área vermelha demarcada para produto não conforme (gestão visual)</td></tr>
@@ -1958,7 +1958,7 @@ export async function seedCourse4(sql) {
 
 <div class="callout"><strong>Dica para auditoria de certificação:</strong> Auditores de ISO 9001 sempre observam o ambiente durante a auditoria. Uma fábrica com 5S bem implantado causa impressão positiva imediata e facilita a demonstração de vários requisitos. Muitos auditores relatam que "uma fábrica organizada raramente tem não-conformidades graves".</div>
 
-<h3>5S é Lean Manufacturing</h3>
+<h3>5S e Lean Manufacturing</h3>
 <p>No Lean, o 5S é considerado <strong>a fundação da casa Toyota</strong> (Toyota Production System). Sem 5S, não se implanta:</p>
 <ul>
 <li><strong>Trabalho padronizado:</strong> Requer ambiente organizado e ferramentas no lugar certo</li>
@@ -1986,8 +1986,8 @@ export async function seedCourse4(sql) {
   <div class="tab-panel"><p>O 5S contribui para NR-12 (segurança em máquinas), NR-17 (ergonomia), NR-23 (proteção contra incêndio), NR-25 (resíduos) e NR-26 (sinalização de segurança).</p></div>
 </div>
 
-<h3>5S é TPM (Total Productive Maintenance)</h3>
-<p>A conexão entre 5S é TPM e direta e poderosa:</p>
+<h3>5S e TPM (Total Productive Maintenance)</h3>
+<p>A conexão entre 5S e TPM é direta e poderosa:</p>
 <ul>
 <li><strong>Seiso = Manutenção autônoma:</strong> O operador que limpa a máquina é o primeiro nível de manutenção preventiva</li>
 <li><strong>Seiton = Organização de ferramentas de manutenção:</strong> Chaves, graxeiras e lubrificantes organizados no ponto de uso</li>
@@ -1995,7 +1995,7 @@ export async function seedCourse4(sql) {
 </ul>
 <p>Na prática, muitas empresas implantam "5S + Manutenção Autônoma" como um programa único, otimizando recursos e treinamento.</p>
 
-<h3>5S é ISO 14001 (Meio Ambiente)</h3>
+<h3>5S e ISO 14001 (Meio Ambiente)</h3>
 <p>O 5S contribui para a gestão ambiental de diversas formas:</p>
 <ul>
 <li><strong>Seiri:</strong> Descarte controlado de resíduos e materiais obsoletos</li>
@@ -2004,7 +2004,7 @@ export async function seedCourse4(sql) {
 <li><strong>Gestão visual:</strong> Identificação de lixeiras por tipo de resíduo (coleta seletiva industrial)</li>
 </ul>
 
-<h3>5S é NRs de Segurança do Trabalho</h3>
+<h3>5S e NRs de Segurança do Trabalho</h3>
 <table>
 <tr><th>NR</th><th>Tema</th><th>Contribuição do 5S</th></tr>
 <tr><td>NR-12</td><td>Segurança em máquinas</td><td>Seiton: áreas demarcadas; Seiso: máquinas inspecionadas</td></tr>
