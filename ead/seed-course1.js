@@ -2136,7 +2136,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
   <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg" style="font-family:sans-serif;font-size:11px">
     <rect x="20" y="20" width="165" height="130" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
     <text x="102" y="42" fill="#2563eb" text-anchor="middle" font-weight="bold" font-size="12">Fase 1 — Documental</text>
-    <text x="102" y="58" fill="#475569" text-anchor="middle">Duracao: 1 dia (PME)</text>
+    <text x="102" y="58" fill="#475569" text-anchor="middle">Duração: 1 dia (PME)</text>
     <text x="35" y="78" fill="#475569">• Documentação do SGQ</text>
     <text x="35" y="95" fill="#475569">• Contexto e riscos</text>
     <text x="35" y="112" fill="#475569">• Objetivos e indicadores</text>
@@ -2147,7 +2147,7 @@ A correção "apaga o incêndio". A ação corretiva "conserta a fiação elétr
     <text x="210" y="78" fill="#64748b" text-anchor="middle" font-size="10">ok</text>
     <rect x="235" y="20" width="165" height="130" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
     <text x="317" y="42" fill="#16a34a" text-anchor="middle" font-weight="bold" font-size="12">Fase 2 — No Local</text>
-    <text x="317" y="58" fill="#475569" text-anchor="middle">Duracao: 2-4 dias (PME)</text>
+    <text x="317" y="58" fill="#475569" text-anchor="middle">Duração: 2-4 dias (PME)</text>
     <text x="250" y="78" fill="#475569">• Reunião de abertura</text>
     <text x="250" y="95" fill="#475569">• Entrevista direção</text>
     <text x="250" y="112" fill="#475569">• Auditoria de processos</text>
