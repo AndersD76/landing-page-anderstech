@@ -2897,7 +2897,7 @@
     ['Qual é a principal diferença entre auditoria é inspeção?', ['Auditoria e mais rapida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não ha diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peça específica.'],
   ];
   for (const [p, a, r, e] of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 2 quiz
@@ -2909,7 +2909,7 @@
     ['Um auditor interno pode auditar seu próprio setor de trabalho?', ['Sim, sempre','Não, pois compromete a independencia','Sim, se tiver mais de 5 anos de experiência','Sim, se o gestor autorizar'], 1, 'O princípio da independência exige que o auditor não audite sua própria atividade/setor.'],
   ];
   for (const [p, a, r, e] of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 3 quiz
@@ -2921,7 +2921,7 @@
     ['Se o auditor encontra uma não conformidade na amostra, o que deve fazer?', ['Encerrar a auditoria','Ampliar a amostra para verificar se e pontual ou sistemico','Ignorar se for apenas 1 caso','Registrar e seguir em frente sem ampliar'], 1, 'Ao encontrar uma NC, o auditor deve ampliar a amostra para determinar se o problema e pontual ou sistemico.'],
   ];
   for (const [p, a, r, e] of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 4 quiz
@@ -2933,7 +2933,7 @@
     ['Perguntas indutivas ("Você sempre segue o procedimento, correto?") devem ser evitadas porque:', ['Sao muito longas','Induzem a resposta que o auditor quer ouvir','Sao dificeis de entender','Sao proibidas pela ISO 19011'], 1, 'Perguntas indutivas direcionam a resposta e não revelam a prática real.'],
   ];
   for (const [p, a, r, e] of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 5 quiz
@@ -2945,7 +2945,7 @@
     ['A verificação de eficácia de uma ação corretiva responde a pergunta:', ['A ação foi implementada?','A NC foi registrada corretamente?','A causa raiz foi eliminada e a NC não reincidiu?','O auditor aprovou o relatório?'], 2, 'A verificação de eficácia confirma que a ação eliminou a causa raiz e que a NC não reincidiu.'],
   ];
   for (const [p, a, r, e] of m5q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 6 quiz
@@ -2957,7 +2957,7 @@
     ['Qual situação configura conflito de interesse para o auditor?', ['Auditar um processo que nunca trabalhou','Auditar uma área onde trabalhou recentemente','Auditar um processo diferente do seu setor','Usar checklist padronizado da empresa'], 1, 'Auditar área onde trabalhou recentemente compromete a independência e configura conflito de interesse.'],
   ];
   for (const [p, a, r, e] of m6q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m6.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m6.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 7 quiz
@@ -2969,7 +2969,7 @@
     ['Ao identificar que o índice de refugo esta acima da meta, o auditor deve:', ['Abrir NC automaticamente','Investigar as causas e verificar se ha tratamento adequado dos desvios','Ignorar, pois indicadores não são escopo de auditoria','Recomendar demissao do supervisor'], 1, 'O auditor deve investigar se os desvios estao sendo tratados conforme o SGQ exige, não apenas apontar o número.'],
   ];
   for (const [p, a, r, e] of m7q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m7.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m7.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ══════════════════════════════════════════════
@@ -3008,6 +3008,6 @@
     ['Qual é a principal lição dos estudos de caso do modulo 7?', ['Auditorias devem durar pelo menos 3 dias','A preparação e crítica e cada auditoria revela situações únicas que exigem julgamento','Todas as NCs devem ser maiores','Auditorias internas não geram ações corretivas relevantes'], 1, 'Os estudos de caso mostram que preparação sólida e julgamento profissional são essenciais para auditorias eficazes.'],
   ];
   for (const [p, a, r, e] of finalQ) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
   }
 }

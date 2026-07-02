@@ -1341,7 +1341,7 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['O que é um fluxograma funcional (swimlane)?', ['Um fluxograma com cores diferentes','Um fluxograma dividido em raias por departamento ou funcao','Um fluxograma simplificado','Um fluxograma exclusivo para processos de RH'], 1, 'O fluxograma swimlane divide o processo em raias (lanes), cada uma representando um departamento ou função, tornando visível quem faz o que.'],
   ];
   for (const [p, a, r, e] of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 2 quiz
@@ -1353,7 +1353,7 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['O BSC (Balanced Scorecard) tem quantas perspectivas?', ['2','3','4','6'], 2, 'O BSC tem 4 perspectivas: Financeira, Clientes, Processos Internos e Aprendizado e Crescimento.'],
   ];
   for (const [p, a, r, e] of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 3 quiz
@@ -1365,7 +1365,7 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['O que o RPN (Risk Priority Number) do FMEA calcula?', ['Custo do risco','Severidade x Ocorrencia x Deteccao','Gravidade x Urgência x Tendência','Probabilidade x Impacto'], 1, 'O RPN e o produto de Severidade (S) x Ocorrencia (O) x Deteccao (D), usado para priorizar riscos no FMEA.'],
   ];
   for (const [p, a, r, e] of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 4 quiz
@@ -1377,7 +1377,7 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['Um evento Kaizen tipicamente dura:', ['1 dia','3 a 5 dias','2 semanas','1 mes'], 1, 'Um evento Kaizen (Kaizen Blitz) tipicamente dura de 3 a 5 dias com uma equipe dedicada.'],
   ];
   for (const [p, a, r, e] of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // Module 5 quiz
@@ -1389,7 +1389,7 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['Qual a principal função da lista mestra de documentos?', ['Substituir os documentos originais','Listar todos os documentos do SGQ com versao, responsável e local de guarda','Servir como backup dos documentos','Atender exclusivamente a auditoria externa'], 1, 'A lista mestra e o índice centralizado que lista todos os documentos do SGQ com código, versao, data, responsável e local de guarda.'],
   ];
   for (const [p, a, r, e] of m5q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m5.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Final quiz (25 questions) ──
@@ -1421,6 +1421,6 @@ Um aluno deste curso aplicou o plano de 90 dias no processo de "expedição de p
     ['Qual é a sequência recomendada para resolver um problema usando as ferramentas do curso?', ['5W2H, depois Ishikawa, depois Pareto','Pareto para priorizar, Ishikawa/5 Porques para causa raiz, 5W2H para plano de acao','FMEA, depois A3, depois PDCA','Fluxograma, depois BSC, depois GUT'], 1, 'A sequência lógica e: Pareto (priorizar qual problema), Ishikawa/5 Porques (encontrar causa raiz), 5W2H (plano de ação concreto).'],
   ];
   for (const [p, a, r, e] of finalQ) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
   }
 }

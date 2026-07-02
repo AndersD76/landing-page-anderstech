@@ -2062,7 +2062,7 @@ export async function seedCourse4(sql) {
     ['No diagnóstico inicial, quando se deve avaliar a fábrica para obter resultados realistas?', ['Na segunda-feira de manhã, após o fim de semana','Após avisar a equipe com 1 semana de antecedência','Numa sexta-feira a tarde, sem aviso prévio','Durante uma auditoria externa'], 2, 'Avaliar sem aviso prévio, numa sexta-feira a tarde, mostra a realidade do dia a dia, não uma área arrumada para a avaliação.'],
   ];
   for (const [p, a, r, e] of m1q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 2 quiz ──
@@ -2074,7 +2074,7 @@ export async function seedCourse4(sql) {
     ['Qual é o investimento total estimado em materiais para o Dia D de uma fábrica de 50-100 funcionários?', ['Menos de R$ 500','Cerca de R$ 2.400','Cerca de R$ 10.000','Mais de R$ 20.000'], 1, 'O material para o Dia D (etiquetas, fita, tinta, material de limpeza, EPIs, lanche) custa aproximadamente R$ 2.360 para esse porte.'],
   ];
   for (const [p, a, r, e] of m2q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 3 quiz ──
@@ -2086,7 +2086,7 @@ export async function seedCourse4(sql) {
     ['Qual estrategia de reconhecimento é citada como altamente eficaz e de custo quase zero?', ['Bônus salarial mensal','Área destaque do mês com troféu simbólico','Viagem de premiações','Promoção de cargo'], 1, 'Um troféu ou selo simbólico que fica exposto na área vencedora até a próxima avaliação tem custo zero e impacto significativo na motivação.'],
   ];
   for (const [p, a, r, e] of m3q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m3.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Module 4 quiz ──
@@ -2098,7 +2098,7 @@ export async function seedCourse4(sql) {
     ['Na integração 5S + TPM, qual senso equivale a manutenção autônoma?', ['Seiri','Seiton','Seiso','Seiketsu'], 2, 'Seiso (limpeza como inspeção) e a essencia da manutenção autônoma do TPM — o operador limpa e ao mesmo tempo inspeciona a máquina.'],
   ];
   for (const [p, a, r, e] of m4q) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
   }
 
   // ── Final quiz (20 questions, is_final: true) ──
@@ -2125,6 +2125,6 @@ export async function seedCourse4(sql) {
     ['No caso da metalúrgica de Novo Hamburgo citada, qual foi o primeiro programa implantado que desencadeou toda a evolução da empresa?', ['ISO 9001','Lean Manufacturing','5S','IATF 16949'], 2, 'A empresa começou com o 5S em 2020, que levou a ISO 9001, depois Lean e finalmente IATF 16949, triplicando o faturamento em 3 anos.'],
   ];
   for (const [p, a, r, e] of finalQ) {
-    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicação, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
+    await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
   }
 }
