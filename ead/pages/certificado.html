@@ -16,6 +16,12 @@ h1{font-size:22px;margin-bottom:16px;color:var(--navy)}
 .detail strong{color:var(--navy)}
 .code{font-family:var(--ff-mono);font-size:14px;color:var(--red);background:#fef7f7;padding:8px 16px;display:inline-block;margin-bottom:20px}
 a.btn{display:inline-block;padding:12px 24px;background:var(--red);color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+.share-box{margin-top:26px;padding-top:22px;border-top:1px solid #e5e7eb}
+.share-label{font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6b7280;margin-bottom:12px}
+.share-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.share-btn{padding:10px 18px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;transition:opacity .2s}
+.share-btn:hover{opacity:.88}
+.s-li{background:#0a66c2}.s-wa{background:#25d366}.s-fb{background:#1877f2}.s-x{background:#0f1419}
 .not-found{color:#dc2626;font-size:16px}
 .loading{color:#6b7280}
 a.back{display:block;margin-top:20px;color:#6b7280;font-size:14px;text-decoration:none}
@@ -38,7 +44,17 @@ a.back{display:block;margin-top:20px;color:#6b7280;font-size:14px;text-decoratio
       +'<h1>Certificado válido</h1>'
       +'<div class="detail"><strong>'+c.nome+'</strong> concluiu o curso<br><strong>'+c.curso+'</strong><br>com carga horária de '+c.carga+'<br>em '+data+'</div>'
       +'<div class="code">'+c.code+'</div><br>'
-      +'<a href="/ead/api/certificate/'+code+'" target="_blank" class="btn">Baixar PDF</a>';
+      +'<a href="/ead/api/certificate/'+code+'" target="_blank" class="btn">Baixar PDF</a>'
+      +(function(){
+        var certUrl='https://anderstech.net/ead/certificado/'+code;
+        var txt='Concluí o curso "'+c.curso+'" na Anders Tech! 🎓 Certificado verificável: ';
+        return '<div class="share-box"><div class="share-label">Compartilhe esta conquista</div><div class="share-btns">'
+          +'<a class="share-btn s-li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(certUrl)+'">LinkedIn</a>'
+          +'<a class="share-btn s-wa" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(txt+certUrl)+'">WhatsApp</a>'
+          +'<a class="share-btn s-fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(certUrl)+'">Facebook</a>'
+          +'<a class="share-btn s-x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent(certUrl)+'">X</a>'
+          +'</div></div>';
+      })();
   }).catch(function(){
     document.getElementById('content').innerHTML='<p class="not-found">Certificado não encontrado.<br>Verifique o código informado.</p>';
   });

@@ -309,6 +309,12 @@ strong.key-term.highlighted{background:#dbeafe;border-bottom-color:#2563eb;borde
 .case-body p{font-size:14px;line-height:1.7;color:#065f46;margin:0}
 
 .tip-card{display:flex;gap:14px;padding:16px 20px;margin:20px 0;background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;align-items:flex-start}
+.share-box{margin-top:26px;padding-top:22px;border-top:1px solid #e5e7eb}
+.share-label{font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin-bottom:12px}
+.share-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.share-btn{padding:10px 18px;color:#fff;text-decoration:none;font-size:13px;font-weight:600;transition:opacity .2s,transform .15s}
+.share-btn:hover{opacity:.88;transform:translateY(-1px)}
+.s-li{background:#0a66c2}.s-wa{background:#25d366}.s-fb{background:#1877f2}.s-x{background:#0f1419}
 .study-card{display:flex;gap:14px;padding:18px 22px;margin:26px 0;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1px solid #ddd6fe;border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;align-items:flex-start}
 .study-card svg{flex-shrink:0;color:#7c3aed;margin-top:3px}
 .study-card .study-tag{font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7c3aed;margin-bottom:4px}
@@ -568,9 +574,9 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
               if(idx===r.correctAnswer)lbl.classList.add('correct');
               else if(lbl.classList.contains('selected')&&!r.correct)lbl.classList.add('wrong');
             });
-            if(r.explicação){
+            if(r.explicacao){
               var exp=q.querySelector('.eq-explanation');
-              exp.textContent=r.explicação;exp.classList.add('show');
+              exp.textContent=r.explicacao;exp.classList.add('show');
             }
           });
           var rd=document.getElementById('examResult');
@@ -581,7 +587,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
             rd.innerHTML='<h2>Aprovado!</h2>'
               +'<div class="score">'+Math.round(res.score)+'%</div>'
               +'<p>'+res.correct+' de '+res.total+' questões corretas</p>'
-              +(res.certificateCode?'<a href="/ead/api/certificate/'+res.certificateCode+'" target="_blank" class="btn-cert">Baixar certificado (PDF)</a><br><a href="/ead/certificado/'+res.certificateCode+'" style="display:inline-block;margin-top:12px;color:var(--mute);font-size:13px">Verificar certificado</a>':'');
+              +(res.certificateCode?buildCertActions(res.certificateCode):'');
           }else{
             rd.className='exam-result failed';
             rd.innerHTML='<h2>Nota insuficiente</h2>'
@@ -988,6 +994,19 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     });
   }
 
+  function buildCertActions(code){
+    var certUrl='https://anderstech.net/ead/certificado/'+code;
+    var titulo=(courseData&&courseData.course&&courseData.course.titulo)||'um curso Anders Tech';
+    var txt='Concluí o curso "'+titulo+'" na Anders Tech! 🎓 Certificado verificável: ';
+    return '<a href="/ead/api/certificate/'+code+'" target="_blank" class="btn-cert">Baixar certificado (PDF)</a>'
+      +'<br><a href="/ead/certificado/'+code+'" style="display:inline-block;margin-top:12px;color:var(--mute);font-size:13px">Verificar certificado</a>'
+      +'<div class="share-box"><div class="share-label">Compartilhe sua conquista</div><div class="share-btns">'
+      +'<a class="share-btn s-li" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(certUrl)+'">LinkedIn</a>'
+      +'<a class="share-btn s-wa" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(txt+certUrl)+'">WhatsApp</a>'
+      +'<a class="share-btn s-fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(certUrl)+'">Facebook</a>'
+      +'<a class="share-btn s-x" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?text='+encodeURIComponent(txt)+'&url='+encodeURIComponent(certUrl)+'">X</a>'
+      +'</div></div>';
+  }
   function showConfetti(){
     var canvas=document.createElement('canvas');
     canvas.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999';
@@ -1096,7 +1115,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       {keys:['nao conformidade','desvio','problema'],tip:'Não-conformidade não e "erro de alguém" — e oportunidade de melhoria do sistema. Trate a causa raiz, não o sintoma.'},
       {keys:['checklist','plano de auditoria','analise documental'],tip:'Monte o checklist a partir da análise documental previa, não de um modelo genérico. Checklist bom aponta para os riscos reais daquele processo.'},
       {keys:['entrevista','pergunta aberta','auditado'],tip:'Na entrevista de auditoria, prefira "Me mostre como você faz" a "Você segue o procedimento?". Evidência vale mais que resposta ensaiada.'},
-      {keys:['constatacao','nc maior','nc menor','classificar'],tip:'Toda constatação de NC precisa de 3 elementos: o critério descumprido, a evidência objetiva e a explicação da falha. Faltou um, a NC e frágil.'},
+      {keys:['constatacao','nc maior','nc menor','classificar'],tip:'Toda constatação de NC precisa de 3 elementos: o critério descumprido, a evidência objetiva e a explicação da falha. Faltou um, a NC é frágil.'},
       {keys:['follow-up','eficacia','reincidencia'],tip:'Acao corretiva sem verificação de eficácia e promêssa, não correção. Agende o follow-up no momento em que a ação for aprovada.'},
       {keys:['reuniao de abertura','reuniao de encerramento'],tip:'Na reunião de encerramento, nenhuma NC deve ser surpresa. Alinhe cada constatação com o auditado durante a auditoria, não no final.'},
       {keys:['sipoc','mapeamento de processo'],tip:'Faca o SIPOC com quem executa o processo, não sozinho na sala. O mapa "oficial" quase nunca e o processo real.'},

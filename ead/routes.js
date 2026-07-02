@@ -1050,6 +1050,36 @@ router.get('/ead/checkout/sucesso', requireEadAuth, (req, res) => { if (!sendEad
 router.get('/ead/checkout/erro', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-erro.html', res)) res.redirect('/ead/cursos'); });
 router.get('/ead/checkout/pendente', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-pendente.html', res)) res.redirect('/ead/meus-cursos'); });
 router.get('/ead/checkout/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('checkout.html', res)) res.redirect('/ead/cursos'); });
-router.get('/ead/certificado/:code', (req, res) => { if (!sendEadPage('certificado.html', res)) res.redirect('/ead/cursos'); });
+router.get('/ead/certificado/:code', async (req, res) => {
+  try {
+    const filePath = join(__dirname, 'pages', 'certificado.html');
+    if (!existsSync(filePath)) return res.redirect('/ead/cursos');
+    let html = readFileSync(filePath, 'utf8');
+    // OG tags dinamicas: preview rico ao compartilhar nas redes sociais
+    if (sql && /^[A-Za-z0-9-]{4,40}$/.test(req.params.code)) {
+      try {
+        const certs = await sql`
+          SELECT u.nome AS nome, c.titulo AS curso
+          FROM ead_certificates cert
+          JOIN ead_users u ON u.id = cert.user_id
+          JOIN ead_courses c ON c.id = cert.course_id
+          WHERE cert.code = ${req.params.code}
+        `;
+        if (certs.length) {
+          const esc = (v) => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+          const og = '<meta property="og:type" content="website">'
+            + '<meta property="og:site_name" content="Anders Tech EAD">'
+            + `<meta property="og:title" content="${esc(certs[0].nome)} concluiu: ${esc(certs[0].curso)}">`
+            + '<meta property="og:description" content="Certificado verificável emitido pela Anders Tech — cursos de gestão da qualidade para a indústria. Comece o seu em anderstech.net/ead/cursos">'
+            + `<meta property="og:url" content="https://anderstech.net/ead/certificado/${encodeURIComponent(req.params.code)}">`
+            + '<meta property="og:image" content="https://anderstech.net/assets/logo-horizontal-transparent.png">'
+            + '<meta name="twitter:card" content="summary">';
+          html = html.replace('</head>', og + '</head>');
+        }
+      } catch { /* sem OG dinamica se a consulta falhar */ }
+    }
+    res.type('html').send(html);
+  } catch { res.redirect('/ead/cursos'); }
+});
 
 export { router as eadRouter, initEadDB };
