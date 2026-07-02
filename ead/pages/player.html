@@ -309,6 +309,15 @@ strong.key-term.highlighted{background:#dbeafe;border-bottom-color:#2563eb;borde
 .case-body p{font-size:14px;line-height:1.7;color:#065f46;margin:0}
 
 .tip-card{display:flex;gap:14px;padding:16px 20px;margin:20px 0;background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;align-items:flex-start}
+.study-card{display:flex;gap:14px;padding:18px 22px;margin:26px 0;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1px solid #ddd6fe;border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;align-items:flex-start}
+.study-card svg{flex-shrink:0;color:#7c3aed;margin-top:3px}
+.study-card .study-tag{font-family:var(--ff-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7c3aed;margin-bottom:4px}
+.study-card strong{display:block;font-size:15px;color:#4c1d95;margin-bottom:4px}
+.study-card p{font-size:14px;line-height:1.6;color:#3b3654;margin:0}
+.recap-slide .recap-badge{display:inline-block;font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;background:var(--navy);color:#fff;padding:5px 12px;margin-bottom:14px}
+.recap-list{list-style:none;margin:20px 0 26px;padding:0}
+.recap-list li{padding:12px 16px 12px 42px;background:var(--card);border:1px solid #e5e7eb;margin-bottom:8px;font-size:15px;position:relative}
+.recap-list li::before{content:'?';position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .tip-card svg{flex-shrink:0;color:#d97706;margin-top:2px}
 .tip-card p{font-size:14px;line-height:1.7;color:#92400e;margin:0}
 .tip-card strong{color:#78350f}
@@ -660,6 +669,24 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       }
 
       slides=splitSlides(l.conteudo);
+
+      // Slide de consolidação (recall ativo + Feynman + revisão espaçada)
+      var recapTopics=[];
+      (l.conteudo.match(/<h3[^>]*>([\s\S]*?)<\/h3>/g)||[]).forEach(function(h){
+        var t=h.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+        if(t.length>3&&t.length<90)recapTopics.push(t);
+      });
+      if(recapTopics.length>=2){
+        slides.push('<div class="recap-slide"><div class="recap-badge">Consolidação</div>'
+          +'<h2>Revisão da aula</h2>'
+          +'<p>Antes de avançar, tente lembrar <strong>sem voltar ao conteúdo</strong> o essencial de cada tópico. Só então prossiga — é o recall ativo que fixa.</p>'
+          +'<ul class="recap-list">'+recapTopics.slice(0,7).map(function(t){return '<li>'+t+'</li>'}).join('')+'</ul>'
+          +'<div class="action-card"><div class="action-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg> Técnica de Feynman</div>'
+          +'<p>Explique em 2 ou 3 frases, com suas palavras, o ponto mais importante desta aula — como se fosse para um colega novo:</p>'
+          +'<textarea class="action-input" placeholder="Escreva aqui sua explicação..." rows="3"></textarea>'
+          +'<button class="action-save">Salvar anotação</button></div>'
+          +'<div class="callout"><strong>Revisão espaçada:</strong> releia esta anotação amanhã (5 min) e daqui a uma semana (5 min). Duas revisões curtas fixam mais que uma releitura longa.</div></div>');
+      }
 
       if(l.entregavel_titulo){
         slides.push('<div class="template-card"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
@@ -1019,6 +1046,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     if(!sc)return;
     sc.classList.add('animate');
     setTimeout(function(){sc.classList.remove('animate')},1200);
+    var isRecap=!!sc.querySelector('.recap-slide');
     var slideText=(sc.textContent||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
 
     var CASES=[
@@ -1096,6 +1124,24 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
       return bestScore>=1?best:null;
     }
 
+    // 0. TÉCNICA DE ESTUDO — 1º slide de cada aula (rotaciona por aula)
+    var STUDY=[
+      {n:'Pomodoro',d:'Estude esta aula em um bloco de 25 minutos sem interrupções: celular longe, notificações desligadas. Pausa de 5 minutos ao terminar.'},
+      {n:'Recall ativo',d:'Nos quizzes desta aula, tente lembrar a resposta antes de rever o texto. Errar e corrigir fixa mais que acertar relendo.'},
+      {n:'Prática espaçada',d:'Ao terminar, agende 5 minutos amanhã para reler suas anotações. A segunda exposição em 24h multiplica a retenção.'},
+      {n:'Técnica de Feynman',d:'No slide final de revisão, explique o conceito com suas próprias palavras. Se travar, você achou exatamente o que precisa reestudar.'},
+      {n:'Aplicação imediata',d:'Baixe o template desta aula (se houver) e preencha com dados reais da sua empresa em até 48h. Aplicar é a melhor forma de reter.'},
+      {n:'Anotação ativa',d:'Anote perguntas e decisões, não cópias do texto. Use as caixas de anotação do curso — elas ficam salvas no seu navegador.'}
+    ];
+    if(idx===0&&!sc.querySelector('.study-card')){
+      var st=STUDY[(currentLessonId||0)%STUDY.length];
+      var stEl=document.createElement('div');
+      stEl.className='study-card';
+      stEl.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>'
+        +'<div><div class="study-tag">Técnica de estudo desta aula</div><strong>'+st.n+'</strong><p>'+st.d+'</p></div>';
+      sc.appendChild(stEl);
+    }
+
     // 1. KEY TERM HIGHLIGHTS
     sc.querySelectorAll('p strong, li strong').forEach(function(s){
       if(s.closest('.reveal-card,.action-card,.reminder-card,.callout,.insight-box,.narration,.template-box,.quiz-inline,.case-card,.tip-card'))return;
@@ -1117,7 +1163,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
 
     // 3. CASE STUDY CARD
     var caseMatch=findMatch(CASES,slideText);
-    if(caseMatch&&idx>0&&!hasInteractive(content)){
+    if(caseMatch&&idx>0&&!isRecap&&!hasInteractive(content)){
       var cc=document.createElement('div');
       cc.className='case-card';
       cc.innerHTML='<button class="case-trigger"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> '+caseMatch.title+'<span class="reveal-arrow">&#9660;</span></button>'
@@ -1126,7 +1172,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     }
 
     // 4. ACTION CARD (apply in practice) - odd slides
-    if(idx%2===1&&!hasInteractive(content)){
+    if(idx%2===1&&!isRecap&&!hasInteractive(content)){
       var strongs=[];
       sc.querySelectorAll('p strong').forEach(function(s){
         if(s.closest('.callout,.insight-box,.narration,.template-box,.reveal-card,.action-card,.case-card,.tip-card'))return;
@@ -1152,7 +1198,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     }
 
     // 5. FLIP CARDS - key terms quiz
-    if(idx%3===0&&idx>0){
+    if(idx%3===0&&idx>0&&!isRecap){
       var terms=[];
       sc.querySelectorAll('p').forEach(function(p){
         if(p.closest('.callout,.insight-box,.narration,.template-box,.reveal-card,.action-card,.case-card,.tip-card'))return;
@@ -1179,7 +1225,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     }
 
     // 6. PRACTICAL TIP - even slides
-    if(idx%2===0){
+    if(idx%2===0&&!isRecap){
       var tipMatch=findMatch(TIPS,slideText);
       if(tipMatch){
         var tip=document.createElement('div');
@@ -1191,7 +1237,7 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
     }
 
     // 7. SELF-ASSESSMENT - every 3rd slide
-    if(idx>0&&idx%3===2){
+    if(idx>0&&idx%3===2&&!isRecap){
       var assess=document.createElement('div');
       assess.className='self-assess';
       assess.innerHTML='<div class="assess-header">Como você se sente sobre este conteúdo?</div>'

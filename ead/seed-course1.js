@@ -114,6 +114,37 @@ export async function seedCourse1(sql) {
 <div class="quiz-inline" data-correct="c" data-fb-ok="Correto! A ISO 9001 cuida do sistema de gestão, não específica requisitos de produto." data-fb-nok="Incorreto. Reveja: a ISO 9001 define requisitos para o sistema de gestão, não para produtos específicos."><div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div><div class="qi-question">O que a ISO 9001 define?</div><button class="qi-option" data-key="a">Especificações técnicas de produto (composição, dimensões)</button><button class="qi-option" data-key="b">Leis trabalhistas aplicáveis à indústria</button><button class="qi-option" data-key="c">Requisitos para um Sistema de Gestão da Qualidade</button><div class="qi-feedback"></div></div>
 
 <div class="template-box"><span>Download: Checklist - Benefícios da ISO 9001 para apresentar à direção</span><a href="#">Baixar template</a></div>
+
+
+<h3>Como estudar este curso: 6 técnicas que funcionam</h3>
+<p>Antes de mergulhar no conteúdo, vale investir 3 minutos aqui. Estas técnicas têm base na ciência da aprendizagem e estão embutidas na estrutura deste curso — usá-las de propósito pode dobrar o quanto você retém.</p>
+<div class="accordion-lesson">
+  <div class="acc-item">
+    <button class="acc-trigger">1. Recall ativo — teste-se antes de reler <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Ler de novo cria ilusão de domínio; <strong>tentar lembrar</strong> é o que fixa. Responda os quizzes de cada aula sem voltar ao texto, e só depois confira. Ao errar, leia a explicação — o erro corrigido vale mais que o acerto de primeira.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">2. Prática espaçada — revise em 24h e em 1 semana <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>A memória consolida com repetição espaçada, não com maratona. Terminou uma aula? Releia seus destaques <strong>no dia seguinte</strong> (5 min) e <strong>uma semana depois</strong> (5 min). Duas revisões curtas superam uma releitura longa.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">3. Técnica de Feynman — explique com suas palavras <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Se você não consegue explicar simples, ainda não entendeu. Ao final de cada aula, feche o material e explique o conceito em 3 frases, como se fosse para um colega novo. As caixas "Aplique na prática" ao longo das aulas existem exatamente para isso.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">4. Pomodoro — blocos de 25 minutos com pausa <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>As aulas deste curso duram 15-40 minutos de propósito: uma aula por bloco de foco. Estude 25 minutos sem celular por perto, pause 5, e volte. Duas aulas por dia com foco total rendem mais que uma tarde inteira dispersa.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">5. Aplicação imediata — leve para o seu trabalho <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Conhecimento aplicado em até 48h tem taxa de retenção muito maior. Baixe os templates das aulas e <strong>preencha com dados reais da sua empresa</strong> no mesmo dia. Um template preenchido vale por três releituras.</p></div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-trigger">6. Anotação ativa — escreva, não copie <svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline fill="none" points="6 9 12 15 18 9"/></svg></button>
+    <div class="acc-body"><p>Copiar trechos não ensina. Anote <strong>perguntas</strong> que o conteúdo respondeu, decisões que você tomaria diferente e o que quer verificar na sua operação. Use as caixas de anotação do player — elas ficam salvas no seu navegador.</p></div>
+  </div>
+</div>
+<div class="callout"><strong>Regra de ouro:</strong> consistência vence intensidade. 30 minutos por dia, todos os dias, leva você ao certificado em poucas semanas — e com o conteúdo de verdade na memória, não só na tela.</div>
 `})`;
 
   // --- Aula 1.2 ---
