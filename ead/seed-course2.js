@@ -115,7 +115,7 @@
 <div class="callout"><strong>Lembre-se:</strong> Auditoria avalia o <strong>sistema</strong> (como a organização gerencia a qualidade). Inspeção avalia o <strong>produto</strong> (se a peça esta dentro da tolerância). São complementares, não substitutos.</div>
 `}, NULL),
 
-  (${m1.id}, '2-1-2-princípios-auditoria', 'Os 7 princípios da auditoria (ISO 19011)', '20 min', 2, ${`
+  (${m1.id}, '2-1-2-principios-auditoria', 'Os 7 princípios da auditoria (ISO 19011)', '20 min', 2, ${`
 <h2>Os 7 princípios da auditoria</h2>
 <p>A ISO 19011:2018 estabelece 7 princípios que sustentam a prática da auditoria. Eles guiam o comportamento do auditor e garantem que os resultados sejam confiáveis e úteis. Um auditor que não segue esses princípios compromete toda a credibilidade do processo.</p>
 
@@ -177,7 +177,7 @@
 
 <h3>4. Confidencialidade</h3>
 <p>O auditor tem acesso a informações sensíveis — processos, dados financeiros, problemas internos. Essas informações <strong>não devem ser divulgadas</strong> sem autorização.</p>
-<div class="callout"><strong>Na prática:</strong> Se você audita o setor de compras e descobre que um fornecedor prática precos muito abaixo do mercado, não pode comentar isso no almoco com colegas de outros setores. A informação fica restrita ao relatório.</div>
+<div class="callout"><strong>Na prática:</strong> Se você audita o setor de compras e descobre que um fornecedor prática preços muito abaixo do mercado, não pode comentar isso no almoco com colegas de outros setores. A informação fica restrita ao relatório.</div>
 
 <h3>5. Independência</h3>
 <p>O auditor deve ser <strong>independente da atividade auditada</strong>. Na auditoria interna, isso significa que você não pode auditar seu próprio trabalho ou seu próprio setor.</p>
@@ -346,7 +346,7 @@
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> As cláusulas 5, 6 e 7 formam um ciclo interdependente: o programa (5) define quem e quando; a realização (6) é o como; a competência (7) garante que o quem seja qualificado. Um programa de auditoria robusto precisa equilibrar as três dimensões — sem a cláusula 7, a cláusula 6 perde qualidade; sem a cláusula 5, a cláusula 6 vira improviso.</div></div>
 `}, NULL),
 
-  (${m1.id}, '2-1-4-termos-definições', 'Termos e definições essenciais', '15 min', 4, ${`
+  (${m1.id}, '2-1-4-termos-definicoes', 'Termos e definições essenciais', '15 min', 4, ${`
 <h2>Termos e definições essenciais</h2>
 <p>Para comunicar com clareza durante uma auditoria, você precisa dominar o vocabulário técnico. Confundir "constatação" com "conclusão" ou "critério" com "evidência" gera mal-entendidos que comprometem o relatório e a credibilidade do auditor.</p>
 
@@ -427,7 +427,7 @@
 <li><strong>Escopo de auditoria:</strong> Extensão e limites de uma auditoria (processos, locais, período).</li>
 </ul>
 
-<div class="example"><strong>Analogia:</strong> Critério e a "regra do jogo". Evidência e o "lance que aconteceu". Constatação e o "cartao do juiz" (amarelo ou nenhum). Conclusão e o "resultado da partida".</div>
+<div class="example"><strong>Analogia:</strong> Critério e a "regra do jogo". Evidência e o "lance que aconteceu". Constatação e o "cartão do juiz" (amarelo ou nenhum). Conclusão e o "resultado da partida".</div>
 
 <div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A evidência de auditoria são registros e fatos verificáveis. A opinião do auditor ou declarações não verificadas não constituem evidência objetiva." data-fb-nok="Cuidado: evidência precisa ser verificável e objetiva. Declaração do responsável sem documentação de suporte não é evidência suficiente.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
@@ -447,7 +447,7 @@
 
 <h3>Confusões comuns</h3>
 <table>
-<tr><th>Confusao</th><th>Correto</th></tr>
+<tr><th>Confusão</th><th>Correto</th></tr>
 <tr><td>Tratar "constatação" como sinônimo de "não conformidade"</td><td>Constatação pode ser positiva (conformidade), negativa (NC) ou neutra (observação/OM)</td></tr>
 <tr><td>Usar "auditoria" e "inspeção" como sinônimos</td><td>Auditoria avalia o sistema; inspeção avalia o produto</td></tr>
 <tr><td>Confundir "plano de auditoria" com "programa de auditoria"</td><td>Plano = uma auditoria. Programa = todas as auditorias do período</td></tr>
@@ -467,9 +467,9 @@
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m2.id}, '2-2-1-conceito-programa', 'Conceito de programa de auditoria', '15 min', 1, ${`
 <h2>Conceito de programa de auditoria</h2>
-<p>O <strong>programa de auditoria</strong> e o planejamento macro que define quais auditorias serao realizadas em um determinado período, seus objetivos, abrangência e recursos. Pense nele como o "plano anual de auditorias" — embora possa cobrir periodos diferentes de 12 meses.</p>
+<p>O <strong>programa de auditoria</strong> e o planejamento macro que define quais auditorias serão realizadas em um determinado período, seus objetivos, abrangência e recursos. Pense nele como o "plano anual de auditorias" — embora possa cobrir períodos diferentes de 12 meses.</p>
 
-<div class="callout"><strong>Cláusula de referência:</strong> A ISO 19011:2018, cláusula 5, e a ISO 9001:2015, cláusula 9.2, exigem que a organização planeje um programa de auditoria considerando a importancia dos processos, mudanças que afetam a organização e resultados de auditorias anteriores.</div>
+<div class="callout"><strong>Cláusula de referência:</strong> A ISO 19011:2018, cláusula 5, e a ISO 9001:2015, cláusula 9.2, exigem que a organização planeje um programa de auditoria considerando a importância dos processos, mudanças que afetam a organização e resultados de auditorias anteriores.</div>
 
 <h3>Programa vs. Plano: não confunda</h3>
 <table>
@@ -481,13 +481,13 @@
 </table>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Plano de auditoria</h4><ul><li>Nivel operacional/tático</li><li>Uma única auditoria específica</li><li>Agenda detalhada, horários, entrevistados</li><li>Elaborado pelo auditor-lider</li><li>Validade: dias ou semanas</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Programa de auditoria</h4><ul><li>Nivel estratégico/gerencial</li><li>Todas as auditorias do período</li><li>Cronograma, processos, auditores, recursos</li><li>Elaborado pelo gestor do programa</li><li>Validade: meses ou um ano inteiro</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Plano de auditoria</h4><ul><li>Nível operacional/tático</li><li>Uma única auditoria específica</li><li>Agenda detalhada, horários, entrevistados</li><li>Elaborado pelo auditor-lider</li><li>Validade: dias ou semanas</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Programa de auditoria</h4><ul><li>Nível estratégico/gerencial</li><li>Todas as auditorias do período</li><li>Cronograma, processos, auditores, recursos</li><li>Elaborado pelo gestor do programa</li><li>Validade: meses ou um ano inteiro</li></ul></div>
 </div>
 
 <div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O programa e o planejamento anual macro — ele reune todas as auditorias do ciclo, auditores e recursos." data-fb-nok="Não exatamente. Releia a tabela: programa = visão macro anual; plano = detalhamento de uma auditoria específica.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
-  <div class="qi-question">O coordenador de qualidade preparou um documento definindo quais processos serao auditados em cada trimestre do ano, os auditores responsaveis e os recursos necessários. Esse documento e:</div>
+  <div class="qi-question">O coordenador de qualidade preparou um documento definindo quais processos serão auditados em cada trimestre do ano, os auditores responsáveis e os recursos necessários. Esse documento e:</div>
   <button class="qi-option" data-key="a">A — Plano de auditoria</button>
   <button class="qi-option" data-key="b">B — Programa de auditoria</button>
   <button class="qi-option" data-key="c">C — Relatório de auditoria</button>
@@ -498,20 +498,20 @@
 <p>Segundo a ISO 19011, o programa deve incluir:</p>
 <ul>
 <li><strong>Objetivos:</strong> O que se pretende alcançar (ex: verificar conformidade, identificar melhorias, preparar para certificação)</li>
-<li><strong>Extensão/escopo:</strong> Quais processos, locais, periodos serao cobertos</li>
-<li><strong>Criterios:</strong> Contra quais requisitos sera auditado (ISO 9001, procedimentos internos, legislação)</li>
+<li><strong>Extensão/escopo:</strong> Quais processos, locais, períodos serão cobertos</li>
+<li><strong>Critérios:</strong> Contra quais requisitos será auditado (ISO 9001, procedimentos internos, legislação)</li>
 <li><strong>Métodos:</strong> Presencial, remota, hibrida</li>
 <li><strong>Recursos:</strong> Equipe auditora, tempo, infraestrutura</li>
-<li><strong>Cronograma:</strong> Quando cada auditoria sera realizada</li>
+<li><strong>Cronograma:</strong> Quando cada auditoria será realizada</li>
 <li><strong>Riscos do programa:</strong> O que pode impedir o programa de atingir seus objetivos</li>
 </ul>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Objetivos</strong><br>Definir o proposito: conformidade, melhoria, preparação para certificação</div></div>
-  <div class="step-item"><div class="step-content"><strong>2. Escopo e Criterios</strong><br>Quais processos, locais, periodos e referências normativas/internas</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Objetivos</strong><br>Definir o propósito: conformidade, melhoria, preparação para certificação</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Escopo e Critérios</strong><br>Quais processos, locais, períodos e referências normativas/internas</div></div>
   <div class="step-item"><div class="step-content"><strong>3. Métodos e Recursos</strong><br>Presencial ou remota; equipe auditora, tempo, infraestrutura necessária</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Cronograma</strong><br>Datas de cada auditoria distribuidas ao longo do período</div></div>
-  <div class="step-item"><div class="step-content"><strong>5. Riscos do programa</strong><br>O que pode impedir a execucao: falta de auditores, restricoes operacionais</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Riscos do programa</strong><br>O que pode impedir a execução: falta de auditores, restrições operacionais</div></div>
 </div>
 
 <div class="diagram">
@@ -547,7 +547,7 @@
 <div class="example"><strong>Exemplo — metalúrgica com 8 processos:</strong> O programa anual preve 4 ciclos de auditoria (mar, jun, set, dez), cada um cobrindo 2 processos. Os processos críticos (produção e controle de qualidade) são auditados 2 vezes no ano; os de apoio (RH, TI), 1 vez.</div>
 
 <h3>O gestor do programa</h3>
-<p>Alguem deve ser designado para gerenciar o programa. Geralmente e o coordenador de qualidade, mas pode ser qualquer pessoa competente. Suas responsabilidades incluem:</p>
+<p>Alguém deve ser designado para gerenciar o programa. Geralmente e o coordenador de qualidade, mas pode ser qualquer pessoa competente. Suas responsabilidades incluem:</p>
 <ul>
 <li>Estabelecer os objetivos do programa</li>
 <li>Definir o cronograma e atribuir auditores</li>
@@ -568,83 +568,83 @@
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Ana, coordenadora de qualidade de uma industria alimenticia em Campinas, precisava montar o programa anual. Em vez de agendar auditorias aleatoriamente, ela analisou os resultados do ano anterior: 70% das não conformidades vinham do setor de embalagem. Resultado: o novo programa previu auditorias trimestrais (4x ao ano) para embalagem e semestrais para os demais setores. Quando a auditoria de certificação chegou, o setor de embalagem tinha zero NCs abertas — o programa direcionado fez a diferença.</p>
+  <p>Ana, coordenadora de qualidade de uma indústria alimenticia em Campinas, precisava montar o programa anual. Em vez de agendar auditorias aleatoriamente, ela analisou os resultados do ano anterior: 70% das não conformidades vinham do setor de embalagem. Resultado: o novo programa previu auditorias trimestrais (4x ao ano) para embalagem e semestrais para os demais setores. Quando a auditoria de certificação chegou, o setor de embalagem tinha zero NCs abertas — o programa direcionado fez a diferença.</p>
 </div>
 `}, 'Template de programa anual de auditoria'),
 
-  (${m2.id}, '2-2-2-escopo-critérios', 'Definindo escopo e critérios', '15 min', 2, ${`
+  (${m2.id}, '2-2-2-escopo-criterios', 'Definindo escopo e critérios', '15 min', 2, ${`
 <h2>Definindo escopo e critérios de auditoria</h2>
-<p>Antes de iniciar qualquer auditoria individual, e fundamental definir com clareza <strong>o que sera auditado</strong> (escopo) e <strong>contra quais referências</strong> (critérios). Definições vagas geram auditorias superficiais e constatações questionáveis.</p>
+<p>Antes de iniciar qualquer auditoria individual, e fundamental definir com clareza <strong>o que será auditado</strong> (escopo) e <strong>contra quais referências</strong> (critérios). Definições vagas geram auditorias superficiais e constatações questionáveis.</p>
 
 <h3>Escopo de auditoria</h3>
 <p>O escopo delimita a extensão e os limites da auditoria. Deve especificar:</p>
 <ul>
-<li><strong>Processos:</strong> Quais processos serao auditados (ex: compras, produção, expedição)</li>
+<li><strong>Processos:</strong> Quais processos serão auditados (ex: compras, produção, expedição)</li>
 <li><strong>Locais:</strong> Quais unidades, filiais ou áreas físicas</li>
-<li><strong>Período:</strong> Quais registros/atividades serao verificados (ex: últimos 6 meses)</li>
-<li><strong>Turno:</strong> Se aplicavel (ex: auditar apenas o turno noturno onde ha mais reclamações)</li>
+<li><strong>Período:</strong> Quais registros/atividades serão verificados (ex: últimos 6 meses)</li>
+<li><strong>Turno:</strong> Se aplicável (ex: auditar apenas o turno noturno onde há mais reclamações)</li>
 </ul>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Escopo mal definido</h4><ul><li>Auditoria da produção.</li><li>Qual unidade? Quais etapas?</li><li>Qual período? Quais turnos?</li><li>Gera auditorias superficiais</li><li>Constatacoes questionaveis</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Escopo mal definido</h4><ul><li>Auditoria da produção.</li><li>Qual unidade? Quais etapas?</li><li>Qual período? Quais turnos?</li><li>Gera auditorias superficiais</li><li>Constatações questionaveis</li></ul></div>
   <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Escopo bem definido</h4><ul><li>Processo: recebimento e armazenagem</li><li>Unidade: Caxias do Sul</li><li>Período: jan a jun 2025</li><li>Turnos A e B incluidos</li><li>Foco claro = auditoria eficaz</li></ul></div>
 </div>
 
 <div class="diagram">
   <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg">
-    <text x="210" y="16" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Escopo + Criterios: o que direciona o auditor</text>
+    <text x="210" y="16" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Escopo + Critérios: o que direciona o auditor</text>
     <ellipse cx="130" cy="100" rx="110" ry="65" fill="#2563eb" opacity="0.15" stroke="#2563eb" stroke-width="1.5"/>
     <text x="130" y="72" text-anchor="middle" font-size="10" fill="#1d4ed8" font-weight="bold">ESCOPO</text>
     <text x="130" y="88" text-anchor="middle" font-size="8.5" fill="#1e40af">Onde olhar</text>
     <text x="130" y="103" text-anchor="middle" font-size="8" fill="#1e40af">Processos, locais,</text>
     <text x="130" y="115" text-anchor="middle" font-size="8" fill="#1e40af">período, turno</text>
     <ellipse cx="290" cy="100" rx="110" ry="65" fill="#c5383c" opacity="0.12" stroke="#c5383c" stroke-width="1.5"/>
-    <text x="290" y="72" text-anchor="middle" font-size="10" fill="#9b1c1c" font-weight="bold">CRITERIOS</text>
+    <text x="290" y="72" text-anchor="middle" font-size="10" fill="#9b1c1c" font-weight="bold">CRITÉRIOS</text>
     <text x="290" y="88" text-anchor="middle" font-size="8.5" fill="#9b1c1c">O que procurar</text>
-    <text x="290" y="103" text-anchor="middle" font-size="8" fill="#9b1c1c">ISO 9001, POs,</text>
-    <text x="290" y="115" text-anchor="middle" font-size="8" fill="#9b1c1c">legislacao, contratos</text>
+    <text x="290" y="103" text-anchor="middle" font-size="8" fill="#9b1c1c">ISO 9001, Pós,</text>
+    <text x="290" y="115" text-anchor="middle" font-size="8" fill="#9b1c1c">legislação, contratos</text>
     <ellipse cx="210" cy="100" rx="28" ry="40" fill="#16a34a" opacity="0.25" stroke="#16a34a" stroke-width="1.5"/>
     <text x="210" y="96" text-anchor="middle" font-size="8" fill="#14532d" font-weight="bold">FOCO</text>
     <text x="210" y="109" text-anchor="middle" font-size="8" fill="#14532d">da</text>
     <text x="210" y="120" text-anchor="middle" font-size="8" fill="#14532d">auditoria</text>
-    <text x="210" y="162" text-anchor="middle" font-size="9" fill="#64748b">A intersecao define onde e o que o auditor vai verificar</text>
+    <text x="210" y="162" text-anchor="middle" font-size="9" fill="#64748b">A interseção define onde e o que o auditor vai verificar</text>
   </svg>
-  <figcaption>Escopo define onde olhar; critérios definem o que procurar; a intersecao e o foco da auditoria</figcaption>
+  <figcaption>Escopo define onde olhar; critérios definem o que procurar; a interseção e o foco da auditoria</figcaption>
 </div>
 
 <div class="example"><strong>Escopo bem definido:</strong> "Auditoria do processo de recebimento e armazenagem de materias-primas na unidade de Caxias do Sul, cobrindo o período de janeiro a junho de 2025, nos turnos A e B."</div>
 
 <div class="example"><strong>Escopo mal definido:</strong> "Auditoria da produção." -- Qual unidade? Quais etapas? Qual período? Isso e vago demais.</div>
 
-<h3>Criterios de auditoria</h3>
-<p>Os critérios são as <strong>referências</strong> contra as quais as evidencias serao comparadas. Os critérios mais comuns são:</p>
+<h3>Critérios de auditoria</h3>
+<p>Os critérios são as <strong>referências</strong> contra as quais as evidências serão comparadas. Os critérios mais comuns são:</p>
 
 <table>
 <tr><th>Tipo de critério</th><th>Exemplo</th></tr>
 <tr><td>Norma de referência</td><td>ISO 9001:2015 cláusulas 8.4 e 8.5</td></tr>
 <tr><td>Procedimentos internos</td><td>PO-015 Controle de recebimento, IT-008 Armazenagem</td></tr>
-<tr><td>Legislacao/regulamentacao</td><td>Portaria INMETRO 587, RDC Anvisa 275</td></tr>
-<tr><td>Requisitos contratuais</td><td>Especificação do cliente XYZ para lote minimo</td></tr>
+<tr><td>Legislação/regulamentação</td><td>Portaria INMETRO 587, RDC Anvisa 275</td></tr>
+<tr><td>Requisitos contratuais</td><td>Especificação do cliente XYZ para lote mínimo</td></tr>
 <tr><td>Histórico/metas</td><td>Meta de índice de rejeição &lt; 2%</td></tr>
 </table>
 
 <div class="tabs">
   <div class="tab-btns"><button class="tab-btn active">Normas externas</button><button class="tab-btn">Documentos internos</button><button class="tab-btn">Requisitos legais</button></div>
-  <div class="tab-panel active"><p><strong>Normas externas</strong> são documentos de organismos de normalizacao (ISO, ABNT, IEC). Exemplos: ISO 9001:2015, ABNT NBR 16001, ISO 14001. O auditor verifica se a organização atende os requisitos da cláusula referenciada no escopo.</p></div>
-  <div class="tab-panel"><p><strong>Documentos internos</strong> são os proprios procedimentos, instrucoes de trabalho e formularios da organização. Exemplos: PO-015 Controle de recebimento, IT-008 Armazenagem, Plano de Qualidade PQ-03. O auditor verifica se o que esta escrito e o que realmente acontece.</p></div>
-  <div class="tab-panel"><p><strong>Requisitos legais e regulamentares</strong> são obrigacoes impostas por lei ou orgaos reguladores. Exemplos: NR-12 (seguranca em maquinas), RDC Anvisa 275 (alimentos), Portaria INMETRO 587. Descumprimento pode gerar NC maior e até embargo.</p></div>
+  <div class="tab-panel active"><p><strong>Normas externas</strong> são documentos de organismos de normalização (ISO, ABNT, IEC). Exemplos: ISO 9001:2015, ABNT NBR 16001, ISO 14001. O auditor verifica se a organização atende os requisitos da cláusula referenciada no escopo.</p></div>
+  <div class="tab-panel"><p><strong>Documentos internos</strong> são os próprios procedimentos, instruções de trabalho e formulários da organização. Exemplos: PO-015 Controle de recebimento, IT-008 Armazenagem, Plano de Qualidade PQ-03. O auditor verifica se o que esta escrito e o que realmente acontece.</p></div>
+  <div class="tab-panel"><p><strong>Requisitos legais e regulamentares</strong> são obrigações impostas por lei ou órgãos reguladores. Exemplos: NR-12 (seguranca em máquinas), RDC Anvisa 275 (alimentos), Portaria INMETRO 587. Descumprimento pode gerar NC maior e até embargo.</p></div>
 </div>
 
-<div class="callout"><strong>Regra de ouro:</strong> Se não ha critério, não ha constatacao. O auditor só pode apontar não conformidade se existir um requisito claro que não foi atendido.</div>
+<div class="callout"><strong>Regra de ouro:</strong> Se não há critério, não há constatação. O auditor só pode apontar não conformidade se existir um requisito claro que não foi atendido.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> A regra de ouro protege tanto o auditado quanto o auditor. Ela impede que opinioes pessoais virem não conformidades e torna o processo objetivo, auditavel e defensavel perante organismos certificadores. Sem critério documentado = sem NC.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> A regra de ouro protege tanto o auditado quanto o auditor. Ela impede que opinioes pessoais virem não conformidades e torna o processo objetivo, auditável e defensavel perante organismos certificadores. Sem critério documentado = sem NC.</div></div>
 
-<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! Sem um requisito documentado, o auditor só pode registrar uma oportunidade de melhoria — nunca uma NC." data-fb-nok="Revise a regra de ouro: sem critério claro e documentado, não ha base para uma não conformidade.">
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! Sem um requisito documentado, o auditor só pode registrar uma oportunidade de melhoria — nunca uma NC." data-fb-nok="Revise a regra de ouro: sem critério claro e documentado, não há base para uma não conformidade.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
   <div class="qi-question">O auditor percebe que os colaboradores organizam o estoque de forma que ele considera ineficiente. Não existe procedimento interno nem requisito normativo sobre organização de estoque. O auditor deve:</div>
   <button class="qi-option" data-key="a">A -- Registrar como não conformidade maior</button>
   <button class="qi-option" data-key="b">B -- Registrar como não conformidade menor</button>
-  <button class="qi-option" data-key="c">C -- Registrar como oportunidade de melhoria no maximo, pois não ha critério</button>
+  <button class="qi-option" data-key="c">C -- Registrar como oportunidade de melhoria no máximo, pois não há critério</button>
   <div class="qi-feedback"></div>
 </div>
 
@@ -653,7 +653,7 @@
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Carlos, gestor de qualidade de uma distribuidora farmacêutica em São Paulo, precisava definir o escopo de uma auditoria urgente apos reclamação crítica de cliente. Em vez de auditar toda a empresa, delimitou: processo de separação e expedição de pedidos, filial da Zona Leste, últimos 3 meses. Criterios: ISO 9001 cláusula 8.5.4, procedimento PO-007 e requisito contratual do cliente. Em 6 horas de auditoria encontrou a raiz do problema: o checklist de conferencia final não estava sendo assinado em 3 dos 5 turnos. Escopo focado = resultado em tempo recorde.</p>
+  <p>Carlos, gestor de qualidade de uma distribuidora farmacêutica em São Paulo, precisava definir o escopo de uma auditoria urgente após reclamação crítica de cliente. Em vez de auditar toda a empresa, delimitou: processo de separação e expedição de pedidos, filial da Zona Leste, últimos 3 meses. Critérios: ISO 9001 cláusula 8.5.4, procedimento PO-007 e requisito contratual do cliente. Em 6 horas de auditoria encontrou a raiz do problema: o checklist de conferencia final não estava sendo assinado em 3 dos 5 turnos. Escopo focado = resultado em tempo recorde.</p>
 </div>
 
 <h3>Fatores para definir prioridades</h3>
@@ -667,7 +667,7 @@
 </ul>
 `}, NULL),
 
-  (${m2.id}, '2-2-3-competência-auditores', 'Competência e avaliação de auditores', '20 min', 3, ${`
+  (${m2.id}, '2-2-3-competencia-auditores', 'Competência e avaliação de auditores', '20 min', 3, ${`
 <h2>Competência e avaliação de auditores</h2>
 <p>A cláusula 7 da ISO 19011:2018 e a cláusula 9.2 da ISO 9001:2015 exigem que os auditores internos sejam <strong>competentes</strong>. Mas o que significa "competente" neste contexto?</p>
 
@@ -678,7 +678,7 @@
   <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg">
     <text x="210" y="16" text-anchor="middle" font-size="11" fill="#0b1730" font-weight="bold">Modelo de Competência do Auditor ISO 19011</text>
     <rect x="140" y="25" width="140" height="48" rx="8" fill="#0b1730"/>
-    <text x="210" y="46" text-anchor="middle" font-size="10" fill="white" font-weight="bold">COMPETENCIA</text>
+    <text x="210" y="46" text-anchor="middle" font-size="10" fill="white" font-weight="bold">COMPETÊNCIA</text>
     <text x="210" y="62" text-anchor="middle" font-size="8.5" fill="#94a3b8">Auditores internos ISO 9001</text>
     <defs><marker id="arr223" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
     <line x1="170" y1="73" x2="100" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr223)"/>
@@ -703,14 +703,14 @@
 
 <table>
 <tr><th>Categoria</th><th>Exemplos</th></tr>
-<tr><td><strong>Conhecimentos genericos</strong></td><td>Princípios de auditoria, norma ISO 19011, técnicas de entrevista, elaboracao de relatório, amostragem</td></tr>
-<tr><td><strong>Conhecimentos especificos do setor</strong></td><td>Processos de usinagem (metalúrgica), APPCC (alimentos), NRs aplicaveis (construção civil), normas técnicas do produto</td></tr>
+<tr><td><strong>Conhecimentos genéricos</strong></td><td>Princípios de auditoria, norma ISO 19011, técnicas de entrevista, elaboração de relatório, amostragem</td></tr>
+<tr><td><strong>Conhecimentos específicos do setor</strong></td><td>Processos de usinagem (metalúrgica), APPCC (alimentos), NRs aplicáveis (construção civil), normas técnicas do produto</td></tr>
 </table>
 
 <div class="tabs">
-  <div class="tab-btns"><button class="tab-btn active">Conhecimento generico</button><button class="tab-btn">Conhecimento setorial</button></div>
-  <div class="tab-panel active"><p><strong>Conhecimento generico</strong> e o que qualquer auditor de sistema de gestao precisa, independente do setor: princípios de auditoria (ISO 19011), a propria norma auditada (ISO 9001), técnicas de entrevista, elaboracao de checklist, coleta de evidencias, redacao de relatório, amostragem estatistica. Este conhecimento e transferivel entre setores.</p></div>
-  <div class="tab-panel"><p><strong>Conhecimento setorial</strong> e específico do setor da organização auditada. Uma industria alimenticia exige APPCC e legislacao sanitaria. Uma metalúrgica exige NRs de seguranca e normas de solda. Um hospital exige RDC Anvisa e protocolos clinicos. O auditor precisa de ambos para fazer perguntas relevantes e reconhecer desvios.</p></div>
+  <div class="tab-btns"><button class="tab-btn active">Conhecimento genérico</button><button class="tab-btn">Conhecimento setorial</button></div>
+  <div class="tab-panel active"><p><strong>Conhecimento genérico</strong> e o que qualquer auditor de sistema de gestão precisa, independente do setor: princípios de auditoria (ISO 19011), a própria norma auditada (ISO 9001), técnicas de entrevista, elaboração de checklist, coleta de evidências, redação de relatório, amostragem estatistica. Este conhecimento e transferivel entre setores.</p></div>
+  <div class="tab-panel"><p><strong>Conhecimento setorial</strong> e específico do setor da organização auditada. Uma indústria alimenticia exige APPCC e legislação sanitaria. Uma metalúrgica exige NRs de seguranca e normas de solda. Um hospital exige RDC Anvisa e protocolos clinicos. O auditor precisa de ambos para fazer perguntas relevantes e reconhecer desvios.</p></div>
 </div>
 
 <h3>Atributos pessoais do auditor</h3>
@@ -730,25 +730,25 @@
 <ul class="checklist">
   <li><span class="ck-box"></span>Conhece os princípios de auditoria (ISO 19011)</li>
   <li><span class="ck-box"></span>Domina a norma auditada (ISO 9001:2015)</li>
-  <li><span class="ck-box"></span>Sabe conduzir entrevistas e coletar evidencias</li>
+  <li><span class="ck-box"></span>Sabe conduzir entrevistas e coletar evidências</li>
   <li><span class="ck-box"></span>Conhece o setor/processos da organização auditada</li>
   <li><span class="ck-box"></span>Demonstra postura etica e imparcialidade</li>
   <li><span class="ck-box"></span>Comunica-se com tato (diplomatico, não intimidador)</li>
   <li><span class="ck-box"></span>Participou de pelo menos 1 auditoria como observador</li>
 </ul>
 
-<div class="callout"><strong>Reflexão:</strong> Um auditor excelente tecnicamente mas arrogante e inflexivel vai gerar resistencia e conflitos. Um auditor diplomatico mas sem conhecimento técnico vai perder constatacoes importantes. E preciso equilíbrio.</div>
+<div class="callout"><strong>Reflexão:</strong> Um auditor excelente tecnicamente mas arrogante e inflexivel vai gerar resistência e conflitos. Um auditor diplomatico mas sem conhecimento técnico vai perder constatações importantes. E preciso equilíbrio.</div>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Auditor ineficaz</h4><ul><li>Arrogante e intimidador</li><li>Faz perguntas genericas</li><li>Aceita a primeira resposta sem verificar</li><li>Parcial — já decidiu antes de ver</li><li>Não conhece o setor auditado</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Auditor eficaz</h4><ul><li>Diplomatico e respeitoso</li><li>Perguntas abertas e especificas</li><li>Sempre busca evidencia objetiva</li><li>Imparcial — segue o critério</li><li>Conhece o contexto do setor</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Auditor ineficaz</h4><ul><li>Arrogante e intimidador</li><li>Faz perguntas genéricas</li><li>Aceita a primeira resposta sem verificar</li><li>Parcial — já decidiu antes de ver</li><li>Não conhece o setor auditado</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Auditor eficaz</h4><ul><li>Diplomatico e respeitoso</li><li>Perguntas abertas e específicas</li><li>Sempre busca evidência objetiva</li><li>Imparcial — segue o critério</li><li>Conhece o contexto do setor</li></ul></div>
 </div>
 
-<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O auditor não pode ser parcial. Deve seguir critérios objetivos e evidencias, não opinião pessoal sobre o gestor ou o processo." data-fb-nok="Revise o conceito de imparcialidade: o auditor deve avaliar evidencias, não julgar pessoas ou ter preferencias.">
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! O auditor não pode ser parcial. Deve seguir critérios objetivos e evidências, não opinião pessoal sobre o gestor ou o processo." data-fb-nok="Revise o conceito de imparcialidade: o auditor deve avaliar evidências, não julgar pessoas ou ter preferencias.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
   <div class="qi-question">O auditor tem uma opinião negativa sobre o gestor do setor que vai auditar, formada em interações anteriores. Como deve agir durante a auditoria?</div>
   <button class="qi-option" data-key="a">A -- Ser mais rigoroso para compensar sua opinioa negativa</button>
-  <button class="qi-option" data-key="b">B -- Manter imparcialidade, avaliando apenas evidencias contra os critérios definidos</button>
+  <button class="qi-option" data-key="b">B -- Manter imparcialidade, avaliando apenas evidências contra os critérios definidos</button>
   <button class="qi-option" data-key="c">C -- Solicitar substituição imediata do gestor antes de iniciar</button>
   <div class="qi-feedback"></div>
 </div>
@@ -758,27 +758,27 @@
 <ul>
 <li><strong>Formação:</strong> Curso de auditor interno (como este!) com avaliação</li>
 <li><strong>Experiência:</strong> Participação em auditorias como observador ou membro da equipe</li>
-<li><strong>Avaliação de desempenho:</strong> Feedback pos-auditoria pelo auditor-lider ou gestor do programa</li>
+<li><strong>Avaliação de desempenho:</strong> Feedback pós-auditoria pelo auditor-lider ou gestor do programa</li>
 <li><strong>Atualização:</strong> Participação em treinamentos continuos</li>
 </ul>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Formação basica</strong><br>Curso de auditor interno (minimo 16h) com avaliação teorica e pratica</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Formação básica</strong><br>Curso de auditor interno (mínimo 16h) com avaliação teorica e pratica</div></div>
   <div class="step-item"><div class="step-content"><strong>2. Auditoria como observador</strong><br>Participar de pelo menos 1 auditoria acompanhando um auditor experiente</div></div>
   <div class="step-item"><div class="step-content"><strong>3. Auditoria como membro da equipe</strong><br>Conduzir partes da auditoria sob supervisão do auditor-lider</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Avaliação de desempenho</strong><br>Feedback do auditor-lider ou gestor do programa sobre postura e técnica</div></div>
-  <div class="step-item"><div class="step-content"><strong>5. Auditor qualificado ativo</strong><br>Atuacao autônoma com reciclagem periódica e atualização normativa</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Auditor qualificado ativo</strong><br>Atuação autônoma com reciclagem periódica e atualização normativa</div></div>
 </div>
 
-<div class="example"><strong>Critério tipico numa industria alimenticia:</strong> Para atuar como auditor interno, o colaborador deve ter: (a) curso de auditor interno ISO 19011 de no minimo 16h; (b) conhecimento basico de ISO 9001:2015; (c) pelo menos 1 auditoria acompanhada como observador; (d) avaliação satisfatoria pelo gestor do programa.</div>
+<div class="example"><strong>Critério tipico numa indústria alimenticia:</strong> Para atuar como auditor interno, o colaborador deve ter: (a) curso de auditor interno ISO 19011 de no mínimo 16h; (b) conhecimento básico de ISO 9001:2015; (c) pelo menos 1 auditoria acompanhada como observador; (d) avaliação satisfatória pelo gestor do programa.</div>
 
 <h3>Auditor-lider: papel e competência adicional</h3>
-<p>O auditor-lider coordena a equipe auditora e e responsavel por:</p>
+<p>O auditor-lider coordena a equipe auditora e e responsável por:</p>
 <ul>
 <li>Elaborar o plano de auditoria</li>
-<li>Coordenar a equipe durante a execucao</li>
-<li>Conduzir as reunioes de abertura e encerramento</li>
-<li>Resolver impasses e tomar decisoes</li>
+<li>Coordenar a equipe durante a execução</li>
+<li>Conduzir as reuniões de abertura e encerramento</li>
+<li>Resolver impasses e tomar decisões</li>
 <li>Aprovar o relatório final</li>
 </ul>
 `}, 'Matriz de competência de auditores'),
@@ -811,36 +811,36 @@
     <text x="85" y="94" text-anchor="middle" font-size="12" fill="white" font-weight="bold">A</text>
     <text x="85" y="108" text-anchor="middle" font-size="9" fill="#fecaca">Melhorar</text>
     <text x="85" y="119" text-anchor="middle" font-size="7.5" fill="#fecaca">Ajustar para o</text>
-    <text x="85" y="129" text-anchor="middle" font-size="7.5" fill="#fecaca">proximo ciclo</text>
+    <text x="85" y="129" text-anchor="middle" font-size="7.5" fill="#fecaca">próximo ciclo</text>
     <defs><marker id="arr224" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
     <path d="M200,76 C240,60 280,65 295,90" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr224)"/>
     <path d="M335,124 C340,150 310,168 295,172" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr224)"/>
     <path d="M220,185 C180,195 110,165 105,148" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr224)"/>
     <path d="M85,72 C80,50 120,30 155,38" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr224)"/>
   </svg>
-  <figcaption>O ciclo PDCA se aplica ao proprio programa de auditoria: planejar, executar, verificar e melhorar continuamente</figcaption>
+  <figcaption>O ciclo PDCA se aplica ao próprio programa de auditoria: planejar, executar, verificar e melhorar continuamente</figcaption>
 </div>
 
 <table>
 <tr><th>Indicador</th><th>O que mede</th><th>Meta tipica</th></tr>
-<tr><td>Taxa de execucao do programa</td><td>% de auditorias planejadas que foram realizadas</td><td>100% (sem cancelamentos)</td></tr>
+<tr><td>Taxa de execução do programa</td><td>% de auditorias planejadas que foram realizadas</td><td>100% (sem cancelamentos)</td></tr>
 <tr><td>Cumprimento do cronograma</td><td>% de auditorias realizadas na data prevista</td><td>&gt;= 90%</td></tr>
-<tr><td>NCs identificadas por auditoria</td><td>Quantidade media de não conformidades</td><td>Acompanhar tendencia</td></tr>
-<tr><td>Eficacia das acoes corretivas</td><td>% de NCs efetivamente fechadas no prazo</td><td>&gt;= 80%</td></tr>
-<tr><td>Satisfacao dos auditados</td><td>Feedback sobre a conduta e utilidade da auditoria</td><td>Favoravel</td></tr>
+<tr><td>NCs identificadas por auditoria</td><td>Quantidade media de não conformidades</td><td>Acompanhar tendência</td></tr>
+<tr><td>Eficácia das acoes corretivas</td><td>% de NCs efetivamente fechadas no prazo</td><td>&gt;= 80%</td></tr>
+<tr><td>Satisfação dos auditados</td><td>Feedback sobre a conduta e utilidade da auditoria</td><td>Favoravel</td></tr>
 <tr><td>Desenvolvimento de auditores</td><td>Número de auditores qualificados ativos</td><td>Conforme necessidade</td></tr>
 </table>
 
 <div class="kpi-grid">
-  <div class="kpi-card"><div class="kpi-value">100%</div><div class="kpi-label">Taxa de execucao ideal do programa</div></div>
+  <div class="kpi-card"><div class="kpi-value">100%</div><div class="kpi-label">Taxa de execução ideal do programa</div></div>
   <div class="kpi-card"><div class="kpi-value">&gt;= 90%</div><div class="kpi-label">Auditorias realizadas no prazo previsto</div></div>
   <div class="kpi-card"><div class="kpi-value">&gt;= 80%</div><div class="kpi-label">NCs fechadas no prazo (acoes eficazes)</div></div>
-  <div class="kpi-card"><div class="kpi-value">3-5</div><div class="kpi-label">Auditores ativos minimos recomendados</div></div>
+  <div class="kpi-card"><div class="kpi-value">3-5</div><div class="kpi-label">Auditores ativos mínimos recomendados</div></div>
 </div>
 
-<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A taxa de execucao deve ser 100% — cancelamentos sem replanejamento comprometem a cobertura do SGQ e podem ser questionados em auditorias de certificação." data-fb-nok="Reveja: a meta de execucao do programa e 100%. Qualquer cancelamento deve ser justificado e replanejado.">
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A taxa de execução deve ser 100% — cancelamentos sem replanejamento comprometem a cobertura do SGQ e podem ser questionados em auditorias de certificação." data-fb-nok="Reveja: a meta de execução do programa e 100%. Qualquer cancelamento deve ser justificado e replanejado.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
-  <div class="qi-question">Qual é a meta tipica para a taxa de execucao do programa de auditoria?</div>
+  <div class="qi-question">Qual é a meta tipica para a taxa de execução do programa de auditoria?</div>
   <button class="qi-option" data-key="a">A -- 100% (todas as auditorias planejadas devem ser realizadas)</button>
   <button class="qi-option" data-key="b">B -- 80% (e aceitavel cancelar até 20%)</button>
   <button class="qi-option" data-key="c">C -- 70% (cancelamentos por operação são comuns e tolerados)</button>
@@ -850,17 +850,17 @@
 <h3>Análise crítica do programa</h3>
 <p>Ao final do ciclo (geralmente anual), o gestor do programa deve fazer uma análise crítica que inclua:</p>
 <ul>
-<li>Resultados consolidados: total de NCs, por tipo, por processo, tendencias</li>
+<li>Resultados consolidados: total de NCs, por tipo, por processo, tendências</li>
 <li>Conformidade geral do SGQ (visão macro)</li>
 <li>Desempenho dos auditores</li>
-<li>Adequacao do cronograma e dos recursos</li>
+<li>Adequação do cronograma e dos recursos</li>
 <li>Feedback dos auditados e da direção</li>
-<li>Oportunidades de melhoria para o proximo ciclo</li>
+<li>Oportunidades de melhoria para o próximo ciclo</li>
 </ul>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Consolidar resultados</strong><br>Totalizar NCs por processo, tipo e tendencia temporal</div></div>
-  <div class="step-item"><div class="step-content"><strong>2. Avaliar auditores</strong><br>Desempenho, postura, precisao das constatacoes, feedback dos auditados</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Consolidar resultados</strong><br>Totalizar NCs por processo, tipo e tendência temporal</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Avaliar auditores</strong><br>Desempenho, postura, precisão das constatações, feedback dos auditados</div></div>
   <div class="step-item"><div class="step-content"><strong>3. Revisar cronograma</strong><br>O programa cobriu todos os processos? Houve cancelamentos? Por que?</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Mapear melhorias</strong><br>Ajustar frequência, rotacionar auditores, atualizar critérios</div></div>
   <div class="step-item"><div class="step-content"><strong>5. Aprovar novo programa</strong><br>Validar com a direção e comunicar as áreas envolvidas</div></div>
@@ -874,26 +874,26 @@
 <li><strong>Rotacionar auditores:</strong> Evitar que o mesmo auditor audite o mesmo processo sempre (perde a "visão fresca")</li>
 <li><strong>Incluir auditorias não planejadas:</strong> Em caso de mudanças significativas, reclamações criticas ou incidentes</li>
 <li><strong>Atualizar critérios:</strong> Incorporar novos requisitos legais, normativos ou de clientes</li>
-<li><strong>Investir em capacitacao:</strong> Treinar novos auditores e reciclar os existentes</li>
+<li><strong>Investir em capacitação:</strong> Treinar novos auditores e reciclar os existentes</li>
 </ul>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Patricia, gestora do programa de auditoria de uma rede logistica com 4 unidades, percebeu que o programa de 2023 tinha executado apenas 75% das auditorias planejadas. Motivo: auditores sempre indisponiveis por demanda operacional. Em 2024, ela tomou duas acoes: (1) formou 3 novos auditores para ter reserva; (2) inseriu no cronograma janelas de 15 dias para cada auditoria, com datas alternativas já aprovadas. Resultado: 100% de execucao em 2024. Uma auditoria de certificação em dezembro não encontrou nenhum processo sem evidencia de auditoria interna recente.</p>
+  <p>Patricia, gestora do programa de auditoria de uma rede logística com 4 unidades, percebeu que o programa de 2023 tinha executado apenas 75% das auditorias planejadas. Motivo: auditores sempre indisponiveis por demanda operacional. Em 2024, ela tomou duas acoes: (1) formou 3 novos auditores para ter reserva; (2) inseriu no cronograma janelas de 15 dias para cada auditoria, com datas alternativas já aprovadas. Resultado: 100% de execução em 2024. Uma auditoria de certificação em dezembro não encontrou nenhum processo sem evidência de auditoria interna recente.</p>
 </div>
 
-<div class="callout"><strong>Ciclo PDCA do programa:</strong> <strong>P</strong> = definir objetivos, cronograma, auditores. <strong>D</strong> = executar as auditorias conforme planejado. <strong>C</strong> = monitorar indicadores e analisar resultados. <strong>A</strong> = ajustar o programa para o proximo ciclo.</div>
+<div class="callout"><strong>Ciclo PDCA do programa:</strong> <strong>P</strong> = definir objetivos, cronograma, auditores. <strong>D</strong> = executar as auditorias conforme planejado. <strong>C</strong> = monitorar indicadores e analisar resultados. <strong>A</strong> = ajustar o programa para o próximo ciclo.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria continua real:</strong> O programa de auditoria não é um documento estatico. Cada ciclo deve alimentar o proximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitacao adicional. O programa que não muda não esta sendo monitorado.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight — melhoria continua real:</strong> O programa de auditoria não é um documento estatico. Cada ciclo deve alimentar o próximo: NCs recorrentes levam a mais auditorias naquele processo; auditores com feedback negativo recebem capacitação adicional. O programa que não muda não esta sendo monitorado.</div></div>
 `}, NULL)`;
 
   // ── Module 3: Planejamento da Auditoria ──
   const [m3] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Planejamento da Auditoria', 'Análise documental, plano de auditoria, checklists e amostragem', 3) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
-  (${m3.id}, '2-3-1-análise-documentação', 'Análise de documentação pre-auditoria', '20 min', 1, ${`
-<h2>Análise de documentação pre-auditoria</h2>
-<p>Antes de pisar no "chão de fábrica", o auditor deve <strong>estudar</strong>. A análise de documentação e a primeira etapa prática de qualquer auditoria e determina a qualidade de todo o trabalho subsequente. Um auditor que chega sem preparação faz perguntas genericas e perde constatações importantes.</p>
+  (${m3.id}, '2-3-1-analise-documentacao', 'Análise de documentação pré-auditoria', '20 min', 1, ${`
+<h2>Análise de documentação pré-auditoria</h2>
+<p>Antes de pisar no "chão de fábrica", o auditor deve <strong>estudar</strong>. A análise de documentação e a primeira etapa prática de qualquer auditoria e determina a qualidade de todo o trabalho subsequente. Um auditor que chega sem preparação faz perguntas genéricas e perde constatações importantes.</p>
 
 <h3>Quais documentos analisar</h3>
 <p>Dependendo do escopo e dos critérios da auditoria, o auditor deve revisar:</p>
@@ -902,11 +902,11 @@
 <tr><th>Documento</th><th>O que buscar</th></tr>
 <tr><td>Política e objetivos da qualidade</td><td>Alinhamento com os processos auditados</td></tr>
 <tr><td>Manual do SGQ (se existir)</td><td>Escopo, exclusões, mapa de processos</td></tr>
-<tr><td>Procedimentos operacionais (POs)</td><td>O que a organização diz que faz no processo auditado</td></tr>
+<tr><td>Procedimentos operacionais (Pós)</td><td>O que a organização diz que faz no processo auditado</td></tr>
 <tr><td>Instruções de trabalho (ITs)</td><td>Detalhamento operacional (como faz)</td></tr>
 <tr><td>Registros recentes</td><td>Evidências de que o processo esta sendo seguido</td></tr>
 <tr><td>Resultados de auditorias anteriores</td><td>NCs recorrentes, status de ações corretivas</td></tr>
-<tr><td>Indicadores do processo</td><td>Tendencias, desvios, metas não atingidas</td></tr>
+<tr><td>Indicadores do processo</td><td>Tendências, desvios, metas não atingidas</td></tr>
 <tr><td>Reclamações de clientes</td><td>Relacionadas ao processo auditado</td></tr>
 <tr><td>Mudanças recentes</td><td>Novos equipamentos, novos funcionários, mudanças de processo</td></tr>
 </table>
@@ -915,7 +915,7 @@
   <svg viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="70" width="110" height="60" rx="6" fill="#0b1730" stroke="#2563eb" stroke-width="1.5"/>
     <text x="65" y="94" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">Documentos</text>
-    <text x="65" y="108" text-anchor="middle" fill="#94a3b8" font-size="9">Políticas, POs,</text>
+    <text x="65" y="108" text-anchor="middle" fill="#94a3b8" font-size="9">Políticas, Pós,</text>
     <text x="65" y="121" text-anchor="middle" fill="#94a3b8" font-size="9">ITs, Registros</text>
     <polygon points="125,100 140,93 140,107" fill="#2563eb"/>
     <rect x="145" y="70" width="120" height="60" rx="6" fill="#0b1730" stroke="#eab308" stroke-width="1.5"/>
@@ -942,7 +942,7 @@
 <h3>Sinais de atenção na análise documental</h3>
 <p>Durante a análise, fique atento a:</p>
 <ul>
-<li><strong>Procedimentos desatualizados:</strong> Ultima revisao ha mais de 2 anos sem justificativa</li>
+<li><strong>Procedimentos desatualizados:</strong> Última revisão há mais de 2 anos sem justificativa</li>
 <li><strong>Lacunas:</strong> Requisitos da norma sem procedimento ou registro correspondente</li>
 <li><strong>Complexidade excessiva:</strong> Procedimentos tao detalhados que ninguém consegue seguir</li>
 <li><strong>NCs anteriores não fechadas:</strong> Ações corretivas pendentes ou atrasadas</li>
@@ -952,7 +952,7 @@
 <h4>Documentos essenciais — verifique antes de começar:</h4>
 <ul class="checklist">
   <li><span class="ck-box"></span>Política da qualidade e objetivos do processo auditado</li>
-  <li><span class="ck-box"></span>Procedimentos operacionais (POs) e instruções de trabalho (ITs) do escopo</li>
+  <li><span class="ck-box"></span>Procedimentos operacionais (Pós) e instruções de trabalho (ITs) do escopo</li>
   <li><span class="ck-box"></span>Registros das últimas 3 ocorrências do processo</li>
   <li><span class="ck-box"></span>Relatório da última auditoria interna do mesmo processo</li>
   <li><span class="ck-box"></span>Status de ações corretivas abertas relacionadas ao processo</li>
@@ -996,7 +996,7 @@
 
   (${m3.id}, '2-3-2-plano-auditoria', 'Elaboração do plano de auditoria', '20 min', 2, ${`
 <h2>Elaboração do plano de auditoria</h2>
-<p>O plano de auditoria é o documento que descreve os <strong>arranjos praticos</strong> para a realização de uma auditoria individual. Ele e elaborado pelo auditor-lider e deve ser comunicado ao auditado com antecedencia suficiente.</p>
+<p>O plano de auditoria é o documento que descreve os <strong>arranjos práticos</strong> para a realização de uma auditoria individual. Ele e elaborado pelo auditor-lider e deve ser comunicado ao auditado com antecedencia suficiente.</p>
 
 <div class="callout"><strong>Cláusula de referência:</strong> ISO 19011:2018, cláusula 6.3.2 — "O auditor-lider deve preparar um plano de auditoria baseado nas informações contidas no programa de auditoria e na documentação fornecida pelo auditado."</div>
 
@@ -1007,10 +1007,10 @@
 <tr><th>Item</th><th>Descrição</th><th>Exemplo</th></tr>
 <tr><td>Objetivo</td><td>O que a auditoria pretende verificar</td><td>Verificar conformidade do processo de compras com ISO 9001 cl. 8.4</td></tr>
 <tr><td>Escopo</td><td>Processos, locais, período</td><td>Processo de compras, sede Caxias do Sul, jan-jun 2025</td></tr>
-<tr><td>Criterios</td><td>Normas e documentos de referência</td><td>ISO 9001:2015 cl. 8.4, PO-010 Compras v.3</td></tr>
+<tr><td>Critérios</td><td>Normas e documentos de referência</td><td>ISO 9001:2015 cl. 8.4, PO-010 Compras v.3</td></tr>
 <tr><td>Equipe auditora</td><td>Nomes e papeis</td><td>Maria (lider), Joao (auditor)</td></tr>
 <tr><td>Agenda/cronograma</td><td>Horários e atividades</td><td>08:00 Abertura, 08:30-11:30 Entrevistas, 13:00-14:00 Encerramento</td></tr>
-<tr><td>Auditados/entrevistados</td><td>Quem sera entrevistado</td><td>Gerente de compras, comprador, analista de qualidade de recebimento</td></tr>
+<tr><td>Auditados/entrevistados</td><td>Quem será entrevistado</td><td>Gerente de compras, comprador, analista de qualidade de recebimento</td></tr>
 <tr><td>Recursos necessários</td><td>Sala, acesso a sistemas, EPI</td><td>Acesso ao sistema ERP, sala de reunião, EPI para área de recebimento</td></tr>
 <tr><td>Idioma</td><td>Se aplicável (auditorias internacionais)</td><td>Portugues</td></tr>
 </table>
@@ -1019,7 +1019,7 @@
 <div class="template-box">
 <p><strong>Auditoria Interna — Processo de Compras</strong><br>Data: 15/07/2025 | Auditor-lider: Maria Silva</p>
 <table>
-<tr><th>Horario</th><th>Atividade</th><th>Participantes</th></tr>
+<tr><th>Horário</th><th>Atividade</th><th>Participantes</th></tr>
 <tr><td>08:00 - 08:20</td><td>Reunião de abertura</td><td>Equipe auditora + gerente de compras + coord. qualidade</td></tr>
 <tr><td>08:20 - 10:00</td><td>Entrevista: gerente de compras</td><td>Maria (auditor-lider)</td></tr>
 <tr><td>10:00 - 11:30</td><td>Entrevista: comprador + verificação de registros</td><td>Joao (auditor)</td></tr>
@@ -1039,7 +1039,7 @@
 <li>O plano pode ser ajustado no dia, se necessário — não erigido</li>
 </ul>
 
-<div class="example"><strong>Erro comum:</strong> Planejar 6 entrevistas de 30 minutos seguidas sem intervalo. Na prática, cada entrevista pode levar 45-60 minutos, e o auditor precisa anotar e organizar antes da proxima. Resultado: atraso e estresse.</div>
+<div class="example"><strong>Erro comum:</strong> Planejar 6 entrevistas de 30 minutos seguidas sem intervalo. Na prática, cada entrevista pode levar 45-60 minutos, e o auditor precisa anotar e organizar antes da próxima. Resultado: atraso e estresse.</div>
 
 <div class="diagram">
   <svg viewBox="0 0 420 220" xmlns="http://www.w3.org/2000/svg">
@@ -1137,11 +1137,11 @@
 <div class="template-box">
 <table>
 <tr><th>Ref.</th><th>Pergunta</th><th>Método</th><th>Evidência</th><th>Status</th></tr>
-<tr><td>8.4.1</td><td>Os fornecedores críticos estao avaliados conforme critérios definidos?</td><td>Registro</td><td></td><td></td></tr>
+<tr><td>8.4.1</td><td>Os fornecedores críticos estão avaliados conforme critérios definidos?</td><td>Registro</td><td></td><td></td></tr>
 <tr><td>8.4.1</td><td>Existe lista de fornecedores qualificados atualizada?</td><td>Registro</td><td></td><td></td></tr>
-<tr><td>8.4.2</td><td>Os requisitos de compra estao claramente comunicados ao fornecedor?</td><td>Entrevista + registro</td><td></td><td></td></tr>
-<tr><td>8.4.2</td><td>Os pedidos de compra incluem específicações técnicas quando aplicável?</td><td>Registro (amostra de POs)</td><td></td><td></td></tr>
-<tr><td>8.4.3</td><td>Ha inspeção de recebimento para materiais críticos?</td><td>Observação + registro</td><td></td><td></td></tr>
+<tr><td>8.4.2</td><td>Os requisitos de compra estão claramente comunicados ao fornecedor?</td><td>Entrevista + registro</td><td></td><td></td></tr>
+<tr><td>8.4.2</td><td>Os pedidos de compra incluem especificações técnicas quando aplicável?</td><td>Registro (amostra de Pós)</td><td></td><td></td></tr>
+<tr><td>8.4.3</td><td>Há inspeção de recebimento para materiais críticos?</td><td>Observação + registro</td><td></td><td></td></tr>
 <tr><td>8.4.3</td><td>Quando um material e reprovado no recebimento, qual o tratamento?</td><td>Entrevista</td><td></td><td></td></tr>
 </table>
 </div>
@@ -1150,7 +1150,7 @@
 <ul>
 <li><strong>Perguntas abertas:</strong> "Como você avalia os fornecedores?" — obrigam o auditado a explicar o processo</li>
 <li><strong>Perguntas de verificação:</strong> "Mostre-me o registro de avaliação do fornecedor X" — confirmam com evidência</li>
-<li><strong>Perguntas de rastreamento:</strong> "Posso ver o pedido de compra mais recente e verificar se inclui as específicações?" — seguem a trilha do processo</li>
+<li><strong>Perguntas de rastreamento:</strong> "Posso ver o pedido de compra mais recente e verificar se inclui as especificações?" — seguem a trilha do processo</li>
 </ul>
 
 <div class="callout"><strong>Regra de ouro:</strong> Nunca use apenas perguntas de sim/não. "Você avalia fornecedores?" gera resposta "sim" e não revela nada. "Como você avalia fornecedores? Mostre-me os últimos 3 registros" revela a prática real.</div>
@@ -1159,7 +1159,7 @@
 <ul>
 <li><strong>Copiar o texto da norma ipsis litteris:</strong> "A organização determina os processos providos externamente?" — isso não epergunta, e requisito. Traduza para linguagem operacional.</li>
 <li><strong>Checklist genérico para todos os processos:</strong> Cada processo tem particularidades. Adapte.</li>
-<li><strong>Checklist como questionario fechado:</strong> O checklist é um guia, não um roteiro rígido. Siga as trilhas que surgem.</li>
+<li><strong>Checklist como questionário fechado:</strong> O checklist é um guia, não um roteiro rígido. Siga as trilhas que surgem.</li>
 <li><strong>Não atualizar após cada ciclo:</strong> Incorpore lições aprendidas de auditorias anteriores.</li>
 </ul>
 
@@ -1262,15 +1262,15 @@
 <table>
 <tr><th>Tipo</th><th>Descrição</th><th>Quando usar</th></tr>
 <tr><td><strong>Baseada em julgamento</strong></td><td>O auditor seleciona amostras com base em experiência e risco</td><td>Maioria das auditorias internas</td></tr>
-<tr><td><strong>Estatistica</strong></td><td>Seleção aleatoria com calculo de tamanho amostral</td><td>Auditorias com grande volume de dados ou exigencia de rigor estatístico</td></tr>
+<tr><td><strong>Estatistica</strong></td><td>Seleção aleatória com calculo de tamanho amostral</td><td>Auditorias com grande volume de dados ou exigência de rigor estatístico</td></tr>
 </table>
 
-<h3>Criterios para seleção da amostra (julgamento)</h3>
+<h3>Critérios para seleção da amostra (julgamento)</h3>
 <p>Ao usar amostragem por julgamento, considere:</p>
 <ul>
-<li><strong>Período:</strong> Cubra diferentes meses (não apenas o ultimo)</li>
-<li><strong>Turnos:</strong> Se ha turnos, amostre de mais de um</li>
-<li><strong>Produtos/servicos:</strong> Inclua diferentes linhas ou tipos</li>
+<li><strong>Período:</strong> Cubra diferentes meses (não apenas o último)</li>
+<li><strong>Turnos:</strong> Se há turnos, amostre de mais de um</li>
+<li><strong>Produtos/serviços:</strong> Inclua diferentes linhas ou tipos</li>
 <li><strong>Fornecedores:</strong> Inclua fornecedores críticos e de menor porte</li>
 <li><strong>Operadores:</strong> Entreviste diferentes pessoas (não só o mais experiente)</li>
 <li><strong>Criticidade:</strong> Priorize itens de maior risco ou impacto</li>
@@ -1352,17 +1352,17 @@
 `}, NULL)`;
 
   // ── Module 4: Execução da Auditoria ──
-  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Execução da Auditoria', 'Reuniao de abertura, entrevistas, coleta de evidências e reunião de encerramento', 4) RETURNING id`;
+  const [m4] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Execução da Auditoria', 'Reunião de abertura, entrevistas, coleta de evidências e reunião de encerramento', 4) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
-  (${m4.id}, '2-4-1-reunião-abertura', 'Reuniao de abertura', '15 min', 1, ${`
+  (${m4.id}, '2-4-1-reuniao-abertura', 'Reunião de abertura', '15 min', 1, ${`
 <h2>Reunião de abertura</h2>
 <p>A reunião de abertura e o <strong>primeiro contato formal</strong> entre a equipe auditora e os auditados. Ela define o tom da auditoria e pode determinar o nível de colaboração que você recebera. Uma abertura bem conduzida reduz ansiedade, esclarece expectativas e demonstra profissionalismo.</p>
 
 <h3>Quem participa</h3>
 <ul>
 <li>Equipe auditora (auditor-lider + demais auditores)</li>
-<li>Responsavel pela área auditada (gerente, supervisor, coordenador)</li>
+<li>Responsável pela área auditada (gerente, supervisor, coordenador)</li>
 <li>Coordenador/gestor de qualidade</li>
 <li>Representante da alta direção (quando possível)</li>
 <li>Guia (se designado pelo auditado)</li>
@@ -1373,28 +1373,28 @@
 <ol>
 <li><strong>Apresentação da equipe auditora</strong> e seus papeis</li>
 <li><strong>Confirmação do escopo</strong> e objetivos da auditoria</li>
-<li><strong>Criterios de auditoria</strong> utilizados</li>
+<li><strong>Critérios de auditoria</strong> utilizados</li>
 <li><strong>Confirmação do plano/agenda</strong> — horários, entrevistados, logística</li>
 <li><strong>Métodos de auditoria</strong> — entrevistas, observações, análise de registros</li>
-<li><strong>Classificação das constatações</strong> — como serao categorizadas (NC maior, menor, OM)</li>
-<li><strong>Confidencialidade</strong> — reforçar que as informações serao tratadas com sigilo</li>
-<li><strong>Canais de comunicação</strong> — como reportar problemas ou duvidas durante a auditoria</li>
+<li><strong>Classificação das constatações</strong> — como serão categorizadas (NC maior, menor, OM)</li>
+<li><strong>Confidencialidade</strong> — reforçar que as informações serão tratadas com sigilo</li>
+<li><strong>Canais de comunicação</strong> — como reportar problemas ou dúvidas durante a auditoria</li>
 <li><strong>Perguntas dos auditados</strong></li>
 </ol>
 
 <div class="diagram">
   <svg viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="120" height="44" rx="6" fill="#0b1730"/>
-    <text x="70" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1. Apresentacoes</text>
+    <text x="70" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="bold">1. Apresentações</text>
     <text x="70" y="44" text-anchor="middle" fill="#9ca3af" font-size="9">equipe auditora</text>
     <rect x="150" y="10" width="120" height="44" rx="6" fill="#2563eb"/>
-    <text x="210" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2. Escopo/Criterios</text>
+    <text x="210" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="bold">2. Escopo/Critérios</text>
     <text x="210" y="44" text-anchor="middle" fill="#bfdbfe" font-size="9">objetivos confirmados</text>
     <rect x="290" y="10" width="120" height="44" rx="6" fill="#16a34a"/>
     <text x="350" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3. Plano e Métodos</text>
-    <text x="350" y="44" text-anchor="middle" fill="#bbf7d0" font-size="9">agenda e logistica</text>
+    <text x="350" y="44" text-anchor="middle" fill="#bbf7d0" font-size="9">agenda e logística</text>
     <rect x="10" y="120" width="120" height="44" rx="6" fill="#eab308"/>
-    <text x="70" y="139" text-anchor="middle" fill="#0b1730" font-size="10" font-weight="bold">4. Classificacoes</text>
+    <text x="70" y="139" text-anchor="middle" fill="#0b1730" font-size="10" font-weight="bold">4. Classificações</text>
     <text x="70" y="154" text-anchor="middle" fill="#0b1730" font-size="9">NC maior, menor, OM</text>
     <rect x="150" y="120" width="120" height="44" rx="6" fill="#7c3aed"/>
     <text x="210" y="139" text-anchor="middle" fill="white" font-size="10" font-weight="bold">5. Confidencialidade</text>
@@ -1416,50 +1416,50 @@
 
 <div class="step-flow">
   <div class="step-item"><div class="step-content"><strong>1. Apresentação da equipe</strong><br>Nome, papel e organização de cada auditor — cria confianca inicial</div></div>
-  <div class="step-item"><div class="step-content"><strong>2. Confirmar escopo e objetivos</strong><br>Leia o escopo formal. Pergunte se ha duvidas antes de prosseguir</div></div>
-  <div class="step-item"><div class="step-content"><strong>3. Criterios e métodos</strong><br>ISO 9001, procedimentos internos; métodos: entrevista, observacao, análise de registros</div></div>
-  <div class="step-item"><div class="step-content"><strong>4. Agenda e logistica</strong><br>Confirme horários, salas, guia e disponibilidade dos entrevistados</div></div>
-  <div class="step-item"><div class="step-content"><strong>5. Classificação das constatacoes</strong><br>Explique como NCs e OMs serao categorizadas — sem surpresas no encerramento</div></div>
-  <div class="step-item"><div class="step-content"><strong>6. Confidencialidade e canais</strong><br>Informe sobre sigilo e como comunicar duvidas durante a auditoria</div></div>
-  <div class="step-item"><div class="step-content"><strong>7. Abrir para perguntas</strong><br>Garanta alinhamento total antes de iniciar a execucao</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Confirmar escopo e objetivos</strong><br>Leia o escopo formal. Pergunte se há dúvidas antes de prosseguir</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Critérios e métodos</strong><br>ISO 9001, procedimentos internos; métodos: entrevista, observação, análise de registros</div></div>
+  <div class="step-item"><div class="step-content"><strong>4. Agenda e logística</strong><br>Confirme horários, salas, guia e disponibilidade dos entrevistados</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Classificação das constatações</strong><br>Explique como NCs e OMs serão categorizadas — sem surpresas no encerramento</div></div>
+  <div class="step-item"><div class="step-content"><strong>6. Confidencialidade e canais</strong><br>Informe sobre sigilo e como comunicar dúvidas durante a auditoria</div></div>
+  <div class="step-item"><div class="step-content"><strong>7. Abrir para perguntas</strong><br>Garanta alinhamento total antes de iniciar a execução</div></div>
 </div>
 
 <div class="callout"><strong>Dica importante:</strong> O tom da reunião de abertura define a auditoria. Seja profissional, mas acessível. Deixe claro que o objetivo e ajudar a organização a melhorar — não punir. Evite linguagem intimidadora.</div>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Tom que gera defensividade</h4><ul><li>"Viemos verificar se voces estao cumprindo a norma."</li><li>"Precisamos que todos fiquem disponíveis — não aceito ausências."</li><li>"Se encontrarmos NC, a direção sera informada imediatamente."</li><li>Postura fechada, sem apresentacoes, tom de inspecao</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Tom que gera colaboracao</h4><ul><li>"Estamos aqui para entender como o processo funciona na pratica."</li><li>"Contamos com a colaboracao de todos — suas perspectivas são valiosas."</li><li>"Pontos fortes também serao registrados, não só problemas."</li><li>Apresentacoes individuais, linguagem acessivel, postura aberta</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Tom que gera defensividade</h4><ul><li>"Viemos verificar se vocês estão cumprindo a norma."</li><li>"Precisamos que todos fiquem disponíveis — não aceito ausências."</li><li>"Se encontrarmos NC, a direção será informada imediatamente."</li><li>Postura fechada, sem apresentações, tom de inspeção</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Tom que gera colaboração</h4><ul><li>"Estamos aqui para entender como o processo funciona na pratica."</li><li>"Contamos com a colaboração de todos — suas perspectivas são valiosas."</li><li>"Pontos fortes também serão registrados, não só problemas."</li><li>Apresentações individuais, linguagem acessível, postura aberta</li></ul></div>
 </div>
 
 <div class="example"><strong>Frase de abertura eficaz:</strong> "Bom dia a todos. Nosso objetivo hoje e verificar como o processo de compras esta funcionando na prática, identificar o que esta indo bem e onde podemos melhorar. Não estamos aqui para encontrar culpados — estamos aqui para ajudar o processo a ficar mais robusto."</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Numa auditoria interna em uma distribuidora de alimentos, a auditora-lider Claudia chegou cedo, preparou um slide simples com o escopo e a agenda, e na abertura se apresentou pelo primeiro nome. Destacou dois pontos positivos que notou enquanto esperava: a organização do deposito e a sinalizacao de emergencia. Em 15 minutos, o gestor de qualidade já estava sorrindo. A auditoria rendeu 3 OMs e zero NCs — com o auditado entregando voluntariamente registros que nem estavam no plano original.</p>
+  <p>Numa auditoria interna em uma distribuidora de alimentos, a auditora-lider Claudia chegou cedo, preparou um slide simples com o escopo e a agenda, e na abertura se apresentou pelo primeiro nome. Destacou dois pontos positivos que notou enquanto esperava: a organização do depósito e a sinalização de emergência. Em 15 minutos, o gestor de qualidade já estava sorrindo. A auditoria rendeu 3 OMs e zero NCs — com o auditado entregando voluntariamente registros que nem estavam no plano original.</p>
 </div>
 
-<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! Tom autoritario gera defensividade e faz os auditados omitir informacoes úteis a auditoria." data-fb-nok="Reveja o proposito da reunião de abertura. O tom define o nivel de colaboracao que voce recebera.">
+<div class="quiz-inline" data-correct="c" data-fb-ok="Correto! Tom autoritario gera defensividade e faz os auditados omitir informações úteis a auditoria." data-fb-nok="Reveja o propósito da reunião de abertura. O tom define o nível de colaboração que você recebera.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
   <div class="qi-question">Qual é o principal risco de conduzir a reunião de abertura com tom autoritario?</div>
   <button class="qi-option" data-key="a">A) A reunião dura mais de 30 minutos e atrasa a auditoria</button>
   <button class="qi-option" data-key="b">B) O auditor perde credibilidade técnica perante a equipe</button>
-  <button class="qi-option" data-key="c">C) Os auditados ficam na defensiva e omitem informacoes relevantes</button>
+  <button class="qi-option" data-key="c">C) Os auditados ficam na defensiva e omitem informações relevantes</button>
   <div class="qi-feedback"></div>
 </div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O tom da abertura e um ativo estratégico. Auditores que constroem rapport nos primeiros 15 minutos recebem informacoes voluntarias, acesso a registros não solicitados e colaboracao genuina — o que aumenta significativamente a qualidade das constatacoes.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> O tom da abertura e um ativo estratégico. Auditores que constroem rapport nos primeiros 15 minutos recebem informações voluntárias, acesso a registros não solicitados e colaboração genuina — o que aumenta significativamente a qualidade das constatações.</div></div>
 
 <h3>Erros comuns na reunião de abertura</h3>
 <table>
-<tr><th>Erro</th><th>Consequencia</th></tr>
-<tr><td>Pular a reunião de abertura ("já nos conhecemos")</td><td>Auditados não sabem o que esperar, gera confusao</td></tr>
+<tr><th>Erro</th><th>Consequência</th></tr>
+<tr><td>Pular a reunião de abertura ("já nos conhecemos")</td><td>Auditados não sabem o que esperar, gera confusão</td></tr>
 <tr><td>Reunião longa demais (>30 min)</td><td>Perde tempo que seria usado para a auditoria real</td></tr>
 <tr><td>Tom autoritario ou intimidador</td><td>Auditados ficam na defensiva e omitem informações</td></tr>
 <tr><td>Não confirmar a agenda</td><td>Pessoas-chave ausentes, salas ocupadas</td></tr>
 </table>
 `}, NULL),
 
-  (${m4.id}, '2-4-2-técnicas-entrevista', 'Tecnicas de entrevista e coleta de evidências', '25 min', 2, ${`
+  (${m4.id}, '2-4-2-tecnicas-entrevista', 'Técnicas de entrevista e coleta de evidências', '25 min', 2, ${`
 <h2>Técnicas de entrevista e coleta de evidências</h2>
 <p>A entrevista e o principal método de coleta de evidências em auditoria. Um auditor que sabe entrevistar extrai informações valiosas em minutos; um auditor sem técnica perde tempo com perguntas ineficazes e não consegue avaliar o processo real.</p>
 
@@ -1488,7 +1488,7 @@
     <polygon points="120,195 180,195 165,230 135,230" fill="#c5383c" opacity="0.85"/>
     <text x="150" y="218" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">SONDAR</text>
   </svg>
-  <figcaption>Funil de entrevista: comece aberto e va afunilando até a evidencia objetiva</figcaption>
+  <figcaption>Funil de entrevista: comece aberto e va afunilando até a evidência objetiva</figcaption>
 </div>
 
 <h3>Técnica de funil: do geral ao específico</h3>
@@ -1496,23 +1496,23 @@
 <ol>
 <li><strong>Abertura:</strong> "Me conte como funciona o processo de recebimento de materiais."</li>
 <li><strong>Aprofundamento:</strong> "Quem faz a inspeção? Quais critérios usa?"</li>
-<li><strong>Verificação:</strong> "Posso ver o registro de inspeção do ultimo recebimento?"</li>
+<li><strong>Verificação:</strong> "Posso ver o registro de inspeção do último recebimento?"</li>
 <li><strong>Sondagem:</strong> "E quando o material chega fora da especificação, o que acontece?"</li>
 </ol>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>Passo 1: Abrir o contexto</strong><br>Pergunte de forma ampla — "Me descreva como voce faz a inspeção de recebimento."</div></div>
+  <div class="step-item"><div class="step-content"><strong>Passo 1: Abrir o contexto</strong><br>Pergunte de forma ampla — "Me descreva como você faz a inspeção de recebimento."</div></div>
   <div class="step-item"><div class="step-content"><strong>Passo 2: Aprofundar o processo</strong><br>Explore quem faz, quando, com quais critérios e quais ferramentas</div></div>
-  <div class="step-item"><div class="step-content"><strong>Passo 3: Solicitar evidencia</strong><br>"Mostre-me os registros da ultima semana" — transforme relato em prova objetiva</div></div>
-  <div class="step-item"><div class="step-content"><strong>Passo 4: Sondar desvios</strong><br>"E quando não ha registro? O que acontece quando chega material fora da especificação?"</div></div>
-  <div class="step-item"><div class="step-content"><strong>Passo 5: Rastrear a trilha</strong><br>Siga o fluxo do processo: pedido → recebimento → inspecao → armazenagem</div></div>
+  <div class="step-item"><div class="step-content"><strong>Passo 3: Solicitar evidência</strong><br>"Mostre-me os registros da última semana" — transforme relato em prova objetiva</div></div>
+  <div class="step-item"><div class="step-content"><strong>Passo 4: Sondar desvios</strong><br>"E quando não há registro? O que acontece quando chega material fora da especificação?"</div></div>
+  <div class="step-item"><div class="step-content"><strong>Passo 5: Rastrear a trilha</strong><br>Siga o fluxo do processo: pedido → recebimento → inspeção → armazenagem</div></div>
 </div>
 
 <div class="tabs">
-  <div class="tab-btns"><button class="tab-btn active">Entrevista</button><button class="tab-btn">Observacao</button><button class="tab-btn">Registros</button></div>
-  <div class="tab-panel active"><p><strong>Quando usar:</strong> Para entender como o processo funciona na pratica — o que as pessoas fazem, conhecem e decidem.</p><p><strong>Vantagem:</strong> Revela o processo real, não o documentado. Permite aprofundamento imediato.</p><p><strong>Limite:</strong> O auditado pode relatar o processo como "deveria ser", não como realmente e. Sempre confirme com evidencia.</p></div>
-  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar se a pratica corresponde ao documentado — ver o processo acontecendo in loco.</p><p><strong>Vantagem:</strong> Evidencia direta e incontestavel. O auditor ve com os proprios olhos.</p><p><strong>Limite:</strong> O comportamento pode mudar na presença do auditor (efeito observador). Combinar com registros historicos.</p></div>
-  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar evidencias objetivas de conformidade — formularios, sistemas, certificados, ordens de produção.</p><p><strong>Vantagem:</strong> Evidencia permanente, rastreavel, verificavel por terceiros.</p><p><strong>Limite:</strong> Registros podem estar completos mas o processo real ser diferente. Combinar com entrevista e observacao.</p></div>
+  <div class="tab-btns"><button class="tab-btn active">Entrevista</button><button class="tab-btn">Observação</button><button class="tab-btn">Registros</button></div>
+  <div class="tab-panel active"><p><strong>Quando usar:</strong> Para entender como o processo funciona na pratica — o que as pessoas fazem, conhecem e decidem.</p><p><strong>Vantagem:</strong> Revela o processo real, não o documentado. Permite aprofundamento imediato.</p><p><strong>Limite:</strong> O auditado pode relatar o processo como "deveria ser", não como realmente e. Sempre confirme com evidência.</p></div>
+  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar se a pratica corresponde ao documentado — ver o processo acontecendo in loco.</p><p><strong>Vantagem:</strong> Evidência direta e incontestavel. O auditor ve com os próprios olhos.</p><p><strong>Limite:</strong> O comportamento pode mudar na presença do auditor (efeito observador). Combinar com registros históricos.</p></div>
+  <div class="tab-panel"><p><strong>Quando usar:</strong> Para verificar evidências objetivas de conformidade — formulários, sistemas, certificados, ordens de produção.</p><p><strong>Vantagem:</strong> Evidência permanente, rastreável, verificavel por terceiros.</p><p><strong>Limite:</strong> Registros podem estar completos mas o processo real ser diferente. Combinar com entrevista e observação.</p></div>
 </div>
 
 <h3>Perguntas que funcionam</h3>
@@ -1525,30 +1525,30 @@
 </table>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Perguntas que não funcionam</h4><ul><li>"Voce segue o procedimento?" — resposta: "Sim." (revela nada)</li><li>"Voce sempre calibra conforme o plano, certo?" — induz a resposta</li><li>"Como voce faz a inspecao, quem treinou voce e qual a frequência?" — confunde</li><li>"Tudo certo por aqui?" — resposta monossilabica garantida</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Perguntas que funcionam</h4><ul><li>"Como voce faz a inspecao de recebimento?" — revela o processo real</li><li>"Mostre-me o registro do ultimo recebimento" — gera evidencia objetiva</li><li>"Se o material chega fora da especificação, o que acontece?" — testa o procedimento</li><li>"Posso ver o pedido que originou essa entrega?" — rastreia a trilha</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Perguntas que não funcionam</h4><ul><li>"Você segue o procedimento?" — resposta: "Sim." (revela nada)</li><li>"Você sempre calibra conforme o plano, certo?" — induz a resposta</li><li>"Como você faz a inspeção, quem treinou você e qual a frequência?" — confunde</li><li>"Tudo certo por aqui?" — resposta monossilabica garantida</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Perguntas que funcionam</h4><ul><li>"Como você faz a inspeção de recebimento?" — revela o processo real</li><li>"Mostre-me o registro do último recebimento" — gera evidência objetiva</li><li>"Se o material chega fora da especificação, o que acontece?" — testa o procedimento</li><li>"Posso ver o pedido que originou essa entrega?" — rastreia a trilha</li></ul></div>
 </div>
 
-<h3>Perguntas que NAO funcionam</h3>
+<h3>Perguntas que NÃO funcionam</h3>
 <ul>
 <li><strong>Sim/não:</strong> "Você segue o procedimento?" — resposta: "Sim". (Não revela nada.)</li>
 <li><strong>Indutiva:</strong> "Você sempre calibra os instrumentos conforme o plano, certo?" — induz a resposta.</li>
-<li><strong>Multipla:</strong> "Como você faz a inspeção, quem treinou você e qual a frequência?" — confunde o auditado.</li>
+<li><strong>Múltipla:</strong> "Como você faz a inspeção, quem treinou você e qual a frequência?" — confunde o auditado.</li>
 </ul>
 
 <div class="example"><strong>Na cooperativa agrícola:</strong> O auditor pergunta ao operador do secador: "Me explique como você controla a temperatura de secagem do milho." O operador explica. O auditor pede: "Posso ver os registros da última semana?" Ao verificar, nota que há 2 dias sem registro. Sondagem: "O que aconteceu nesses dias?" Resposta: "Estava em manutenção." O auditor verifica a ordem de serviço de manutenção. Se não existir, há uma constatação.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Na auditoria de uma cooperativa agricola em Minas Gerais, o auditor Ricardo iniciou a entrevista com o operador do secador de grãos de forma ampla: "Me explique como voce controla a secagem do milho." O operador discorreu por 10 minutos. Ricardo foi afunilando: "Voce registra a temperatura a cada quanto tempo?" — "A cada hora." — "Posso ver os registros da ultima semana?" Ao analisar, notou dois dias sem registros. "O que aconteceu nesses dias?" — "Manutenção preventiva." — "Posso ver a ordem de serviço de manutencao?" Ela não existia. Constatacao gerada. Sem a técnica de funil, Ricardo provavelmente teria saido da entrevista sem nada.</p>
+  <p>Na auditoria de uma cooperativa agricola em Minas Gerais, o auditor Ricardo iniciou a entrevista com o operador do secador de grãos de forma ampla: "Me explique como você controla a secagem do milho." O operador discorreu por 10 minutos. Ricardo foi afunilando: "Você registra a temperatura a cada quanto tempo?" — "A cada hora." — "Posso ver os registros da última semana?" Ao analisar, notou dois dias sem registros. "O que aconteceu nesses dias?" — "Manutenção preventiva." — "Posso ver a ordem de serviço de manutenção?" Ela não existia. Constatação gerada. Sem a técnica de funil, Ricardo provavelmente teria saido da entrevista sem nada.</p>
 </div>
 
-<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A técnica do funil comeca com perguntas abertas (contexto) e vai afunilando até a evidencia objetiva verificavel." data-fb-nok="Pense na ordem: primeiro entenda o processo, depois aprofunde, depois solicite a evidencia concreta.">
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! A técnica do funil comeca com perguntas abertas (contexto) e vai afunilando até a evidência objetiva verificavel." data-fb-nok="Pense na ordem: primeiro entenda o processo, depois aprofunde, depois solicite a evidência concreta.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
   <div class="qi-question">Qual é a ordem correta na técnica do funil de entrevista?</div>
   <button class="qi-option" data-key="a">A) Solicitar registros → perguntar sobre desvios → perguntar de forma ampla</button>
-  <button class="qi-option" data-key="b">B) Perguntar de forma ampla → aprofundar → solicitar evidencia → sondar desvios</button>
-  <button class="qi-option" data-key="c">C) Perguntar de forma direta → confirmar com sim/não → registrar constatacao</button>
+  <button class="qi-option" data-key="b">B) Perguntar de forma ampla → aprofundar → solicitar evidência → sondar desvios</button>
+  <button class="qi-option" data-key="c">C) Perguntar de forma direta → confirmar com sim/não → registrar constatação</button>
   <div class="qi-feedback"></div>
 </div>
 
@@ -1563,26 +1563,26 @@
 
   (${m4.id}, '2-4-3-avaliando-conformidade', 'Avaliando conformidade e gerando constatações', '20 min', 3, ${`
 <h2>Avaliando conformidade e gerando constatações</h2>
-<p>Apos coletar evidências, o auditor deve <strong>avaliar</strong> cada evidência contra os critérios de auditoria e gerar constatações. Essa e a etapa que transforma dados brutos em informação útil para a organização.</p>
+<p>Após coletar evidências, o auditor deve <strong>avaliar</strong> cada evidência contra os critérios de auditoria e gerar constatações. Essa e a etapa que transforma dados brutos em informação útil para a organização.</p>
 
 <h3>Tipos de constatação</h3>
 <table>
 <tr><th>Constatação</th><th>Significado</th><th>Exemplo</th></tr>
 <tr><td><strong>Conformidade</strong></td><td>O requisito esta sendo atendido</td><td>Registros de inspeção de recebimento preenchidos e completos para todos os 10 lotes amostrados</td></tr>
 <tr><td><strong>Não conformidade (NC)</strong></td><td>Um requisito não esta sendo atendido</td><td>3 dos 10 fornecedores críticos não possuem avaliação registrada conforme PO-010</td></tr>
-<tr><td><strong>Oportunidade de melhoria (OM)</strong></td><td>O requisito esta atendido, mas ha potencial de melhoria</td><td>A avaliação de fornecedores considera apenas entrega no prazo; poderia incluir qualidade do material</td></tr>
+<tr><td><strong>Oportunidade de melhoria (OM)</strong></td><td>O requisito esta atendido, mas há potencial de melhoria</td><td>A avaliação de fornecedores considera apenas entrega no prazo; poderia incluir qualidade do material</td></tr>
 </table>
 
 <div class="diagram">
   <svg viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg">
     <text x="210" y="18" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">Fluxo de Avaliação de Conformidade</text>
     <rect x="10" y="30" width="80" height="50" rx="6" fill="#2563eb"/>
-    <text x="50" y="52" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">CRITERIO</text>
+    <text x="50" y="52" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">CRITÉRIO</text>
     <text x="50" y="66" text-anchor="middle" fill="#bfdbfe" font-size="8">O que a norma</text>
     <text x="50" y="76" text-anchor="middle" fill="#bfdbfe" font-size="8">exige?</text>
     <line x1="90" y1="55" x2="110" y2="55" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4c)"/>
     <rect x="110" y="30" width="80" height="50" rx="6" fill="#eab308"/>
-    <text x="150" y="52" text-anchor="middle" fill="#0b1730" font-size="9" font-weight="bold">EVIDENCIA</text>
+    <text x="150" y="52" text-anchor="middle" fill="#0b1730" font-size="9" font-weight="bold">EVIDÊNCIA</text>
     <text x="150" y="66" text-anchor="middle" fill="#0b1730" font-size="8">O que foi</text>
     <text x="150" y="76" text-anchor="middle" fill="#0b1730" font-size="8">encontrado?</text>
     <line x1="190" y1="55" x2="210" y2="55" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arr4c)"/>
@@ -1597,7 +1597,7 @@
     <text x="360" y="76" text-anchor="middle" fill="#bbf7d0" font-size="8">da auditoria</text>
     <defs><marker id="arr4c" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#6b7280"/></marker></defs>
   </svg>
-  <figcaption>Do critério a conclusao: o fluxo logico de avaliação de conformidade</figcaption>
+  <figcaption>Do critério a conclusão: o fluxo lógico de avaliação de conformidade</figcaption>
 </div>
 
 <h3>O processo de avaliação</h3>
@@ -1611,16 +1611,16 @@
 </ol>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>1. Identificar o critério</strong><br>Qual cláusula da norma ou item do procedimento se aplica a esta evidencia?</div></div>
-  <div class="step-item"><div class="step-content"><strong>2. Verificar a evidencia</strong><br>O que voce efetivamente viu, ouviu ou leu? Anote com especificidade: números, datas, codigos</div></div>
-  <div class="step-item"><div class="step-content"><strong>3. Comparar</strong><br>A evidencia atende ao critério? Ha lacuna objetiva entre o exigido e o encontrado?</div></div>
+  <div class="step-item"><div class="step-content"><strong>1. Identificar o critério</strong><br>Qual cláusula da norma ou item do procedimento se aplica a esta evidência?</div></div>
+  <div class="step-item"><div class="step-content"><strong>2. Verificar a evidência</strong><br>O que você efetivamente viu, ouviu ou leu? Anote com especificidade: números, datas, códigos</div></div>
+  <div class="step-item"><div class="step-content"><strong>3. Comparar</strong><br>A evidência atende ao critério? Há lacuna objetiva entre o exigido e o encontrado?</div></div>
   <div class="step-item"><div class="step-content"><strong>4. Classificar</strong><br>Conforme (C), Não conformidade (NC) ou Oportunidade de melhoria (OM)?</div></div>
-  <div class="step-item"><div class="step-content"><strong>5. Registrar com detalhes</strong><br>Documente no checklist com critério, evidencia específica e sua classificação fundamentada</div></div>
+  <div class="step-item"><div class="step-content"><strong>5. Registrar com detalhes</strong><br>Documente no checklist com critério, evidência específica e sua classificação fundamentada</div></div>
 </div>
 
-<div class="callout"><strong>Princípio fundamental:</strong> Uma constatação de NC deve sempre ter três elementos: (1) o <strong>critério</strong> que não foi atendido, (2) a <strong>evidência</strong> objetiva, e (3) a <strong>explicação</strong> de por que não atende. Se falta qualquer um dos três, a constatação e fragil.</div>
+<div class="callout"><strong>Princípio fundamental:</strong> Uma constatação de NC deve sempre ter três elementos: (1) o <strong>critério</strong> que não foi atendido, (2) a <strong>evidência</strong> objetiva, e (3) a <strong>explicação</strong> de por que não atende. Se falta qualquer um dos três, a constatação e frágil.</div>
 
-<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> Os 3 elementos de uma NC solida são critério, evidencia e declaracao. Sem critério, não ha base legal. Sem evidencia, não ha prova. Sem declaracao, não ha conexao entre os dois. Qualquer NC que falte um dos três vai ser contestada — e merecidamente.</div></div>
+<div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Insight:</strong> Os 3 elementos de uma NC solida são critério, evidência e declaração. Sem critério, não há base legal. Sem evidência, não há prova. Sem declaração, não há conexao entre os dois. Qualquer NC que falte um dos três vai ser contestada — e merecidamente.</div></div>
 
 <h3>Exemplo de constatação bem estruturada</h3>
 <div class="template-box">
@@ -1631,27 +1631,27 @@
 </div>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> NC mal estruturada</h4><ul><li>"O processo de compras esta desorganizado." (sem critério, sem evidencia)</li><li>"Alguns registros estao incompletos." (evidencia vaga, sem critério)</li><li>"O fornecedor parece ruim." (opinião pessoal)</li><li>"Varias pessoas não seguem o procedimento." (vago, sem especificidade)</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> NC bem estruturada</h4><ul><li>Critério claro: cláusula e procedimento especificados</li><li>Evidencia específica: números, datas, codigos de documentos</li><li>Declaracao objetiva: por que e NC, sem adjetivos subjetivos</li><li>Escopo preciso: quem, o que, quando, onde</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> NC mal estruturada</h4><ul><li>"O processo de compras esta desorganizado." (sem critério, sem evidência)</li><li>"Alguns registros estão incompletos." (evidência vaga, sem critério)</li><li>"O fornecedor parece ruim." (opinião pessoal)</li><li>"Várias pessoas não seguem o procedimento." (vago, sem especificidade)</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> NC bem estruturada</h4><ul><li>Critério claro: cláusula e procedimento especificados</li><li>Evidência específica: números, datas, códigos de documentos</li><li>Declaração objetiva: por que e NC, sem adjetivos subjetivos</li><li>Escopo preciso: quem, o que, quando, onde</li></ul></div>
 </div>
 
-<h3>Quando NaO abrir NC</h3>
+<h3>Quando Não abrir NC</h3>
 <ul>
-<li><strong>Não ha critério claro:</strong> Se não ha requisito (norma ou procedimento) que exija aquilo, não eNC — pode ser OM</li>
+<li><strong>Não há critério claro:</strong> Se não há requisito (norma ou procedimento) que exija aquilo, não eNC — pode ser OM</li>
 <li><strong>Caso isolado comprovado:</strong> Se 1 registro em 50 tem erro e o auditado demonstra que é um caso pontual já corrigido</li>
 <li><strong>Opiniao pessoal:</strong> "Eu faria diferente" não ebase para NC</li>
 </ul>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Numa metalúrgica em Caxias do Sul, o auditor Sergio encontrou um operador que não sabia recitar a politica da qualidade palavra por palavra. Sergio quase abriu uma NC de conscientizacao (cláusula 7.3). Antes de registrar, perguntou: "Voce sabe qual é o foco principal da empresa em termos de qualidade?" O operador respondeu sem hesitar: "Zero defeito na entrega para o cliente — se o produto sair com problema, volta e a gente perde o contrato." Sergio verificou se havia treinamentos registrados, avisos vissiveis na área e reunioes de alinhamento. Tudo presente. Conclusao: conforme. A cláusula 7.3 exige consciência, não decoreba. Sergio evitou uma NC que seria facilmente derrubada no encerramento.</p>
+  <p>Numa metalúrgica em Caxias do Sul, o auditor Sergio encontrou um operador que não sabia recitar a politica da qualidade palavra por palavra. Sergio quase abriu uma NC de conscientização (cláusula 7.3). Antes de registrar, perguntou: "Você sabe qual é o foco principal da empresa em termos de qualidade?" O operador respondeu sem hesitar: "Zero defeito na entrega para o cliente — se o produto sair com problema, volta e a gente perde o contrato." Sergio verificou se havia treinamentos registrados, avisos vissiveis na área e reuniões de alinhamento. Tudo presente. Conclusão: conforme. A cláusula 7.3 exige consciência, não decoreba. Sergio evitou uma NC que seria facilmente derrubada no encerramento.</p>
 </div>
 
-<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Sem um critério claro (cláusula ou procedimento), não ha base para abrir NC — pode ser no maximo uma OM ou observacao." data-fb-nok="Releia a secao 'Quando NAO abrir NC'. O critério e o fundamento de qualquer constatacao negativa.">
+<div class="quiz-inline" data-correct="a" data-fb-ok="Correto! Sem um critério claro (cláusula ou procedimento), não há base para abrir NC — pode ser no máximo uma OM ou observação." data-fb-nok="Releia a seção 'Quando NÃO abrir NC'. O critério e o fundamento de qualquer constatação negativa.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
-  <div class="qi-question">Voce acha que o almoxarifado poderia ser melhor organizado, mas não ha nenhum procedimento ou requisito da norma que especifique como organiza-lo. O que voce faz?</div>
-  <button class="qi-option" data-key="a">A) Registro como OM (oportunidade de melhoria), pois não ha critério para abrir NC</button>
-  <button class="qi-option" data-key="b">B) Abro NC citando "boas praticas de almoxarifado" como critério</button>
+  <div class="qi-question">Você acha que o almoxarifado poderia ser melhor organizado, mas não há nenhum procedimento ou requisito da norma que especifique como organiza-lo. O que você faz?</div>
+  <button class="qi-option" data-key="a">A) Registro como OM (oportunidade de melhoria), pois não há critério para abrir NC</button>
+  <button class="qi-option" data-key="b">B) Abro NC citando "boas práticas de almoxarifado" como critério</button>
   <button class="qi-option" data-key="c">C) Não registro nada, pois o auditor não deve opinar sobre organização</button>
   <div class="qi-feedback"></div>
 </div>
@@ -1659,7 +1659,7 @@
 <div class="example"><strong>Cuidado:</strong> Na metalúrgica, o auditor encontra um operador que não sabe recitar a política da qualidade palavra por palavra. Isso é NC? Depende. A cláusula 7.3 exige que as pessoas estejam <strong>conscientes</strong> da política — não que a decoram. Se o operador sabe que a empresa busca qualidade e melhoria e entende seu papel, esta conforme.</div>
 `}, NULL),
 
-  (${m4.id}, '2-4-4-reunião-encerramento', 'Reuniao de encerramento', '15 min', 4, ${`
+  (${m4.id}, '2-4-4-reuniao-encerramento', 'Reunião de encerramento', '15 min', 4, ${`
 <h2>Reunião de encerramento</h2>
 <p>A reunião de encerramento e o momento em que a equipe auditora <strong>apresenta formalmente</strong> as constatações e conclusões da auditoria ao auditado. É uma etapa crítica: as constatações devem ser claras, as evidências devem ser apresentadas, e o auditado deve ter oportunidade de comentar.</p>
 
@@ -1681,21 +1681,21 @@
     <line x1="150" y1="63" x2="162" y2="63" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4e)"/>
     <rect x="162" y="28" width="68" height="70" rx="5" fill="#c5383c"/>
     <text x="196" y="50" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">3. Consta-</text>
-    <text x="196" y="62" text-anchor="middle" fill="#fff" font-size="8">tacoes</text>
-    <text x="196" y="74" text-anchor="middle" fill="#fca5a5" font-size="7">criterio+evidencia</text>
+    <text x="196" y="62" text-anchor="middle" fill="#fff" font-size="8">tações</text>
+    <text x="196" y="74" text-anchor="middle" fill="#fca5a5" font-size="7">critério+evidência</text>
     <line x1="230" y1="63" x2="242" y2="63" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4e)"/>
     <rect x="242" y="28" width="68" height="70" rx="5" fill="#0b1730" stroke="#16a34a" stroke-width="1.5"/>
-    <text x="276" y="50" text-anchor="middle" fill="#86efac" font-size="8" font-weight="bold">4. Conclusao</text>
+    <text x="276" y="50" text-anchor="middle" fill="#86efac" font-size="8" font-weight="bold">4. Conclusão</text>
     <text x="276" y="62" text-anchor="middle" fill="#86efac" font-size="8">+ perguntas</text>
     <text x="276" y="74" text-anchor="middle" fill="#94a3b8" font-size="7">auditado</text>
     <line x1="310" y1="63" x2="322" y2="63" stroke="#6b7280" stroke-width="1" marker-end="url(#arr4e)"/>
     <rect x="322" y="28" width="88" height="70" rx="5" fill="#16a34a"/>
-    <text x="366" y="50" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">5. Proximos</text>
+    <text x="366" y="50" text-anchor="middle" fill="#fff" font-size="8" font-weight="bold">5. Próximos</text>
     <text x="366" y="62" text-anchor="middle" fill="#fff" font-size="8">passos</text>
     <text x="366" y="74" text-anchor="middle" fill="#bbf7d0" font-size="7">prazos + assinatura</text>
     <defs><marker id="arr4e" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#6b7280"/></marker></defs>
   </svg>
-  <figcaption>Os 5 blocos da reunião de encerramento — sequencia e proposito de cada etapa</figcaption>
+  <figcaption>Os 5 blocos da reunião de encerramento — sequência e propósito de cada etapa</figcaption>
 </div>
 
 <h3>Agenda da reunião de encerramento</h3>
@@ -1707,28 +1707,28 @@
 <li><strong>Classificar cada constatação</strong> — NC maior, NC menor, OM</li>
 <li><strong>Apresentar a conclusão geral</strong> da auditoria</li>
 <li><strong>Perguntas e esclarecimentos</strong> do auditado</li>
-<li><strong>Definir proximos passos</strong> — prazo para ações corretivas, responsáveis, forma de acompanhamento</li>
+<li><strong>Definir próximos passos</strong> — prazo para ações corretivas, responsáveis, forma de acompanhamento</li>
 </ol>
 
 <div class="step-flow">
-  <div class="step-item"><div class="step-content"><strong>Agradeca e recapitule</strong><br>Comece com tom positivo. Reconheca a colaboracao da equipe antes de apresentar qualquer constatacao</div></div>
+  <div class="step-item"><div class="step-content"><strong>Agradeca e recapitule</strong><br>Comece com tom positivo. Reconheca a colaboração da equipe antes de apresentar qualquer constatação</div></div>
   <div class="step-item"><div class="step-content"><strong>Lembre o carater amostral</strong><br>Deixe claro que a auditoria não cobriu 100% dos registros — pode haver outros desvios não identificados</div></div>
-  <div class="step-item"><div class="step-content"><strong>Apresente constatacoes uma a uma</strong><br>Cite critério e evidencia para cada NC ou OM. Nenhuma surpresa — voce já comunicou em campo</div></div>
-  <div class="step-item"><div class="step-content"><strong>Classifique cada constatacao</strong><br>NC maior, NC menor ou OM. Explique os critérios de classificação se necessário</div></div>
-  <div class="step-item"><div class="step-content"><strong>Abra para perguntas e discordancias</strong><br>O auditado tem direito de questionar. Ouca, reveja se necessário, mantenha se a evidencia for solida</div></div>
-  <div class="step-item"><div class="step-content"><strong>Defina proximos passos</strong><br>Prazo para acoes corretivas, responsaveis, formato do relatório e forma de acompanhamento</div></div>
+  <div class="step-item"><div class="step-content"><strong>Apresente constatações uma a uma</strong><br>Cite critério e evidência para cada NC ou OM. Nenhuma surpresa — você já comunicou em campo</div></div>
+  <div class="step-item"><div class="step-content"><strong>Classifique cada constatação</strong><br>NC maior, NC menor ou OM. Explique os critérios de classificação se necessário</div></div>
+  <div class="step-item"><div class="step-content"><strong>Abra para perguntas e discordancias</strong><br>O auditado tem direito de questionar. Ouca, reveja se necessário, mantenha se a evidência for solida</div></div>
+  <div class="step-item"><div class="step-content"><strong>Defina próximos passos</strong><br>Prazo para acoes corretivas, responsáveis, formato do relatório e forma de acompanhamento</div></div>
 </div>
 
 <div class="callout"><strong>Regra de ouro:</strong> Nenhuma constatação deve ser "surpresa" na reunião de encerramento. Se você identificou uma NC durante a auditoria, comunique ao auditado no momento — não guarde para o encerramento. Isso e apresentação justa e evita reações defensivas.</div>
 
 <ul class="checklist">
   <li><span class="ck-box"></span>Sala reservada com antecedencia e participantes convocados</li>
-  <li><span class="ck-box"></span>Constatacoes consolidadas e revisadas pela equipe auditora</li>
-  <li><span class="ck-box"></span>Evidencias organizadas por constatacao (documento, foto, registro)</li>
-  <li><span class="ck-box"></span>Classificação de cada constatacao definida (NC maior, NC menor, OM)</li>
-  <li><span class="ck-box"></span>Conclusao geral redigida de forma objetiva</li>
-  <li><span class="ck-box"></span>Proximos passos e prazos definidos antes do encerramento</li>
-  <li><span class="ck-box"></span>Modelo de ata de encerramento disponivel para assinatura</li>
+  <li><span class="ck-box"></span>Constatações consolidadas e revisadas pela equipe auditora</li>
+  <li><span class="ck-box"></span>Evidências organizadas por constatação (documento, foto, registro)</li>
+  <li><span class="ck-box"></span>Classificação de cada constatação definida (NC maior, NC menor, OM)</li>
+  <li><span class="ck-box"></span>Conclusão geral redigida de forma objetiva</li>
+  <li><span class="ck-box"></span>Próximos passos e prazos definidos antes do encerramento</li>
+  <li><span class="ck-box"></span>Modelo de ata de encerramento disponível para assinatura</li>
 </ul>
 
 <h3>Lidando com discordancias</h3>
@@ -1741,23 +1741,23 @@
 </ul>
 
 <div class="comparison">
-  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Como não lidar com discordancias</h4><ul><li>Ceder a pressao emocional do auditado sem nova evidencia</li><li>"Vamos chamar de OM em vez de NC" — negociar a classificação</li><li>Ignorar o argumento do auditado sem verificar</li><li>Entrar em disputa verbal ou tom defensivo</li></ul></div>
-  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Como lidar corretamente</h4><ul><li>Ouca o argumento do auditado com atencao genuina</li><li>Peca a evidencia que refuta a constatacao — se existir, ajuste</li><li>Se a evidencia e solida, mantenha e registre a discordancia formalmente</li><li>Explique que NC não é negociavel — e uma avaliação técnica com base em requisito</li></ul></div>
+  <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Como não lidar com discordancias</h4><ul><li>Ceder a pressão emocional do auditado sem nova evidência</li><li>"Vamos chamar de OM em vez de NC" — negociar a classificação</li><li>Ignorar o argumento do auditado sem verificar</li><li>Entrar em disputa verbal ou tom defensivo</li></ul></div>
+  <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Como lidar corretamente</h4><ul><li>Ouca o argumento do auditado com atenção genuina</li><li>Peça a evidência que refuta a constatação — se existir, ajuste</li><li>Se a evidência e solida, mantenha e registre a discordancia formalmente</li><li>Explique que NC não é negociavel — e uma avaliação técnica com base em requisito</li></ul></div>
 </div>
 
 <div class="example"><strong>Situação real na indústria alimentícia:</strong> O auditor aponta NC porque não encontrou registros de higienização das esteiras de quarta-feira. O gerente diz: "Na quarta paramos para manutenção preventiva, a higienização é feita após a manutenção e registrada no formulário de manutenção, não no de higienização." O auditor verifica o formulário de manutenção — realmente consta a higienização. Constatação retirada. O auditor sugere como OM que a rastreabilidade seria melhor se houvesse referência cruzada entre os dois formulários.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
-  <p>Numa auditoria de uma industria de embalagens em São Paulo, o auditor-lider Paulo apresentou uma NC sobre calibracao de instrumentos no encerramento. O gerente industrial ficou visivelmente irritado e afirmou que o instrumento citado havia sido calibrado na semana anterior. Paulo manteve a calma: "Se voce tiver o certificado de calibracao disponivel agora, posso revisar a constatacao imediatamente." O gerente buscou o documento — o certificado existia, mas com validade até dezembro do ano anterior. A NC foi mantida. Paulo explicou: "O problema não é voces não calibrarem — e o controle de vencimento que falhou. O certificado precisava ser renovado em dezembro e agora e agosto." O gerente entendeu, concordou e a reunião terminou com aperto de maos.</p>
+  <p>Numa auditoria de uma indústria de embalagens em São Paulo, o auditor-lider Paulo apresentou uma NC sobre calibração de instrumentos no encerramento. O gerente industrial ficou visivelmente irritado e afirmou que o instrumento citado havia sido calibrado na semana anterior. Paulo manteve a calma: "Se você tiver o certificado de calibração disponível agora, posso revisar a constatação imediatamente." O gerente buscou o documento — o certificado existia, mas com validade até dezembro do ano anterior. A NC foi mantida. Paulo explicou: "O problema não é vocês não calibrarem — e o controle de vencimento que falhou. O certificado precisava ser renovado em dezembro e agora e agosto." O gerente entendeu, concordou e a reunião terminou com aperto de mãos.</p>
 </div>
 
-<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! Se o auditado apresentar evidencia concreta que refuta a constatacao, o auditor deve revisar e, se necessário, alterar ou retirar a NC." data-fb-nok="Lembre-se: o auditor deve ser justo. Se surgir nova evidencia, a constatacao deve ser revisada — isso não é fraqueza, e integridade.">
+<div class="quiz-inline" data-correct="b" data-fb-ok="Correto! Se o auditado apresentar evidência concreta que refuta a constatação, o auditor deve revisar e, se necessário, alterar ou retirar a NC." data-fb-nok="Lembre-se: o auditor deve ser justo. Se surgir nova evidência, a constatação deve ser revisada — isso não é fraqueza, e integridade.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
-  <div class="qi-question">Durante o encerramento, o auditado apresenta um documento que voce não havia visto que refuta diretamente a sua constatacao de NC. O que voce deve fazer?</div>
+  <div class="qi-question">Durante o encerramento, o auditado apresenta um documento que você não havia visto que refuta diretamente a sua constatação de NC. O que você deve fazer?</div>
   <button class="qi-option" data-key="a">A) Manter a NC porque já foi registrada e não pode ser alterada</button>
-  <button class="qi-option" data-key="b">B) Verificar o documento e, se válido, revisar ou retirar a constatacao</button>
-  <button class="qi-option" data-key="c">C) Registrar a discordancia e deixar a decisao para o gestor do programa</button>
+  <button class="qi-option" data-key="b">B) Verificar o documento e, se válido, revisar ou retirar a constatação</button>
+  <button class="qi-option" data-key="c">C) Registrar a discordancia e deixar a decisão para o gestor do programa</button>
   <div class="qi-feedback"></div>
 </div>
 
@@ -1769,17 +1769,17 @@
 <li>Discordancias registradas (se houver)</li>
 <li>Conclusão geral</li>
 <li>Prazos acordados para ações corretivas</li>
-<li>Assinatura (ou aceite eletronico) do auditado e do auditor-lider</li>
+<li>Assinatura (ou aceite eletrônico) do auditado e do auditor-lider</li>
 </ul>
 `}, 'Modelo de ata de reunião de encerramento')`;
 
   // ── Module 5: Relatório e Acompanhamento ──
-  const [m5] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Relatorio e Acompanhamento', 'Redação de NCs, classificação, relatório final e follow-up de ações corretivas', 5) RETURNING id`;
+  const [m5] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Relatório e Acompanhamento', 'Redação de NCs, classificação, relatório final e follow-up de ações corretivas', 5) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
   (${m5.id}, '2-5-1-redigindo-ncs', 'Redigindo não conformidades claras', '20 min', 1, ${`
 <h2>Redigindo não conformidades claras</h2>
-<p>Uma não conformidade bem redigida e aquela que <strong>qualquer pessoa</strong> consegue entender — o auditado, o gestor de qualidade, a direção, e até um auditor externo que nunca esteve na empresa. A clareza da NC determina a qualidade da ação corretiva que sera tomada.</p>
+<p>Uma não conformidade bem redigida e aquela que <strong>qualquer pessoa</strong> consegue entender — o auditado, o gestor de qualidade, a direção, e até um auditor externo que nunca esteve na empresa. A clareza da NC determina a qualidade da ação corretiva que será tomada.</p>
 
 <h3>Estrutura de uma NC bem escrita</h3>
 <p>Toda NC deve conter três elementos obrigatórios:</p>
@@ -1825,49 +1825,49 @@
 
 <h3>Erros comuns na redação de NCs</h3>
 <table>
-<tr><th>Erro</th><th>Exemplo ruim</th><th>Versao corrigida</th></tr>
+<tr><th>Erro</th><th>Exemplo ruim</th><th>Versão corrigida</th></tr>
 <tr><td>Falta de critério</td><td>"Documentos desorganizados no almoxarifado"</td><td>Indicar qual requisito exige organização e o que especificamente não esta atendido</td></tr>
-<tr><td>Evidência vaga</td><td>"Alguns registros estao incompletos"</td><td>"Os registros R-012 dos dias 05/05, 12/05 e 18/05 não possuem campo de aprovação preenchido"</td></tr>
+<tr><td>Evidência vaga</td><td>"Alguns registros estão incompletos"</td><td>"Os registros R-012 dos dias 05/05, 12/05 e 18/05 não possuem campo de aprovação preenchido"</td></tr>
 <tr><td>Julgamento pessoal</td><td>"O processo de compras e fraco"</td><td>Descrever o que foi encontrado objetivamente, sem adjetivos subjetivos</td></tr>
 <tr><td>Misturar NCs</td><td>Uma NC com 3 problemas diferentes</td><td>Cada problema distinto deve ser uma NC separada</td></tr>
 </table>
 
-<div class="callout"><strong>Teste da NC:</strong> Releia sua NC e faca 3 perguntas: (1) O critério esta claro? (2) A evidência e verificável? (3) Alguem que não esteve na auditoria entenderia? Se a resposta for "sim" para as três, a NC esta boa.</div>
+<div class="callout"><strong>Teste da NC:</strong> Releia sua NC e faca 3 perguntas: (1) O critério esta claro? (2) A evidência e verificável? (3) Alguém que não esteve na auditoria entenderia? Se a resposta for "sim" para as três, a NC esta boa.</div>
 
 <h3>Dicas práticas de redação</h3>
 <ul>
 <li>Use linguagem factual e neutra — não acuse pessoas</li>
-<li>Inclua números, datas, codigos de documentos — quanto mais específico, melhor</li>
+<li>Inclua números, datas, códigos de documentos — quanto mais específico, melhor</li>
 <li>Uma NC por assunto — não misture problemas diferentes</li>
 <li>Cite o requisito específico (cláusula e item), não genericamente "não atende a norma"</li>
 </ul>
-`}, 'Formulario de registro de NC'),
+`}, 'Formulário de registro de NC'),
 
-  (${m5.id}, '2-5-2-classificação-ncs', 'Classificação: NC maior, NC menor e OM', '15 min', 2, ${`
+  (${m5.id}, '2-5-2-classificacao-ncs', 'Classificação: NC maior, NC menor e OM', '15 min', 2, ${`
 <h2>Classificação: NC maior, NC menor e oportunidade de melhoria</h2>
 <p>Nem todas as não conformidades tem o mesmo peso. A classificação correta e essencial para <strong>priorizar as ações corretivas</strong> e comunicar o nível de gravidade a direção. Classificar errado (NC maior como menor, ou vice-versa) compromete a credibilidade do auditor.</p>
 
 <h3>Definições</h3>
 <table>
-<tr><th>Classificação</th><th>Definição</th><th>Consequencia tipica</th></tr>
+<tr><th>Classificação</th><th>Definição</th><th>Consequência tipica</th></tr>
 <tr><td><strong>NC maior</strong></td><td>Não atendimento que afeta a capacidade do SGQ de atingir os resultados pretendidos, ou ausência/falha total de um requisito</td><td>Requer ação corretiva imediata; pode impedir certificação ou levar a suspensão</td></tr>
 <tr><td><strong>NC menor</strong></td><td>Não atendimento parcial ou pontual que não compromete o SGQ como um todo</td><td>Requer ação corretiva em prazo definido; não impede certificação</td></tr>
 <tr><td><strong>Oportunidade de melhoria (OM)</strong></td><td>Situação conforme que poderia ser melhorada para aumentar eficácia</td><td>Não requer ação obrigatória; e uma recomendação</td></tr>
 </table>
 
-<h3>Criterios para classificar</h3>
+<h3>Critérios para classificar</h3>
 <p>Use estas perguntas para decidir a classificação:</p>
 <ul>
 <li><strong>O requisito esta totalmente ausente?</strong> (ex: não existe processo de avaliação de fornecedores) → NC maior</li>
 <li><strong>O requisito existe mas falhou sistematicamente?</strong> (ex: avaliação existe mas não foi feita nos últimos 12 meses para nenhum fornecedor) → NC maior</li>
 <li><strong>O requisito existe e funciona, mas falhou pontualmente?</strong> (ex: 2 de 15 fornecedores sem avaliação) → NC menor</li>
 <li><strong>O requisito esta atendido mas poderia ser melhor?</strong> → OM</li>
-<li><strong>Multiplas NCs menores no mesmo tema indicam falha sistemática?</strong> → Considerar NC maior</li>
+<li><strong>Múltiplas NCs menores no mesmo tema indicam falha sistemática?</strong> → Considerar NC maior</li>
 </ul>
 
 <div class="example"><p><strong>Exemplo prático na construtora:</strong></p>
 <ul>
-<li><strong>NC maior:</strong> A empresa não realiza auditoria interna ha 18 meses. O requisito 9.2 esta totalmente descumprido.</li>
+<li><strong>NC maior:</strong> A empresa não realiza auditoria interna há 18 meses. O requisito 9.2 esta totalmente descumprido.</li>
 <li><strong>NC menor:</strong> Auditoria interna e realizada regularmente, mas a auditoria de maio/2025 não cobriu o processo de compras conforme programado.</li>
 <li><strong>OM:</strong> Auditorias internas são realizadas e cobrem todos os processos, mas o checklist poderia ser mais detalhado para o processo de compras, que tem histórico de NCs.</li>
 </ul>
@@ -1876,7 +1876,7 @@
 <div class="callout"><strong>Regra prática:</strong> Na dúvida entre NC maior e menor, pergunte-se: "Se eu fosse o cliente desta empresa, essa falha me preocuparia seriamente?" Se sim, tende a ser maior. Se não, tende a ser menor.</div>
 
 <h3>Acumulo de NCs menores</h3>
-<p>Atenção a um padrão perigoso: varias NCs menores no mesmo tema podem indicar uma falha sistemática que justifica reclassificação como NC maior. Por exemplo:</p>
+<p>Atenção a um padrão perigoso: várias NCs menores no mesmo tema podem indicar uma falha sistemática que justifica reclassificação como NC maior. Por exemplo:</p>
 <ul>
 <li>NC menor em calibração no setor A</li>
 <li>NC menor em calibração no setor B</li>
@@ -1885,19 +1885,19 @@
 <p>Três NCs menores em calibração podem ser evidência de falha no <strong>sistema</strong> de controle de instrumentos — o que seria uma NC maior.</p>
 `}, NULL),
 
-  (${m5.id}, '2-5-3-relatório-final', 'Elaborando o relatório final de auditoria', '20 min', 3, ${`
+  (${m5.id}, '2-5-3-relatorio-final', 'Elaborando o relatório final de auditoria', '20 min', 3, ${`
 <h2>Elaborando o relatório final de auditoria</h2>
-<p>O relatório e o <strong>produto final</strong> da auditoria — o documento que registra tudo o que foi feito, encontrado e concluido. Um bom relatório e claro, completo, objetivo e útil para a tomada de decisao. Um relatório ruim gera confusao, retrabalho e desconfianca no processo de auditoria.</p>
+<p>O relatório e o <strong>produto final</strong> da auditoria — o documento que registra tudo o que foi feito, encontrado e concluido. Um bom relatório e claro, completo, objetivo e útil para a tomada de decisão. Um relatório ruim gera confusão, retrabalho e desconfianca no processo de auditoria.</p>
 
 <h3>Conteúdo mínimo do relatório</h3>
 <p>Segundo a ISO 19011:2018, cláusula 6.5, o relatório deve incluir:</p>
 
 <table>
 <tr><th>Seção</th><th>Conteúdo</th></tr>
-<tr><td>Identificação</td><td>Número/codigo da auditoria, data, processo/área auditada</td></tr>
+<tr><td>Identificação</td><td>Número/código da auditoria, data, processo/área auditada</td></tr>
 <tr><td>Objetivo</td><td>O que a auditoria pretendeu verificar</td></tr>
 <tr><td>Escopo</td><td>Processos, locais, período coberto</td></tr>
-<tr><td>Criterios</td><td>Normas e documentos de referência</td></tr>
+<tr><td>Critérios</td><td>Normas e documentos de referência</td></tr>
 <tr><td>Equipe auditora</td><td>Nomes e papeis</td></tr>
 <tr><td>Cronologia</td><td>Datas e locais das atividades de auditoria</td></tr>
 <tr><td>Constatações</td><td>Cada constatação com critério, evidência e classificação</td></tr>
@@ -1910,24 +1910,24 @@
 
 <h3>Exemplo de estrutura de relatório</h3>
 <div class="template-box">
-<p><strong>RELATORIO DE AUDITORIA INTERNA N. AI-2025-003</strong></p>
+<p><strong>RELATÓRIO DE AUDITORIA INTERNA N. AI-2025-003</strong></p>
 <p><strong>Processo:</strong> Compras e recebimento | <strong>Data:</strong> 15/07/2025</p>
 <p><strong>Auditor-lider:</strong> Maria Silva | <strong>Auditor:</strong> Joao Pereira</p>
 <p><strong>Escopo:</strong> Processo de compras na unidade Caxias do Sul, período jan-jun 2025</p>
-<p><strong>Criterios:</strong> ISO 9001:2015 cl. 8.4, PO-010 Compras v.3, PO-012 Recebimento v.2</p>
+<p><strong>Critérios:</strong> ISO 9001:2015 cl. 8.4, PO-010 Compras v.3, PO-012 Recebimento v.2</p>
 <p><strong>Conclusão geral:</strong> O processo de compras atende parcialmente aos critérios. 1 NC menor e 2 OMs foram identificadas. O processo de recebimento esta conforme.</p>
 <p><strong>Pontos positivos:</strong> Sistema ERP bem configurado para rastreabilidade de pedidos; equipe de recebimento demonstra conhecimento dos critérios de inspeção.</p>
 <p><strong>Constatações:</strong> [listagem detalhada de cada NC e OM]</p>
 <p><strong>Prazo para ações corretivas:</strong> 30 dias (até 14/08/2025)</p>
 </div>
 
-<h3>Prazo para emissao do relatório</h3>
-<p>O relatório deve ser emitido o mais rápido possível após a auditoria — idealmente em até <strong>5 dias úteis</strong>. Quanto mais tempo passa, mais detalhes se perdem e menor e o senso de urgencia para as ações corretivas.</p>
+<h3>Prazo para emissão do relatório</h3>
+<p>O relatório deve ser emitido o mais rápido possível após a auditoria — idealmente em até <strong>5 dias úteis</strong>. Quanto mais tempo passa, mais detalhes se perdem e menor e o senso de urgência para as ações corretivas.</p>
 
 <h3>Distribuição</h3>
 <p>O relatório deve ser distribuido para:</p>
 <ul>
-<li>Responsavel pela área auditada</li>
+<li>Responsável pela área auditada</li>
 <li>Gestor do programa de auditoria</li>
 <li>Alta direção (ou representante designado)</li>
 <li>Coordenador de qualidade</li>
@@ -1942,7 +1942,7 @@
 </ul>
 `}, 'Template de relatório de auditoria'),
 
-  (${m5.id}, '2-5-4-acompanhamento-ações', 'Acompanhamento de ações corretivas', '15 min', 4, ${`
+  (${m5.id}, '2-5-4-acompanhamento-acoes', 'Acompanhamento de ações corretivas', '15 min', 4, ${`
 <h2>Acompanhamento de ações corretivas</h2>
 <p>A auditoria não termina no relatório. O <strong>acompanhamento (follow-up)</strong> das ações corretivas e o que transforma constatações em melhorias reais. Sem acompanhamento, a auditoria e apenas um exercício burocrático que identifica problemas mas não os resolve.</p>
 
@@ -1962,16 +1962,16 @@
 <tr><th>Ferramenta</th><th>Descrição</th><th>Quando usar</th></tr>
 <tr><td><strong>5 Por ques</strong></td><td>Perguntar "por que?" repetidamente até chegar a causa raiz</td><td>Problemas simples a moderados</td></tr>
 <tr><td><strong>Ishikawa (espinha de peixe)</strong></td><td>Categorizar causas potenciais em 6M (Máquina, Método, Material, Mão de obra, Meio ambiente, Medição)</td><td>Problemas com múltiplas causas possíveis</td></tr>
-<tr><td><strong>Arvore de falhas</strong></td><td>Diagrama logico de eventos que levam a falha</td><td>Problemas complexos e críticos</td></tr>
+<tr><td><strong>Arvore de falhas</strong></td><td>Diagrama lógico de eventos que levam a falha</td><td>Problemas complexos e críticos</td></tr>
 </table>
 
 <div class="example"><strong>Exemplo de 5 Por ques — paquimetro não calibrado:</strong>
 <ol>
 <li>Por que o paquimetro estava vencido? Porque ninguém percebeu.</li>
-<li>Por que ninguém percebeu? Porque não ha alerta automatico de vencimento.</li>
-<li>Por que não ha alerta? Porque o controle e feito em planilha manual que ninguém consulta.</li>
-<li>Por que ninguém consulta? Porque não ha responsável definido para essa tarefa.</li>
-<li>Por que não ha responsável? Porque quando o antigo responsável saiu, a tarefa não foi reatribuida.</li>
+<li>Por que ninguém percebeu? Porque não há alerta automatico de vencimento.</li>
+<li>Por que não há alerta? Porque o controle e feito em planilha manual que ninguém consulta.</li>
+<li>Por que ninguém consulta? Porque não há responsável definido para essa tarefa.</li>
+<li>Por que não há responsável? Porque quando o antigo responsável saiu, a tarefa não foi reatribuida.</li>
 </ol>
 <p><strong>Causa raiz:</strong> Falta de definição de responsabilidade e sistema de alerta para controle de calibração.</p>
 <p><strong>Ação corretiva:</strong> (1) Designar responsável pelo controle de calibração. (2) Migrar controle para sistema com alerta automatico de vencimento. (3) Incluir verificação mensal na rotina do responsável.</p>
@@ -1982,23 +1982,23 @@
 <ul>
 <li>Verificação documental (evidências de implementação)</li>
 <li>Verificação em campo (auditoria de follow-up)</li>
-<li>Monitoramento de indicadores (a tendencia melhorou?)</li>
-<li>Amostragem após implementação (os proximos registros estao conformes?)</li>
+<li>Monitoramento de indicadores (a tendência melhorou?)</li>
+<li>Amostragem após implementação (os próximos registros estão conformes?)</li>
 </ul>
 
 <h3>Prazos típicos</h3>
 <table>
 <tr><th>Tipo de NC</th><th>Prazo para ação corretiva</th><th>Prazo para verificação de eficácia</th></tr>
 <tr><td>NC maior</td><td>30 a 60 dias</td><td>60 a 90 dias após implementação</td></tr>
-<tr><td>NC menor</td><td>30 a 90 dias</td><td>Na proxima auditoria do processo</td></tr>
+<tr><td>NC menor</td><td>30 a 90 dias</td><td>Na próxima auditoria do processo</td></tr>
 </table>
-`}, 'Formulario de ação corretiva com 5 Por ques')`;
+`}, 'Formulário de ação corretiva com 5 Por ques')`;
 
   // ── Module 6: Habilidades do Auditor ──
   const [m6] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Habilidades do Auditor', 'Comunicação, gestão de conflitos, pensamento baseado em risco e ética', 6) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
-  (${m6.id}, '2-6-1-comunicação-postura', 'Comunicação e postura profissional', '15 min', 1, ${`
+  (${m6.id}, '2-6-1-comunicacao-postura', 'Comunicação e postura profissional', '15 min', 1, ${`
 <h2>Comunicação e postura profissional</h2>
 <p>A competência técnica e fundamental, mas sem habilidade de comunicação, o auditor não consegue extrair informações, transmitir constatações e manter um clima construtivo. Muitas auditorias fracassam não por falta de conhecimento técnico, mas por <strong>falha de comunicação</strong>.</p>
 
@@ -2043,7 +2043,7 @@
 <tr><td>Sorriso leve e acenos</td><td>Encoraja o auditado a continuar explicando</td></tr>
 </table>
 
-<div class="callout"><strong>Regra prática:</strong> Trate cada auditado como você gostaria de ser tratado se estivesse sendo auditado. Respeito gera colaboração. Arrogancia gera resistencia.</div>
+<div class="callout"><strong>Regra prática:</strong> Trate cada auditado como você gostaria de ser tratado se estivesse sendo auditado. Respeito gera colaboração. Arrogancia gera resistência.</div>
 
 <div class="comparison">
   <div class="comp-col bad"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Comunicação que fecha portas</h4><ul><li>"Você não esta seguindo o procedimento."</li><li>"Isso e claramente uma não conformidade."</li><li>Chegar sem se apresentar e já perguntar</li><li>Tom acusatório ou de superioridade</li><li>Comparar com outros setores</li></ul></div>
@@ -2085,15 +2085,15 @@
 </ul>
 `}, NULL),
 
-  (${m6.id}, '2-6-2-conflitos-resistencias', 'Gerenciando conflitos e resistencias', '15 min', 2, ${`
-<h2>Gerenciando conflitos e resistencias</h2>
-<p>Resistencia a auditoria e natural. As pessoas se sentem avaliadas, expostas e potencialmente ameacadas. O auditor interno tem o desafio adicional de auditar <strong>colegas de trabalho</strong> — pessoas com quem convive no dia a dia. Saber gerenciar conflitos e resistencias e uma competência essencial.</p>
+  (${m6.id}, '2-6-2-conflitos-resistencias', 'Gerenciando conflitos e resistências', '15 min', 2, ${`
+<h2>Gerenciando conflitos e resistências</h2>
+<p>Resistência a auditoria e natural. As pessoas se sentem avaliadas, expostas e potencialmente ameacadas. O auditor interno tem o desafio adicional de auditar <strong>colegas de trabalho</strong> — pessoas com quem convive no dia a dia. Saber gerenciar conflitos e resistências e uma competência essencial.</p>
 
-<h3>Tipos comuns de resistencia</h3>
+<h3>Tipos comuns de resistência</h3>
 <table>
 <tr><th>Comportamento</th><th>Exemplo</th><th>Como lidar</th></tr>
 <tr><td><strong>Hostil/agressivo</strong></td><td>"Você não entende nada do meu trabalho"</td><td>Mantenha a calma. Reconheca a expertise do auditado. Redirecione para evidências.</td></tr>
-<tr><td><strong>Evasivo</strong></td><td>Respostas vagas, muda de assunto</td><td>Reformule a pergunta de forma mais específica. Peca registros concretos.</td></tr>
+<tr><td><strong>Evasivo</strong></td><td>Respostas vagas, muda de assunto</td><td>Reformule a pergunta de forma mais específica. Peça registros concretos.</td></tr>
 <tr><td><strong>Excessivamente cooperativo</strong></td><td>Fala muito, mostra tudo menos o que importa</td><td>Redirecione educadamente: "Obrigado, agora vamos focar em..."</td></tr>
 <tr><td><strong>Ausente/indisponível</strong></td><td>"Hoje não posso, estou muito ocupado"</td><td>Comunique ao gestor do programa. Se necessário, reagende com suporte da direção.</td></tr>
 <tr><td><strong>Intimidado/nervoso</strong></td><td>Pessoa travada, respostas monossilabicas</td><td>Tranquilize. Explique que não eavaliação pessoal. Comece com perguntas simples.</td></tr>
@@ -2151,7 +2151,7 @@
   <div class="step-item"><div class="step-content"><strong>5. Envolva o guia</strong><br>O acompanhante designado pode mediar e ajudar a restabelecer o diálogo.</div></div>
 </div>
 
-<div class="callout"><strong>Limite:</strong> Se a resistencia impedir a auditoria (recusa em mostrar registros, obstrução ativa), registre no relatório e comunique ao gestor do programa e a direção. Isso pode ser uma NC em si mesma (obstrução ao processo de auditoria).</div>
+<div class="callout"><strong>Limite:</strong> Se a resistência impedir a auditoria (recusa em mostrar registros, obstrução ativa), registre no relatório e comunique ao gestor do programa e a direção. Isso pode ser uma NC em si mesma (obstrução ao processo de auditoria).</div>
 
 <div class="quiz-inline" data-correct="b" data-fb-ok="Correto! Reconhecer a expertise do auditado e redirecionar para evidências concretas é a técnica certa para lidar com hostilidade." data-fb-nok="Essa abordagem pode escalar o conflito ou evitar a situação sem resolvê-la. O auditor deve manter a calma e redirecionar para as evidências.">
   <div class="qi-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Teste seu conhecimento</div>
@@ -2169,9 +2169,9 @@
   <p>Era terça-feira de manhã na planta de pasteurização da CoopLat quando o auditor Carlos chegou ao setor. O supervisor Jorge cruzou os braços assim que o viu entrar com a prancheta. "Todo ano a mesma coisa", murmurou. Carlos não se abalou. Pousou a prancheta na bancada e disse: "Jorge, você tem anos nesse setor. Quero entender como o processo funciona na prática — você conhece isso melhor do que ninguém." Jorge descruzou os braços. Trinta minutos depois, ele próprio apontava onde o sistema de registro poderia ser melhorado. A auditoria que parecia começar mal terminou com o supervisor defendendo a sugestão de digitalização na reunião de encerramento.</p>
 </div>
 
-<h3>Prevenção e a melhor estrategia</h3>
+<h3>Prevenção e a melhor estratégia</h3>
 <ul>
-<li>Comunique a agenda com antecedencia — surpresas geram resistencia</li>
+<li>Comunique a agenda com antecedencia — surpresas geram resistência</li>
 <li>Explique na reunião de abertura que o foco e o processo, não a pessoa</li>
 <li>Mantenha postura neutra e profissional durante toda a auditoria</li>
 <li>Reconheca boas práticas — não só aponte problemas</li>
@@ -2272,7 +2272,7 @@
 <p>Além de considerar riscos NOS processos auditados, o gestor deve considerar riscos no próprio programa:</p>
 <ul>
 <li><strong>Risco de não executar:</strong> Auditores sobrecarregados, ausências, falta de recursos</li>
-<li><strong>Risco de baixa qualidade:</strong> Auditores não qualificados, checklists genericos</li>
+<li><strong>Risco de baixa qualidade:</strong> Auditores não qualificados, checklists genéricos</li>
 <li><strong>Risco de parcialidade:</strong> Auditor auditando área com conflito de interesse</li>
 <li><strong>Risco de irrelevancia:</strong> Programa que não cobre processos críticos ou mudanças recentes</li>
 </ul>
@@ -2290,7 +2290,7 @@
 </div>
 `}, NULL),
 
-  (${m6.id}, '2-6-4-ética-confidencialidade', 'Ética e confidencialidade', '15 min', 4, ${`
+  (${m6.id}, '2-6-4-etica-confidencialidade', 'Ética e confidencialidade', '15 min', 4, ${`
 <h2>Ética e confidencialidade</h2>
 <p>A auditoria coloca o auditor numa posição de <strong>poder e confiança</strong>. Ele tem acesso a informações sensíveis, avalia o trabalho de colegas e gera constatações que podem ter consequências significativas. Sem ética e confidencialidade, esse poder se corrompe e o processo perde legitimidade.</p>
 
@@ -2346,10 +2346,10 @@
 <table>
 <tr><th>Dilema</th><th>Resposta ética</th></tr>
 <tr><td>Seu supervisor pede para "pegar leve" com certo setor</td><td>Mantenha a imparcialidade. Audite conforme os critérios, não conforme interesses politicos.</td></tr>
-<tr><td>Você descobre que um amigo proximo não segue o procedimento</td><td>Registre a constatação como faria com qualquer outro auditado. Se ha conflito de interesse, solicite substituição.</td></tr>
+<tr><td>Você descobre que um amigo próximo não segue o procedimento</td><td>Registre a constatação como faria com qualquer outro auditado. Se há conflito de interesse, solicite substituição.</td></tr>
 <tr><td>O auditado oferece um "presente" (almoço especial, brinde)</td><td>Recuse cortesmente. Aceitar pode comprometer sua independência percebida.</td></tr>
 <tr><td>Você encontra evidência de fraude (não apenas NC)</td><td>Registre e comunique ao gestor do programa e a direção. Não tente investigar além do escopo da auditoria.</td></tr>
-<tr><td>A direção quer que você "gere NCs" para justificar demissao de alguem</td><td>Recuse. Auditoria não eferramenta disciplinar. NCs são geradas por evidências, não por agenda política.</td></tr>
+<tr><td>A direção quer que você "gere NCs" para justificar demissão de alguém</td><td>Recuse. Auditoria não eferramenta disciplinar. NCs são geradas por evidências, não por agenda política.</td></tr>
 </table>
 
 <div class="quiz-inline" data-correct="a" data-fb-ok="Correto! A NC deve ser registrada da mesma forma que qualquer outra — baseada em evidências. Se há conflito de interesse real, o auditor deve solicitar substituição, não omitir a constatação." data-fb-nok="Essa abordagem compromete a objetividade e a imparcialidade do auditor. A constatação deve ser tratada com os mesmos critérios aplicados a qualquer auditado.">
@@ -2361,7 +2361,7 @@
   <div class="qi-feedback"></div>
 </div>
 
-<div class="callout"><strong>Teste de ética:</strong> Antes de agir, pergunte-se: "Se esta decisao fosse publicada no mural da empresa, eu me sentiria confortável?" Se a resposta for não, repense.</div>
+<div class="callout"><strong>Teste de ética:</strong> Antes de agir, pergunte-se: "Se esta decisão fosse publicada no mural da empresa, eu me sentiria confortável?" Se a resposta for não, repense.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
@@ -2372,7 +2372,7 @@
 <p>O auditor interno tem obrigação de manter sigilo sobre:</p>
 <ul>
 <li>Informações de processos e tecnologia da empresa</li>
-<li>Dados de fornecedores, precos, contratos</li>
+<li>Dados de fornecedores, preços, contratos</li>
 <li>Problemas identificados em setores específicos (não comentar com outros setores)</li>
 <li>Informações pessoais dos auditados</li>
 <li>Constatações antes de serem formalmente comunicadas</li>
@@ -2387,7 +2387,7 @@
 </ul>
 <p><em>Se marcou qualquer item acima, declare ao gestor do programa antes de iniciar a auditoria.</em></p>
 
-<div class="example"><strong>Situação na cooperativa agrícola:</strong> Durante a auditoria do processo de compras de insumos, o auditor descobre que um fornecedor de sementes prática precos 40% acima do mercado e não ha cotação registrada. Ele registra a NC (falta de cotação conforme procedimento). Mas não comenta com colegas na hora do almoco que "o setor de compras esta pagando 40% a mais" — isso seria quebra de confidencialidade e poderia gerar fofocas e conflitos.</div>
+<div class="example"><strong>Situação na cooperativa agrícola:</strong> Durante a auditoria do processo de compras de insumos, o auditor descobre que um fornecedor de sementes prática preços 40% acima do mercado e não há cotação registrada. Ele registra a NC (falta de cotação conforme procedimento). Mas não comenta com colegas na hora do almoco que "o setor de compras esta pagando 40% a mais" — isso seria quebra de confidencialidade e poderia gerar fofocas e conflitos.</div>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Teste do mural:</strong> Antes de tomar qualquer decisão ética como auditor, pergunte-se: "Se esta decisão fosse publicada no mural da empresa com meu nome, eu me sentiria confortável?" Se a resposta for não — recuse, declare, solicite substituição. A reputação de um auditor é construída em anos e destruída em minutos.</div></div>
 
@@ -2395,7 +2395,7 @@
 <p>O auditor deve <strong>declarar</strong> qualquer situação que possa comprometer sua imparcialidade:</p>
 <ul>
 <li>Ter trabalhado recentemente na área auditada</li>
-<li>Ter parentesco ou relação pessoal proxima com o auditado</li>
+<li>Ter parentesco ou relação pessoal próxima com o auditado</li>
 <li>Ter interesse direto no resultado (ex: meta atrelada ao desempenho da área)</li>
 <li>Ter participado da implementação dos controles que esta auditando</li>
 </ul>
@@ -2406,9 +2406,9 @@
   const [m7] = await sql`INSERT INTO ead_modules (course_id, titulo, descricao, ordem) VALUES (${courseId}, 'Prática e Certificação', 'Estudos de caso completos, erros comuns e preparação para avaliação final', 7) RETURNING id`;
 
   await sql`INSERT INTO ead_lessons (module_id, slug, titulo, duracao, ordem, conteudo, entregavel_titulo) VALUES
-  (${m7.id}, '2-7-1-caso-metalúrgica', 'Estudo de caso: auditoria completa numa metalúrgica', '25 min', 1, ${`
+  (${m7.id}, '2-7-1-caso-metalurgica', 'Estudo de caso: auditoria completa numa metalúrgica', '25 min', 1, ${`
 <h2>Estudo de caso: auditoria interna completa numa metalúrgica</h2>
-<p>Vamos acompanhar uma auditoria interna do início ao fim na <strong>MetalSul Usinagem Ltda</strong>, uma metalúrgica com 85 funcionários certificada ISO 9001:2015, localizada em Caxias do Sul/RS. O processo auditado sera <strong>Produção (usinagem CNC)</strong>.</p>
+<p>Vamos acompanhar uma auditoria interna do início ao fim na <strong>MetalSul Usinagem Ltda</strong>, uma metalúrgica com 85 funcionários certificada ISO 9001:2015, localizada em Caxias do Sul/RS. O processo auditado será <strong>Produção (usinagem CNC)</strong>.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 440 120" xmlns="http://www.w3.org/2000/svg">
@@ -2445,7 +2445,7 @@
 <li><strong>Processo auditado:</strong> Usinagem CNC (tornos e centros de usinagem)</li>
 <li><strong>Motivo da prioridade:</strong> 3 reclamações de cliente nos últimos 4 meses por variação dimensional; 1 NC na auditoria anterior (calibração)</li>
 <li><strong>Auditor-lider:</strong> Ana (coord. de qualidade — 5 anos de experiência em auditoria)</li>
-<li><strong>Criterios:</strong> ISO 9001:2015 cl. 8.5 (Produção), 7.1.5 (Monitoramento e medição), PO-020 (Usinagem CNC)</li>
+<li><strong>Critérios:</strong> ISO 9001:2015 cl. 8.5 (Produção), 7.1.5 (Monitoramento e medição), PO-020 (Usinagem CNC)</li>
 </ul>
 
 <div class="step-flow">
@@ -2460,12 +2460,12 @@
 <ul>
 <li>PO-020 Usinagem CNC v.4 e IT-030 Setup de máquina</li>
 <li>Relatório da auditoria anterior (NC de calibração — ação corretiva implementada)</li>
-<li>3 RACs (Relatorios de Ação Corretiva) das reclamações de clientes</li>
+<li>3 RACs (Relatórios de Ação Corretiva) das reclamações de clientes</li>
 <li>Indicadores: índice de refugo (meta 2%, real 3,8% nos últimos 3 meses)</li>
 <li>Plano de calibração PC-2025</li>
 </ul>
 
-<div class="callout"><strong>Ponto de atenção de Ana:</strong> O índice de refugo acima da meta e as reclamações por variação dimensional sugerem que ha um problema no controle de processo ou na medição. Isso vai guiar suas perguntas.</div>
+<div class="callout"><strong>Ponto de atenção de Ana:</strong> O índice de refugo acima da meta e as reclamações por variação dimensional sugerem que há um problema no controle de processo ou na medição. Isso vai guiar suas perguntas.</div>
 
 <div class="kpi-grid">
   <div class="kpi-card"><div class="kpi-value">3</div><div class="kpi-label">NCs encontradas na auditoria</div></div>
@@ -2490,7 +2490,7 @@
 
 <p><strong>Análise de registros:</strong></p>
 <ul>
-<li>Plano de calibração: os 3 micrometros do setor estao em dia. OK.</li>
+<li>Plano de calibração: os 3 micrometros do setor estão em dia. OK.</li>
 <li>RACs das reclamações: 2 das 3 não tem análise de causa-raiz documentada — apenas "correção: trocar ferramenta".</li>
 </ul>
 
@@ -2522,7 +2522,7 @@
 
   (${m7.id}, '2-7-2-caso-alimenticia', 'Estudo de caso: auditoria numa indústria alimentícia', '25 min', 2, ${`
 <h2>Estudo de caso: auditoria interna numa indústria alimentícia</h2>
-<p>Acompanhe a auditoria interna na <strong>CoopLat Laticinios</strong>, uma cooperativa de laticinios com 120 colaboradores no interior do Parana, certificada ISO 9001:2015 e com APPCC implementado. O processo auditado sera <strong>Pasteurização e envase</strong>.</p>
+<p>Acompanhe a auditoria interna na <strong>CoopLat Laticinios</strong>, uma cooperativa de laticinios com 120 colaboradores no interior do Parana, certificada ISO 9001:2015 e com APPCC implementado. O processo auditado será <strong>Pasteurização e envase</strong>.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 420 180" xmlns="http://www.w3.org/2000/svg">
@@ -2564,9 +2564,9 @@
 <ul>
 <li><strong>Empresa:</strong> Produção de leite pasteurizado, iogurte e queijo mussarela</li>
 <li><strong>Processo auditado:</strong> Pasteurização e envase de leite</li>
-<li><strong>Motivo da prioridade:</strong> Novo equipamento de envase instalado ha 3 meses; mudanca de turno (de 2 para 3 turnos)</li>
+<li><strong>Motivo da prioridade:</strong> Novo equipamento de envase instalado há 3 meses; mudanca de turno (de 2 para 3 turnos)</li>
 <li><strong>Auditor-lider:</strong> Roberto (analista de qualidade — formação em auditoria ISO 19011)</li>
-<li><strong>Criterios:</strong> ISO 9001:2015 cl. 8.5 e 8.6, PO-035 (Pasteurização), IT-040 (Envase), IN 76 MAPA (instrução normativa)</li>
+<li><strong>Critérios:</strong> ISO 9001:2015 cl. 8.5 e 8.6, PO-035 (Pasteurização), IT-040 (Envase), IN 76 MAPA (instrução normativa)</li>
 </ul>
 
 <div class="step-flow">
@@ -2589,15 +2589,15 @@
 <p><strong>Entrevista com operador do 3o turno (23h-07h):</strong></p>
 <ul>
 <li>Roberto pergunta: "Qual procedimento você segue para operar o pasteurizador?"</li>
-<li>Operador descreve o processo corretamente mas não menciona o novo registro de controle do envase (adicionado na revisao 4 do PO-035)</li>
-<li>Roberto pede para ver a pasta de procedimentos no setor: a versão disponível e a revisao 3 (desatualizada)</li>
+<li>Operador descreve o processo corretamente mas não menciona o novo registro de controle do envase (adicionado na revisão 4 do PO-035)</li>
+<li>Roberto pede para ver a pasta de procedimentos no setor: a versão disponível e a revisão 3 (desatualizada)</li>
 </ul>
 
 <p><strong>Verificação de registros de temperatura:</strong></p>
 <ul>
 <li>Roberto amostra 15 dias de registros. Em 14, tudo conforme.</li>
 <li>No dia 12/06, o registro mostra temperatura de 71,2C as 03:15h — abaixo do mínimo de 72C</li>
-<li>Não ha registro de desvio ou tratamento para esse lote</li>
+<li>Não há registro de desvio ou tratamento para esse lote</li>
 </ul>
 
 <p><strong>Observação do envase:</strong></p>
@@ -2608,8 +2608,8 @@
 
 <h3>Fase 3: Constatações</h3>
 <div class="template-box">
-<p><strong>NC #1 (maior):</strong> Registro de temperatura do pasteurizador de 12/06/2025 as 03:15h indica 71,2C (mínimo 72C conforme PO-035 item 4.2 e IN 76 MAPA). Não ha registro de tratamento do desvio nem de disposição do lote. Falha no controle de PCC (Ponto Crítico de Controle) que pode afetar a segurança do produto.</p>
-<p><strong>NC #2 (menor):</strong> A versão do PO-035 disponível no setor de pasteurização/envase (3o turno) e a revisao 3 (jan/2025). A versão vigente e a revisao 4 (abr/2025), que inclui controles do novo equipamento de envase. Descumprimento da cláusula 7.5.3 — controle de informação documentada.</p>
+<p><strong>NC #1 (maior):</strong> Registro de temperatura do pasteurizador de 12/06/2025 as 03:15h indica 71,2C (mínimo 72C conforme PO-035 item 4.2 e IN 76 MAPA). Não há registro de tratamento do desvio nem de disposição do lote. Falha no controle de PCC (Ponto Crítico de Controle) que pode afetar a segurança do produto.</p>
+<p><strong>NC #2 (menor):</strong> A versão do PO-035 disponível no setor de pasteurização/envase (3o turno) e a revisão 3 (jan/2025). A versão vigente e a revisão 4 (abr/2025), que inclui controles do novo equipamento de envase. Descumprimento da cláusula 7.5.3 — controle de informação documentada.</p>
 <p><strong>OM #1:</strong> Implementar alarme automatico no sistema SCADA quando a temperatura do pasteurizador ficar abaixo de 72C, para que o desvio seja detectado em tempo real independente da atenção do operador.</p>
 </div>
 
@@ -2629,12 +2629,12 @@
   <div class="comp-col good"><h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 12 15 16 10"/></svg> Procedimento correto</h4><ul><li>Temperatura abaixo do limite detectada</li><li>Operador abre registro de desvio imediatamente</li><li>Lote segregado e identificado como "em quarentena"</li><li>Supervisor acionado para decisão de disposição</li><li>Alarme automático garante detecção em tempo real</li></ul></div>
 </div>
 
-<h3>Fase 4: Ações pos-auditoria</h3>
+<h3>Fase 4: Ações pós-auditoria</h3>
 <p>O gestor de qualidade da CoopLat agiu imediatamente:</p>
 <ul>
 <li><strong>Correção (NC#1):</strong> Rastreou o lote do dia 12/06 — já havia sido distribuído. Acionou protocolo de recall preventivo.</li>
 <li><strong>Ação corretiva (NC#1):</strong> Instalação de alarme automatico no SCADA + retreinamento de operadores do 3o turno sobre procedimento de desvio.</li>
-<li><strong>Ação corretiva (NC#2):</strong> Revisao do processo de distribuição de documentos controlados para todos os turnos, com verificação semanal.</li>
+<li><strong>Ação corretiva (NC#2):</strong> Revisão do processo de distribuição de documentos controlados para todos os turnos, com verificação semanal.</li>
 </ul>
 
 <div class="insight-box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg><div class="insight-content"><strong>Lição do PCC:</strong> Em indústrias alimentícias, o auditor deve compreender o conceito de PCC (Ponto Crítico de Controle). Qualquer falha num PCC — como a pasteurização — tem potencial de causar dano direto ao consumidor. Por isso, NCs em PCCs são quase sempre classificadas como maiores, independentemente de quão pequeno parece o desvio numérico.</div></div>
@@ -2687,15 +2687,15 @@
 
 <h3>Erros de planejamento</h3>
 <table>
-<tr><th>Erro</th><th>Consequencia</th><th>Como evitar</th></tr>
-<tr><td>Não estudar a documentação antes</td><td>Perguntas genericas, perda de tempo, constatações superficiais</td><td>Reserve pelo menos 2h de preparação para cada dia de auditoria</td></tr>
+<tr><th>Erro</th><th>Consequência</th><th>Como evitar</th></tr>
+<tr><td>Não estudar a documentação antes</td><td>Perguntas genéricas, perda de tempo, constatações superficiais</td><td>Reserve pelo menos 2h de preparação para cada dia de auditoria</td></tr>
 <tr><td>Checklist copiado da internet</td><td>Perguntas não aplicáveis ao processo real da empresa</td><td>Construa o checklist baseado nos procedimentos reais da organização + norma</td></tr>
 <tr><td>Agenda irrealista</td><td>Auditoria apressada, constatações incompletas</td><td>Planeje com margem: entrevistas demoram mais do que parece</td></tr>
 </table>
 
 <h3>Erros de execução</h3>
 <table>
-<tr><th>Erro</th><th>Consequencia</th><th>Como evitar</th></tr>
+<tr><th>Erro</th><th>Consequência</th><th>Como evitar</th></tr>
 <tr><td>Fazer perguntas de sim/não</td><td>Respostas que não revelam a prática real</td><td>Use perguntas abertas: "Como...", "Mostre-me...", "Explique..."</td></tr>
 <tr><td>Seguir rigidamente o checklist</td><td>Perder trilhas importantes que surgem nas respostas</td><td>Use o checklist como guia, não como roteiro fixo. Siga as trilhas.</td></tr>
 <tr><td>Não anotar evidências específicas</td><td>Constatações vagas que não resistem a questionamento</td><td>Anote números de documentos, datas, nomes, lotes</td></tr>
@@ -2713,18 +2713,18 @@
 
 <h3>Erros de comunicação</h3>
 <table>
-<tr><th>Erro</th><th>Consequencia</th><th>Como evitar</th></tr>
-<tr><td>Tom de "fiscal" ou "policia"</td><td>Resistencia, informações escondidas, clima negativo</td><td>Adote postura colaborativa e respeitosa</td></tr>
+<tr><th>Erro</th><th>Consequência</th><th>Como evitar</th></tr>
+<tr><td>Tom de "fiscal" ou "policia"</td><td>Resistência, informações escondidas, clima negativo</td><td>Adote postura colaborativa e respeitosa</td></tr>
 <tr><td>Discutir constatações no corredor</td><td>Fofoca, quebra de confidencialidade, conflitos</td><td>Comunique constatações apenas nos canais formais</td></tr>
 <tr><td>Guardar "surpresas" para o encerramento</td><td>Auditado se sente traido, gera conflito</td><td>Comunique constatações ao auditado no momento em que são identificadas</td></tr>
 </table>
 
 <h3>Erros de relatório</h3>
 <table>
-<tr><th>Erro</th><th>Consequencia</th><th>Como evitar</th></tr>
+<tr><th>Erro</th><th>Consequência</th><th>Como evitar</th></tr>
 <tr><td>NC sem critério claro</td><td>Auditado questiona a validade, NC pode ser derrubada</td><td>Sempre cite o requisito específico (cláusula + procedimento)</td></tr>
 <tr><td>NC baseada em opinião pessoal</td><td>Falta de objetividade, perda de credibilidade</td><td>Baseie-se exclusivamente em evidências vs. critérios</td></tr>
-<tr><td>Relatório demorado (>2 semanas)</td><td>Perda de senso de urgencia, detalhes esquecidos</td><td>Emita em até 5 dias úteis</td></tr>
+<tr><td>Relatório demorado (>2 semanas)</td><td>Perda de senso de urgência, detalhes esquecidos</td><td>Emita em até 5 dias úteis</td></tr>
 <tr><td>Não registrar pontos positivos</td><td>Auditoria vista como puramente negativa</td><td>Inclua pelo menos 2-3 pontos positivos no relatório</td></tr>
 </table>
 
@@ -2749,7 +2749,7 @@
 <div class="progress-visual"><div class="pv-bar"><div class="pv-fill" style="width:85%"></div></div><div class="pv-label">Proficiente (65–85%): Lidera auditorias, mentora iniciantes, aprimora o relatório</div></div>
 <div class="progress-visual"><div class="pv-bar"><div class="pv-fill" style="width:100%"></div></div><div class="pv-label">Experiente (100%): Auditor reconhecido, contribui para o programa e forma novos auditores</div></div>
 
-<div class="example"><strong>Erro clássico e como corrigir:</strong> O auditor iniciante encontra um formulário preenchido a lapis (em vez de caneta) e abre NC por "formulario preenchido a lapis". Mas não existe requisito (nem na norma, nem no procedimento da empresa) que proiba lapis. Isso e opinião pessoal, nãoNC. Se o procedimento exigir caneta, ai sim — mas cite o procedimento.</div>
+<div class="example"><strong>Erro clássico e como corrigir:</strong> O auditor iniciante encontra um formulário preenchido a lapis (em vez de caneta) e abre NC por "formulário preenchido a lapis". Mas não existe requisito (nem na norma, nem no procedimento da empresa) que proiba lapis. Isso e opinião pessoal, nãoNC. Se o procedimento exigir caneta, ai sim — mas cite o procedimento.</div>
 
 <div class="narration">
   <div class="narrator"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Caso real</div>
@@ -2757,9 +2757,9 @@
 </div>
 `}, NULL),
 
-  (${m7.id}, '2-7-4-preparação-quiz', 'Preparação para o quiz final e proximos passos', '15 min', 4, ${`
-<h2>Preparação para o quiz final e proximos passos</h2>
-<p>Você chegou ao final do curso. Antes do quiz final, vamos consolidar os temas-chave e orientar seus proximos passos como auditor interno.</p>
+  (${m7.id}, '2-7-4-preparacao-quiz', 'Preparação para o quiz final e próximos passos', '15 min', 4, ${`
+<h2>Preparação para o quiz final e próximos passos</h2>
+<p>Você chegou ao final do curso. Antes do quiz final, vamos consolidar os temas-chave e orientar seus próximos passos como auditor interno.</p>
 
 <div class="diagram">
   <svg viewBox="0 0 440 130" xmlns="http://www.w3.org/2000/svg">
@@ -2806,9 +2806,9 @@
   <figcaption>Os 7 módulos do curso de Auditor Interno ISO 9001 — da teoria à prática</figcaption>
 </div>
 
-<h3>Revisao dos temas essenciais</h3>
+<h3>Revisão dos temas essenciais</h3>
 <table>
-<tr><th>Modulo</th><th>Tema central</th><th>Conceito-chave</th></tr>
+<tr><th>Módulo</th><th>Tema central</th><th>Conceito-chave</th></tr>
 <tr><td>1</td><td>Fundamentos</td><td>Auditoria e processo sistemático baseado em evidências, não inspeção nem fiscalização</td></tr>
 <tr><td>2</td><td>Programa</td><td>Programa = macro (anual). Plano = micro (1 auditoria). Gestor do programa coordena tudo.</td></tr>
 <tr><td>3</td><td>Planejamento</td><td>Preparação e 50% do sucesso. Checklist bem feito + análise documental = auditoria eficaz.</td></tr>
@@ -2828,7 +2828,7 @@
 <h3>Dicas para o quiz final</h3>
 <ul>
 <li>O quiz tem <strong>30 questões</strong> de múltipla escolha</li>
-<li>Cobre todos os 7 modulos proporcionalmente</li>
+<li>Cobre todos os 7 módulos proporcionalmente</li>
 <li>Foque nos conceitos, não em decorar números de cláusulas</li>
 <li>Leia cada pergunta com atenção — muitas alternativas são parecidas</li>
 <li>Quando em dúvida, pense no que a ISO 19011 e os princípios de auditoria recomendam</li>
@@ -2862,7 +2862,7 @@
 </ul>
 </div>
 
-<h3>Proximos passos</h3>
+<h3>Próximos passos</h3>
 <ol>
 <li><strong>Faca o quiz final</strong> e obtenha seu certificado de conclusão</li>
 <li><strong>Participe como observador</strong> em uma auditoria interna real na sua organização</li>
@@ -2893,8 +2893,8 @@
     ['Qual tipo de auditoria e conduzida pela própria organização para verificar seu SGQ?', ['1a parte (interna)','2a parte (de fornecedor)','3a parte (de certificação)','Auditoria governamental'], 0, 'A auditoria de 1a parte (interna) e conduzida pela própria organização.'],
     ['Quantos princípios de auditoria a ISO 19011:2018 estabelece?', ['5','6','7','8'], 2, 'A ISO 19011:2018 estabelece 7 princípios de auditoria, incluindo a abordagem baseada em risco (novidade da versão 2018).'],
     ['Qual princípio de auditoria foi adicionado na versão 2018 da ISO 19011?', ['Confidencialidade','Integridade','Abordagem baseada em risco','Apresentação justa'], 2, 'A abordagem baseada em risco e o sétimo princípio, incluido na versão 2018.'],
-    ['Qual é a hierarquia lógica correta no processo de auditoria?', ['Evidência > Critério > Conclusão > Constatação','Criterio > Evidência > Constatação > Conclusão','Constatação > Evidência > Critério > Conclusão','Conclusão > Constatação > Critério > Evidência'], 1, 'O auditor compara a evidência com o critério para gerar constatações, e agrupa as constatações para chegar a uma conclusão.'],
-    ['Qual é a principal diferença entre auditoria e inspeção?', ['Auditoria e mais rapida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não ha diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peça específica.'],
+    ['Qual é a hierarquia lógica correta no processo de auditoria?', ['Evidência > Critério > Conclusão > Constatação','Critério > Evidência > Constatação > Conclusão','Constatação > Evidência > Critério > Conclusão','Conclusão > Constatação > Critério > Evidência'], 1, 'O auditor compara a evidência com o critério para gerar constatações, e agrupa as constatações para chegar a uma conclusão.'],
+    ['Qual é a principal diferença entre auditoria e inspeção?', ['Auditoria e mais rápida','Auditoria avalia o sistema, inspeção avalia o produto','Inspeção e feita por auditores certificados','Não há diferença significativa'], 1, 'Auditoria avalia o sistema de gestão. Inspeção avalia o produto ou peça específica.'],
   ];
   for (const [p, a, r, e] of m1q) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m1.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
@@ -2902,11 +2902,11 @@
 
   // Module 2 quiz
   const m2q = [
-    ['Qual a diferença entre programa de auditoria e plano de auditoria?', ['Sao sinonimos','Programa = todas as auditorias do período; Plano = uma auditoria específica','Programa e feito pelo auditor; Plano pelo gestor','Plano e mais abrangente que programa'], 1, 'Programa e o panorama geral (todas as auditorias). Plano e o detalhamento de uma auditoria individual.'],
+    ['Qual a diferença entre programa de auditoria e plano de auditoria?', ['São sinonimos','Programa = todas as auditorias do período; Plano = uma auditoria específica','Programa e feito pelo auditor; Plano pelo gestor','Plano e mais abrangente que programa'], 1, 'Programa e o panorama geral (todas as auditorias). Plano e o detalhamento de uma auditoria individual.'],
     ['Quem normalmente e responsável por gerenciar o programa de auditoria?', ['O auditor-lider','A alta direção pessoalmente','O gestor do programa (geralmente coord. de qualidade)','O organismo certificador'], 2, 'O gestor do programa e designado pela organização, geralmente sendo o coordenador de qualidade.'],
-    ['Qual critério NAO e válido para definir prioridades no programa de auditoria?', ['Resultados de auditorias anteriores','Preferência pessoal do auditor','Reclamações de clientes','Mudancas significativas nos processos'], 1, 'A preferência pessoal do auditor não ecriterio válido. As prioridades devem ser baseadas em risco, dados e requisitos.'],
+    ['Qual critério NÃO e válido para definir prioridades no programa de auditoria?', ['Resultados de auditorias anteriores','Preferência pessoal do auditor','Reclamações de clientes','Mudancas significativas nos processos'], 1, 'A preferência pessoal do auditor não é critério válido. As prioridades devem ser baseadas em risco, dados e requisitos.'],
     ['A ISO 19011 exige que o programa de auditoria considere:', ['Apenas os requisitos da norma ISO 9001','Riscos e oportunidades do programa','Apenas as reclamações de clientes','Apenas o orçamento disponível'], 1, 'A versão 2018 enfatiza que riscos e oportunidades devem ser considerados no programa de auditoria.'],
-    ['Um auditor interno pode auditar seu próprio setor de trabalho?', ['Sim, sempre','Não, pois compromete a independencia','Sim, se tiver mais de 5 anos de experiência','Sim, se o gestor autorizar'], 1, 'O princípio da independência exige que o auditor não audite sua própria atividade/setor.'],
+    ['Um auditor interno pode auditar seu próprio setor de trabalho?', ['Sim, sempre','Não, pois compromete a independência','Sim, se tiver mais de 5 anos de experiência','Sim, se o gestor autorizar'], 1, 'O princípio da independência exige que o auditor não audite sua própria atividade/setor.'],
   ];
   for (const [p, a, r, e] of m2q) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m2.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
@@ -2914,9 +2914,9 @@
 
   // Module 3 quiz
   const m3q = [
-    ['Qual é o principal objetivo da análise de documentação pre-auditoria?', ['Encontrar não conformidades antes da auditoria','Entender o processo e identificar pontos de atenção','Aprovar os procedimentos do auditado','Eliminar a necessidade de entrevistas'], 1, 'A análise documental prepara o auditor: entender o processo, identificar pontos de atenção e construir o checklist.'],
+    ['Qual é o principal objetivo da análise de documentação pré-auditoria?', ['Encontrar não conformidades antes da auditoria','Entender o processo e identificar pontos de atenção','Aprovar os procedimentos do auditado','Eliminar a necessidade de entrevistas'], 1, 'A análise documental prepara o auditor: entender o processo, identificar pontos de atenção e construir o checklist.'],
     ['No checklist de auditoria, qual tipo de pergunta e mais eficaz?', ['Perguntas de sim/não','Perguntas abertas combinadas com pedido de evidência','Perguntas indutivas','Perguntas múltiplas (3 perguntas em 1)'], 1, 'Perguntas abertas + pedido de evidência ("Mostre-me...") revelam a prática real do processo.'],
-    ['Na amostragem por julgamento, o auditor deve priorizar:', ['Apenas os registros mais recentes','Itens de maior risco e diferentes periodos/turnos','Apenas os itens que o auditado indicar','Sempre a mesma quantidade para todos os processos'], 1, 'A amostragem deve considerar risco, variedade de periodos, turnos e criticidade.'],
+    ['Na amostragem por julgamento, o auditor deve priorizar:', ['Apenas os registros mais recentes','Itens de maior risco e diferentes periodos/turnos','Apenas os itens que o auditado indicar','Sempre a mesma quantidade para todos os processos'], 1, 'A amostragem deve considerar risco, variedade de períodos, turnos e criticidade.'],
     ['O plano de auditoria deve ser comunicado ao auditado:', ['No dia da auditoria','Nunca — e confidencial','Com antecedencia suficiente (recomendado 1 semana)','Apenas se o auditado solicitar'], 2, 'O plano deve ser enviado com antecedencia para que o auditado se organize e as pessoas-chave estejam disponíveis.'],
     ['Se o auditor encontra uma não conformidade na amostra, o que deve fazer?', ['Encerrar a auditoria','Ampliar a amostra para verificar se e pontual ou sistemico','Ignorar se for apenas 1 caso','Registrar e seguir em frente sem ampliar'], 1, 'Ao encontrar uma NC, o auditor deve ampliar a amostra para determinar se o problema e pontual ou sistemico.'],
   ];
@@ -2926,11 +2926,11 @@
 
   // Module 4 quiz
   const m4q = [
-    ['Qual é o principal objetivo da reunião de abertura?', ['Apresentar as não conformidades encontradas','Alinhar expectativas, confirmar escopo e agenda','Definir quem sera punido','Coletar evidências de auditoria'], 1, 'A reunião de abertura alinha expectativas, confirma escopo, agenda e métodos, e define o tom da auditoria.'],
+    ['Qual é o principal objetivo da reunião de abertura?', ['Apresentar as não conformidades encontradas','Alinhar expectativas, confirmar escopo e agenda','Definir quem será punido','Coletar evidências de auditoria'], 1, 'A reunião de abertura alinha expectativas, confirma escopo, agenda e métodos, e define o tom da auditoria.'],
     ['A "regra dos 3 pontos" na coleta de evidências significa:', ['Coletar 3 evidências por NC','Triangular: entrevista + observação + registro','Entrevistar pelo menos 3 pessoas','Verificar 3 documentos por processo'], 1, 'Triangulação: pergunte ao operador (entrevista), veja ele fazendo (observação), confira o registro (análise).'],
     ['Durante a auditoria, o auditor identifica uma NC. Quando deve comunicar ao auditado?', ['Apenas na reunião de encerramento','No momento em que identifica','Apenas no relatório final','Nunca — e confidencial até o relatório'], 1, 'As constatações devem ser comunicadas no momento para garantir apresentação justa e evitar surpresas no encerramento.'],
-    ['Na reunião de encerramento, se o auditado discordar de uma constatação, o auditor deve:', ['Retirar a constatação automaticamente','Ouvir, revisar a evidência e manter se houver base','Adiar a decisao para o proximo ano','Transformar a NC em oportunidade de melhoria'], 1, 'O auditor deve ouvir, revisar a evidência, e manter a constatação se ela tiver base sólida.'],
-    ['Perguntas indutivas ("Você sempre segue o procedimento, correto?") devem ser evitadas porque:', ['Sao muito longas','Induzem a resposta que o auditor quer ouvir','Sao dificeis de entender','Sao proibidas pela ISO 19011'], 1, 'Perguntas indutivas direcionam a resposta e não revelam a prática real.'],
+    ['Na reunião de encerramento, se o auditado discordar de uma constatação, o auditor deve:', ['Retirar a constatação automaticamente','Ouvir, revisar a evidência e manter se houver base','Adiar a decisão para o próximo ano','Transformar a NC em oportunidade de melhoria'], 1, 'O auditor deve ouvir, revisar a evidência, e manter a constatação se ela tiver base sólida.'],
+    ['Perguntas indutivas ("Você sempre segue o procedimento, correto?") devem ser evitadas porque:', ['São muito longas','Induzem a resposta que o auditor quer ouvir','São difíceis de entender','São proibidas pela ISO 19011'], 1, 'Perguntas indutivas direcionam a resposta e não revelam a prática real.'],
   ];
   for (const [p, a, r, e] of m4q) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m4.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
@@ -2938,10 +2938,10 @@
 
   // Module 5 quiz
   const m5q = [
-    ['Uma NC bem redigida deve conter obrigatoriamente:', ['Criterio, evidência e declaração da NC','Nome do culpado e penalidade','Criterio e sugestão de melhoria','Apenas a descrição do problema'], 0, 'Os três elementos obrigatórios são: critério (requisito não atendido), evidência (o que foi encontrado) e declaração (por que e NC).'],
-    ['Qual é a diferença entre NC maior e NC menor?', ['NC maior e reincidente; NC menor e primeira vez','NC maior afeta o SGQ como um todo ou e ausência total; NC menor e pontual','NC maior e do auditor externo; NC menor e do interno','Não ha diferença — são sinonimos'], 1, 'NC maior = falha sistemática ou ausência total de requisito. NC menor = falha pontual que não compromete o SGQ.'],
-    ['Multiplas NCs menores no mesmo tema podem indicar:', ['Que o auditor esta sendo rigoroso demais','Uma falha sistemática que justifica NC maior','Que a norma e muito exigente','Que o checklist esta errado'], 1, 'Varias NCs menores no mesmo tema podem evidenciar falha sistemática, justificando reclassificação como NC maior.'],
-    ['Qual é o prazo recomendado para emissao do relatório de auditoria?', ['No mesmo dia','Ate 5 dias uteis','Ate 30 dias','Ate a proxima auditoria'], 1, 'O relatório deve ser emitido o mais rápido possível — idealmente até 5 dias úteis.'],
+    ['Uma NC bem redigida deve conter obrigatoriamente:', ['Critério, evidência e declaração da NC','Nome do culpado e penalidade','Critério e sugestão de melhoria','Apenas a descrição do problema'], 0, 'Os três elementos obrigatórios são: critério (requisito não atendido), evidência (o que foi encontrado) e declaração (por que e NC).'],
+    ['Qual é a diferença entre NC maior e NC menor?', ['NC maior e reincidente; NC menor e primeira vez','NC maior afeta o SGQ como um todo ou e ausência total; NC menor e pontual','NC maior e do auditor externo; NC menor e do interno','Não há diferença — são sinonimos'], 1, 'NC maior = falha sistemática ou ausência total de requisito. NC menor = falha pontual que não compromete o SGQ.'],
+    ['Múltiplas NCs menores no mesmo tema podem indicar:', ['Que o auditor esta sendo rigoroso demais','Uma falha sistemática que justifica NC maior','Que a norma e muito exigente','Que o checklist esta errado'], 1, 'Várias NCs menores no mesmo tema podem evidenciar falha sistemática, justificando reclassificação como NC maior.'],
+    ['Qual é o prazo recomendado para emissão do relatório de auditoria?', ['No mesmo dia','Até 5 dias úteis','Até 30 dias','Até a próxima auditoria'], 1, 'O relatório deve ser emitido o mais rápido possível — idealmente até 5 dias úteis.'],
     ['A verificação de eficácia de uma ação corretiva responde a pergunta:', ['A ação foi implementada?','A NC foi registrada corretamente?','A causa raiz foi eliminada e a NC não reincidiu?','O auditor aprovou o relatório?'], 2, 'A verificação de eficácia confirma que a ação eliminou a causa raiz e que a NC não reincidiu.'],
   ];
   for (const [p, a, r, e] of m5q) {
@@ -2950,7 +2950,7 @@
 
   // Module 6 quiz
   const m6q = [
-    ['A escuta ativa do auditor significa:', ['Ouvir e já preparar a proxima pergunta mentalmente','Ouvir com atenção, reformular para confirmar entendimento e não interromper','Gravar todas as entrevistas','Anotar tudo palavra por palavra'], 1, 'Escuta ativa = ouvir atentamente, reformular para confirmar entendimento, não interromper e demonstrar interesse genuíno.'],
+    ['A escuta ativa do auditor significa:', ['Ouvir e já preparar a próxima pergunta mentalmente','Ouvir com atenção, reformular para confirmar entendimento e não interromper','Gravar todas as entrevistas','Anotar tudo palavra por palavra'], 1, 'Escuta ativa = ouvir atentamente, reformular para confirmar entendimento, não interromper e demonstrar interesse genuíno.'],
     ['Quando o auditado fica hostil, a melhor abordagem e:', ['Responder com firmeza e impor autoridade','Encerrar a auditoria imediatamente','Manter a calma, reconhecer a expertise do auditado e redirecionar para evidências','Ignorar e seguir com o checklist'], 2, 'Manter a calma, reconhecer o conhecimento do auditado e redirecionar para fatos e evidências desescala o conflito.'],
     ['O pensamento baseado em risco na auditoria significa:', ['Fazer análise de risco formal para cada auditoria','Priorizar áreas de maior impacto no planejamento e condução da auditoria','Auditar apenas processos de alto risco','Eliminar todos os riscos identificados'], 1, 'Significa direcionar tempo e atenção proporcionalmente ao risco/impacto de cada área.'],
     ['Se um auditor interno descobre evidência de fraude durante a auditoria, deve:', ['Investigar a fraude pessoalmente','Registrar e comunicar ao gestor do programa e a direção','Ignorar, pois não eescopo da auditoria','Confrontar o auditado publicamente'], 1, 'O auditor deve registrar o achado e comunicar aos responsáveis (gestor e direção), sem investigar além do escopo.'],
@@ -2964,9 +2964,9 @@
   const m7q = [
     ['No estudo de caso da metalúrgica, por que as RACs sem análise de causa-raiz foram NC?', ['Porque a norma proibe correções','Porque a ação corretiva exige identificação da causa raiz (ISO 9001 cl. 10.2)','Porque o auditor não gostou da resposta','Porque as reclamações não foram resolvidas'], 1, 'A cláusula 10.2 exige análise de causa raiz como parte da ação corretiva. Apenas correção (tratar o sintoma) não atende ao requisito.'],
     ['No estudo de caso da indústria alimentícia, a NC de temperatura do pasteurizador foi classificada como maior porque:', ['O desvio foi de apenas 0,8C','A pasteurização é PCC e a falha pode afetar segurança do consumidor','O operador era do 3o turno','O procedimento estava desatualizado'], 1, 'A pasteurização é um Ponto Crítico de Controle (PCC). Falha no PCC sem tratamento pode comprometer a segurança do produto.'],
-    ['Um auditor iniciante abre NC porque um formulário foi preenchido a lapis. Isso esta correto?', ['Sim, formulários devem ser sempre a caneta','Depende — só e NC se existir requisito (norma ou procedimento) que proiba lapis','Sim, e uma prática internacionalmente reconhecida','Não, formulários a lapis são aceitos pela ISO'], 1, 'So e NC se houver critério (requisito) que determine uso de caneta. Opiniao pessoal não ebase para NC.'],
+    ['Um auditor iniciante abre NC porque um formulário foi preenchido a lapis. Isso esta correto?', ['Sim, formulários devem ser sempre a caneta','Depende — só e NC se existir requisito (norma ou procedimento) que proiba lapis','Sim, e uma prática internacionalmente reconhecida','Não, formulários a lapis são aceitos pela ISO'], 1, 'Só e NC se houver critério (requisito) que determine uso de caneta. Opiniao pessoal não ebase para NC.'],
     ['Qual a primeira ação recomendada para um auditor recem-formado?', ['Liderar uma auditoria sozinho','Participar como observador numa auditoria com auditor experiente','Reescrever todos os procedimentos da empresa','Fazer outra certificação antes de auditar'], 1, 'A prática recomendada e comecar como observador, acompanhando auditores mais experientes.'],
-    ['Ao identificar que o índice de refugo esta acima da meta, o auditor deve:', ['Abrir NC automaticamente','Investigar as causas e verificar se ha tratamento adequado dos desvios','Ignorar, pois indicadores não são escopo de auditoria','Recomendar demissao do supervisor'], 1, 'O auditor deve investigar se os desvios estao sendo tratados conforme o SGQ exige, não apenas apontar o número.'],
+    ['Ao identificar que o índice de refugo esta acima da meta, o auditor deve:', ['Abrir NC automaticamente','Investigar as causas e verificar se há tratamento adequado dos desvios','Ignorar, pois indicadores não são escopo de auditoria','Recomendar demissão do supervisor'], 1, 'O auditor deve investigar se os desvios estão sendo tratados conforme o SGQ exige, não apenas apontar o número.'],
   ];
   for (const [p, a, r, e] of m7q) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${m7.id}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, false)`;
@@ -2977,35 +2977,35 @@
   // ══════════════════════════════════════════════
   const finalQ = [
     ['Auditoria de 2a parte e realizada por:', ['A própria organização','O cliente no fornecedor','Organismo certificador','O governo'], 1, 'Auditoria de 2a parte e quando o cliente (ou representante) audita seu fornecedor.'],
-    ['Qual princípio de auditoria exige que o auditor não divulgue informações sem autorização?', ['Integridade','Independencia','Confidencialidade','Apresentação justa'], 2, 'Confidencialidade exige que informações obtidas na auditoria sejam protegidas.'],
-    ['A ISO 19011:2018 e uma norma:', ['Certificavel','Não certificável — e uma norma-guia','Obrigatoria por lei','Aplicavel apenas a ISO 9001'], 1, 'A ISO 19011 e uma norma-guia para auditorias de sistemas de gestão. Não é certificável.'],
+    ['Qual princípio de auditoria exige que o auditor não divulgue informações sem autorização?', ['Integridade','Independência','Confidencialidade','Apresentação justa'], 2, 'Confidencialidade exige que informações obtidas na auditoria sejam protegidas.'],
+    ['A ISO 19011:2018 e uma norma:', ['Certificavel','Não certificável — e uma norma-guia','Obrigatória por lei','Aplicável apenas a ISO 9001'], 1, 'A ISO 19011 e uma norma-guia para auditorias de sistemas de gestão. Não é certificável.'],
     ['O gestor do programa de auditoria e responsável por:', ['Conduzir cada auditoria pessoalmente','Planejar cronograma, designar auditores e monitorar o programa','Apenas elaborar o relatório final','Auditar a alta direção'], 1, 'O gestor do programa coordena o planejamento, execução e monitoramento do conjunto de auditorias.'],
-    ['Na análise de documentação pre-auditoria, o auditor deve buscar:', ['Apenas o manual da qualidade','O que a organização diz que faz, para comparar com a prática em campo','Erros de portugues nos procedimentos','Apenas os indicadores financeiros'], 1, 'A análise documental prepara o auditor para verificar se a prática corresponde ao documentado.'],
+    ['Na análise de documentação pré-auditoria, o auditor deve buscar:', ['Apenas o manual da qualidade','O que a organização diz que faz, para comparar com a prática em campo','Erros de portugues nos procedimentos','Apenas os indicadores financeiros'], 1, 'A análise documental prepara o auditor para verificar se a prática corresponde ao documentado.'],
     ['Um escopo de auditoria bem definido deve conter:', ['Apenas o nome do processo','Processos, locais, período e turno (quando aplicável)','Apenas a cláusula da norma','O nome dos auditados'], 1, 'O escopo deve delimitar processos, locais, período e turno para direcionar o trabalho do auditor.'],
-    ['Se não ha critério (requisito) para comparar, o auditor:', ['Pode abrir NC baseado em boas práticas','Pode abrir NC baseado em experiência pessoal','Não pode abrir NC — sem critério não ha constatação de NC','Deve criar um novo requisito'], 2, 'Sem critério (requisito documentado), não ha base para não conformidade. Pode sugerir como OM.'],
-    ['A competência do auditor interno inclui:', ['Apenas conhecimento da norma ISO 9001','Conhecimentos genericos de auditoria + conhecimentos específicos do setor + atributos pessoais','Apenas diploma universitario','Apenas experiência profissional'], 1, 'A ISO 19011 requer conhecimentos genericos, específicos do setor e atributos pessoais.'],
+    ['Se não há critério (requisito) para comparar, o auditor:', ['Pode abrir NC baseado em boas práticas','Pode abrir NC baseado em experiência pessoal','Não pode abrir NC — sem critério não há constatação de NC','Deve criar um novo requisito'], 2, 'Sem critério (requisito documentado), não há base para não conformidade. Pode sugerir como OM.'],
+    ['A competência do auditor interno inclui:', ['Apenas conhecimento da norma ISO 9001','Conhecimentos genéricos de auditoria + conhecimentos específicos do setor + atributos pessoais','Apenas diploma universitario','Apenas experiência profissional'], 1, 'A ISO 19011 requer conhecimentos genéricos, específicos do setor e atributos pessoais.'],
     ['O ciclo PDCA aplicado ao programa de auditoria e:', ['P=auditar, D=relatar, C=corrigir, A=encerrar','P=definir objetivos e cronograma, D=executar auditorias, C=monitorar indicadores, A=ajustar programa','P=planejar o checklist, D=fazer entrevistas, C=preencher relatório, A=fechar NCs','Não se aplica ao programa de auditoria'], 1, 'O programa de auditoria segue PDCA: planejar, executar, monitorar e ajustar.'],
-    ['A reunião de abertura deve durar aproximadamente:', ['5 minutos','15 a 20 minutos','1 hora','Não ha reunião de abertura em auditorias internas'], 1, 'A reunião de abertura deve ser breve (15-20 minutos), cobrindo escopo, critérios, agenda e expectativas.'],
+    ['A reunião de abertura deve durar aproximadamente:', ['5 minutos','15 a 20 minutos','1 hora','Não há reunião de abertura em auditorias internas'], 1, 'A reunião de abertura deve ser breve (15-20 minutos), cobrindo escopo, critérios, agenda e expectativas.'],
     ['A técnica de funil na entrevista significa:', ['Perguntar apenas sobre o topo da hierarquia','Comecar com perguntas amplas e ir afunilando para o específico','Usar apenas perguntas fechadas','Entrevistar do operador ao gerente nessa ordem'], 1, 'A técnica de funil vai do geral ("como funciona o processo?") ao específico ("mostre-me o registro de...").'],
     ['Triangulação na coleta de evidências combina:', ['3 auditores diferentes','3 normas diferentes','Entrevista + observação + análise de registros','3 entrevistas com a mesma pessoa'], 2, 'Triangulação: pergunte (entrevista), veja (observação) e confira (registro). Se os três baterem, a evidência e sólida.'],
     ['Uma NC sem critério claro e problematica porque:', ['O auditado pode questionar a validade da constatação','O relatório fica mais curto','A norma proibe NCs sem número','Não é problematica'], 0, 'Sem critério claro, a NC pode ser questionada e derrubada pelo auditado, comprometendo a credibilidade do auditor.'],
-    ['A diferença entre correção e ação corretiva e:', ['Correção e mais importante que ação corretiva','Correção trata o efeito imediato; ação corretiva elimina a causa raiz','Sao a mesma coisa','Correção e preventiva; ação corretiva e reativa'], 1, 'Correção = tratar o sintoma (calibrar o instrumento). Ação corretiva = eliminar a causa raiz (corrigir o sistema de alerta).'],
-    ['NC maior se caracteriza por:', ['Falha pontual em um único registro','Ausencia ou falha total de um requisito, afetando a capacidade do SGQ','Qualquer NC encontrada pelo auditor externo','Erro de digitação em formulário'], 1, 'NC maior = falha sistemática ou ausência total de um requisito que compromete o SGQ.'],
+    ['A diferença entre correção e ação corretiva e:', ['Correção e mais importante que ação corretiva','Correção trata o efeito imediato; ação corretiva elimina a causa raiz','São a mesma coisa','Correção e preventiva; ação corretiva e reativa'], 1, 'Correção = tratar o sintoma (calibrar o instrumento). Ação corretiva = eliminar a causa raiz (corrigir o sistema de alerta).'],
+    ['NC maior se caracteriza por:', ['Falha pontual em um único registro','Ausência ou falha total de um requisito, afetando a capacidade do SGQ','Qualquer NC encontrada pelo auditor externo','Erro de digitação em formulário'], 1, 'NC maior = falha sistemática ou ausência total de um requisito que compromete o SGQ.'],
     ['A ferramenta dos 5 Por ques e usada para:', ['Definir o escopo da auditoria','Chegar a causa raiz de uma não conformidade','Classificar NCs em maior ou menor','Elaborar o plano de auditoria'], 1, 'Os 5 Por ques aprofundam a investigação até identificar a causa raiz do problema.'],
     ['O relatório de auditoria deve incluir pontos positivos porque:', ['E obrigatório pela ISO 19011','Reconhecer boas práticas engaja as pessoas e equilibra o relatório','Aumenta o número de páginas','Facilita a aprovação pelo gestor'], 1, 'Incluir pontos positivos equilibra o relatório, reconhece boas práticas e evita que a auditoria seja vista como puramente punitiva.'],
-    ['Quanto tempo o auditor tem, idealmente, para emitir o relatório?', ['No mesmo dia da auditoria','Ate 5 dias uteis','Ate 30 dias','Ate a proxima reunião de análise crítica'], 1, 'O relatório deve ser emitido o mais rápido possível — idealmente até 5 dias úteis após a auditoria.'],
+    ['Quanto tempo o auditor tem, idealmente, para emitir o relatório?', ['No mesmo dia da auditoria','Até 5 dias úteis','Até 30 dias','Até a próxima reunião de análise crítica'], 1, 'O relatório deve ser emitido o mais rápido possível — idealmente até 5 dias úteis após a auditoria.'],
     ['Qual a proporção ideal de fala do auditor durante a entrevista?', ['50% auditor, 50% auditado','80% auditor, 20% auditado','20% auditor, 80% auditado','100% auditor'], 2, 'O auditor deve ouvir mais do que falar. A proporção ideal e 80% ouvindo, 20% falando.'],
     ['Quando o auditado se mostra evasivo e muda de assunto, o auditor deve:', ['Encerrar a entrevista','Aceitar as respostas vagas','Reformular a pergunta de forma mais específica e pedir registros','Registrar obstrução e sair'], 2, 'Reformular a pergunta e pedir evidências concretas (registros) redireciona o auditado para o tema.'],
     ['O auditor observa um operador que não sabe recitar a política da qualidade. Isso é NC?', ['Sim, sempre','Não, nunca','Depende — se ele entende seu papel e contribuição, pode estar conforme (cl. 7.3)','Sim, se o operador tem mais de 1 ano de empresa'], 2, 'A cláusula 7.3 exige consciência (entender a política e seu papel), não memorização do texto.'],
-    ['Em auditorias internas, a independência e garantida por:', ['Contratar auditores externos','O auditor não auditar sua própria área de trabalho','O auditor ser mais antigo que o auditado','O auditor ter diploma superior'], 1, 'Independencia em auditoria interna = não auditar seu próprio trabalho ou setor.'],
+    ['Em auditorias internas, a independência e garantida por:', ['Contratar auditores externos','O auditor não auditar sua própria área de trabalho','O auditor ser mais antigo que o auditado','O auditor ter diploma superior'], 1, 'Independência em auditoria interna = não auditar seu próprio trabalho ou setor.'],
     ['Amostragem em auditoria é necessária porque:', ['A norma exige exatamente 10 amostras','O tempo é limitado e não é possível verificar 100% dos registros','O auditor só precisa ver documentos recentes','O auditado escolhe o que mostrar'], 1, 'O tempo de auditoria é limitado, então o auditor trabalha com amostras representativas.'],
     ['Se a amostra revela NC, o auditor deve:', ['Encerrar e registrar a NC','Ampliar a amostra para verificar se e pontual ou sistemico','Ignorar se for apenas 1 caso em muitos','Pedir ao auditado que corrija antes de registrar'], 1, 'Ampliar a amostra ajuda a determinar se o problema e isolado ou sistemico, o que afeta a classificação (menor vs. maior).'],
     ['O Diagrama de Ishikawa categoriza causas usando:', ['5 Por ques','As 10 cláusulas da ISO 9001','6M: Máquina, Método, Material, Mão de obra, Meio ambiente, Medição','PDCA'], 2, 'O Ishikawa (espinha de peixe) organiza causas potenciais nas categorias 6M.'],
     ['Qual cláusula da ISO 9001:2015 exige auditoria interna?', ['8.5','9.1','9.2','10.2'], 2, 'A cláusula 9.2 da ISO 9001:2015 estabelece os requisitos para auditoria interna.'],
-    ['A verificação de eficácia de ação corretiva deve ocorrer:', ['Imediatamente após a implementação','Apos tempo suficiente para verificar se a NC não reincidiu','Apenas na proxima certificação','Nunca — a implementação basta'], 1, 'E preciso tempo para verificar se a ação realmente eliminou a causa raiz e a NC não reincidiu.'],
-    ['Um auditor que aceita presente do auditado compromete qual princípio?', ['Cuidado profissional','Confidencialidade','Independencia','Abordagem baseada em evidência'], 2, 'Aceitar presentes pode comprometer a independência e imparcialidade percebida do auditor.'],
-    ['Na reunião de encerramento, constatações NAO devem ser surpresa porque:', ['O auditor deve comunicar constatações ao auditado no momento da identificação','O auditado já sabe o resultado antes da auditoria','As constatações são enviadas por e-mail antes','O gestor do programa informa antecipadamente'], 0, 'Princípio da apresentação justa: comunicar constatações ao auditado no momento em que são identificadas evita surpresas.'],
-    ['Qual é a principal lição dos estudos de caso do modulo 7?', ['Auditorias devem durar pelo menos 3 dias','A preparação e crítica e cada auditoria revela situações únicas que exigem julgamento','Todas as NCs devem ser maiores','Auditorias internas não geram ações corretivas relevantes'], 1, 'Os estudos de caso mostram que preparação sólida e julgamento profissional são essenciais para auditorias eficazes.'],
+    ['A verificação de eficácia de ação corretiva deve ocorrer:', ['Imediatamente após a implementação','Após tempo suficiente para verificar se a NC não reincidiu','Apenas na próxima certificação','Nunca — a implementação basta'], 1, 'E preciso tempo para verificar se a ação realmente eliminou a causa raiz e a NC não reincidiu.'],
+    ['Um auditor que aceita presente do auditado compromete qual princípio?', ['Cuidado profissional','Confidencialidade','Independência','Abordagem baseada em evidência'], 2, 'Aceitar presentes pode comprometer a independência e imparcialidade percebida do auditor.'],
+    ['Na reunião de encerramento, constatações NÃO devem ser surpresa porque:', ['O auditor deve comunicar constatações ao auditado no momento da identificação','O auditado já sabe o resultado antes da auditoria','As constatações são enviadas por e-mail antes','O gestor do programa informa antecipadamente'], 0, 'Princípio da apresentação justa: comunicar constatações ao auditado no momento em que são identificadas evita surpresas.'],
+    ['Qual é a principal lição dos estudos de caso do módulo 7?', ['Auditorias devem durar pelo menos 3 dias','A preparação e crítica e cada auditoria revela situações únicas que exigem julgamento','Todas as NCs devem ser maiores','Auditorias internas não geram ações corretivas relevantes'], 1, 'Os estudos de caso mostram que preparação sólida e julgamento profissional são essenciais para auditorias eficazes.'],
   ];
   for (const [p, a, r, e] of finalQ) {
     await sql`INSERT INTO ead_quiz_questions (module_id, course_id, pergunta, alternativas, resposta_correta, explicacao, is_final) VALUES (${null}, ${courseId}, ${p}, ${JSON.stringify(a)}::jsonb, ${r}, ${e}, true)`;
