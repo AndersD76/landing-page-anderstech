@@ -38,7 +38,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'", "https://plausible.io", "https://www.google-analytics.com"],
-      frameSrc: ["'self'", "https://*.mercadopago.com", "https://*.mercadolibre.com"],
+      frameSrc: ["'self'", "https://*.mercadopago.com", "https://*.mercadolibre.com", "https://app.heygen.com"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
     },
