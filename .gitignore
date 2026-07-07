@@ -3,3 +3,7 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.zip
+.claude/
+_ul
+_ul-*
+.streamlit/
