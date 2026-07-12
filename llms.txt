@@ -29,6 +29,11 @@ Rua Uruguai, 679 — Sala 201, Passo Fundo, RS 99010-112, Brazil
 
 ## Content
 - Blog: https://anderstech.net/blog
+- Quality Glossary (83 ISO terms): https://anderstech.net/glossario
+- ISO 9001 certification cost guide (with calculator): https://anderstech.net/quanto-custa-certificacao-iso
+- ISO 14001 cost guide: https://anderstech.net/quanto-custa-iso-14001
+- Internal audit cost guide: https://anderstech.net/quanto-custa-auditoria-interna
+- PBQP-H cost guide: https://anderstech.net/quanto-custa-pbqp-h
 - ROI Calculator: https://anderstech.net/calculadora-roi-certificacao
 - ISO 9001 Checklist: https://anderstech.net/checklist-iso-9001
 - What is ISO 9001: https://anderstech.net/blog/o-que-e-iso-9001

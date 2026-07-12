@@ -16,15 +16,9 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const router = Router();
 
 // ═══════════════════════════════════════════════════════════════════
-// Launch promotion — free access for 30 days
+// Launch promotion — data parametrizada em promo.js (env EAD_PROMO_FIM)
 // ═══════════════════════════════════════════════════════════════════
-const PROMO = {
-  ativa: true,
-  fim: new Date('2026-07-29T23:59:59-03:00'),
-  label: 'Lançamento — acesso gratuito',
-  desc: 'Todos os cursos liberados gratuitamente até 29/07/2026. Matricule-se agora e mantenha o acesso permanente.',
-};
-function promoAtiva() { return PROMO.ativa && new Date() < PROMO.fim; }
+import { PROMO, promoAtiva } from '../promo.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // Database initialization

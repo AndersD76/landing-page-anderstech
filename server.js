@@ -13,6 +13,10 @@ import { readFileSync } from 'fs';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
 import { router as portalRouter, initPortalDB } from './portal/routes.js';
 import { eadRouter, initEadDB } from './ead/routes.js';
+import { PROMO } from './promo.js';
+import { TERMOS, TERMOS_BY_SLUG } from './glossario/terms.js';
+import { renderTermo, renderIndex as renderGlossarioIndex } from './glossario/render.js';
+import { buildSitemap } from './sitemap.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -72,6 +76,13 @@ app.use(session({
   },
 }));
 
+// ── Sitemap dinâmico (antes do static para vencer o arquivo físico, se existir) ──
+let sitemapCache = null;
+app.get('/sitemap.xml', (req, res) => {
+  if (!sitemapCache) sitemapCache = buildSitemap();
+  res.type('application/xml').send(sitemapCache);
+});
+
 const staticOpts = {
   maxAge: '7d',
   setHeaders(res, filePath) {
@@ -80,12 +91,21 @@ const staticOpts = {
     }
   },
 };
-app.use(express.static(__dirname, { ...staticOpts, index: false }));
+// redirect:false — evita 301 /glossario -> /glossario/ (a pasta física glossario/ é código, não conteúdo estático)
+app.use(express.static(__dirname, { ...staticOpts, index: false, redirect: false }));
 app.use('/uploads', express.static(join(__dirname, 'uploads'), staticOpts));
 
 // ── Google Analytics 4 (gtag.js) ──
 const GTAG_HTML = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-7XL5XVE6QZ"></script>'
   + '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-7XL5XVE6QZ");</script>';
+
+// ── GA4: todo clique em link wa.me vira evento "contact" (medição de conversão local) ──
+const WA_TRACK_HTML = '<script>document.addEventListener("click",function(e){'
+  + 'var a=e.target&&e.target.closest?e.target.closest(\'a[href*="wa.me"]\'):null;if(!a)return;'
+  + 'if(typeof gtag==="function")gtag("event","contact",{method:"whatsapp",event_category:"engagement",event_label:location.pathname});'
+  + 'if(typeof plausible==="function")plausible("whatsapp_click",{props:{path:location.pathname}});'
+  + '});</'
+  + 'script>';
 
 // ── SSR nav/footer for sub-pages (SEO: Google sees full HTML) ──
 const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
@@ -115,7 +135,7 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<div class="footer-col"><h4>Navegação</h4><ul>'
   + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
   + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
-  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li></ul></div>'
+  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
   + '<div class="footer-col"><h4>Regiões</h4><ul>'
   + '<li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>'
   + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
@@ -178,6 +198,10 @@ const BREADCRUMB_LABELS = {
   'iso-9001-para-industrias': 'ISO 9001 para indústrias',
   'erros-certificacao-iso-9001': '5 erros na certificação ISO 9001',
   'ead': 'Cursos EAD',
+  'glossario': 'Glossário da Qualidade',
+  'quanto-custa-iso-14001': 'Quanto custa a ISO 14001?',
+  'quanto-custa-auditoria-interna': 'Quanto custa a auditoria interna?',
+  'quanto-custa-pbqp-h': 'Quanto custa o PBQP-H?',
 };
 
 function buildBreadcrumbSchema(urlPath) {
@@ -188,6 +212,9 @@ function buildBreadcrumbSchema(urlPath) {
   if (parts[0] === 'blog' && parts.length > 1) {
     items.push({ '@type': 'ListItem', position: pos++, name: 'Conteúdo', item: 'https://anderstech.net/blog' });
     items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[1]] || parts[1] });
+  } else if (parts[0] === 'glossario' && parts.length > 1) {
+    items.push({ '@type': 'ListItem', position: pos++, name: 'Glossário da Qualidade', item: 'https://anderstech.net/glossario' });
+    items.push({ '@type': 'ListItem', position: pos, name: (TERMOS_BY_SLUG.get(parts[1]) || {}).termo || parts[1] });
   } else {
     items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[0]] || parts[0] });
   }
@@ -197,10 +224,12 @@ function buildBreadcrumbSchema(urlPath) {
 function injectShared(html, urlPath) {
   const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
   return html
-    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">' + breadcrumb + GTAG_HTML + '</head>')
+    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">' + breadcrumb + GTAG_HTML + WA_TRACK_HTML + '</head>')
     .replace('<body>', '<body>' + SKIP_LINK)
     .replace('<div id="shared-nav"></div>', NAV_HTML)
-    .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA);
+    .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
+    .replace(/__PROMO_FIM_CURTO__/g, PROMO.fimCurto)
+    .replace(/__PROMO_FIM_LONGO__/g, PROMO.fimLongo);
 }
 
 function sendPage(filePath, res, urlPath) {
@@ -452,6 +481,29 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
 
 app.use(portalRouter);
 app.use(eadRouter);
+
+// ── Glossário da Qualidade (SSR com cache em memória — conteúdo estático) ──
+const glossarioCache = new Map();
+app.get('/glossario', (req, res) => {
+  let html = glossarioCache.get('__index__');
+  if (!html) {
+    html = injectShared(renderGlossarioIndex(), '/glossario');
+    glossarioCache.set('__index__', html);
+  }
+  res.type('html').send(html);
+});
+app.get('/glossario/:slug', (req, res) => {
+  const slug = String(req.params.slug || '');
+  if (!/^[a-z0-9-]+$/.test(slug)) return send404(res);
+  let html = glossarioCache.get(slug);
+  if (!html) {
+    const page = renderTermo(slug);
+    if (!page) return send404(res);
+    html = injectShared(page, '/glossario/' + slug);
+    glossarioCache.set(slug, html);
+  }
+  res.type('html').send(html);
+});
 
 function safePath(base, userInput) {
   const resolved = join(base, userInput);

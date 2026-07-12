@@ -30,7 +30,10 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": [
+    "ProfessionalService",
+    "LocalBusiness"
+  ],
   "name": "Anders Tech — Consultoria ISO 9001 Caxias do Sul",
   "description": "Consultoria em gestão da qualidade, ISO 9001 e otimização de processos indústriais em Caxias do Sul RS.",
   "url": "https://anderstech.net/consultoria-iso-9001-caxias-do-sul",
@@ -48,10 +51,40 @@
     "latitude": -29.1681,
     "longitude": -51.1794
   },
-  "areaServed": {
-    "@type": "City",
-    "name": "Caxias do Sul"
-  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Caxias do Sul"
+    },
+    {
+      "@type": "City",
+      "name": "Passo Fundo"
+    },
+    {
+      "@type": "City",
+      "name": "Erechim"
+    },
+    {
+      "@type": "City",
+      "name": "Porto Alegre"
+    },
+    {
+      "@type": "City",
+      "name": "Bento Gonçalves"
+    },
+    {
+      "@type": "City",
+      "name": "Carazinho"
+    },
+    {
+      "@type": "City",
+      "name": "Marau"
+    },
+    {
+      "@type": "State",
+      "name": "Rio Grande do Sul"
+    }
+  ],
   "priceRange": "$$",
   "openingHours": "Mo-Fr 08:00-18:00",
   "taxID": "42.073.716/0001-80",
@@ -59,12 +92,45 @@
     "@type": "OfferCatalog",
     "name": "Servicos de Consultoria em Caxias do Sul",
     "itemListElement": [
-      {"@type":"Offer","itemOffered":{"@type":"Service","name":"ISO 9001","description":"Implantação e manutenção ISO 9001 para indústrias de Caxias do Sul"}},
-      {"@type":"Offer","itemOffered":{"@type":"Service","name":"PBQP-H","description":"Qualificação PBQP-H para construtoras da serra gaucha"}},
-      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Otimização de Processos","description":"Mapeamento e melhoria de processos indústriais"}},
-      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Nao-Conformidade","description":"Sistema de NC e acoes corretivas para indústrias"}}
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "ISO 9001",
+          "description": "Implantação e manutenção ISO 9001 para indústrias de Caxias do Sul"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "PBQP-H",
+          "description": "Qualificação PBQP-H para construtoras da serra gaucha"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Otimização de Processos",
+          "description": "Mapeamento e melhoria de processos indústriais"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Nao-Conformidade",
+          "description": "Sistema de NC e acoes corretivas para indústrias"
+        }
+      }
     ]
-  }
+  },
+  "image": "https://anderstech.net/assets/og-image.png",
+  "sameAs": [
+    "https://anderstech.net",
+    "https://andersdev.com.br"
+  ]
 }
 </script>
 <script type="application/ld+json">

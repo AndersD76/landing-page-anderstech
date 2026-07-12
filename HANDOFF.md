@@ -1,7 +1,46 @@
 # HANDOFF — Anders Tech (seguranca + exposicao + conversao)
 
 > Tudo que **EU (Daniel)** preciso configurar manualmente, agrupado por plataforma.
-> Atualizado em 2026-07-07 apos analise dos relatorios GA4 + sticky CTA mobile.
+> Atualizado em 2026-07-12 apos MOTOR DE TRAFEGO (glossario 83 termos + paginas de custo + schema local + sitemap 123 URLs).
+
+## MOTOR DE TRAFEGO (2026-07-12) — acoes manuais
+
+### 1. Google Business Profile — CONTINUA MANUAL E E O ITEM Nº 1 DO MAPA LOCAL
+- Criar/reivindicar perfil "Anders Tech" em business.google.com
+  - Categoria: **Consultor de gestao** (secundaria: Consultoria empresarial)
+  - Endereco: Rua Uruguai, 679 — Sala 201, Passo Fundo RS 99010-112 (MESMO NAP do site — nao variar)
+  - Telefone: +55 54 99964-8368 · Site: https://anderstech.net
+  - Areas de atendimento: Passo Fundo, Erechim, Carazinho, Marau, Caxias do Sul, Bento Goncalves, Porto Alegre
+  - Servicos: ISO 9001, ISO 14001, PBQP-H, Auditoria interna, Otimizacao de processos
+  - Fotos: fachada/sala, foto de perfil profissional, print de projeto
+- **Pedir avaliacao aos clientes certificados** — meta: 5 reviews em 30 dias (fator nº 1 do ranking local)
+- Depois de criado: me passar a URL do perfil para eu adicionar ao `sameAs` do schema (home + 7 regionais)
+- LinkedIn: se existir pagina da empresa/perfil, me passar a URL — tambem entra no `sameAs`
+
+### 2. Google Search Console
+- Sitemaps > **reenviar https://anderstech.net/sitemap.xml** (agora dinamico, 123 URLs: +83 glossario, +3 paginas de custo, /glossario)
+- Inspecao de URL > "Solicitar indexacao" para (prioridade nesta ordem):
+  1. https://anderstech.net/quanto-custa-certificacao-iso (pagina definitiva com calculadora)
+  2. https://anderstech.net/glossario
+  3. as 7 regionais /consultoria-iso-9001-*
+  4. /quanto-custa-iso-14001 · /quanto-custa-auditoria-interna · /quanto-custa-pbqp-h
+- Monitorar Indexacao > Paginas semanalmente (crescimento esperado em 2-6 semanas)
+
+### 3. Promocao dos cursos EAD — DECISAO COM DATA
+- A promo "gratis ate 29/07/2026" agora e parametrizada: env **`EAD_PROMO_FIM`** (ISO 8601) em `promo.js`
+- **Hoje e 12/07 — faltam ~17 dias.** Decidir ANTES de 29/07:
+  - Estender: setar no Railway `EAD_PROMO_FIM=2026-08-31T23:59:59-03:00` (exemplo) e redeploy — home e EAD atualizam sozinhos
+  - Encerrar: nao fazer nada (em 30/07 promoAtiva() vira false) — MAS conferir como as paginas EAD exibem preco pos-promo
+  - Desativar ja: `EAD_PROMO_ATIVA=false`
+- Sem env definida, o fallback continua 29/07/2026
+
+### 4. PrismaBiz (cross-domain)
+- O glossario linka 83 paginas para https://prismabiz.com.br/ferramenta/* — conferir que o dominio esta no ar e as landings /ferramenta/{slug} respondem 200 (slugs usados: nao-conformidades, auditoria-interna, indicadores-kpi, matriz-de-riscos, pdca, fmea, gestao-iso-9001, analise-swot, plano-de-acao-5w2h)
+- Recomendado: criar link reciproco do PrismaBiz para https://anderstech.net/glossario
+
+### N/A neste release: DNS, pagamento, Resend (sem mudanca).
+
+---
 
 ## Teste do funil ponta-a-ponta — FAZER 1x NO CELULAR (15 min)
 

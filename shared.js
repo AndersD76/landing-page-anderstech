@@ -23,6 +23,7 @@
     + '<li><a href="/#sobre">Sobre</a></li>'
     + '<li><a href="/blog">Conteúdo</a></li>'
     + '<li><a href="/#contato">Contato</a></li>'
+    + '<li><a href="/glossario">Glossário da Qualidade</a></li>'
     + '<li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li>'
     + '<li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li></ul></div>'
     + '<div class="footer-col"><h4>Regiões</h4><ul>'

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Quanto Custa a Certificação ISO? Guia Completo de Investimento | Anders Tech</title>
+<title>Quanto custa a certificação ISO 9001? Tabela de preços e calculadora | Anders Tech</title>
 <meta name="description" content="Quanto custa certificar ISO 9001? Guia completo com todos os custos: consultoria, certificadora, treinamentos, horas internas. Tabela por porte de empresa e como avaliar propostas." />
 <meta name="keywords" content="quanto custa ISO 9001, preco certificação ISO, custo consultoria ISO 9001, investimento ISO 9001, orcamento ISO 9001" />
 <meta name="author" content="Anders Tech" />
@@ -205,6 +205,40 @@ a { color: inherit; text-decoration: none; }
   padding: 32px clamp(22px, 5vw, 80px); text-align: center;
   font-family: var(--ff-mono); font-size: 0.78rem; letter-spacing: 0.03em;
 }
+.calc-box {
+  background: var(--white); border: 1px solid var(--line); border-radius: 8px;
+  padding: 28px; margin: 24px 0 36px;
+}
+.calc-row { margin-bottom: 18px; }
+.calc-row label {
+  display: block; font-family: var(--ff-mono); font-size: 0.72rem; font-weight: 700;
+  color: var(--navy); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.calc-row select {
+  width: 100%; padding: 12px 14px; font-family: var(--ff-body); font-size: 0.98rem;
+  color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+}
+.calc-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display); font-weight: 600; font-size: 0.95rem;
+  padding: 14px 32px; border-radius: 6px; border: none; cursor: pointer;
+  background: var(--red); color: var(--white); transition: background 0.2s var(--ease);
+  text-decoration: none;
+}
+.calc-btn:hover { background: var(--red-600); }
+.calc-btn-wa { background: #25D366; margin-top: 14px; }
+.calc-btn-wa:hover { background: #1eb958; }
+.calc-result { margin-top: 24px; padding-top: 24px; border-top: 2px solid var(--line); }
+.calc-result .cr-label {
+  font-family: var(--ff-mono); font-size: 0.72rem; font-weight: 700;
+  color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;
+}
+.calc-result .cr-value {
+  font-family: var(--ff-display); font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 700; color: var(--navy); margin-bottom: 12px;
+}
+.calc-result .cr-break { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 14px; line-height: 1.7; }
+.calc-result .cr-note { font-size: 0.85rem; color: var(--ink-mute); margin-bottom: 0; }
 @media (max-width: 600px) {
   .cost-table { font-size: 0.88rem; }
   .cost-table th, .cost-table td { padding: 10px 10px; }
@@ -219,8 +253,8 @@ a { color: inherit; text-decoration: none; }
 <section class="hero">
   <div class="wrap">
     <div class="tag">Guia de Investimento</div>
-    <h1><span>Quanto Custa</span> a Certificação ISO?</h1>
-    <p class="subtitle">Todos os custos envolvidos na certificação ISO 9001, sem surpresas. Tabelas por porte de empresa, custos ocultos e como avaliar propostas de consultoria.</p>
+    <h1><span>Quanto custa</span> a certificação ISO 9001?</h1>
+    <p class="subtitle">Todos os custos envolvidos na certificação ISO 9001, sem surpresas: tabela de faixas por porte de empresa, calculadora de estimativa, custos ocultos e como avaliar propostas de consultoria.</p>
   </div>
 </section>
 
@@ -290,6 +324,52 @@ a { color: inherit; text-decoration: none; }
     <p><strong>Importante:</strong> esses valores incluem apenas o primeiro ciclo (certificação inicial). A manutenção anual (auditorias de acompanhamento + consultoria de suporte) custa tipicamente 25% a 35% do investimento inicial por ano.</p>
   </div>
 
+  <h2>Calculadora: estime o investimento para a sua empresa</h2>
+  <p>Selecione o porte da empresa e a maturidade atual da gestão. A calculadora aplica as faixas de mercado da tabela acima e mostra uma estimativa do investimento direto no primeiro ciclo de certificação. É uma referência inicial — o número exato sai do diagnóstico gratuito, que avalia seus processos reais.</p>
+
+  <div class="calc-box" id="calcCusto">
+    <div class="calc-row">
+      <label for="calcPorte">Porte da empresa</label>
+      <select id="calcPorte">
+        <option value="micro">Micro — até 10 funcionários</option>
+        <option value="pequena" selected>Pequena — 11 a 50 funcionários</option>
+        <option value="media">Média — 51 a 200 funcionários</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <label for="calcMaturidade">Maturidade da gestão hoje</label>
+      <select id="calcMaturidade">
+        <option value="inicial">Inicial — quase nada documentado</option>
+        <option value="parcial" selected>Parcial — alguns controles e registros existem</option>
+        <option value="avancada">Avançada — processos mapeados, falta formalizar</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <label for="calcUnidades">Número de unidades / plantas</label>
+      <select id="calcUnidades">
+        <option value="1" selected>1 unidade</option>
+        <option value="2">2 unidades</option>
+        <option value="3">3 ou mais unidades</option>
+      </select>
+    </div>
+    <button type="button" class="calc-btn" id="calcBtn">Calcular estimativa</button>
+    <div class="calc-result" id="calcResult" hidden>
+      <div class="cr-label">Investimento direto estimado (1º ciclo)</div>
+      <div class="cr-value" id="calcValor"></div>
+      <div class="cr-break" id="calcBreak"></div>
+      <p class="cr-note">Estimativa baseada em faixas de mercado. Não inclui horas internas da equipe. Para um valor fechado, com escopo e cronograma, solicite o diagnóstico gratuito.</p>
+      <a class="calc-btn calc-btn-wa" id="calcWa" href="#" target="_blank" rel="noopener">Receber proposta exata no WhatsApp</a>
+    </div>
+  </div>
+
+  <h2>Quanto custam as outras certificações e serviços</h2>
+  <p>A ISO 9001 é a porta de entrada, mas o investimento muda conforme a norma e o serviço. Preparamos guias de custo específicos:</p>
+  <ul>
+    <li><a href="/quanto-custa-iso-14001" style="color:var(--red);font-weight:600">Quanto custa a certificação ISO 14001</a> — gestão ambiental, e como o custo cai quando integrada à ISO 9001.</li>
+    <li><a href="/quanto-custa-auditoria-interna" style="color:var(--red);font-weight:600">Quanto custa a auditoria interna ISO 9001</a> — terceirizar, formar auditor próprio ou modelo híbrido.</li>
+    <li><a href="/quanto-custa-pbqp-h" style="color:var(--red);font-weight:600">Quanto custa o PBQP-H para construtoras</a> — níveis B e A, SiAC e prazos para financiamento habitacional.</li>
+  </ul>
+
   <h2>Custos ocultos que as pessoas esquecem</h2>
   <p>Alem dos valores da tabela, existem custos que raramente aparecem nas propostas de consultoria mas que afetam o orcamento real do projeto:</p>
 
@@ -340,7 +420,7 @@ a { color: inherit; text-decoration: none; }
   </ol>
 
   <div class="highlight-box">
-    <p><strong>Use nossa calculadora:</strong> criamos uma <a href="/pages/calculadora-roi-certificação.html" style="color:var(--red); font-weight:600; text-decoration:underline;">calculadora de ROI</a> que estima o retorno do investimento para o seu caso especifico. E gratuita e leva 2 minutos.</p>
+    <p><strong>Use nossa calculadora:</strong> criamos uma <a href="/calculadora-roi-certificacao" style="color:var(--red); font-weight:600; text-decoration:underline;">calculadora de ROI</a> que estima o retorno do investimento para o seu caso especifico. E gratuita e leva 2 minutos.</p>
   </div>
 
   <h2>A abordagem Anders Tech: transparencia no investimento</h2>
@@ -369,5 +449,38 @@ a { color: inherit; text-decoration: none; }
 <div id="shared-footer"></div>
 
 <script src="/shared.js"></script>
+<script>
+(function () {
+  var FAIXAS = {
+    micro:   { consultoria: [15000, 25000], oc: [8000, 12000],  trein: [2000, 4000] },
+    pequena: { consultoria: [25000, 50000], oc: [10000, 18000], trein: [3000, 6000] },
+    media:   { consultoria: [45000, 80000], oc: [15000, 25000], trein: [5000, 10000] }
+  };
+  var MATUR = { inicial: 1.15, parcial: 1.0, avancada: 0.85 };
+  var UNID = { '1': 1.0, '2': 1.25, '3': 1.5 };
+  function money(v) { return 'R$ ' + (Math.round(v / 500) * 500).toLocaleString('pt-BR'); }
+
+  var btn = document.getElementById('calcBtn');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var porte = document.getElementById('calcPorte').value;
+    var mat = MATUR[document.getElementById('calcMaturidade').value];
+    var un = UNID[document.getElementById('calcUnidades').value];
+    var f = FAIXAS[porte];
+    var lo = (f.consultoria[0] * mat + f.trein[0]) * un + f.oc[0] * un;
+    var hi = (f.consultoria[1] * mat + f.trein[1]) * un + f.oc[1] * un;
+    document.getElementById('calcValor').textContent = money(lo) + ' a ' + money(hi);
+    document.getElementById('calcBreak').innerHTML =
+      'Consultoria: ' + money(f.consultoria[0] * mat * un) + ' – ' + money(f.consultoria[1] * mat * un) +
+      ' · Organismo certificador: ' + money(f.oc[0] * un) + ' – ' + money(f.oc[1] * un) +
+      ' · Treinamentos: ' + money(f.trein[0] * un) + ' – ' + money(f.trein[1] * un);
+    var msg = 'Olá, usei a calculadora de custo da certificação ISO 9001 no site (faixa ' + money(lo) + ' a ' + money(hi) + ') e quero uma proposta exata para minha empresa.';
+    document.getElementById('calcWa').href = 'https://wa.me/5554999648368?text=' + encodeURIComponent(msg);
+    document.getElementById('calcResult').hidden = false;
+    if (typeof gtag === 'function') gtag('event', 'generate_lead', { event_category: 'calculadora', event_label: 'custo_iso_' + porte, value: 1 });
+    if (typeof plausible === 'function') plausible('calc_custo_iso', { props: { porte: porte } });
+  });
+})();
+</script>
 </body>
 </html>
