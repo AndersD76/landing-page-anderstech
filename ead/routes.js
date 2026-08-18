@@ -1106,7 +1106,13 @@ router.get('/ead/curso/:slug', async (req, res) => {
         SELECT titulo, subtitulo, descricao, objetivo, carga_horaria, preco, slug
         FROM ead_courses WHERE slug = ${req.params.slug} AND ativo = true
       `;
-      if (rows.length) {
+      // Curso inexistente devolvia 200 com o HTML generico — soft 404, que faria
+      // o Google indexar qualquer /ead/curso/<qualquer-coisa>. Agora 404 de fato.
+      if (!rows.length) {
+        return res.status(404).type('html').send(injectShared(
+          readFileSync(join(dirname(__dirname), 'pages', '404.html'), 'utf8'), req.path));
+      }
+      {
         const c = rows[0];
         const e = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
           .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
