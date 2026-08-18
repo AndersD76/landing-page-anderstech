@@ -1085,7 +1085,7 @@ CI: `.github/workflows/ci.yml`.
 - **Risco da correção**: baixo, mas é alteração visual ampla — 74 pontos em uma folha de estilo que governa o site inteiro. Fazer por grupo de componentes e conferir cada família de página, porque arredondamento em `rem` desloca ligeiramente o ritmo vertical.
 
 #### #80 — A virada de gratuito para pago depende de duas variáveis cuja ausência bloqueia 100% das vendas, sem alerta
-> **🟡 AGUARDA VOCÊ (Fase 2 — 2026-08-18)** — Código pronto e fail-closed. Falta `ASAAS_API_KEY` e `ASAAS_WEBHOOK_TOKEN` no Railway — ver `HANDOFF.md`.
+> **✅ CORRIGIDO (Fase 2 — 2026-08-18)** — Código fail-closed publicado. `ASAAS_WEBHOOK_TOKEN` confirmado em produção pelo 401 do webhook; `ASAAS_API_KEY` configurada e compra testada — **reportado pelo usuário, não verificável externamente** (o checkout exige sessão de aluno antes da checagem de configuração).
 - **Arquivos**: `ead/routes.js:893-906,981-985` · `.env.example`
 - **Descrição**: Com `promoAtiva()` retornando `false` desde 29/07 (**#78**), o checkout deixou de seguir o caminho gratuito e passou a depender inteiramente do Mercado Pago. Os dois pontos de entrada são fail-closed — o que está **correto** do ponto de vista de segurança, e é justamente por isso que a consequência operacional precisa ser registrada:
 
