@@ -176,9 +176,14 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 
 <script>
 (function(){
+  var API='/ead/api';   // #5: base unica, em vez de literal repetido em cada fetch
+  // #42: conteudo vindo do banco era concatenado direto em innerHTML.
+  function esc(v){ if(v==null) return ''; return String(v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 
-  fetch('/ead/api/me').then(function(r){
+  fetch(API+'/me').then(function(r){
     if(r.ok)return r.json();
     return null;
   }).then(function(user){
@@ -187,12 +192,12 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
       nav.innerHTML='<a href="/ead/meus-cursos">Meus cursos</a><a href="#" id="logoutBtn">Sair</a>';
       document.getElementById('logoutBtn').addEventListener('click',function(e){
         e.preventDefault();
-        fetch('/ead/api/logout',{method:'POST'}).then(function(){window.location.reload()});
+        fetch(API+'/logout',{method:'POST'}).then(function(){window.location.reload()});
       });
     }
   }).catch(function(){});
 
-  fetch('/ead/api/promo').then(function(r){return r.json()}).then(function(promo){
+  fetch(API+'/promo').then(function(r){return r.json()}).then(function(promo){
     if(promo.ativa){
       var b=document.getElementById('promoBanner');
       b.style.display='block';
@@ -200,7 +205,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
     }
   }).catch(function(){});
 
-  fetch('/ead/api/courses').then(function(r){return r.json()}).then(function(courses){
+  fetch(API+'/courses').then(function(r){return r.json()}).then(function(resp){
+    var courses = resp.courses || resp;          // #62: resposta agora traz {courses, promo}
+    var promo = resp.promo || {ativa:false};
     var grid=document.getElementById('coursesGrid');
     if(!courses.length){grid.innerHTML='<p class="loading">Cursos em breve!</p>';return}
     var icons=['9001','AUD','P+I','5S'];
@@ -214,9 +221,9 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
       return '<div class="course-card">'
         +'<div class="thumb">'+(c.promo_gratuito?'<span class="promo-tag">Grátis</span>':'')+(icons[i]||'')+'</div>'
         +'<div class="body">'
-        +'<h2>'+c.titulo+'</h2>'
-        +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+c.total_modulos+' módulos</span><span>'+c.total_aulas+' aulas</span></div>'
-        +'<p class="desc">'+(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
+        +'<h2>'+esc(c.titulo)+'</h2>'
+        +'<div class="meta"><span>'+esc(c.carga_horaria)+'</span><span>'+c.total_modulos+' módulos</span><span>'+c.total_aulas+' aulas</span></div>'
+        +'<p class="desc">'+esc(c.subtitulo||c.descricao||'').slice(0,160)+'</p>'
         +'<div class="bottom">'
         +priceHtml
         +(c.enrolled?'<a href="/ead/player/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar curso</a>':(c.promo_gratuito?'<a href="/ead/checkout/'+c.slug+'" class="btn-ver" style="background:var(--green)">Acessar grátis</a>':'<a href="/ead/curso/'+c.slug+'" class="btn-ver">Ver detalhes</a>'))

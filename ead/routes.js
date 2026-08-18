@@ -7,8 +7,15 @@ import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, existsSync } from 'fs';
+import { injectShared } from '../inject.js';
+import { eadBoasVindas, eadMatriculaConfirmada } from '../emails.js';
+import * as asaas from './asaas.js';
+import { criarToken, consumirToken, emailReset } from '../db/senha.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// #49: dominio por ambiente. Sem isso, so era possivel exercitar pagamento em producao.
+const APP_URL = process.env.APP_URL || 'https://anderstech.net';
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
@@ -24,147 +31,6 @@ import { PROMO, promoAtiva } from '../promo.js';
 // Database initialization
 // ═══════════════════════════════════════════════════════════════════
 
-async function initEadDB() {
-  if (!sql) return;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_courses (
-      id SERIAL PRIMARY KEY,
-      slug TEXT UNIQUE NOT NULL,
-      titulo TEXT NOT NULL,
-      subtitulo TEXT,
-      descricao TEXT,
-      carga_horaria TEXT,
-      preco NUMERIC(10,2) NOT NULL,
-      preco_original NUMERIC(10,2),
-      imagem TEXT,
-      publico TEXT,
-      prerequisito TEXT,
-      objetivo TEXT,
-      ativo BOOLEAN DEFAULT true,
-      ordem INT DEFAULT 0,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_modules (
-      id SERIAL PRIMARY KEY,
-      course_id INTEGER REFERENCES ead_courses(id) ON DELETE CASCADE,
-      titulo TEXT NOT NULL,
-      descricao TEXT,
-      ordem INT NOT NULL DEFAULT 0
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_lessons (
-      id SERIAL PRIMARY KEY,
-      module_id INTEGER REFERENCES ead_modules(id) ON DELETE CASCADE,
-      slug TEXT NOT NULL,
-      titulo TEXT NOT NULL,
-      duracao TEXT,
-      conteudo TEXT,
-      entregavel_titulo TEXT,
-      entregavel_url TEXT,
-      ordem INT NOT NULL DEFAULT 0
-    )
-  `;
-
-  await sql`CREATE INDEX IF NOT EXISTS idx_ead_lessons_slug ON ead_lessons(slug)`;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_quiz_questions (
-      id SERIAL PRIMARY KEY,
-      module_id INTEGER REFERENCES ead_modules(id) ON DELETE CASCADE,
-      course_id INTEGER REFERENCES ead_courses(id) ON DELETE CASCADE,
-      pergunta TEXT NOT NULL,
-      alternativas JSONB NOT NULL,
-      resposta_correta INT NOT NULL,
-      explicacao TEXT,
-      is_final BOOLEAN DEFAULT false
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_users (
-      id SERIAL PRIMARY KEY,
-      email TEXT UNIQUE NOT NULL,
-      senha_hash TEXT NOT NULL,
-      nome TEXT NOT NULL,
-      telefone TEXT,
-      empresa TEXT,
-      ativo BOOLEAN DEFAULT true,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_orders (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES ead_users(id),
-      course_id INTEGER REFERENCES ead_courses(id),
-      valor NUMERIC(10,2) NOT NULL,
-      metodo TEXT,
-      status TEXT DEFAULT 'pendente',
-      mp_preference_id TEXT,
-      mp_payment_id TEXT,
-      pix_qr_code TEXT,
-      pix_qr_code_base64 TEXT,
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      paid_at TIMESTAMPTZ
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_enrollments (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES ead_users(id),
-      course_id INTEGER REFERENCES ead_courses(id),
-      order_id INTEGER REFERENCES ead_orders(id),
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      UNIQUE(user_id, course_id)
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_progress (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES ead_users(id),
-      lesson_id INTEGER REFERENCES ead_lessons(id),
-      completed BOOLEAN DEFAULT false,
-      completed_at TIMESTAMPTZ,
-      UNIQUE(user_id, lesson_id)
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_quiz_attempts (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES ead_users(id),
-      course_id INTEGER REFERENCES ead_courses(id),
-      module_id INTEGER,
-      is_final BOOLEAN DEFAULT false,
-      score NUMERIC(5,2),
-      total_questions INT,
-      correct_answers INT,
-      passed BOOLEAN DEFAULT false,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS ead_certificates (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES ead_users(id),
-      course_id INTEGER REFERENCES ead_courses(id),
-      code TEXT UNIQUE NOT NULL,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-
-  console.log('EAD DB tables initialized');
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // Auth middleware
@@ -180,18 +46,16 @@ function requireEadAuth(req, res, next) {
   next();
 }
 
-function requireEadAdmin(req, res, next) {
-  if (!req.session?.portalUser || req.session.portalUser.role !== 'admin') {
-    if (req.path.startsWith('/ead/api/')) {
-      return res.status(403).json({ error: 'Acesso restrito' });
-    }
-    return res.redirect('/ead/login');
-  }
-  next();
-}
 
 // Rate limiting for registration
 const regAttempts = new Map();
+// #40: os Maps cresciam sem limite. Varredura periodica das janelas vencidas.
+setInterval(() => {
+  const agora = Date.now();
+  for (const [m, janela] of [[regAttempts, 60 * 60_000], [loginAttempts, 15 * 60_000]]) {
+    for (const [k, v] of m) if (agora - v.start > janela) m.delete(k);
+  }
+}, 10 * 60_000).unref();
 function regRateLimit(req, res, next) {
   const key = req.ip;
   const now = Date.now();
@@ -246,11 +110,12 @@ router.get('/ead/api/courses', async (req, res) => {
     const promo = promoAtiva();
     let enrolledSlugs = [];
     if (req.session?.eadUser) {
-      const enr = await sql`SELECT c.slug FROM ead_enrollments e JOIN ead_courses c ON c.id = e.course_id WHERE e.user_id = ${req.session.eadUser.id}`;
+      const enr = await sql`SELECT c.slug FROM ead_enrollments e JOIN ead_courses c ON c.id = e.course_id WHERE e.user_id = ${req.session.eadUser.id} AND e.revogada_em IS NULL`;
       enrolledSlugs = enr.map(r => r.slug);
     }
     const result = courses.map(c => ({ ...c, promo_gratuito: promo, enrolled: enrolledSlugs.includes(c.slug) }));
-    res.json(result);
+    // #62: a pagina fazia uma chamada separada a /ead/api/promo so pela data.
+    res.json({ courses: result, promo: promo ? { ativa: true, fim: PROMO.fim.toISOString(), label: PROMO.label } : { ativa: false } });
   } catch (err) {
     console.error('EAD courses error:', err);
     res.status(500).json({ error: 'Erro ao buscar cursos' });
@@ -276,7 +141,7 @@ router.get('/ead/api/courses/:slug', async (req, res) => {
 
     let enrolled = false;
     if (req.session?.eadUser) {
-      const enr = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${req.session.eadUser.id} AND course_id = ${course.id}`;
+      const enr = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${req.session.eadUser.id} AND course_id = ${course.id} AND revogada_em IS NULL`;
       enrolled = enr.length > 0;
     }
 
@@ -309,6 +174,8 @@ router.post('/ead/api/register', regRateLimit, async (req, res) => {
     `;
 
     const user = result[0];
+    // #37: sem regenerate, o id de sessao anterior ao login seguia valido.
+    await new Promise((ok, no) => req.session.regenerate(e => (e ? no(e) : ok())));
     req.session.eadUser = { id: user.id, email: user.email, nome: user.nome };
 
     if (resend) {
@@ -317,13 +184,7 @@ router.post('/ead/api/register', regRateLimit, async (req, res) => {
           from: 'Anders Tech Cursos <noreply@anderstech.net>',
           to: user.email,
           subject: `${user.nome.split(' ')[0]}, bem-vindo aos Cursos Anders Tech`,
-          html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
-            <h2 style="color:#0b1730">Bem-vindo, ${user.nome.split(' ')[0]}!</h2>
-            <p>Sua conta nos <strong>Cursos Anders Tech</strong> foi criada com sucesso.</p>
-            <p>Acesse <a href="https://anderstech.net/ead/cursos">nossos cursos</a> e comece a aprender.</p>
-            <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-            <p style="font-size:12px;color:#888">Anders Tech · anderstech.net</p>
-          </div>`,
+          html: eadBoasVindas({ nome: user.nome }),
         });
       } catch (_) {}
     }
@@ -349,6 +210,7 @@ router.post('/ead/api/login', loginRateLimit, async (req, res) => {
     const valid = await bcrypt.compare(senha, user.senha_hash);
     if (!valid) return res.status(401).json({ error: 'Email ou senha incorretos' });
 
+    await new Promise((ok, no) => req.session.regenerate(e => (e ? no(e) : ok())));
     req.session.eadUser = { id: user.id, email: user.email, nome: user.nome };
     res.json({ ok: true, user: req.session.eadUser });
   } catch (err) {
@@ -358,8 +220,8 @@ router.post('/ead/api/login', loginRateLimit, async (req, res) => {
 });
 
 router.post('/ead/api/logout', (req, res) => {
-  delete req.session.eadUser;
-  res.json({ ok: true });
+  // #45: antes so apagava a propriedade; o id de sessao seguia valido 24h.
+  req.session.destroy(() => res.json({ ok: true }));
 });
 
 router.get('/ead/api/me', requireEadAuth, (req, res) => {
@@ -380,7 +242,7 @@ router.get('/ead/api/my-courses', requireEadAuth, async (req, res) => {
         (SELECT COUNT(*)::int FROM ead_progress p JOIN ead_lessons l ON p.lesson_id = l.id JOIN ead_modules m ON l.module_id = m.id WHERE m.course_id = c.id AND p.user_id = ${userId} AND p.completed = true) AS aulas_completas,
         (SELECT code FROM ead_certificates cert WHERE cert.user_id = ${userId} AND cert.course_id = c.id LIMIT 1) AS certificate_code
       FROM ead_courses c
-      JOIN ead_enrollments e ON e.course_id = c.id AND e.user_id = ${userId}
+      JOIN ead_enrollments e ON e.course_id = c.id AND e.user_id = ${userId} AND e.revogada_em IS NULL
       ORDER BY e.created_at DESC
     `;
     res.json(courses);
@@ -400,7 +262,7 @@ router.get('/ead/api/player/:courseSlug', requireEadAuth, async (req, res) => {
     if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
-    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
+    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id} AND revogada_em IS NULL`;
     if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
 
     const modules = await sql`
@@ -434,7 +296,7 @@ router.get('/ead/api/lesson/:lessonId', requireEadAuth, async (req, res) => {
     if (!lessons.length) return res.status(404).json({ error: 'Aula não encontrada' });
     const lesson = lessons[0];
 
-    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${lesson.course_id}`;
+    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${lesson.course_id} AND revogada_em IS NULL`;
     if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
 
     const progress = await sql`SELECT completed FROM ead_progress WHERE user_id = ${userId} AND lesson_id = ${lessonId}`;
@@ -467,6 +329,19 @@ router.post('/ead/api/lesson/:lessonId/complete', requireEadAuth, async (req, re
     const userId = req.session.eadUser.id;
     const lessonId = parseInt(req.params.lessonId, 10);
 
+    // #36: era a unica rota da familia sem checagem de matricula. Mesmo padrao
+    // de GET /ead/api/lesson/:lessonId e /ead/api/template/:lessonId.
+    const aula = await sql`
+      SELECT l.id, m.course_id FROM ead_lessons l
+      JOIN ead_modules m ON l.module_id = m.id WHERE l.id = ${lessonId}
+    `;
+    if (!aula.length) return res.status(404).json({ error: 'Aula não encontrada' });
+    const matriculado = await sql`
+      SELECT id FROM ead_enrollments
+      WHERE user_id = ${userId} AND course_id = ${aula[0].course_id} AND revogada_em IS NULL
+    `;
+    if (!matriculado.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
+
     await sql`
       INSERT INTO ead_progress (user_id, lesson_id, completed, completed_at)
       VALUES (${userId}, ${lessonId}, true, NOW())
@@ -495,7 +370,7 @@ router.get('/ead/api/quiz/:courseSlug', requireEadAuth, async (req, res) => {
     if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
-    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
+    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id} AND revogada_em IS NULL`;
     if (!enrolled.length) return res.status(403).json({ error: 'Não matriculado' });
 
     let questions;
@@ -525,23 +400,42 @@ router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res)
     if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const courseId = courses[0].id;
 
+    // C4: checagem de matricula antes de processar quiz
+    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${courseId} AND revogada_em IS NULL`;
+    if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
+
     let questions;
     if (isFinal) {
       questions = await sql`SELECT id, resposta_correta, explicacao FROM ead_quiz_questions WHERE course_id = ${courseId} AND is_final = true ORDER BY id`;
     } else {
+      const mod = await sql`SELECT id FROM ead_modules WHERE id = ${moduleId} AND course_id = ${courseId}`;
+      if (!mod.length) return res.status(400).json({ error: 'Módulo não pertence a este curso' });
       questions = await sql`SELECT id, resposta_correta, explicacao FROM ead_quiz_questions WHERE module_id = ${moduleId} AND is_final = false ORDER BY id`;
     }
 
+    // #32: sem isso, corpo sem `answers` derrubava a rota com 500.
+    if (!answers || typeof answers !== 'object') {
+      return res.status(400).json({ error: 'Respostas não enviadas' });
+    }
+
     let correct = 0;
-    const results = questions.map(q => {
-      const userAnswer = answers[String(q.id)];
-      const isCorrect = userAnswer === q.resposta_correta;
-      if (isCorrect) correct++;
-      return { questionId: q.id, correct: isCorrect, correctAnswer: q.resposta_correta, explicacao: q.explicacao };
-    });
+    const parciais = questions.map(q => ({
+      questionId: q.id,
+      correct: answers[String(q.id)] === q.resposta_correta,
+      correctAnswer: q.resposta_correta,
+      explicacao: q.explicacao,
+    }));
+    correct = parciais.filter(r => r.correct).length;
 
     const score = questions.length > 0 ? (correct / questions.length) * 100 : 0;
     const passed = score >= 70;
+
+    // #8: o gabarito foi removido para não permitir farm por tentativa, mas o
+    // player continuou lendo `correctAnswer` e nenhuma alternativa era destacada.
+    // Revela só a quem já passou — mantém o valor pedagógico sem abrir o farm.
+    const results = parciais.map(r => passed
+      ? r
+      : { questionId: r.questionId, correct: r.correct, explicacao: r.explicacao });
 
     await sql`
       INSERT INTO ead_quiz_attempts (user_id, course_id, module_id, is_final, score, total_questions, correct_answers, passed)
@@ -554,7 +448,8 @@ router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res)
       if (existing.length) {
         certificateCode = existing[0].code;
       } else {
-        certificateCode = 'AT-' + crypto.randomBytes(4).toString('hex').toUpperCase();
+        // #46: 4 bytes davam 2^32. 12 bytes tiram a enumeracao do horizonte.
+        certificateCode = 'AT-' + crypto.randomBytes(12).toString('hex').toUpperCase();
         await sql`INSERT INTO ead_certificates (user_id, course_id, code) VALUES (${userId}, ${courseId}, ${certificateCode})`;
       }
     }
@@ -573,7 +468,20 @@ router.post('/ead/api/quiz/:courseSlug/submit', requireEadAuth, async (req, res)
 router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
   if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
+    const userId = req.session.eadUser.id;
     const lessonId = parseInt(req.params.lessonId);
+
+    // C5: checagem de matricula (mesmo padrao de GET /ead/api/lesson/:lessonId)
+    const lessonCheck = await sql`
+      SELECT l.id, m.course_id
+      FROM ead_lessons l JOIN ead_modules m ON l.module_id = m.id
+      WHERE l.id = ${lessonId}
+    `;
+    if (!lessonCheck.length) return res.status(404).json({ error: 'Aula não encontrada' });
+
+    const enrolled = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${lessonCheck[0].course_id} AND revogada_em IS NULL`;
+    if (!enrolled.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
+
     const rows = await sql`
       SELECT l.titulo AS lesson_titulo, l.conteudo,
              m.titulo AS module_titulo, c.titulo AS course_titulo
@@ -681,7 +589,7 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
 });
 
 function extractListItems(conteudo, title) {
-  if (!conteudo) return defaultItems(title);
+  if (!conteudo) return defaultItems();
   const items = [];
   const liMatches = conteudo.match(/<li[^>]*>([\s\S]*?)<\/li>/gi) || [];
   liMatches.forEach(li => {
@@ -695,11 +603,11 @@ function extractListItems(conteudo, title) {
       if (!items.includes(text)) items.push(text);
     }
   });
-  if (items.length < 5) return defaultItems(title).concat(items).slice(0, 15);
+  if (items.length < 5) return defaultItems().concat(items).slice(0, 15);
   return items.slice(0, 20);
 }
 
-function defaultItems(title) {
+function defaultItems() {
   return [
     'Item 1: _______________________________________',
     'Item 2: _______________________________________',
@@ -774,7 +682,26 @@ function drawTable(doc, cols, numRows, pageWidth, headerColor) {
 // Certificate PDF
 // ═══════════════════════════════════════════════════════════════════
 
-router.get('/ead/api/certificate/:code', async (req, res) => {
+// #46: endpoint publico que devolve nome de pessoa. Limitador brando torna a
+// sondagem cara sem atrapalhar quem so quer conferir um certificado.
+const certAttempts = new Map();
+setInterval(() => {
+  const agora = Date.now();
+  for (const [k, v] of certAttempts) if (agora - v.start > 60_000) certAttempts.delete(k);
+}, 5 * 60_000).unref();
+
+function certRateLimit(req, res, next) {
+  const k = req.ip;
+  const agora = Date.now();
+  const e = certAttempts.get(k);
+  if (e && agora - e.start < 60_000) {
+    if (e.count >= 20) return res.status(429).json({ error: 'Muitas consultas. Aguarde um minuto.' });
+    e.count++;
+  } else certAttempts.set(k, { start: agora, count: 1 });
+  next();
+}
+
+router.get('/ead/api/certificate/:code', certRateLimit, async (req, res) => {
   if (!sql) return res.status(500).json({ error: 'DB não configurado' });
   try {
     const code = req.params.code;
@@ -830,7 +757,7 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
 
     doc.moveDown(1.5);
     doc.fontSize(8).fillColor('#999').text(`Código de verificação: ${cert.code}`, { align: 'center' });
-    doc.text('Verifique em: anderstech.net/ead/certificado/' + cert.code, { align: 'center' });
+    doc.text('Verifique em: ' + APP_URL.replace(/^https?:\/\//, '') + '/ead/certificado/' + cert.code, { align: 'center' });
 
     doc.end();
   } catch (err) {
@@ -844,173 +771,307 @@ router.get('/ead/api/certificate/:code', async (req, res) => {
 // ═══════════════════════════════════════════════════════════════════
 
 router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+  if (!asaas.asaasConfigurado()) {
+    // Fail-closed: sem chave, recusar em vez de liberar grátis.
+    console.error('ASAAS_API_KEY não configurada — checkout recusado');
+    return res.status(503).json({ error: 'Pagamento não configurado. Entre em contato com o suporte.' });
+  }
+
   try {
     const userId = req.session.eadUser.id;
-    const { courseSlug, metodo } = req.body;
+    const { courseSlug, metodo, cpfCnpj } = req.body;
 
     const courses = await sql`SELECT * FROM ead_courses WHERE slug = ${courseSlug} AND ativo = true`;
     if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
     const course = courses[0];
 
-    const existing = await sql`SELECT id FROM ead_enrollments WHERE user_id = ${userId} AND course_id = ${course.id}`;
-    if (existing.length) return res.json({ ok: true, status: 'aprovado', redirect: '/ead/player/' + courseSlug });
-
-    if (promoAtiva()) {
-      const order = await sql`
-        INSERT INTO ead_orders (user_id, course_id, valor, metodo, status, paid_at)
-        VALUES (${userId}, ${course.id}, 0, 'promo_lancamento', 'aprovado', NOW()) RETURNING id
-      `;
-      await sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${userId}, ${course.id}, ${order[0].id})`;
-      return res.json({ ok: true, status: 'aprovado', redirect: '/ead/meus-cursos' });
+    const jaMatriculado = await sql`
+      SELECT id FROM ead_enrollments
+      WHERE user_id = ${userId} AND course_id = ${course.id} AND revogada_em IS NULL
+    `;
+    if (jaMatriculado.length) {
+      return res.json({ ok: true, status: 'aprovado', redirect: '/ead/player/' + courseSlug });
     }
 
-    const MP_TOKEN = process.env.MP_ACCESS_TOKEN;
-    if (!MP_TOKEN) {
-      const order = await sql`
-        INSERT INTO ead_orders (user_id, course_id, valor, metodo, status, paid_at)
-        VALUES (${userId}, ${course.id}, ${course.preco}, 'dev_free', 'aprovado', NOW()) RETURNING id
-      `;
-      await sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${userId}, ${course.id}, ${order[0].id})`;
-      return res.json({ ok: true, status: 'aprovado', redirect: '/ead/meus-cursos' });
+    const users = await sql`SELECT id, nome, email, telefone, cpf_cnpj, asaas_customer_id FROM ead_users WHERE id = ${userId}`;
+    if (!users.length) return res.status(404).json({ error: 'Usuário não encontrado' });
+    const user = users[0];
+
+    let doc = user.cpf_cnpj || asaas.normalizaDoc(cpfCnpj);
+    if (!doc) return res.status(400).json({ error: 'CPF ou CNPJ é obrigatório', precisaDocumento: true });
+    if (!asaas.docValido(doc)) return res.status(400).json({ error: 'CPF ou CNPJ inválido', precisaDocumento: true });
+    doc = asaas.normalizaDoc(doc);
+
+    let customerId = user.asaas_customer_id;
+    if (!customerId) {
+      const cliente = await asaas.criarCliente({ nome: user.nome, email: user.email, cpfCnpj: doc, telefone: user.telefone });
+      customerId = cliente.id;
+      await sql`UPDATE ead_users SET asaas_customer_id = ${customerId}, cpf_cnpj = ${doc} WHERE id = ${userId}`;
+    } else if (!user.cpf_cnpj) {
+      await sql`UPDATE ead_users SET cpf_cnpj = ${doc} WHERE id = ${userId}`;
     }
 
-    if (metodo === 'pix') {
-      const order = await sql`
-        INSERT INTO ead_orders (user_id, course_id, valor, metodo, status)
-        VALUES (${userId}, ${course.id}, ${course.preco}, 'pix', 'pendente') RETURNING id
-      `;
+    const metodoInterno = metodo === 'pix' ? 'pix' : 'cartao';
 
-      const mpRes = await fetch('https://api.mercadopago.com/v1/payments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MP_TOKEN}`, 'X-Idempotency-Key': `ead-${order[0].id}` },
-        body: JSON.stringify({
-          transaction_amount: Number(course.preco),
-          description: `Curso: ${course.titulo}`,
-          payment_method_id: 'pix',
-          payer: { email: req.session.eadUser.email },
-          external_reference: `ead-order-${order[0].id}`,
-          notification_url: `https://anderstech.net/ead/api/webhook/mp`,
-        }),
-      });
-      const mpData = await mpRes.json();
-
-      if (mpData.id) {
-        await sql`UPDATE ead_orders SET mp_payment_id = ${String(mpData.id)}, pix_qr_code = ${mpData.point_of_interaction?.transaction_data?.qr_code || null}, pix_qr_code_base64 = ${mpData.point_of_interaction?.transaction_data?.qr_code_base64 || null} WHERE id = ${order[0].id}`;
-        return res.json({
-          ok: true, status: 'pix_pending', orderId: order[0].id,
-          qr_code: mpData.point_of_interaction?.transaction_data?.qr_code,
-          qr_code_base64: mpData.point_of_interaction?.transaction_data?.qr_code_base64,
-        });
-      } else {
-        return res.status(500).json({ error: 'Erro ao gerar PIX', detail: mpData.message });
+    // Reaproveita cobrança pendente em vez de criar outra a cada tentativa.
+    const pendente = await sql`
+      SELECT id, metodo, asaas_invoice_url, pix_qr_code, pix_qr_code_base64
+      FROM ead_orders
+      WHERE user_id = ${userId} AND course_id = ${course.id} AND status = 'pendente'
+        AND metodo = ${metodoInterno} AND asaas_payment_id IS NOT NULL
+      ORDER BY created_at DESC LIMIT 1
+    `;
+    if (pendente.length) {
+      const o = pendente[0];
+      if (o.metodo === 'pix' && o.pix_qr_code) {
+        return res.json({ ok: true, status: 'pix_pending', orderId: o.id, qr_code: o.pix_qr_code, qr_code_base64: o.pix_qr_code_base64 });
+      }
+      if (o.metodo === 'cartao' && o.asaas_invoice_url) {
+        return res.json({ ok: true, status: 'redirect', init_point: o.asaas_invoice_url, orderId: o.id });
       }
     }
 
-    // Credit card / Mercado Pago Checkout Pro
     const order = await sql`
       INSERT INTO ead_orders (user_id, course_id, valor, metodo, status)
-      VALUES (${userId}, ${course.id}, ${course.preco}, 'checkout_pro', 'pendente') RETURNING id
+      VALUES (${userId}, ${course.id}, ${course.preco}, ${metodoInterno}, 'pendente') RETURNING id
     `;
+    const orderId = order[0].id;
 
-    const mpRes = await fetch('https://api.mercadopago.com/checkout/preferences', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${MP_TOKEN}` },
-      body: JSON.stringify({
-        items: [{ title: course.titulo, quantity: 1, unit_price: Number(course.preco), currency_id: 'BRL' }],
-        payer: { email: req.session.eadUser.email },
-        external_reference: `ead-order-${order[0].id}`,
-        back_urls: {
-          success: `https://anderstech.net/ead/checkout/sucesso?order=${order[0].id}`,
-          failure: `https://anderstech.net/ead/checkout/erro?order=${order[0].id}`,
-          pending: `https://anderstech.net/ead/checkout/pendente?order=${order[0].id}`,
-        },
-        auto_return: 'approved',
-        notification_url: `https://anderstech.net/ead/api/webhook/mp`,
-      }),
+    // O valor cobrado vem SEMPRE do banco, nunca do corpo da requisição.
+    const cobranca = await asaas.criarCobranca({
+      customerId,
+      valor: course.preco,
+      descricao: `Curso: ${course.titulo}`,
+      orderId,
+      billingType: metodo === 'pix' ? 'PIX' : 'CREDIT_CARD',
     });
-    const mpData = await mpRes.json();
 
-    if (mpData.id) {
-      await sql`UPDATE ead_orders SET mp_preference_id = ${mpData.id} WHERE id = ${order[0].id}`;
-      return res.json({ ok: true, status: 'redirect', init_point: mpData.init_point, orderId: order[0].id });
+    if (metodoInterno === 'pix') {
+      const qr = await asaas.obterQrCodePix(cobranca.id);
+      await sql`
+        UPDATE ead_orders
+        SET asaas_payment_id = ${String(cobranca.id)}, asaas_invoice_url = ${cobranca.invoiceUrl || null},
+            pix_qr_code = ${qr.payload || null}, pix_qr_code_base64 = ${qr.encodedImage || null}
+        WHERE id = ${orderId}
+      `;
+      return res.json({
+        ok: true, status: 'pix_pending', orderId,
+        qr_code: qr.payload, qr_code_base64: qr.encodedImage, expira_em: qr.expirationDate || null,
+      });
     }
 
-    res.status(500).json({ error: 'Erro ao criar checkout' });
+    await sql`
+      UPDATE ead_orders SET asaas_payment_id = ${String(cobranca.id)}, asaas_invoice_url = ${cobranca.invoiceUrl || null}
+      WHERE id = ${orderId}
+    `;
+    return res.json({ ok: true, status: 'redirect', init_point: cobranca.invoiceUrl, orderId });
   } catch (err) {
-    console.error('EAD checkout error:', err);
-    res.status(500).json({ error: 'Erro no checkout' });
+    console.error('EAD checkout error:', err.message);
+    res.status(502).json({ error: 'Não foi possível iniciar o pagamento. Tente novamente.' });
   }
 });
 
-// Mercado Pago webhook
-router.post('/ead/api/webhook/mp', async (req, res) => {
-  if (!sql) return res.sendStatus(200);
+// ── Webhook do Asaas ──────────────────────────────────────────────────────────
+// Autenticado pelo token configurado no painel, enviado no header asaas-access-token.
+router.post('/ead/api/webhook/asaas', async (req, res) => {
+  const segredo = process.env.ASAAS_WEBHOOK_TOKEN;
+  if (!segredo) {
+    console.error('ASAAS_WEBHOOK_TOKEN não configurado — webhook rejeitado (fail-closed)');
+    return res.sendStatus(503);
+  }
+
+  const a = Buffer.from(String(req.headers['asaas-access-token'] || ''), 'utf8');
+  const b = Buffer.from(segredo, 'utf8');
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    console.error('Webhook Asaas: token inválido');
+    return res.sendStatus(401);
+  }
+
+  if (!sql) return res.sendStatus(503);
+
   try {
-    const { type, data } = req.body;
-    if (type !== 'payment' || !data?.id) return res.sendStatus(200);
+    const { event, payment } = req.body || {};
+    const ref = payment?.externalReference;
+    if (!event || !ref || !ref.startsWith('ead-order-')) return res.sendStatus(200);
 
-    const MP_TOKEN = process.env.MP_ACCESS_TOKEN;
-    if (!MP_TOKEN) return res.sendStatus(200);
+    const orderId = parseInt(ref.replace('ead-order-', ''), 10);
+    if (!Number.isInteger(orderId)) return res.sendStatus(200);
 
-    const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${data.id}`, {
-      headers: { 'Authorization': `Bearer ${MP_TOKEN}` },
-    });
-    const payment = await mpRes.json();
+    const { status, libera, revoga } = asaas.traduzEvento(event);
+    if (!status) return res.sendStatus(200);
 
-    if (!payment.external_reference?.startsWith('ead-order-')) return res.sendStatus(200);
-    const orderId = parseInt(payment.external_reference.replace('ead-order-', ''), 10);
+    const orders = await sql`SELECT * FROM ead_orders WHERE id = ${orderId}`;
+    if (!orders.length) return res.sendStatus(200);
+    const order = orders[0];
 
-    if (payment.status === 'approved') {
-      const orders = await sql`SELECT * FROM ead_orders WHERE id = ${orderId} AND status != 'aprovado'`;
-      if (orders.length) {
-        const order = orders[0];
-        await sql`UPDATE ead_orders SET status = 'aprovado', mp_payment_id = ${String(payment.id)}, paid_at = NOW() WHERE id = ${orderId}`;
-        await sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${order.user_id}, ${order.course_id}, ${orderId}) ON CONFLICT DO NOTHING`;
-
-        if (resend) {
-          const users = await sql`SELECT nome, email FROM ead_users WHERE id = ${order.user_id}`;
-          const courses = await sql`SELECT titulo FROM ead_courses WHERE id = ${order.course_id}`;
-          if (users.length && courses.length) {
-            try {
-              await resend.emails.send({
-                from: 'Anders Tech Cursos <noreply@anderstech.net>',
-                to: users[0].email,
-                subject: `Matrícula confirmada: ${courses[0].titulo}`,
-                html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto">
-                  <h2 style="color:#0b1730">Pagamento confirmado!</h2>
-                  <p>Olá, ${users[0].nome.split(' ')[0]}! Seu pagamento foi aprovado e você já tem acesso ao curso <strong>${courses[0].titulo}</strong>.</p>
-                  <p><a href="https://anderstech.net/ead/meus-cursos" style="display:inline-block;padding:12px 24px;background:#c5383c;color:#fff;text-decoration:none;font-weight:bold">Acessar meus cursos</a></p>
-                  <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-                  <p style="font-size:12px;color:#888">Anders Tech · anderstech.net</p>
-                </div>`,
-              });
-            } catch (_) {}
-          }
-        }
-      }
-    } else if (payment.status === 'rejected' || payment.status === 'cancelled') {
-      await sql`UPDATE ead_orders SET status = ${payment.status} WHERE id = ${orderId}`;
+    if (libera) {
+      if (order.status === 'aprovado') return res.sendStatus(200);
+      await sql.transaction([
+        sql`UPDATE ead_orders SET status = 'aprovado', asaas_payment_id = ${String(payment.id)}, paid_at = NOW() WHERE id = ${orderId}`,
+        sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${order.user_id}, ${order.course_id}, ${orderId})
+            ON CONFLICT (user_id, course_id) DO UPDATE SET revogada_em = NULL, revogada_motivo = NULL`,
+      ]);
+      await avisaMatricula(order);
+    } else if (revoga) {
+      await sql.transaction([
+        sql`UPDATE ead_orders SET status = ${status} WHERE id = ${orderId}`,
+        sql`UPDATE ead_enrollments SET revogada_em = NOW(), revogada_motivo = ${event}
+            WHERE user_id = ${order.user_id} AND course_id = ${order.course_id}`,
+      ]);
+      console.warn(`Matrícula revogada: pedido #${orderId}, evento ${event}`);
+    } else {
+      await sql`UPDATE ead_orders SET status = ${status} WHERE id = ${orderId}`;
     }
 
     res.sendStatus(200);
   } catch (err) {
     console.error('EAD webhook error:', err);
-    res.sendStatus(200);
+    res.sendStatus(500);
   }
 });
 
-// Check order status (polling from frontend)
+async function avisaMatricula(order) {
+  if (!resend) return;
+  try {
+    const [users, courses] = await Promise.all([
+      sql`SELECT nome, email FROM ead_users WHERE id = ${order.user_id}`,
+      sql`SELECT titulo FROM ead_courses WHERE id = ${order.course_id}`,
+    ]);
+    if (!users.length || !courses.length) return;
+    await resend.emails.send({
+      from: 'Anders Tech Cursos <noreply@anderstech.net>',
+      to: users[0].email,
+      subject: `Matrícula confirmada: ${courses[0].titulo}`,
+      html: eadMatriculaConfirmada({ nome: users[0].nome, curso: courses[0].titulo }),
+    });
+  } catch (_) { /* falha de e-mail não invalida a matrícula */ }
+}
+
 router.get('/ead/api/order/:orderId/status', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(500).json({ error: 'DB não configurado' });
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
   try {
     const orderId = parseInt(req.params.orderId, 10);
     const userId = req.session.eadUser.id;
-    const orders = await sql`SELECT status FROM ead_orders WHERE id = ${orderId} AND user_id = ${userId}`;
+    const orders = await sql`
+      SELECT status, metodo, pix_qr_code, pix_qr_code_base64, asaas_invoice_url
+      FROM ead_orders WHERE id = ${orderId} AND user_id = ${userId}
+    `;
     if (!orders.length) return res.status(404).json({ error: 'Pedido não encontrado' });
-    res.json({ status: orders[0].status });
+    const o = orders[0];
+    const pend = o.status === 'pendente';
+    res.json({
+      status: o.status, metodo: o.metodo,
+      qr_code: pend ? o.pix_qr_code : null,
+      qr_code_base64: pend ? o.pix_qr_code_base64 : null,
+      invoice_url: pend ? o.asaas_invoice_url : null,
+    });
   } catch (err) {
-    res.status(500).json({ error: 'Erro' });
+    console.error('EAD order status error:', err);
+    res.status(500).json({ error: 'Erro ao consultar pedido' });
+  }
+});
+
+router.get('/ead/api/my-orders', requireEadAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+  try {
+    const userId = req.session.eadUser.id;
+    const orders = await sql`
+      SELECT o.id, o.valor, o.metodo, o.status, o.created_at, o.paid_at, c.titulo AS curso
+      FROM ead_orders o JOIN ead_courses c ON c.id = o.course_id
+      WHERE o.user_id = ${userId} ORDER BY o.created_at DESC LIMIT 100
+    `;
+    res.json(orders);
+  } catch (err) {
+    console.error('EAD my-orders error:', err);
+    res.status(500).json({ error: 'Erro ao buscar pedidos' });
+  }
+});
+
+// ── Recuperação de senha (#71) ────────────────────────────────────────────────
+// Resposta idêntica para e-mail existente e inexistente: o endpoint não pode
+// virar oráculo de enumeração de contas.
+router.post('/ead/api/esqueci-senha', loginRateLimit, async (req, res) => {
+  const generico = { ok: true, message: 'Se o e-mail estiver cadastrado, enviaremos o link em instantes.' };
+  try {
+    const email = String(req.body?.email || '').toLowerCase().trim();
+    if (!email) return res.json(generico);
+    const users = await sql`SELECT id, nome, email FROM ead_users WHERE email = ${email}`;
+    if (users.length && resend) {
+      const token = await criarToken(sql, 'ead', users[0].id);
+      const link = `${APP_URL}/ead/redefinir-senha?token=${token}`;
+      try {
+        await resend.emails.send({
+          from: 'Anders Tech <noreply@anderstech.net>',
+          to: users[0].email,
+          subject: 'Redefinir sua senha — Anders Tech',
+          html: emailReset({ nome: users[0].nome, link }),
+        });
+      } catch (e) { console.error('Falha ao enviar reset:', e.message); }
+    }
+    res.json(generico);
+  } catch (err) {
+    console.error('Esqueci senha error:', err);
+    res.json(generico);
+  }
+});
+
+router.post('/ead/api/redefinir-senha', loginRateLimit, async (req, res) => {
+  try {
+    const r = await consumirToken(sql, 'ead', req.body?.token, req.body?.senha, 'ead_users');
+    if (!r.ok) return res.status(400).json({ error: r.erro });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Redefinir senha error:', err);
+    res.status(500).json({ error: 'Erro ao redefinir senha' });
+  }
+});
+
+// ── Anotações da aula (#60) ───────────────────────────────────────────────────
+// Antes só existiam no localStorage do navegador.
+router.put('/ead/api/lesson/:lessonId/nota', requireEadAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+  try {
+    const userId = req.session.eadUser.id;
+    const lessonId = parseInt(req.params.lessonId, 10);
+    const idx = parseInt(req.body?.idx, 10) || 0;
+    const conteudo = String(req.body?.conteudo ?? '').slice(0, 20000);
+
+    const aula = await sql`
+      SELECT l.id, m.course_id FROM ead_lessons l
+      JOIN ead_modules m ON l.module_id = m.id WHERE l.id = ${lessonId}
+    `;
+    if (!aula.length) return res.status(404).json({ error: 'Aula não encontrada' });
+    const mat = await sql`
+      SELECT id FROM ead_enrollments
+      WHERE user_id = ${userId} AND course_id = ${aula[0].course_id} AND revogada_em IS NULL
+    `;
+    if (!mat.length) return res.status(403).json({ error: 'Você não está matriculado neste curso' });
+
+    await sql`
+      INSERT INTO ead_notes (user_id, lesson_id, idx, conteudo, updated_at)
+      VALUES (${userId}, ${lessonId}, ${idx}, ${conteudo}, NOW())
+      ON CONFLICT (user_id, lesson_id, idx) DO UPDATE SET conteudo = EXCLUDED.conteudo, updated_at = NOW()
+    `;
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('EAD nota error:', err);
+    res.status(500).json({ error: 'Erro ao salvar anotação' });
+  }
+});
+
+router.get('/ead/api/lesson/:lessonId/notas', requireEadAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+  try {
+    const userId = req.session.eadUser.id;
+    const lessonId = parseInt(req.params.lessonId, 10);
+    const notas = await sql`
+      SELECT idx, conteudo FROM ead_notes WHERE user_id = ${userId} AND lesson_id = ${lessonId}
+    `;
+    res.json(notas);
+  } catch (err) {
+    console.error('EAD notas error:', err);
+    res.status(500).json({ error: 'Erro ao buscar anotações' });
   }
 });
 
@@ -1018,32 +1079,92 @@ router.get('/ead/api/order/:orderId/status', requireEadAuth, async (req, res) =>
 // Page serving
 // ═══════════════════════════════════════════════════════════════════
 
-function sendEadPage(filename, res) {
+function sendEadPage(filename, req, res) {
   try {
     const filePath = join(__dirname, 'pages', filename);
     if (!existsSync(filePath)) return false;
-    res.type('html').send(readFileSync(filePath, 'utf8'));
+    const html = readFileSync(filePath, 'utf8');
+    res.type('html').send(injectShared(html, req.path));
     return true;
   } catch { return false; }
 }
 
 router.get('/ead', (req, res) => res.redirect('/ead/cursos'));
-router.get('/ead/cursos', (req, res) => { if (!sendEadPage('cursos.html', res)) res.redirect('/'); });
-router.get('/ead/curso/:slug', (req, res) => { if (!sendEadPage('curso-detail.html', res)) res.redirect('/ead/cursos'); });
+router.get('/ead/cursos', (req, res) => { if (!sendEadPage('cursos.html', req, res)) res.redirect('/'); });
+// #65: as 4 paginas de curso tinham o MESMO <title>, sem description, sem
+// canonical, sem Open Graph e sem conteudo no HTML — tudo vinha por JS. Sao as
+// paginas de produto: agora as tags saem prontas do servidor, com preco no
+// schema Course/Offer (elegivel a rich result agora que o curso e pago).
+router.get('/ead/curso/:slug', async (req, res) => {
+  try {
+    const filePath = join(__dirname, 'pages', 'curso-detail.html');
+    if (!existsSync(filePath)) return res.redirect('/ead/cursos');
+    let html = readFileSync(filePath, 'utf8');
+
+    if (sql && /^[a-z0-9-]{2,80}$/.test(req.params.slug)) {
+      const rows = await sql`
+        SELECT titulo, subtitulo, descricao, objetivo, carga_horaria, preco, slug
+        FROM ead_courses WHERE slug = ${req.params.slug} AND ativo = true
+      `;
+      if (rows.length) {
+        const c = rows[0];
+        const e = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        const url = `${APP_URL}/ead/curso/${c.slug}`;
+        const titulo = `${c.titulo} — Curso online | Anders Tech`;
+        const desc = String(c.subtitulo || c.objetivo || c.descricao || '')
+          .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 158);
+
+        const schema = {
+          '@context': 'https://schema.org', '@type': 'Course',
+          name: c.titulo, description: desc, url,
+          provider: { '@type': 'Organization', name: 'Anders Tech', url: APP_URL },
+          inLanguage: 'pt-BR',
+          offers: {
+            '@type': 'Offer', price: Number(c.preco).toFixed(2), priceCurrency: 'BRL',
+            availability: 'https://schema.org/InStock', url, category: 'Paid',
+          },
+          hasCourseInstance: {
+            '@type': 'CourseInstance', courseMode: 'online',
+            courseWorkload: c.carga_horaria || undefined,
+          },
+        };
+
+        const head = `<meta name="description" content="${e(desc)}">`
+          + `<link rel="canonical" href="${url}">`
+          + '<meta property="og:type" content="website">'
+          + '<meta property="og:site_name" content="Anders Tech">'
+          + `<meta property="og:title" content="${e(titulo)}">`
+          + `<meta property="og:description" content="${e(desc)}">`
+          + `<meta property="og:url" content="${url}">`
+          + `<meta property="og:image" content="${APP_URL}/assets/og-image.png">`
+          + '<meta name="twitter:card" content="summary_large_image">'
+          + `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+
+        html = html.replace(/<title>[^<]*<\/title>/, `<title>${e(titulo)}</title>`)
+                   .replace('</head>', head + '</head>');
+      }
+    }
+    res.type('html').send(injectShared(html, req.path));
+  } catch (err) {
+    console.error('EAD curso detail error:', err);
+    res.redirect('/ead/cursos');
+  }
+});
 router.get('/ead/login', (req, res) => {
   if (req.session?.eadUser) return res.redirect('/ead/meus-cursos');
-  if (!sendEadPage('login.html', res)) res.redirect('/');
+  if (!sendEadPage('login.html', req, res)) res.redirect('/');
 });
 router.get('/ead/registro', (req, res) => {
   if (req.session?.eadUser) return res.redirect('/ead/meus-cursos');
-  if (!sendEadPage('registro.html', res)) res.redirect('/');
+  if (!sendEadPage('registro.html', req, res)) res.redirect('/');
 });
-router.get('/ead/meus-cursos', requireEadAuth, (req, res) => { if (!sendEadPage('meus-cursos.html', res)) res.redirect('/ead/cursos'); });
-router.get('/ead/player/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('player.html', res)) res.redirect('/ead/meus-cursos'); });
-router.get('/ead/checkout/sucesso', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-sucesso.html', res)) res.redirect('/ead/meus-cursos'); });
-router.get('/ead/checkout/erro', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-erro.html', res)) res.redirect('/ead/cursos'); });
-router.get('/ead/checkout/pendente', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-pendente.html', res)) res.redirect('/ead/meus-cursos'); });
-router.get('/ead/checkout/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('checkout.html', res)) res.redirect('/ead/cursos'); });
+router.get('/ead/meus-cursos', requireEadAuth, (req, res) => { if (!sendEadPage('meus-cursos.html', req, res)) res.redirect('/ead/cursos'); });
+router.get('/ead/player/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('player.html', req, res)) res.redirect('/ead/meus-cursos'); });
+router.get('/ead/checkout/sucesso', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-sucesso.html', req, res)) res.redirect('/ead/meus-cursos'); });
+router.get('/ead/checkout/erro', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-erro.html', req, res)) res.redirect('/ead/cursos'); });
+router.get('/ead/checkout/pendente', requireEadAuth, (req, res) => { if (!sendEadPage('checkout-pendente.html', req, res)) res.redirect('/ead/meus-cursos'); });
+router.get('/ead/checkout/:slug', requireEadAuth, (req, res) => { if (!sendEadPage('checkout.html', req, res)) res.redirect('/ead/cursos'); });
 router.get('/ead/certificado/:code', async (req, res) => {
   try {
     const filePath = join(__dirname, 'pages', 'certificado.html');
@@ -1065,15 +1186,16 @@ router.get('/ead/certificado/:code', async (req, res) => {
             + '<meta property="og:site_name" content="Anders Tech EAD">'
             + `<meta property="og:title" content="${esc(certs[0].nome)} concluiu: ${esc(certs[0].curso)}">`
             + '<meta property="og:description" content="Certificado verificável emitido pela Anders Tech — cursos de gestão da qualidade para a indústria. Comece o seu em anderstech.net/ead/cursos">'
-            + `<meta property="og:url" content="https://anderstech.net/ead/certificado/${encodeURIComponent(req.params.code)}">`
-            + '<meta property="og:image" content="https://anderstech.net/assets/logo-horizontal-transparent.png">'
+            + `<meta property="og:url" content="${APP_URL}/ead/certificado/${encodeURIComponent(req.params.code)}">`
+            + `<meta property="og:image" content="${APP_URL}/assets/logo-horizontal-transparent.png">`
             + '<meta name="twitter:card" content="summary">';
           html = html.replace('</head>', og + '</head>');
         }
       } catch { /* sem OG dinamica se a consulta falhar */ }
     }
+    html = injectShared(html, req.path);
     res.type('html').send(html);
   } catch { res.redirect('/ead/cursos'); }
 });
 
-export { router as eadRouter, initEadDB };
+export { router as eadRouter };

@@ -10,13 +10,14 @@ import { Resend } from 'resend';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
+import crypto from 'crypto';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
-import { router as portalRouter, initPortalDB } from './portal/routes.js';
-import { eadRouter, initEadDB } from './ead/routes.js';
-import { PROMO } from './promo.js';
-import { TERMOS, TERMOS_BY_SLUG } from './glossario/terms.js';
+import { router as portalRouter } from './portal/routes.js';
+import { eadRouter } from './ead/routes.js';
 import { renderTermo, renderIndex as renderGlossarioIndex } from './glossario/render.js';
 import { buildSitemap } from './sitemap.js';
+import { runMigrations } from './db/migrate.js';
+import { injectShared } from './inject.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -37,6 +38,12 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
+      // 'unsafe-inline' em scriptSrc/styleSrc: necessario porque o GA4 (gtag config),
+      // o toggle de menu mobile, o CTA sticky e dezenas de paginas estaticas (blog/,
+      // pages/, ead/, portal/) usam <script>/<style> inline injetados server-side sem
+      // infra de nonce. Migrar para nonce-based CSP exigiria tocar 40+ arquivos HTML
+      // (refatoracao grande, fora do escopo deste fix). 'unsafe-eval' NAO esta presente
+      // — nenhum script do site usa eval/new Function, entao esse vetor ja esta fechado.
       scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://plausible.io"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
@@ -76,11 +83,36 @@ app.use(session({
   },
 }));
 
+// #66: toda pagina respondia 200 com e sem barra final — duas URLs, mesmo
+// conteudo. Canonicaliza com 301 antes de qualquer rota.
+app.use((req, res, next) => {
+  if (req.method === 'GET' && req.path.length > 1 && req.path.endsWith('/')) {
+    const q = req.originalUrl.slice(req.path.length);
+    return res.redirect(301, req.path.replace(/\/+$/, '') + q);
+  }
+  if (req.method === 'GET' && (req.path === '/index.html' || req.path === '/index.htm')) {
+    return res.redirect(301, '/');
+  }
+  next();
+});
+
 // ── Sitemap dinâmico (antes do static para vencer o arquivo físico, se existir) ──
 let sitemapCache = null;
 app.get('/sitemap.xml', (req, res) => {
   if (!sitemapCache) sitemapCache = buildSitemap();
   res.type('application/xml').send(sitemapCache);
+});
+
+// ── Healthcheck (#74) — usado pelo Railway e por monitor externo ──
+app.get('/healthz', async (req, res) => {
+  if (!sql) return res.status(503).json({ status: 'sem banco', db: false });
+  try {
+    await sql`SELECT 1`;
+    res.json({ status: 'ok', db: true });
+  } catch (err) {
+    console.error('Healthcheck falhou:', err);
+    res.status(503).json({ status: 'banco indisponivel', db: false });
+  }
 });
 
 const staticOpts = {
@@ -91,151 +123,43 @@ const staticOpts = {
     }
   },
 };
-// redirect:false — evita 301 /glossario -> /glossario/ (a pasta física glossario/ é código, não conteúdo estático)
-app.use(express.static(__dirname, { ...staticOpts, index: false, redirect: false }));
-app.use('/uploads', express.static(join(__dirname, 'uploads'), staticOpts));
-
-// ── Google Analytics 4 (gtag.js) ──
-const GTAG_HTML = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-7XL5XVE6QZ"></script>'
-  + '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-7XL5XVE6QZ");</script>';
-
-// ── GA4: todo clique em link wa.me vira evento "contact" (medição de conversão local) ──
-const WA_TRACK_HTML = '<script>document.addEventListener("click",function(e){'
-  + 'var a=e.target&&e.target.closest?e.target.closest(\'a[href*="wa.me"]\'):null;if(!a)return;'
-  + 'if(typeof gtag==="function")gtag("event","contact",{method:"whatsapp",event_category:"engagement",event_label:location.pathname});'
-  + 'if(typeof plausible==="function")plausible("whatsapp_click",{props:{path:location.pathname}});'
-  + '});</'
-  + 'script>';
-
-// ── SSR nav/footer for sub-pages (SEO: Google sees full HTML) ──
-const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
-  + '<a href="/" class="brand" aria-label="Anders Tech">'
-  + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" style="height:80px;width:auto;object-fit:contain"></a>'
-  + '<nav class="nav-links" aria-label="Principal">'
-  + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/ead/cursos">Cursos</a><a href="/#contato">Contato</a></nav>'
-  + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a>'
-  + '<button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">'
-  + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>'
-  + '</div></div></div></header>'
-  + '<nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel">'
-  + '<a href="/#servicos"><i>01</i> Serviços</a>'
-  + '<a href="/#diferencial"><i>02</i> Diferencial</a>'
-  + '<a href="/#sobre"><i>03</i> Sobre</a>'
-  + '<a href="/blog"><i>04</i> Conteúdo</a>'
-  + '<a href="/ead/cursos"><i>05</i> Cursos EAD</a>'
-  + '<a href="/#contato"><i>06</i> Contato</a>'
-  + '<a href="/#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a></nav>'
-  + '<script>!function(){var t=document.getElementById("navToggle"),m=document.getElementById("mobileMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",String(o));document.body.style.overflow=o?"hidden":""});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow=""})})}}()</script>';
-const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
-  + '<div class="fb-word">anders<b>tech</b></div>'
-  + '<div class="fb-tag">GESTÃO COM TECNOLOGIA · QUALIDADE &amp; CONFORMIDADE PARA A INDÚSTRIA</div>'
-  + '<p class="fb-desc">Consultoria de qualidade e conformidade para a indústria. Diagnóstico baseado em dados — método de engenharia.</p>'
-  + '<div class="fb-cnpj">CNPJ 42.073.716/0001-80</div></div>'
-  + '<div class="wrap footer-grid">'
-  + '<div class="footer-col"><h4>Navegação</h4><ul>'
-  + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
-  + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
-  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
-  + '<div class="footer-col"><h4>Regiões</h4><ul>'
-  + '<li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>'
-  + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
-  + '<li><a href="/consultoria-iso-9001-caxias-do-sul">Caxias do Sul</a></li>'
-  + '<li><a href="/consultoria-iso-9001-porto-alegre">Porto Alegre</a></li>'
-  + '<li><a href="/consultoria-iso-9001-bento-goncalves">Bento Gonçalves</a></li>'
-  + '<li><a href="/consultoria-iso-9001-carazinho">Carazinho</a></li>'
-  + '<li><a href="/consultoria-iso-9001-marau">Marau</a></li></ul></div>'
-  + '<div class="footer-col"><h4>Contato</h4><ul class="footer-contact"><li>Passo Fundo · Erechim · RS</li><li>danielanders76@gmail.com</li></ul>'
-  + '<a href="https://andersdev.com.br" target="_blank" rel="noopener" class="footer-cross">Software sob medida → andersdev.com.br</a></div></div>'
-  + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
-  + '<div class="fl"><a href="/termos-de-uso">Termos</a><a href="/politica-de-privacidade">Privacidade</a>'
-  + '<a href="https://anderstech.net"><b>anderstech.net</b></a><a href="https://andersdev.com.br" target="_blank" rel="noopener">andersdev.com.br</a></div></div></footer>';
-const WA_FAB = '<a href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'
-  + '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a>';
-
-// ── Sticky CTA mobile (auto-contido: markup + CSS + tracking) ──
-const STICKY_CTA = '<div class="sticky-cta" id="stickyCta">'
-  + '<a class="sc-main" href="/#contato">Agendar diagnóstico gratuito</a>'
-  + '<a class="sc-wa" href="https://wa.me/5554999648368?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">'
-  + '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a></div>'
-  + '<style>.sticky-cta{display:none}@media(max-width:760px){body{padding-bottom:70px}.wa-fab{display:none!important}'
-  + '.sticky-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:84;gap:10px;align-items:stretch;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#0b1730;box-shadow:0 -8px 28px rgba(11,23,48,.35)}'
-  + '.sticky-cta .sc-main{flex:1;display:flex;align-items:center;justify-content:center;background:#c5383c;color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:13px 8px}'
-  + '.sticky-cta .sc-wa{width:50px;display:grid;place-items:center;background:#25D366;color:#fff;flex:none}}</style>'
-  + '<script>!function(){var b=document.getElementById("stickyCta");if(!b)return;b.addEventListener("click",function(e){var a=e.target.closest("a");if(!a)return;var w=a.classList.contains("sc-wa");'
-  + 'if(typeof gtag==="function")gtag("event",w?"contact_whatsapp":"diagnosis_click",{event_category:"engagement",event_label:"sticky_mobile"});'
-  + 'if(typeof plausible==="function")plausible(w?"whatsapp_sticky":"diagnosis_sticky")})}()</'
-  + 'script>';
-
-const SKIP_LINK = '<a href="#main-content" class="skip-link">Pular para o conteúdo</a>';
-
-const BREADCRUMB_LABELS = {
-  blog: 'Conteúdo',
-  'quanto-custa-certificacao-iso-9001': 'Quanto custa a certificação ISO 9001?',
-  'pbqp-h-o-que-e-para-que-serve': 'PBQP-H: o que é e para que serve?',
-  'iso-9001-vale-a-pena-para-metalurgica': 'ISO 9001 vale a pena para metalúrgica?',
-  'como-reduzir-retrabalho-na-producao': 'Como reduzir retrabalho na produção',
-  'consultoria-iso-9001-passo-fundo': 'Consultoria ISO 9001 em Passo Fundo',
-  'consultoria-iso-9001-erechim': 'Consultoria ISO 9001 em Erechim',
-  'consultoria-iso-9001-caxias-do-sul': 'Consultoria ISO 9001 em Caxias do Sul',
-  'consultoria-iso-9001-porto-alegre': 'Consultoria ISO 9001 em Porto Alegre',
-  'consultoria-iso-9001-bento-goncalves': 'Consultoria ISO 9001 em Bento Gonçalves',
-  'iso-9001-metalurgica': 'ISO 9001 para Metalúrgicas',
-  'iso-9001-industria-alimenticia': 'ISO 9001 para Indústria Alimentícia',
-  'iso-9001-cooperativa-agricola': 'ISO 9001 para Cooperativas Agrícolas',
-  'iso-9001-construtora': 'ISO 9001 para Construtoras',
-  'pbqp-h-construtora-residencial': 'PBQP-H para Construtora Residencial',
-  'pbqp-h-construtora-grande-porte': 'PBQP-H para Construtora Grande Porte',
-  'iso-9001-vale-a-pena': 'ISO 9001 vale a pena?',
-  'quanto-custa-certificacao-iso': 'Quanto custa a certificação ISO?',
-  'quanto-tempo-implantar-iso-9001': 'Quanto tempo leva para implantar a ISO 9001?',
-  'diferenca-iso-9001-vs-bpm': 'ISO 9001 vs BPM',
-  'calculadora-roi-certificacao': 'Calculadora ROI da Certificação',
-  'checklist-iso-9001': 'Checklist ISO 9001',
-  'consultoria-iso-9001-carazinho': 'Consultoria ISO 9001 em Carazinho',
-  'consultoria-iso-9001-marau': 'Consultoria ISO 9001 em Marau',
-  'o-que-e-iso-9001': 'O que é ISO 9001?',
-  'como-conseguir-certificacao-iso-9001': 'Como conseguir a certificação ISO 9001',
-  'iso-9001-para-industrias': 'ISO 9001 para indústrias',
-  'erros-certificacao-iso-9001': '5 erros na certificação ISO 9001',
-  'ead': 'Cursos EAD',
-  'glossario': 'Glossário da Qualidade',
-  'quanto-custa-iso-14001': 'Quanto custa a ISO 14001?',
-  'quanto-custa-auditoria-interna': 'Quanto custa a auditoria interna?',
-  'quanto-custa-pbqp-h': 'Quanto custa o PBQP-H?',
-};
-
-function buildBreadcrumbSchema(urlPath) {
-  const parts = urlPath.replace(/^\/|\/$/g, '').split('/').filter(Boolean);
-  if (!parts.length) return '';
-  const items = [{ '@type': 'ListItem', position: 1, name: 'Início', item: 'https://anderstech.net' }];
-  let pos = 2;
-  if (parts[0] === 'blog' && parts.length > 1) {
-    items.push({ '@type': 'ListItem', position: pos++, name: 'Conteúdo', item: 'https://anderstech.net/blog' });
-    items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[1]] || parts[1] });
-  } else if (parts[0] === 'glossario' && parts.length > 1) {
-    items.push({ '@type': 'ListItem', position: pos++, name: 'Glossário da Qualidade', item: 'https://anderstech.net/glossario' });
-    items.push({ '@type': 'ListItem', position: pos, name: (TERMOS_BY_SLUG.get(parts[1]) || {}).termo || parts[1] });
-  } else {
-    items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[0]] || parts[0] });
+// #64: `express.static(__dirname)` publicava o projeto inteiro — /server.js,
+// /portal/routes.js, /package-lock.json e /HANDOFF.md respondiam 200 com o
+// conteudo real. Agora so os recursos que as paginas realmente carregam.
+const ARQUIVOS_PUBLICOS = new Set([
+  '/styles.css', '/app.js', '/robots.txt', '/favicon.ico',
+  '/llms.txt', '/llms-full.txt',
+]);
+app.use('/assets', express.static(join(__dirname, 'assets'), staticOpts));
+app.use('/treinamentos', express.static(join(__dirname, 'treinamentos'), staticOpts));
+app.get(/^\/[A-Za-z0-9._-]+\.(css|js|txt|ico|png|webmanifest)$/, (req, res, next) => {
+  // Arquivos soltos na raiz: whitelist explicita + os .txt de verificacao de
+  // buscador, que precisam ficar acessiveis pelo nome exato que o servico exige.
+  if (ARQUIVOS_PUBLICOS.has(req.path) || /^\/[a-z0-9]{32}\.txt$/.test(req.path)) {
+    return res.sendFile(join(__dirname, req.path.slice(1)), { maxAge: '7d' }, err => err && next());
   }
-  return '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items }) + '</script>';
-}
+  next();
+});
+// #38: /uploads deixou de ser diretorio estatico — agora e rota com verificacao
+// de propriedade em portal/routes.js.
 
-function injectShared(html, urlPath) {
-  const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
-  return html
-    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">' + breadcrumb + GTAG_HTML + WA_TRACK_HTML + '</head>')
-    .replace('<body>', '<body>' + SKIP_LINK)
-    .replace('<div id="shared-nav"></div>', NAV_HTML)
-    .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
-    .replace(/__PROMO_FIM_CURTO__/g, PROMO.fimCurto)
-    .replace(/__PROMO_FIM_LONGO__/g, PROMO.fimLongo);
-}
+// ── injectShared importado de inject.js (compartilhado com ead/routes.js) ──
+
+// #61: cada requisicao relia o arquivo do disco (readFileSync, sincrono, que
+// bloqueia o event loop) e refazia as 6 substituicoes do injectShared. O
+// conteudo so muda entre deploys, entao memoriza — mesmo padrao ja usado e
+// validado no glossario. O Map morre no restart, que coincide com o deploy.
+const pageCache = new Map();
 
 function sendPage(filePath, res, urlPath) {
   try {
-    const html = readFileSync(filePath, 'utf8');
-    res.type('html').send(injectShared(html, urlPath));
+    const chave = urlPath || filePath;
+    let html = pageCache.get(chave);
+    if (!html) {
+      html = injectShared(readFileSync(filePath, 'utf8'), urlPath);
+      pageCache.set(chave, html);
+    }
+    res.type('html').send(html);
   } catch { return false; }
   return true;
 }
@@ -252,43 +176,26 @@ function send404(res) {
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-async function initDB() {
-  if (!sql) return;
-  await sql`
-    CREATE TABLE IF NOT EXISTS leads (
-      id SERIAL PRIMARY KEY,
-      nome TEXT NOT NULL,
-      empresa TEXT,
-      email TEXT,
-      telefone TEXT,
-      interesse TEXT,
-      mensagem TEXT,
-      source TEXT DEFAULT 'site_form',
-      utm_source TEXT,
-      utm_medium TEXT,
-      utm_campaign TEXT,
-      status TEXT DEFAULT 'novo',
-      notes TEXT,
-      created_at TIMESTAMPTZ DEFAULT NOW(),
-      updated_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-  await sql`
-    CREATE TABLE IF NOT EXISTS lead_events (
-      id SERIAL PRIMARY KEY,
-      lead_id INTEGER REFERENCES leads(id),
-      event_type TEXT NOT NULL,
-      payload JSONB,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
-}
 
-initDB().catch(console.error);
-initPortalDB().catch(console.error);
-initEadDB().catch(console.error);
+// Migrações versionadas (#16). Falha em produção derruba o processo (#74b): é
+// melhor o deploy falhar visivelmente do que subir com o schema errado.
+runMigrations(sql).catch(err => {
+  console.error('FATAL: falha ao aplicar migrações:', err);
+  if (IS_PROD) process.exit(1);
+});
+
+const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
 
 const rateLimit = new Map();
+// #40: o Map crescia sem limite — entrada de IP nunca era removida.
+setInterval(() => {
+  const limite = Date.now() - 60_000;
+  for (const [ip, hits] of rateLimit) {
+    const vivos = hits.filter(t => t > limite);
+    if (vivos.length) rateLimit.set(ip, vivos); else rateLimit.delete(ip);
+  }
+}, 5 * 60_000).unref();
+
 function checkRate(ip) {
   const now = Date.now();
   const window = 60_000;
@@ -301,7 +208,9 @@ function checkRate(ip) {
 }
 
 app.post('/api/contact', async (req, res) => {
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  // #39: o header e controlado pelo cliente — bastava rotacionar para burlar.
+  // req.ip respeita o `trust proxy` configurado acima.
+  const ip = req.ip;
   if (!checkRate(ip)) {
     return res.status(429).json({ error: 'Muitas tentativas. Aguarde um minuto.' });
   }
@@ -352,7 +261,7 @@ app.post('/api/contact', async (req, res) => {
       }
     }
 
-    console.log(`Lead #${leadId}: ${nome} (${interesse})`);
+    console.log(`Lead #${leadId} (${interesse})`);
     res.json({ ok: true, id: leadId });
   } catch (err) {
     console.error('Lead error:', err);
@@ -374,11 +283,13 @@ function adminAuth(req, res, next) {
   next();
 }
 
+// #47: era implementacao manual, com retorno antecipado que vazava o
+// comprimento da chave. Comparar os digests normaliza o tamanho e usa a API
+// nativa — a mesma que o webhook ja usa.
 function timingSafeEqual(a, b) {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return result === 0;
+  const da = crypto.createHash('sha256').update(String(a)).digest();
+  const db = crypto.createHash('sha256').update(String(b)).digest();
+  return crypto.timingSafeEqual(da, db);
 }
 
 // ── Admin: serve panel ──
@@ -386,7 +297,7 @@ app.get('/admin', (req, res) => res.sendFile(join(__dirname, 'admin', 'index.htm
 
 // ── Admin API routes ──
 app.get('/api/admin/stats', adminAuth, async (req, res) => {
-  if (!sql) return res.json({ total: 0, this_month: 0, latest: null, by_source: [], by_interesse: [], by_status: [] });
+  if (!sql) return res.status(503).json({ error: 'Servico temporariamente indisponivel' });
   try {
     const [totalR, monthR, latestR, sourceR, interesseR, statusR] = await Promise.all([
       sql`SELECT COUNT(*)::int AS count FROM leads`,
@@ -411,11 +322,11 @@ app.get('/api/admin/stats', adminAuth, async (req, res) => {
 });
 
 app.get('/api/admin/leads', adminAuth, async (req, res) => {
-  if (!sql) return res.json([]);
+  if (!sql) return res.status(503).json({ error: 'Servico temporariamente indisponivel' });
   try {
     const { status, interesse, source } = req.query;
     const limit = Math.min(parseInt(req.query.limit, 10) || 100, 500);
-    const offset = parseInt(req.query.offset, 10) || 0;
+    const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
     let leads;
     if (status && interesse) {
       leads = await sql`SELECT * FROM leads WHERE status = ${status} AND interesse = ${interesse} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
@@ -456,20 +367,34 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const { status, notes } = req.body;
-    const updates = [];
 
-    if (status !== undefined) {
-      await sql`UPDATE leads SET status = ${status}, updated_at = NOW() WHERE id = ${id}`;
-      updates.push('status');
-      await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'status_change', ${JSON.stringify({ status })}::jsonb)`;
+    if (status === undefined && notes === undefined) {
+      return res.status(400).json({ error: 'Nenhum campo para atualizar' });
     }
-    if (notes !== undefined) {
-      await sql`UPDATE leads SET notes = ${notes}, updated_at = NOW() WHERE id = ${id}`;
-      updates.push('notes');
-      await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'note_update', ${JSON.stringify({ notes: notes.slice(0, 200) })}::jsonb)`;
+    // #31: `notes: null` executava null.slice() e virava 500; `status` aceitava
+    // qualquer string, poluindo o GROUP BY de /api/admin/stats.
+    if (notes !== undefined && typeof notes !== 'string') {
+      return res.status(400).json({ error: 'notes deve ser texto' });
+    }
+    if (status !== undefined && !STATUS_LEAD.includes(status)) {
+      return res.status(400).json({ error: `status inválido. Use: ${STATUS_LEAD.join(', ')}` });
     }
 
-    if (!updates.length) return res.status(400).json({ error: 'Nenhum campo para atualizar' });
+    // UPDATE + INSERT (evento de auditoria) para cada campo alterado, atomicos:
+    // se qualquer etapa falhar, nenhuma delas fica persistida (evita status
+    // atualizado sem o evento correspondente, ou vice-versa).
+    await sql.transaction((txn) => {
+      const queries = [];
+      if (status !== undefined) {
+        queries.push(txn`UPDATE leads SET status = ${status}, updated_at = NOW() WHERE id = ${id}`);
+        queries.push(txn`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'status_change', ${JSON.stringify({ status })}::jsonb)`);
+      }
+      if (notes !== undefined) {
+        queries.push(txn`UPDATE leads SET notes = ${notes}, updated_at = NOW() WHERE id = ${id}`);
+        queries.push(txn`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'note_update', ${JSON.stringify({ notes: notes.slice(0, 200) })}::jsonb)`);
+      }
+      return queries;
+    });
 
     const updated = await sql`SELECT * FROM leads WHERE id = ${id}`;
     res.json(updated[0] || { ok: true });

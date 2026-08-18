@@ -84,6 +84,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 
 <script>
 (function(){
+  var API='/ead/api';   // #5: base unica, em vez de literal repetido em cada fetch
   var qs=window.location.search;
   if(qs){document.querySelectorAll('a[href="/ead/login"]').forEach(function(a){a.href+=qs})}
   var form=document.getElementById('regForm'),err=document.getElementById('error'),btn=document.getElementById('submitBtn');
@@ -92,7 +93,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
     err.style.display='none';
     if(form.senha.value!==form.senha2.value){err.textContent='As senhas não coincidem.';err.style.display='block';return}
     btn.disabled=true;btn.textContent='Criando...';
-    fetch('/ead/api/register',{
+    fetch(API+'/register',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({nome:form.nome.value,email:form.email.value,senha:form.senha.value,telefone:form.telefone.value,empresa:form.empresa.value})
     }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})

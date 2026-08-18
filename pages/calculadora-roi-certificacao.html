@@ -612,7 +612,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
           <!-- 2. Funcionarios -->
           <div class="field">
-            <label for="funcionarios">Numero de funcionarios <span class="req">*</span></label>
+            <label for="funcionarios">Número de funcionarios <span class="req">*</span></label>
             <select id="funcionarios" name="funcionarios" required>
               <option value="" disabled selected>Selecione</option>
               <option value="1-10">1 a 10</option>
@@ -641,7 +641,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
             <label for="motivacao">Principal motivacao <span class="req">*</span></label>
             <select id="motivacao" name="motivacao" required>
               <option value="" disabled selected>Selecione</option>
-              <option value="exigencia_cliente">Exigencia de cliente</option>
+              <option value="exigencia_cliente">Exigência de cliente</option>
               <option value="reduzir_retrabalho">Reduzir retrabalho</option>
               <option value="licitações">Acesso a licitações</option>
               <option value="melhoria_gestão">Melhoria de gestão</option>
@@ -656,7 +656,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </button>
         </div>
-      </form>
+      <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/politica-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p></form>
     </section>
 
     <!-- RESULTS -->
@@ -679,7 +679,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
         <div class="kpi-card positive">
           <div class="kpi-label">Economia projetada (24 meses)</div>
           <div class="kpi-value text-green" id="kpiEconomia">--</div>
-          <div class="kpi-sub" id="kpiEconomiaSub">Reducao de desperdicio e retrabalho</div>
+          <div class="kpi-sub" id="kpiEconomiaSub">Redução de desperdicio e retrabalho</div>
         </div>
         <div class="kpi-card accent">
           <div class="kpi-label">ROI projetado</div>
@@ -716,7 +716,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       </div>
 
       <div class="disclaimer">
-        * Os valores apresentados sao estimativas baseadas em medias de mercado e dados de projetos anteriores da Anders Tech. O retorno real depende das condicoes especificas de cada empresa. Este calculo nao constitui proposta comercial.
+        * Os valores apresentados sao estimativas baseadas em medias de mercado e dados de projetos anteriores da Anders Tech. O retorno real depende das condicoes específicas de cada empresa. Este calculo nao constitui proposta comercial.
       </div>
     </section>
 
@@ -755,7 +755,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
         <div class="check-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <h4>Relatorio enviado com sucesso</h4>
+        <h4>Relatório enviado com sucesso</h4>
         <p>Voce recebera a análise completa no email informado em ate 24 horas uteis.</p>
       </div>
     </section>
@@ -1106,14 +1106,21 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       leadSuccess.classList.add("visible");
     })
     .catch(function () {
-      /* Fallback: show success anyway (data will be in server logs) */
-      leadForm.style.display = "none";
-      leadSuccess.classList.add("visible");
+      /* #34: exibia sucesso mesmo falhando, com o comentario afirmando que o
+         dado estaria no log do servidor — se o fetch falhou, nada chegou la. */
+      var box = leadForm.querySelector('.form-error') || (function () {
+        var d = document.createElement('div');
+        d.className = 'form-error';
+        d.style.cssText = 'margin-top:14px;padding:12px 14px;background:#fef2f2;border-left:3px solid #c5383c;color:#991b1b;font-size:14px';
+        leadForm.appendChild(d); return d;
+      })();
+      box.innerHTML = 'Não conseguimos enviar agora. Tente novamente ou fale direto no ' +
+        '<a href="https://wa.me/5554999648368?text=Oi%2C%20fiz%20o%20c%C3%A1lculo%20de%20ROI%20no%20site." target="_blank" rel="noopener" style="color:#c5383c;font-weight:600">WhatsApp</a>.';
     });
   });
 
 })();
 </script>
-<script src="/shared.js"></script>
+
 </body>
 </html>

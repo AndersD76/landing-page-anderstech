@@ -80,12 +80,13 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 
 <script>
 (function(){
+  var API='/ead/api';   // #5: base unica, em vez de literal repetido em cada fetch
   var slug=window.location.pathname.split('/').pop();
   function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 
   window.addEventListener('pageshow',function(e){if(e.persisted)window.location.reload()});
 
-  fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
+  fetch(API+'/courses/'+slug).then(function(r){return r.json()}).then(function(c){
     if(!c.id){document.getElementById('checkout').innerHTML='<div class="loading">Curso não encontrado.</div>';return}
     if(c.enrolled){window.location.replace('/ead/player/'+slug);return}
 
@@ -114,7 +115,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       document.getElementById('btnFree').addEventListener('click',function(){
         var btn=this;btn.disabled=true;btn.textContent='Matriculando...';
         document.getElementById('payError').style.display='none';
-        fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'promo'})})
+        fetch(API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'promo'})})
         .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
         .then(function(r){
           if(r.data.status==='aprovado'){window.location.href='/ead/player/'+slug;return}
@@ -162,16 +163,51 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       });
     });
 
+
+    // ── CPF/CNPJ: exigido pelo Asaas para emitir a cobranca ──
+    function pedeDocumento(){
+      var atual=(document.getElementById('cpfCnpj')||{}).value||'';
+      var d=prompt('Informe seu CPF ou CNPJ (somente numeros) para emitir a cobranca:', atual.replace(/\D/g,''));
+      return d===null?null:d.replace(/\D/g,'');
+    }
+    var docAluno=null;
+
+    function corpoCheckout(met){
+      var b={courseSlug:slug,metodo:met};
+      if(docAluno)b.cpfCnpj=docAluno;
+      return JSON.stringify(b);
+    }
+
+    // Trata a resposta que pede documento, refazendo a chamada uma unica vez.
+    function comDocumento(met,btn,rotulo,onOk){
+      function envia(){
+        fetch(API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:corpoCheckout(met)})
+        .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+        .then(function(r){
+          if(r.data&&r.data.precisaDocumento){
+            var d=pedeDocumento();
+            if(!d){btn.disabled=false;btn.textContent=rotulo;return}
+            docAluno=d;return envia();
+          }
+          onOk(r);
+        })
+        .catch(function(){
+          document.getElementById('payError').textContent='Erro de conexao. Tente novamente.';
+          document.getElementById('payError').style.display='block';
+          btn.disabled=false;btn.textContent=rotulo;
+        });
+      }
+      envia();
+    }
+
     // PIX
     document.getElementById('btnPix').addEventListener('click',function(){
       var btn=this;btn.disabled=true;btn.textContent='Gerando PIX...';
       document.getElementById('payError').style.display='none';
-      fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'pix'})})
-      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
-      .then(function(r){
+      comDocumento('pix',btn,'Gerar PIX',function(r){
         if(r.data.status==='aprovado'){window.location.href='/ead/player/'+slug;return}
-        if(!r.ok){document.getElementById('payError').textContent=r.data.error;document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX';return}
-        var html='<div class="pix-info"><p>Escaneie o QR Code ou copie o código PIX:</p>';
+        if(!r.ok){document.getElementById('payError').textContent=r.data.error||'Erro ao gerar PIX';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX';return}
+        var html='<div class="pix-info"><p>Escaneie o QR Code ou copie o codigo PIX:</p>';
         if(r.data.qr_code_base64)html+='<div class="pix-qr"><img src="data:image/png;base64,'+r.data.qr_code_base64+'" alt="QR Code PIX"></div>';
         if(r.data.qr_code)html+='<div class="pix-code" title="Clique para copiar" id="pixCopy">'+r.data.qr_code+'</div>';
         html+='<div class="status-msg pending" id="pixStatus">Aguardando pagamento...</div></div>';
@@ -182,28 +218,50 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
             navigator.clipboard.writeText(r.data.qr_code).then(function(){document.getElementById('pixCopy').style.background='#dcfce7'});
           });
         }
-        // Poll status
-        var orderId=r.data.orderId;
+
+        // #58: o polling antigo so parava em 'aprovado'. Agora encerra tambem em
+        // recusa, estorno e por tempo, e trata falha de rede sem acumular rejeicao.
+        var orderId=r.data.orderId, tentativas=0, MAX=360; // 360 x 5s = 30 min
+        var st=document.getElementById('pixStatus');
         var poll=setInterval(function(){
-          fetch('/ead/api/order/'+orderId+'/status').then(function(r){return r.json()}).then(function(d){
-            if(d.status==='aprovado'){clearInterval(poll);document.getElementById('pixStatus').className='status-msg success';document.getElementById('pixStatus').textContent='Pagamento confirmado! Redirecionando...';setTimeout(function(){window.location.href='/ead/player/'+slug},1500)}
-          });
+          if(++tentativas>MAX){
+            clearInterval(poll);
+            st.className='status-msg pending';
+            st.textContent='O codigo PIX expirou. Recarregue a pagina para gerar um novo.';
+            return;
+          }
+          fetch(API+'/order/'+orderId+'/status')
+            .then(function(x){return x.json()})
+            .then(function(d){
+              if(d.status==='aprovado'){
+                clearInterval(poll);
+                st.className='status-msg success';
+                st.textContent='Pagamento confirmado! Redirecionando...';
+                setTimeout(function(){window.location.href='/ead/player/'+slug},1500);
+                return;
+              }
+              if(d.status==='cancelado'||d.status==='vencido'||d.status==='estornado'||d.status==='chargeback'){
+                clearInterval(poll);
+                st.className='status-msg';
+                st.textContent='Esta cobranca nao esta mais ativa ('+d.status+'). Recarregue para tentar de novo ou use cartao.';
+              }
+            })
+            .catch(function(){ /* falha transitoria: proxima tentativa resolve */ });
         },5000);
-      }).catch(function(){document.getElementById('payError').textContent='Erro de conexão.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Gerar PIX'});
+      });
     });
 
     // Card
     document.getElementById('btnCard').addEventListener('click',function(){
       var btn=this;btn.disabled=true;btn.textContent='Redirecionando...';
       document.getElementById('payError').style.display='none';
-      fetch('/ead/api/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'card'})})
-      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
-      .then(function(r){
+      comDocumento('card',btn,'Pagar com cartao',function(r){
         if(r.data.status==='aprovado'){window.location.href='/ead/player/'+slug;return}
         if(r.data.init_point){window.location.href=r.data.init_point;return}
-        document.getElementById('payError').textContent=r.data.error||'Erro no checkout';document.getElementById('payError').style.display='block';
-        btn.disabled=false;btn.textContent='Pagar com cartão';
-      }).catch(function(){document.getElementById('payError').textContent='Erro de conexão.';document.getElementById('payError').style.display='block';btn.disabled=false;btn.textContent='Pagar com cartão'});
+        document.getElementById('payError').textContent=r.data.error||'Erro no checkout';
+        document.getElementById('payError').style.display='block';
+        btn.disabled=false;btn.textContent='Pagar com cartao';
+      });
     });
 
   }).catch(function(){document.getElementById('checkout').innerHTML='<div class="loading">Erro ao carregar.</div>'});

@@ -205,7 +205,7 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
 
 <script>
 // ── State ──
-let adminKey = localStorage.getItem('adminKey') || '';
+let adminKey = sessionStorage.getItem('adminKey') || '';
 let allLeads = [];
 let filteredLeads = [];
 let sortField = 'id';
@@ -218,13 +218,13 @@ function doLogin() {
   const key = document.getElementById('auth-key').value.trim();
   if (!key) return;
   adminKey = key;
-  localStorage.setItem('adminKey', key);
+  sessionStorage.setItem('adminKey', key);
   checkAuth();
 }
 
 function doLogout() {
   adminKey = '';
-  localStorage.removeItem('adminKey');
+  sessionStorage.removeItem('adminKey');
   document.getElementById('app').style.display = 'none';
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('auth-key').value = '';
@@ -243,7 +243,7 @@ async function checkAuth() {
     } else {
       document.getElementById('auth-error').style.display = 'block';
       adminKey = '';
-      localStorage.removeItem('adminKey');
+      sessionStorage.removeItem('adminKey');
     }
   } catch (e) {
     document.getElementById('auth-error').textContent = 'Erro de conexão com o servidor.';
@@ -332,7 +332,8 @@ function populateFilterOptions() {
 }
 
 function applyFilters() {
-  const search = document.getElementById('filter-search').value.toLowerCase().trim();
+  const norm = (v) => (v || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const search = norm(document.getElementById('filter-search').value.trim());
   const status = document.getElementById('filter-status').value;
   const interesse = document.getElementById('filter-interesse').value;
   const source = document.getElementById('filter-source').value;
@@ -342,7 +343,7 @@ function applyFilters() {
     if (interesse && l.interesse !== interesse) return false;
     if (source && l.source !== source) return false;
     if (search) {
-      const hay = ((l.nome || '') + ' ' + (l.empresa || '')).toLowerCase();
+      const hay = norm((l.nome || '') + ' ' + (l.empresa || ''));
       if (!hay.includes(search)) return false;
     }
     return true;

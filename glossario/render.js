@@ -94,7 +94,6 @@ ${jsonLd.map(o => `<script type="application/ld+json">${JSON.stringify(o)}</scri
 
 const FOOT = `
 <div id="shared-footer"></div>
-<script src="/shared.js"></script>
 </body>
 </html>`;
 

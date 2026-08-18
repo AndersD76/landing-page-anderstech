@@ -119,3 +119,31 @@ export function checklistDelivery({ nome }) {
 <p>→ <a href="https://anderstech.net/calculadora-roi-certificacao">Calculadora ROI da certificação</a></p>
 </div>`);
 }
+
+// ── EAD ───────────────────────────────────────────────────────────────────────
+// Centralizados aqui (achado #55d): antes viviam inline em ead/routes.js, com
+// marcação e rodapé próprios, divergindo da identidade dos demais e-mails.
+
+export function eadBoasVindas({ nome }) {
+  return layout(`<div class="body">
+<h2>Bem-vindo aos Cursos Anders Tech, ${esc(nome.split(' ')[0])}!</h2>
+<p>Sua conta foi criada com sucesso. Os treinamentos são de gestão da qualidade aplicada à indústria — conteúdo prático, com templates e casos reais.</p>
+<a href="https://anderstech.net/ead/cursos" class="cta">Ver os treinamentos</a>
+<hr class="divider">
+<p>Dúvidas? Fale com a gente no WhatsApp:</p>
+<a href="https://wa.me/5554999648368" style="color:${BRAND.navy};font-size:14px;font-weight:600;text-decoration:none">(54) 99964-8368 →</a>
+</div>`);
+}
+
+export function eadMatriculaConfirmada({ nome, curso }) {
+  return layout(`<div class="body">
+<h2>Pagamento confirmado!</h2>
+<p>Olá, ${esc(nome.split(' ')[0])}. Seu pagamento foi aprovado e você já tem acesso ao treinamento <b>${esc(curso)}</b>.</p>
+<div class="meta">
+Acesso vitalício · Templates para download · Certificado de conclusão ao final
+</div>
+<a href="https://anderstech.net/ead/meus-cursos" class="cta">Acessar meus treinamentos</a>
+<hr class="divider">
+<p>O comprovante do pagamento fica disponível no seu histórico de pedidos.</p>
+</div>`);
+}

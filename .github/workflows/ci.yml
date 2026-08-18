@@ -19,29 +19,28 @@ jobs:
 
       - run: npm ci
 
-      - name: Check syntax (server)
-        run: node --check server.js
+      - name: Check syntax (todos os JS versionados)
+        run: |
+          git ls-files '*.js' | grep -v '^node_modules/' | while read f; do
+            [ -f "$f" ] || continue
+            node --check "$f" || exit 1
+          done
 
-      - name: Check syntax (emails)
-        run: node --check emails.js
-
-      - name: Check syntax (portal routes)
-        run: node --check portal/routes.js
+      - name: Testes
+        run: npm test
 
       - name: Verify required files exist
         run: |
           test -f index.html
           test -f styles.css
           test -f app.js
-          test -f shared.js
-          test -f sitemap.xml
           test -f robots.txt
           test -f portal/login.html
           test -f portal/admin.html
           test -f portal/cliente.html
 
       - name: npm audit (critical/high)
-        run: npm audit --omit=dev --audit-level=high || true
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Check for .env leaks
         run: |
@@ -69,21 +68,13 @@ jobs:
       - name: Ping IndexNow (on push to master only)
         if: github.event_name == 'push'
         run: |
-          curl -s -X POST "https://api.indexnow.org/indexnow" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "host": "anderstech.net",
-              "key": "f6ba6a9696c4426b9a20bd3baa58e3ec",
-              "keyLocation": "https://anderstech.net/f6ba6a9696c4426b9a20bd3baa58e3ec.txt",
-              "urlList": [
-                "https://anderstech.net/",
-                "https://anderstech.net/blog",
-                "https://anderstech.net/blog/quanto-custa-certificacao-iso-9001",
-                "https://anderstech.net/blog/pbqp-h-o-que-e-para-que-serve",
-                "https://anderstech.net/blog/iso-9001-vale-a-pena-para-metalurgica",
-                "https://anderstech.net/blog/como-reduzir-retrabalho-na-producao",
-                "https://anderstech.net/calculadora-roi-certificacao",
-                "https://anderstech.net/checklist-iso-9001"
-              ]
-            }' || echo "IndexNow ping failed (non-blocking)"
-          echo "IndexNow ping sent"
+          # Antes: 8 URLs fixas escritas a mao, enquanto o sitemap tem 123.
+          # Agora le o proprio sitemap, entao conteudo novo sempre e notificado.
+          URLS=$(curl -s https://anderstech.net/sitemap.xml             | grep -o '<loc>[^<]*</loc>' | sed 's|<loc>||;s|</loc>||'             | head -1000 | jq -R . | jq -s .)
+          COUNT=$(echo "$URLS" | jq 'length')
+          echo "Notificando IndexNow: $COUNT URLs"
+          curl -s -X POST "https://api.indexnow.org/indexnow"             -H "Content-Type: application/json"             -d "$(jq -n --argjson u "$URLS" '{
+                  host: "anderstech.net",
+                  key: "f6ba6a9696c4426b9a20bd3baa58e3ec",
+                  keyLocation: "https://anderstech.net/f6ba6a9696c4426b9a20bd3baa58e3ec.txt",
+                  urlList: $u }')" || echo "IndexNow ping falhou (nao bloqueante)"

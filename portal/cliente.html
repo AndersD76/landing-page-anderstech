@@ -521,15 +521,24 @@ tr:hover{background:#fafbfd}
   }
 
   function fmtDate(dateStr) {
+    // #12: formata a partir das partes; new Date() em coluna DATE volta um dia.
     if (!dateStr) return '-';
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString('pt-BR');
+    var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (m) return m[3] + '/' + m[2] + '/' + m[1];
+    var d = new Date(dateStr);
+    return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('pt-BR');
   }
 
   function fmtHours(val) {
     if (val == null) return '-';
     return Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + 'h';
+  }
+
+  // #42: cliente.html montava HTML por concatenacao sem escape nenhum.
+  function esc(v) {
+    if (v == null) return '';
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   function el(id) { return document.getElementById(id); }
@@ -544,6 +553,15 @@ tr:hover{background:#fafbfd}
     return res.json();
   }
 
+  function avisaFalhas(falhas) {
+    if (!falhas.length) return;
+    var d = document.createElement('div');
+    d.style.cssText = 'margin:16px 0;padding:12px 14px;background:#fef2f2;border-left:3px solid #c5383c;color:#991b1b;font-size:14px';
+    d.textContent = 'Não foi possível carregar: ' + falhas.join(', ') + '. Os dados existem — recarregue a página para tentar de novo.';
+    var main = document.querySelector('main') || document.body;
+    main.insertBefore(d, main.firstChild);
+  }
+
   // ── State ──
   let clientData = null;
   let allEventos = [];
@@ -554,16 +572,19 @@ tr:hover{background:#fafbfd}
   // ── Auth Check ──
   async function init() {
     try {
+      var falhas = [];
       clientData = await api('');
       el('header-client-name').textContent = clientData.nome || clientData.name || clientData.email || '';
       el('welcome-name').textContent = 'Bem-vindo, ' + (clientData.nome || clientData.name || 'Cliente');
 
       // Load all data in parallel
       const [eventos, pagamentos, atas, contratos] = await Promise.all([
-        api('/eventos').catch(() => []),
-        api('/pagamentos').catch(() => []),
-        api('/atas').catch(() => []),
-        api('/contratos').catch(() => [])
+        // #35: o .catch(() => []) transformava falha em "nenhum registro", e o
+        // cliente concluia que a consultoria nao registrou o trabalho dele.
+        api('/eventos').catch(() => { falhas.push('eventos'); return []; }),
+        api('/pagamentos').catch(() => { falhas.push('pagamentos'); return []; }),
+        api('/atas').catch(() => { falhas.push('atas'); return []; }),
+        api('/contratos').catch(() => { falhas.push('contratos'); return []; })
       ]);
 
       allEventos = eventos || [];
@@ -629,8 +650,8 @@ tr:hover{background:#fafbfd}
       recentEventos.forEach(function(e) {
         evHtml += '<tr>'
           + '<td>' + fmtDate(e.data) + '</td>'
-          + '<td>' + (e.tipo || '-') + '</td>'
-          + '<td>' + (e.descricao || e.titulo || '-') + '</td>'
+          + '<td>' + esc(e.tipo || '-') + '</td>'
+          + '<td>' + esc(e.descricao || e.titulo || '-') + '</td>'
           + '<td>' + fmtHours(e.horas) + '</td>'
           + '<td>' + fmtCurrency(e.valor) + '</td>'
           + '</tr>';
@@ -651,8 +672,8 @@ tr:hover{background:#fafbfd}
         pagHtml += '<tr>'
           + '<td>' + fmtDate(p.data) + '</td>'
           + '<td>' + fmtCurrency(p.valor) + '</td>'
-          + '<td>' + (p.metodo || '-') + '</td>'
-          + '<td>' + (p.observacoes || '-') + '</td>'
+          + '<td>' + esc(p.metodo || '-') + '</td>'
+          + '<td>' + esc(p.observacoes || '-') + '</td>'
           + '</tr>';
       });
     }
@@ -678,8 +699,8 @@ tr:hover{background:#fafbfd}
         totalV += v;
         html += '<tr>'
           + '<td>' + fmtDate(e.data) + '</td>'
-          + '<td>' + (e.tipo || '-') + '</td>'
-          + '<td>' + (e.descricao || e.titulo || '-') + '</td>'
+          + '<td>' + esc(e.tipo || '-') + '</td>'
+          + '<td>' + esc(e.descricao || e.titulo || '-') + '</td>'
           + '<td>' + fmtHours(e.horas) + '</td>'
           + '<td>' + fmtCurrency(e.valor) + '</td>'
           + '</tr>';
@@ -731,8 +752,8 @@ tr:hover{background:#fafbfd}
       sorted.forEach(function(a) {
         html += '<tr style="cursor:pointer" onclick="window.__openAta(' + a.id + ')">'
           + '<td>' + fmtDate(a.data) + '</td>'
-          + '<td>' + (a.titulo || '-') + '</td>'
-          + '<td>' + (a.evento || '-') + '</td>'
+          + '<td>' + esc(a.titulo || '-') + '</td>'
+          + '<td>' + esc(a.evento || '-') + '</td>'
           + '<td><button class="download-link" onclick="event.stopPropagation();window.__openAta(' + a.id + ')">Visualizar</button></td>'
           + '</tr>';
       });
@@ -787,8 +808,8 @@ tr:hover{background:#fafbfd}
         html += '<tr>'
           + '<td>' + fmtDate(p.data) + '</td>'
           + '<td>' + fmtCurrency(p.valor) + '</td>'
-          + '<td>' + (p.metodo || '-') + '</td>'
-          + '<td>' + (p.observacoes || '-') + '</td>'
+          + '<td>' + esc(p.metodo || '-') + '</td>'
+          + '<td>' + esc(p.observacoes || '-') + '</td>'
           + '</tr>';
       });
     }
@@ -827,11 +848,11 @@ tr:hover{background:#fafbfd}
         }
 
         html += '<tr>'
-          + '<td>' + (c.titulo || '-') + '</td>'
+          + '<td>' + esc(c.titulo || '-') + '</td>'
           + '<td>' + fmtCurrency(c.valor) + '</td>'
           + '<td>' + (c.horas_contratadas != null ? fmtHours(c.horas_contratadas) : '-') + '</td>'
           + '<td>' + periodo + '</td>'
-          + '<td><span class="badge ' + statusClass + '">' + (c.status || '-') + '</span></td>'
+          + '<td><span class="badge ' + statusClass + '">' + esc(c.status || '-') + '</span></td>'
           + '<td>' + downloadHtml + '</td>'
           + '</tr>';
       });
@@ -843,6 +864,7 @@ tr:hover{background:#fafbfd}
   el('btn-logout').addEventListener('click', async function() {
     try {
       await fetch('/portal/logout', { method: 'POST', credentials: 'same-origin' });
+      avisaFalhas(falhas);
     } catch (e) { /* ignore */ }
     window.location.href = '/portal';
   });

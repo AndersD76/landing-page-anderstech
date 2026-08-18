@@ -928,7 +928,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
           </button>
           <span class="lp-form-note">Enviamos direto para seu email. Sem spam.</span>
         </div>
-      </form>
+      <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/politica-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p></form>
 
       <div class="lp-form-success" id="formSuccess">
         <div class="check-circle">
@@ -1068,14 +1068,23 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
         formSuccess.classList.add("show");
       })
       .catch(function () {
-        /* Show success anyway for now (API might not exist yet) */
-        form.style.display = "none";
-        formSuccess.classList.add("show");
+        /* #34: antes exibia sucesso mesmo com falha — o lead sumia e ninguem
+           ficava sabendo. Agora avisa e oferece o WhatsApp como alternativa. */
+        var box = form.querySelector('.form-error') || (function () {
+          var d = document.createElement('div');
+          d.className = 'form-error';
+          d.style.cssText = 'margin-top:14px;padding:12px 14px;background:#fef2f2;border-left:3px solid #c5383c;color:#991b1b;font-size:14px';
+          form.appendChild(d); return d;
+        })();
+        box.innerHTML = 'Não conseguimos enviar agora. Tente novamente ou fale direto no ' +
+          '<a href="https://wa.me/5554999648368?text=Oi%2C%20quero%20o%20Checklist%20ISO%209001." target="_blank" rel="noopener" style="color:#c5383c;font-weight:600">WhatsApp</a>.';
+        var b = form.querySelector('button[type="submit"]');
+        if (b) { b.disabled = false; var sp = b.querySelector("span"); if (sp) sp.textContent = "Quero o checklist"; }
       });
     });
   }
 })();
 </script>
-<script src="/shared.js"></script>
+
 </body>
 </html>

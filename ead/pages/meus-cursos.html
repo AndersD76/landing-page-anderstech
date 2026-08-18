@@ -74,16 +74,21 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
 
 <script>
 (function(){
+  var API='/ead/api';   // #5: base unica, em vez de literal repetido em cada fetch
+  // #42: conteudo vindo do banco era concatenado direto em innerHTML.
+  function esc(v){ if(v==null) return ''; return String(v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   document.getElementById('logoutBtn').addEventListener('click',function(e){
     e.preventDefault();
-    fetch('/ead/api/logout',{method:'POST'}).then(function(){window.location.href='/ead/login'});
+    fetch(API+'/logout',{method:'POST'}).then(function(){window.location.href='/ead/login'});
   });
 
-  fetch('/ead/api/me').then(function(r){return r.json()}).then(function(u){
+  fetch(API+'/me').then(function(r){return r.json()}).then(function(u){
     document.getElementById('greeting').textContent='Olá, '+u.nome.split(' ')[0];
   }).catch(function(){});
 
-  fetch('/ead/api/my-courses').then(function(r){return r.json()}).then(function(courses){
+  fetch(API+'/my-courses').then(function(r){return r.json()}).then(function(courses){
     var list=document.getElementById('coursesList');
     if(!courses.length){
       list.innerHTML='<div class="empty"><h2>Nenhum curso ainda</h2><p>Explore nossos cursos e comece a aprender.</p><br><a href="/ead/cursos">Ver cursos disponíveis &rarr;</a></div>';
@@ -103,8 +108,8 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text);min-he
         actions='<a href="/ead/player/'+c.slug+'" class="btn-continue">'+(c.aulas_completas>0?'Continuar':'Começar')+'</a>';
       }
       return '<div class="course-item"><div>'
-        +'<h2>'+c.titulo+'</h2>'
-        +'<div class="meta">'+c.carga_horaria+' &middot; '+c.aulas_completas+'/'+c.total_aulas+' aulas</div>'
+        +'<h2>'+esc(c.titulo)+'</h2>'
+        +'<div class="meta">'+esc(c.carga_horaria)+' &middot; '+c.aulas_completas+'/'+c.total_aulas+' aulas</div>'
         +'<div class="progress-track"><div class="fill" style="width:'+pct+'%"></div></div>'
         +'<div class="progress-label">'+pct+'% concluído</div></div>'
         +actions+'</div>';

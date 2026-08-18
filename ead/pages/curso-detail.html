@@ -101,20 +101,25 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
 
 <script>
 (function(){
+  var API='/ead/api';   // #5: base unica, em vez de literal repetido em cada fetch
+  // #42: conteudo vindo do banco era concatenado direto em innerHTML.
+  function esc(v){ if(v==null) return ''; return String(v)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   var slug=window.location.pathname.split('/').pop();
   if(!slug){window.location.href='/ead/cursos';return}
 
   function fmt(v){return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
 
-  fetch('/ead/api/me').then(function(r){if(r.ok)return r.json();return null}).then(function(u){
+  fetch(API+'/me').then(function(r){if(r.ok)return r.json();return null}).then(function(u){
     if(u)document.getElementById('navAuth').outerHTML='<a href="/ead/meus-cursos">Meus cursos</a>';
   }).catch(function(){});
 
-  fetch('/ead/api/promo').then(function(r){return r.json()}).then(function(p){
+  fetch(API+'/promo').then(function(r){return r.json()}).then(function(p){
     if(p.ativa){document.getElementById('promoBanner').innerHTML='<div class="promo-banner"><b>LANÇAMENTO:</b> Acesso gratuito a todos os cursos até '+new Date(p.fim).toLocaleDateString('pt-BR')+'. Matricule-se agora!</div>'}
   }).catch(function(){});
 
-  fetch('/ead/api/courses/'+slug).then(function(r){return r.json()}).then(function(c){
+  fetch(API+'/courses/'+slug).then(function(r){return r.json()}).then(function(c){
     if(!c.id){document.getElementById('courseContent').innerHTML='<div class="loading">Curso não encontrado.</div>';return}
     document.title=c.titulo+' — Anders Tech EAD';
     var totalAulas=0;
@@ -174,17 +179,19 @@ body{font-family:var(--ff-display);background:var(--bg);color:var(--text)}
 
     document.getElementById('courseContent').innerHTML=
       '<section class="hero-course"><div class="wrap">'
-      +'<div class="breadcrumb"><a href="/ead/cursos">Cursos</a> / '+c.titulo+'</div>'
-      +'<h1>'+c.titulo+'</h1>'
+      +'<div class="breadcrumb"><a href="/ead/cursos">Cursos</a> / '+esc(c.titulo)+'</div>'
+      +'<h1>'+esc(c.titulo)+'</h1>'
       +'<p class="sub">'+(c.subtitulo||'')+'</p>'
-      +'<div class="meta"><span>'+c.carga_horaria+'</span><span>'+(c.modules?c.modules.length:0)+' módulos</span><span>'+totalAulas+' aulas</span><span>Certificado incluso</span></div>'
+      +'<div class="meta"><span>'+esc(c.carga_horaria)+'</span><span>'+(c.modules?c.modules.length:0)+' módulos</span><span>'+totalAulas+' aulas</span><span>Certificado incluso</span></div>'
       +'<div class="cta-row">'+ctaHtml+'</div>'
       +'</div></section>'
       +'<div class="wrap">'
       +videoHtml
       +'<section class="content-section">'
       +'<h2>O que você vai aprender</h2>'
-      +'<p style="font-size:15px;line-height:1.7;color:var(--mute);margin-bottom:28px">'+(c.objetivo||c.descricao||'')+'</p>'
+      +'<p style="font-size:15px;line-height:1.7;color:var(--mute);margin-bottom:28px">'+esc(c.objetivo||c.descricao||'')+'</p>'
+      +(c.publico?'<div style="margin-bottom:16px"><b style="font-size:14px">Para quem é:</b> <span style="font-size:14px;color:var(--mute)">'+esc(c.publico)+'</span></div>':'')
+      +(c.prerequisito?'<div style="margin-bottom:28px"><b style="font-size:14px">Pré-requisito:</b> <span style="font-size:14px;color:var(--mute)">'+esc(c.prerequisito)+'</span></div>':'')
       +'<div class="features">'
       +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Templates e ferramentas baixáveis</span></div>'
       +'<div class="feature"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Casos reais anonimizados da indústria</span></div>'

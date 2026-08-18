@@ -403,10 +403,13 @@ function fmt(val) {
 }
 
 function fmtDate(str) {
+  // #12: `new Date('2026-08-17').toLocaleDateString('pt-BR')` devolve 16/08 em
+  // America/Sao_Paulo. Formatar a partir das partes evita a conversao de fuso.
   if (!str) return '-';
+  const m = String(str).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[3]}/${m[2]}/${m[1]}`;
   const d = new Date(str);
-  if (isNaN(d)) return str;
-  return d.toLocaleDateString('pt-BR');
+  return isNaN(d) ? str : d.toLocaleDateString('pt-BR');
 }
 
 function fmtDateInput(str) {
@@ -586,11 +589,11 @@ function renderClientes() {
       <td>${esc(c.empresa || '-')}</td>
       <td>${esc(c.email || '-')}</td>
       <td>${esc(c.telefone || '-')}</td>
-      <td><span class="badge badge-${c.status === 'inativo' ? 'inativo' : 'ativo'}">${c.status === 'inativo' ? 'Inativo' : 'Ativo'}</span></td>
+      <td><span class="badge badge-${c.ativo === false ? 'inativo' : 'ativo'}">${c.ativo === false ? 'Inativo' : 'Ativo'}</span></td>
       <td>
         <button class="btn-icon btn-sm" onclick="event.stopPropagation();editCliente(${c.id})" title="Editar">&#9998;</button>
-        <button class="btn-icon btn-sm" onclick="event.stopPropagation();toggleClienteStatus(${c.id})" title="${c.status === 'inativo' ? 'Ativar' : 'Desativar'}">
-          ${c.status === 'inativo' ? '&#10003;' : '&#10007;'}
+        <button class="btn-icon btn-sm" onclick="event.stopPropagation();toggleClienteStatus(${c.id})" title="${c.ativo === false ? 'Ativar' : 'Desativar'}">
+          ${c.ativo === false ? '&#10003;' : '&#10007;'}
         </button>
       </td>
     </tr>
@@ -642,13 +645,13 @@ async function editCliente(id) {
 async function toggleClienteStatus(id) {
   const c = clientesCache.find(x => x.id === id);
   if (!c) return;
-  const newStatus = c.status === 'inativo' ? 'ativo' : 'inativo';
+  const novoAtivo = c.ativo === false ? true : false;
   try {
     await apiFetch('/clientes/' + id, {
       method: 'PATCH',
-      body: JSON.stringify({ status: newStatus })
+      body: JSON.stringify({ ativo: novoAtivo })
     });
-    showToast('Cliente ' + (newStatus === 'ativo' ? 'ativado' : 'desativado'), 'success');
+    showToast('Cliente ' + (novoAtivo ? 'ativado' : 'desativado'), 'success');
     loadClientes();
   } catch (e) {
     showToast('Erro: ' + e.message, 'error');
@@ -872,7 +875,7 @@ function populateClienteFilters() {
   selectors.forEach(sel => {
     const val = sel.value;
     const opts = '<option value="">Todos os clientes</option>' +
-      clientesCache.filter(c => c.status !== 'inativo').map(c =>
+      clientesCache.filter(c => c.ativo !== false).map(c =>
         `<option value="${c.id}">${esc(c.empresa || c.nome)}</option>`
       ).join('');
     sel.innerHTML = opts;
@@ -911,7 +914,7 @@ function openModal(type, data) {
             <label>Cliente *</label>
             <select id="f-cliente_id">
               <option value="">Selecione...</option>
-              ${clientesCache.filter(c => c.status !== 'inativo').map(c =>
+              ${clientesCache.filter(c => c.ativo !== false).map(c =>
                 `<option value="${c.id}" ${data?.cliente_id == c.id ? 'selected' : ''}>${esc(c.empresa || c.nome)}</option>`
               ).join('')}
             </select>
@@ -961,7 +964,7 @@ function openModal(type, data) {
             <label>Cliente *</label>
             <select id="f-cliente_id">
               <option value="">Selecione...</option>
-              ${clientesCache.filter(c => c.status !== 'inativo').map(c =>
+              ${clientesCache.filter(c => c.ativo !== false).map(c =>
                 `<option value="${c.id}" ${data?.cliente_id == c.id ? 'selected' : ''}>${esc(c.empresa || c.nome)}</option>`
               ).join('')}
             </select>
@@ -1044,7 +1047,7 @@ async function loadContratosForSelect(clienteId, selectedId) {
     const data = await apiFetch('/clientes/' + clienteId + '/contratos');
     sel.innerHTML = '<option value="">Nenhum</option>' +
       (data || []).map(c =>
-        `<option value="${c.id}" ${c.id == selectedId ? 'selected' : ''}>${esc(c.descricao || c.numero || 'Contrato #' + c.id)}</option>`
+        `<option value="${c.id}" ${c.id == selectedId ? 'selected' : ''}>${esc(c.titulo || 'Contrato #' + c.id)}</option>`
       ).join('');
   } catch { sel.innerHTML = '<option value="">Nenhum</option>'; }
 }
