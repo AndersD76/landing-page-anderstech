@@ -163,6 +163,35 @@ export function injectShared(html, urlPath) {
     // encerrada. Agora o bloco so existe enquanto a promocao estiver ativa.
     // Banner ancorado em </body>: a home tem rodape proprio, sem #shared-footer.
     .replace('</body>', (IS_PROD ? COOKIE_BANNER : '') + '</body>')
+    // Seção 06 da home era HTML fixo de promoção: título "Grátis", badge em
+    // cada card, preço riscado e bloco de pacote a R$ 0. Continuou anunciando
+    // gratuidade depois de a promoção encerrar. Agora o servidor resolve.
+    .replace(/__TREIN_TITULO__/g, promoAtiva()
+      ? '4 cursos de qualidade industrial. Grátis.'
+      : '4 treinamentos de qualidade industrial')
+    .replace(/__TREIN_SUB__/g, promoAtiva()
+      ? '88 aulas, 44h de conteúdo, templates prontos, certificado. Matricule-se agora e mantenha o acesso permanente.'
+      : '88 aulas, 44h de conteúdo, templates prontos e certificado de conclusão. Acesso vitalício.')
+    .replace(/__TREIN_BADGE__/g, promoAtiva()
+      ? '<span class="trein-badge trein-badge-green">Grátis</span>'
+      : '')
+    .replace(/__TREIN_PRECO_(\d+)__/g, (_m, preco) => promoAtiva()
+      ? `<span class="trein-price-old">R$ ${preco}</span><span class="trein-price trein-price-free">Grátis</span>`
+      : `<span class="trein-price">R$ ${preco}</span>`)
+    .replace(/__TREIN_BUNDLE__/g, promoAtiva()
+      ? '<div class="trein-bundle reveal" style="border-color:rgba(22,163,74,.4);background:linear-gradient(135deg,rgba(22,163,74,.15) 0%,rgba(22,163,74,.04) 100%)">'
+        + '<div class="trein-bundle-text"><span class="trein-cat" style="color:#4ade80">Oferta de lançamento</span>'
+        + '<h3>Todos os 4 cursos gratuitos por tempo limitado</h3>'
+        + '<p>Matricule-se agora. Acesso permanente mesmo após o fim da promoção.</p></div>'
+        + '<div class="trein-bundle-price"><span class="trein-price-old">R$ 1.388</span>'
+        + '<span class="trein-price" style="font-size:32px;color:#4ade80">R$ 0</span>'
+        + '<a href="/ead/cursos" class="trein-bundle-btn" style="background:#16a34a">Matricular grátis &rarr;</a></div></div>'
+      : '<div class="trein-bundle reveal">'
+        + '<div class="trein-bundle-text"><span class="trein-cat">Formação completa</span>'
+        + '<h3>Os 4 treinamentos, do requisito à auditoria</h3>'
+        + '<p>88 aulas, 44h, templates e certificado em cada um. Acesso vitalício.</p></div>'
+        + '<div class="trein-bundle-price">'
+        + '<a href="/ead/cursos" class="trein-bundle-btn">Ver os treinamentos &rarr;</a></div></div>')
     .replace(/__PROMO_TAG__/g, promoAtiva()
       ? `<span class="tag" style="color:#16a34a">Lançamento — acesso gratuito até ${PROMO.fimCurto}</span>`
       : '')
