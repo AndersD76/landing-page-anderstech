@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "seed": "node ead/seed.js",
-    "test": "node --test \"test/*.test.js\"",
+    "test": "node --test test/asaas.test.js test/migrate.test.js",
     "migrate": "node -e \"import('./db/migrate.js').then(async m=>{const {neon}=await import('@neondatabase/serverless');await m.runMigrations(process.env.DATABASE_URL?neon(process.env.DATABASE_URL):null)})\""
   },
   "dependencies": {
