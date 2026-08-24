@@ -648,6 +648,18 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
               <option value="exportacao">Exportacao</option>
             </select>
           </div>
+
+          <!-- 5. Email — captura antes do resultado -->
+          <div class="field">
+            <label for="calc-email">Email corporativo <span class="req">*</span></label>
+            <input type="email" id="calc-email" name="email" placeholder="voce@empresa.com.br" required />
+          </div>
+          <div class="field">
+            <label for="calc-telefone">Telefone / WhatsApp</label>
+            <input type="tel" id="calc-telefone" name="telefone" placeholder="(54) 9 0000-0000" />
+          </div>
+          <!-- Honeypot -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
         </div>
 
         <div class="form-actions">
@@ -720,43 +732,13 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       </div>
     </section>
 
-    <!-- LEAD CAPTURE -->
-    <section class="lead-section" id="leadSection">
-      <h3>Quer receber o relatório completo por email?</h3>
-      <p class="lead-sub">Enviamos uma análise detalhada com cronograma sugerido, benchmarks do seu setor e proximos passos recomendados.</p>
-
-      <form id="leadForm" novalidate>
-        <div class="lead-form-grid">
-          <div class="lead-field">
-            <label for="lead-nome">Nome <span style="color:var(--red)">*</span></label>
-            <input type="text" id="lead-nome" name="nome" placeholder="Seu nome" required />
-          </div>
-          <div class="lead-field">
-            <label for="lead-email">Email <span style="color:var(--red)">*</span></label>
-            <input type="email" id="lead-email" name="email" placeholder="voce@empresa.com.br" required />
-          </div>
-          <div class="lead-field full">
-            <label for="lead-telefone">Telefone</label>
-            <input type="tel" id="lead-telefone" name="telefone" placeholder="(54) 9 0000-0000" />
-          </div>
-          <!-- Honeypot -->
-          <div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
-        </div>
-        <div class="lead-actions">
-          <button type="submit" class="btn btn-red btn-lg">
-            <span>Enviar relatório</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-          <span class="lead-alt">ou fale direto no <a href="#" id="waLead">WhatsApp</a></span>
-        </div>
-      </form>
-
-      <div class="lead-success" id="leadSuccess">
-        <div class="check-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <h4>Relatório enviado com sucesso</h4>
-        <p>Voce recebera a análise completa no email informado em ate 24 horas uteis.</p>
+    <!-- CTA pós-resultado -->
+    <section class="lead-section visible" style="text-align:center;padding:32px 0">
+      <h3>Quer validar esses números com um diagnóstico real?</h3>
+      <p class="lead-sub">Conversa de 30 min, sem custo. Avaliamos a sua operação e refinamos a estimativa.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+        <a href="https://cal.com/daniel-anders-emx5kl" class="btn btn-red btn-lg" target="_blank" rel="noopener"><span>Agendar diagnóstico</span></a>
+        <a href="#" id="waLead" class="btn btn-out-light btn-lg"><span>WhatsApp</span></a>
       </div>
     </section>
 
@@ -1026,13 +1008,26 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
     chartInvestVal.textContent = formatBRLCompact(r.investMid);
     chartRetornoVal.textContent = formatBRLCompact(r.savings24);
 
+    /* Honeypot */
+    var hp = form.querySelector('input[name="website"]');
+    if (hp && hp.value) return;
+
+    /* Capture lead — email required */
+    var calcEmail = document.getElementById("calc-email").value.trim();
+    var calcTel = document.getElementById("calc-telefone").value.trim();
+    if (!calcEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(calcEmail)) {
+      var ef = document.getElementById("calc-email");
+      ef.focus(); ef.style.borderColor = "var(--red)";
+      setTimeout(function () { ef.style.borderColor = ""; }, 2000);
+      return;
+    }
+
     /* Show results */
     resultsSection.classList.add("visible");
-    leadSection.classList.add("visible");
 
     /* Analytics */
-    if(typeof gtag==="function")gtag("event","select_content",{content_type:"calculator",item_id:"roi_iso_9001",event_category:"tool"});
-    if(typeof plausible==="function")plausible("calc_roi_resultado",{props:{setor:setor,faturamento:faturamento}});
+    if(typeof gtag==="function")gtag("event","generate_lead",{event_category:"tool",event_label:"calculadora_roi",value:1});
+    if(typeof plausible==="function")plausible("calc_roi_lead",{props:{setor:setor,faturamento:faturamento}});
 
     /* Animate chart bars after a short delay */
     setTimeout(function () {
@@ -1045,84 +1040,18 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
 
-    /* Store data for lead form */
-    form._roiData = {
-      faturamento: faturamento,
-      funcionarios: funcionarios,
-      setor: setor,
-      motivacao: motivacao,
-      investMin: r.investMin,
-      investMax: r.investMax,
-      savings24: r.savings24,
-      roi: r.roi
-    };
-  });
-
-  /* ---- LEAD FORM ---- */
-  var leadForm = document.getElementById("leadForm");
-  var leadSuccess = document.getElementById("leadSuccess");
-
-  leadForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    /* Honeypot check */
-    var hp = leadForm.querySelector('input[name="website"]');
-    if (hp && hp.value) return;
-
-    var nome = document.getElementById("lead-nome").value.trim();
-    var email = document.getElementById("lead-email").value.trim();
-    var telefone = document.getElementById("lead-telefone").value.trim();
-
-    if (!nome || !email) {
-      var firstEmpty = !nome ? document.getElementById("lead-nome") : document.getElementById("lead-email");
-      firstEmpty.focus();
-      firstEmpty.style.borderColor = "var(--red)";
-      setTimeout(function () { firstEmpty.style.borderColor = ""; }, 2000);
-      return;
-    }
-
-    /* Basic email validation */
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      var emailField = document.getElementById("lead-email");
-      emailField.focus();
-      emailField.style.borderColor = "var(--red)";
-      setTimeout(function () { emailField.style.borderColor = ""; }, 2000);
-      return;
-    }
-
-    var payload = {
-      nome: nome,
-      email: email,
-      telefone: telefone,
-      source: "calculadora_roi",
-      roiData: form._roiData || {}
-    };
-
-    /* POST to API */
+    /* Send lead to API (background — don't block the result) */
     fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(function (res) {
-      if (!res.ok) throw new Error("Erro no envio");
-      leadForm.style.display = "none";
-      leadSuccess.classList.add("visible");
-      if(typeof gtag==="function")gtag("event","generate_lead",{event_category:"tool",event_label:"calculadora_roi",value:1});
-      if(typeof plausible==="function")plausible("calc_roi_lead");
-    })
-    .catch(function () {
-      /* #34: exibia sucesso mesmo falhando, com o comentario afirmando que o
-         dado estaria no log do servidor — se o fetch falhou, nada chegou la. */
-      var box = leadForm.querySelector('.form-error') || (function () {
-        var d = document.createElement('div');
-        d.className = 'form-error';
-        d.style.cssText = 'margin-top:14px;padding:12px 14px;background:#fef2f2;border-left:3px solid #c5383c;color:#991b1b;font-size:14px';
-        leadForm.appendChild(d); return d;
-      })();
-      box.innerHTML = 'Não conseguimos enviar agora. Tente novamente ou fale direto no ' +
-        '<a href="https://wa.me/5554999648368?text=Oi%2C%20fiz%20o%20c%C3%A1lculo%20de%20ROI%20no%20site." target="_blank" rel="noopener" style="color:#c5383c;font-weight:600">WhatsApp</a>.';
-    });
+      body: JSON.stringify({
+        email: calcEmail,
+        telefone: calcTel,
+        source: "calculadora_roi",
+        interesse: "ISO 9001 — implantação / manutenção",
+        roiData: { faturamento: faturamento, funcionarios: funcionarios, setor: setor, motivacao: motivacao, investMin: r.investMin, investMax: r.investMax, savings24: r.savings24, roi: r.roi }
+      })
+    }).catch(function () {});
   });
 
 })();

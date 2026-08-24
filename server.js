@@ -159,6 +159,7 @@ function sendPage(filePath, res, urlPath) {
       html = injectShared(readFileSync(filePath, 'utf8'), urlPath);
       pageCache.set(chave, html);
     }
+    res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=86400');
     res.type('html').send(html);
   } catch { return false; }
   return true;

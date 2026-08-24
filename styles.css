@@ -471,6 +471,8 @@ a.serv-row { text-decoration: none; color: inherit; }
 .skip-link { position: absolute; top: -100%; left: 16px; z-index: 200; background: var(--navy); color: #fff; padding: 12px 24px; font-family: var(--ff-mono); font-size:0.8125rem; letter-spacing: .06em; transition: top .2s; }
 .skip-link:focus { top: 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media(max-width:900px){ .nav-phone-num { display:none } }
+@media(max-width:760px){ .nav-phone { display:none !important } }
 
 :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(254,0,0,.15); }

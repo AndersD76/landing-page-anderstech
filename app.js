@@ -303,7 +303,7 @@
       var d = new FormData(exitForm);
       var g = function (k) { return (d.get(k) || "").toString().trim(); };
       if (g("website")) return;
-      if (!g("nome") || !g("email")) { showToast("Preencha nome e email."); return; }
+      if (!g("email")) { showToast("Preencha o email."); return; }
 
       var btn = $("button", exitForm);
       btn.disabled = true;
@@ -313,7 +313,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nome: g("nome"), email: g("email"), empresa: g("empresa"),
+          email: g("email"),
           source: "lead_magnet_checklist", interesse: "ISO 9001 — implantação / manutenção"
         })
       })
@@ -325,7 +325,7 @@
         track("exit_intent_submit");
       })
       .catch(function () { showToast("Erro ao enviar. Tente via WhatsApp."); })
-      .finally(function () { btn.disabled = false; btn.innerHTML = "<span>Enviar checklist</span>"; });
+      .finally(function () { btn.disabled = false; btn.innerHTML = "<span>Receber checklist</span>"; });
     });
   }
 })();
