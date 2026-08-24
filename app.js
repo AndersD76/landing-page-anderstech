@@ -218,6 +218,7 @@
         if (result.ok) {
           showToast("Mensagem enviada! Entraremos em contato.");
           if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "contact", event_label: payload.interesse, value: 1 });
+          track("form_submit", { type: "contact" });
           form.reset();
           setTimeout(function () {
             window.open(waUrl("Oi, sou " + payload.nome + (payload.empresa ? " da " + payload.empresa : "") + ". Acabei de preencher o formulário no site."), "_blank", "noopener");
@@ -268,10 +269,7 @@
     });
   });
 
-  // track form submit
-  if (form) {
-    form.addEventListener("submit", function () { track("form_submit", { type: "contact" }); }, true);
-  }
+  // track form submit — fired after successful POST (see fetch .then block above)
 
   /* ---- exit-intent popup ---- */
   var exitOverlay = $("#exitOverlay"), exitClose = $("#exitClose"), exitForm = $("#exitForm");

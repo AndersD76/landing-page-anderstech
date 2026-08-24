@@ -83,7 +83,11 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       body:JSON.stringify({email:form.email.value,senha:form.senha.value})
     }).then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
     .then(function(r){
-      if(r.ok){var rd=new URLSearchParams(window.location.search).get('redirect');window.location.href=rd||'/ead/meus-cursos'}
+      if(r.ok){
+        if(typeof gtag==="function")gtag("event","login",{method:"email",event_category:"ead"});
+        if(typeof plausible==="function")plausible("ead_login");
+        var rd=new URLSearchParams(window.location.search).get('redirect');window.location.href=rd||'/ead/meus-cursos';
+      }
       else{err.textContent=r.data.error;err.style.display='block'}
     }).catch(function(){err.textContent='Erro de conexão.';err.style.display='block'})
     .finally(function(){btn.disabled=false;btn.textContent='Entrar'});

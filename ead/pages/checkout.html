@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Checkout — Anders Tech EAD</title>
 <link rel="icon" href="/assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -212,6 +213,8 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
         if(r.data.qr_code)html+='<div class="pix-code" title="Clique para copiar" id="pixCopy">'+r.data.qr_code+'</div>';
         html+='<div class="status-msg pending" id="pixStatus">Aguardando pagamento...</div></div>';
         document.getElementById('pixResult').innerHTML=html;
+        if(typeof gtag==="function")gtag("event","begin_checkout",{currency:"BRL",value:c.preco,event_category:"ead"});
+        if(typeof plausible==="function")plausible("ead_checkout_pix");
         btn.style.display='none';
         if(r.data.qr_code){
           document.getElementById('pixCopy').addEventListener('click',function(){
@@ -235,6 +238,8 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
             .then(function(d){
               if(d.status==='aprovado'){
                 clearInterval(poll);
+                if(typeof gtag==="function")gtag("event","purchase",{currency:"BRL",transaction_id:orderId,event_category:"ead"});
+                if(typeof plausible==="function")plausible("ead_purchase");
                 st.className='status-msg success';
                 st.textContent='Pagamento confirmado! Redirecionando...';
                 setTimeout(function(){window.location.href='/ead/player/'+slug},1500);
@@ -257,7 +262,11 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       document.getElementById('payError').style.display='none';
       comDocumento('card',btn,'Pagar com cartao',function(r){
         if(r.data.status==='aprovado'){window.location.href='/ead/player/'+slug;return}
-        if(r.data.init_point){window.location.href=r.data.init_point;return}
+        if(r.data.init_point){
+          if(typeof gtag==="function")gtag("event","begin_checkout",{payment_type:"card",event_category:"ead"});
+          if(typeof plausible==="function")plausible("ead_checkout_card");
+          window.location.href=r.data.init_point;return;
+        }
         document.getElementById('payError').textContent=r.data.error||'Erro no checkout';
         document.getElementById('payError').style.display='block';
         btn.disabled=false;btn.textContent='Pagar com cartao';

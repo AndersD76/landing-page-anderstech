@@ -1066,6 +1066,8 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
       .then(function () {
         form.style.display = "none";
         formSuccess.classList.add("show");
+        if(typeof gtag==="function")gtag("event","generate_lead",{event_category:"lead_magnet",event_label:"checklist_iso_9001",value:1});
+        if(typeof plausible==="function")plausible("checklist_lead");
       })
       .catch(function () {
         /* #34: antes exibia sucesso mesmo com falha — o lead sumia e ninguem

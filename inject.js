@@ -135,20 +135,23 @@ function buildBreadcrumbSchema(urlPath) {
 // propriedade de producao. #72: e gravava cookie antes de qualquer escolha.
 const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production';
 
-const COOKIE_BANNER = '<div id="ckBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
+const COOKIE_BANNER = '<script>'
+  + 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}'
+  + 'gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});'
+  + 'gtag("js",new Date());gtag("config","'+EMPRESA.ga4+'");'
+  + 'var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id='+EMPRESA.ga4+'";document.head.appendChild(s);'
+  + '</'+'script>'
+  + '<div id="ckBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
   + '<div style="max-width:1080px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
   + '<span style="flex:1;min-width:260px">Usamos cookies de análise para entender como o site é usado. '
   + '<a href="/politica-de-privacidade" style="color:#fff;text-decoration:underline">Política de Privacidade</a>.</span>'
   + '<button id="ckNo" style="background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 16px;cursor:pointer;font-size:14px">Recusar</button>'
   + '<button id="ckYes" style="background:#c5383c;border:none;color:#fff;padding:10px 20px;cursor:pointer;font-weight:600;font-size:14px">Aceitar</button>'
   + '</div></div>'
-  + '<script>!function(){var K="at_cookie_consent";function load(){'
-  + 'if(window.__gaLoaded)return;window.__gaLoaded=1;'
-  + 'var s=document.createElement("script");s.async=1;s.src=`https://www.googletagmanager.com/gtag/js?id=${EMPRESA.ga4}`;document.head.appendChild(s);'
-  + 'window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config","'+EMPRESA.ga4+'")}'
-  + 'try{var v=localStorage.getItem(K);if(v==="1"){load();return}if(v==="0")return}catch(e){}'
+  + '<script>!function(){var K="at_cookie_consent";'
+  + 'try{var v=localStorage.getItem(K);if(v==="1"){gtag("consent","update",{analytics_storage:"granted"});return}if(v==="0")return}catch(e){}'
   + 'var b=document.getElementById("ckBanner");if(!b)return;b.style.display="block";'
-  + 'document.getElementById("ckYes").onclick=function(){try{localStorage.setItem(K,"1")}catch(e){}b.style.display="none";load()};'
+  + 'document.getElementById("ckYes").onclick=function(){try{localStorage.setItem(K,"1")}catch(e){}b.style.display="none";gtag("consent","update",{analytics_storage:"granted"})};'
   + 'document.getElementById("ckNo").onclick=function(){try{localStorage.setItem(K,"0")}catch(e){}b.style.display="none"}}()</'
   + 'script>';
 

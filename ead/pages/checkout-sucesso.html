@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Pagamento aprovado — Anders Tech EAD</title>
 <link rel="icon" href="/assets/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,5 +13,9 @@
 <h1>Pagamento aprovado!</h1>
 <p>Sua matrícula foi confirmada. Você já pode acessar o curso completo.</p>
 <a href="/ead/meus-cursos">Acessar meus cursos</a>
+<script>
+if(typeof gtag==="function")gtag("event","purchase",{event_category:"ead",event_label:"sucesso"});
+if(typeof plausible==="function")plausible("ead_purchase_success");
+</script>
 </body>
 </html>

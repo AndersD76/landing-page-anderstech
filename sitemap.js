@@ -13,7 +13,8 @@ const CORE_URLS = [
 
   // Blog
   ['/blog', '2026-06-06', 'weekly', '0.8'],
-  ['/blog/quanto-custa-certificacao-iso-9001', '2026-07-12', 'monthly', '0.8'],
+  // canonical deste post aponta para /quanto-custa-certificacao-iso (consolidação)
+  // ['/blog/quanto-custa-certificacao-iso-9001', '2026-07-12', 'monthly', '0.8'],
   ['/blog/pbqp-h-o-que-e-para-que-serve', '2026-06-06', 'monthly', '0.8'],
   ['/blog/iso-9001-vale-a-pena-para-metalurgica', '2026-06-06', 'monthly', '0.8'],
   ['/blog/como-reduzir-retrabalho-na-producao', '2026-06-06', 'monthly', '0.8'],

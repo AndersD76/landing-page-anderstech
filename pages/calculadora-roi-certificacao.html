@@ -1030,6 +1030,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
     resultsSection.classList.add("visible");
     leadSection.classList.add("visible");
 
+    /* Analytics */
+    if(typeof gtag==="function")gtag("event","select_content",{content_type:"calculator",item_id:"roi_iso_9001",event_category:"tool"});
+    if(typeof plausible==="function")plausible("calc_roi_resultado",{props:{setor:setor,faturamento:faturamento}});
+
     /* Animate chart bars after a short delay */
     setTimeout(function () {
       chartInvest.style.height = investHeight + "px";
@@ -1104,6 +1108,8 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       if (!res.ok) throw new Error("Erro no envio");
       leadForm.style.display = "none";
       leadSuccess.classList.add("visible");
+      if(typeof gtag==="function")gtag("event","generate_lead",{event_category:"tool",event_label:"calculadora_roi",value:1});
+      if(typeof plausible==="function")plausible("calc_roi_lead");
     })
     .catch(function () {
       /* #34: exibia sucesso mesmo falhando, com o comentario afirmando que o
