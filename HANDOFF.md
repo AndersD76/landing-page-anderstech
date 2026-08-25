@@ -343,7 +343,23 @@ explicar a um cliente por que o número dele apareceu sem autorização.
 
 ---
 
-## 10. N/A para este projeto
+## 10. FAQPage schema — expectativa correta
+
+As 3 páginas de serviço (`/iso-9001`, `/pbqp-h`, `/sebraetec`) incluem schema
+JSON-LD do tipo `FAQPage` com 5 perguntas cada. O schema é **válido e mantido**
+— pode ser verificado no Rich Results Test do Google.
+
+**Expectativa realista**: o Google **quase não exibe rich results de FAQ para
+sites comerciais** desde a atualização de agosto de 2023. O schema está lá por
+estrutura, acessibilidade de dados e compatibilidade futura — não promete
+"estrelinha" no resultado de busca. Se o Google voltar a exibir FAQ snippets
+para este tipo de página, eles já estarão prontos.
+
+**Manutenção**: se o conteúdo das perguntas mudar, atualize tanto o HTML
+visível quanto o JSON-LD no `<head>` — são blocos separados e precisam estar
+em sincronia.
+
+## 11. N/A para este projeto
 
 - Domínio e DNS: já apontados
 - `www` → apex e http → https: resolvidos na plataforma; confirme uma vez no painel

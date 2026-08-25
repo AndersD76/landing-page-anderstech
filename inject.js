@@ -35,8 +35,11 @@ const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index
   + '<a href="/#faq"><i>04</i> Dúvidas</a>'
   + '<a href="/#sobre"><i>05</i> Sobre</a>'
   + '<a href="/blog"><i>06</i> Conteúdo</a>'
-  + '<a href="/ead/cursos"><i>07</i> Cursos EAD</a>'
-  + '<a href="/#contato"><i>08</i> Contato</a>'
+  + '<a href="/iso-9001"><i>07</i> ISO 9001</a>'
+  + '<a href="/pbqp-h"><i>08</i> PBQP-H</a>'
+  + '<a href="/sebraetec"><i>09</i> Sebraetec</a>'
+  + '<a href="/ead/cursos"><i>10</i> Cursos EAD</a>'
+  + '<a href="/#contato"><i>11</i> Contato</a>'
   + '<a href="/#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a></nav>'
   + '<script>!function(){var t=document.getElementById("navToggle"),m=document.getElementById("mobileMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",String(o));document.body.style.overflow=o?"hidden":""});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow=""})})}}()</script>';
 const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'

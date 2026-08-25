@@ -169,6 +169,15 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
 .faq-item { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 24px 28px; margin-bottom: 16px; }
 .faq-item h3 { font-family: var(--ff-display); font-size: 1.05rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
 .faq-item p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.72; margin: 0; }
+.related-section { padding: clamp(40px, 7vw, 56px) clamp(22px, 5vw, 80px); }
+.related-section .wrap { max-width: 900px; margin: 0 auto; }
+.related-section h2 { font-family: var(--ff-display); font-size: clamp(1.2rem, 2.5vw, 1.4rem); font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+.related-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.related-card { display: block; padding: 24px; background: var(--white); border: 1px solid var(--line); border-radius: 8px; transition: border-color .2s, transform .2s; }
+.related-card:hover { border-color: var(--red); transform: translateY(-2px); }
+.related-card .rc-cat { font-family: var(--ff-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.related-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.related-card p { font-size: 0.9rem; color: var(--ink-soft); margin: 0; }
 .cta-section { background: var(--navy); color: var(--on-navy); padding: clamp(48px, 8vw, 80px) clamp(22px, 5vw, 80px); text-align: center; }
 .cta-section h2 { color: var(--white); font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 12px; }
 .cta-section p { color: var(--on-navy-soft); font-size: 1rem; max-width: 560px; margin: 0 auto 28px; }
@@ -294,6 +303,25 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
       <h3>Quanto eu pago?</h3>
       <!-- REVISAR: percentuais de contrapartida — confirmar regras vigentes -->
       <p>A empresa paga a contrapartida (30% ou mais, dependendo do enquadramento). O restante é coberto pelo Sebrae. A Anders Tech apresenta a estimativa completa no diagnóstico gratuito.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Cross-linking serviços -->
+<section class="related-section">
+  <div class="wrap">
+    <h2>Serviços disponíveis via Sebraetec</h2>
+    <div class="related-cards">
+      <a href="/iso-9001" class="related-card">
+        <div class="rc-cat">Certificação</div>
+        <h3>ISO 9001</h3>
+        <p>Implantação do Sistema de Gestão da Qualidade para indústrias e construtoras.</p>
+      </a>
+      <a href="/pbqp-h" class="related-card">
+        <div class="rc-cat">Construção civil</div>
+        <h3>PBQP-H</h3>
+        <p>Qualificação no SiAC — acesso a financiamento habitacional e licitações públicas.</p>
+      </a>
     </div>
   </div>
 </section>
