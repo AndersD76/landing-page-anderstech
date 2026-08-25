@@ -69,11 +69,25 @@ faltava nos que saíram. A trava exige `label`, `valor` e `fonte` preenchidos e
 Enquanto não houver autorização, o hero renderiza sem a coluna da direita — o
 texto ocupa a largura toda, não fica um buraco.
 
-## Ainda no ar, aguardando sua decisão
+## Tempo de experiência — `[PREENCHER]`
 
-| Onde | O que afirma | Situação |
-|---|---|---|
-| Faixa de credenciais | `15+ anos` de experiência | mantido — pendente de confirmação do Anders |
+Todas as 8 referências a "15+ anos" foram trocadas por `[PREENCHER]` (3 em
+`index.html`, 1 em `checklist-iso-9001.html`, 2 em `llms-full.txt`, 1 em
+`llms.txt`). O `injectShared` remove `[PREENCHER]` do HTML público em produção,
+mas no JSON-LD e nos llms.txt o placeholder vai ao ar literal — **preencher
+antes do próximo deploy**.
+
+| Arquivo | O que preencher |
+|---|---|
+| `index.html:62` — JSON-LD founder.description | `"N anos em gestão..."` |
+| `index.html:273` — faixa de credenciais | `N anos` |
+| `index.html:532` — seção Sobre | `N anos` |
+| `pages/checklist-iso-9001.html:973` — badge | `N anos` |
+| `llms.txt:5` — About | `N years` |
+| `llms-full.txt:5` — About | `N years` |
+| `llms-full.txt:10` — Founder | `N years` |
+
+Fonte: afirmação do Anders, aguardando valor exato.
 
 ---
 

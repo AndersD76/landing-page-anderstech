@@ -2,7 +2,7 @@
 > Consultoria em gestao da qualidade e conformidade para a industria.
 
 ## About
-Anders Tech is a quality management consultancy serving industrial companies in Rio Grande do Sul, Brazil. Founded by Daniel Anders, an electrical engineer with 15+ years of experience in business management and technology.
+Anders Tech is a quality management consultancy serving industrial companies in Rio Grande do Sul, Brazil. Founded by Daniel Anders, an electrical engineer with [PREENCHER] years of experience in business management and technology.
 
 ## Services
 - ISO 9001: Implementation and maintenance of Quality Management Systems

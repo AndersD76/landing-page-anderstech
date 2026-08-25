@@ -303,7 +303,47 @@ Trocar uma fonte no futuro: substituir o `.woff2` e **subir o `?v=N`** no
 `fonts.gstatic.com` liberados. São áreas internas, não páginas de conversão.
 
 
-## 9. N/A para este projeto
+## 9. Padrão `fonte` — portfólio com rastreabilidade
+
+Todo número publicado no site (case, readout, depoimento) precisa de um campo
+**`fonte`** que **não aparece na página**. Existe para que nenhum número volte ao
+ar sem alguém ter escrito de onde ele saiu — é o que tirou os cases no início da
+FASE 2.
+
+### Como funciona
+
+Em `config/prova.js`, cada métrica do readout tem:
+
+```js
+{ label: 'Meses analisados', valor: '18', barra: 80, fonte: 'planilha X do cliente Y, jan/2025' }
+```
+
+A trava (`readoutPublicado()`, `casesPublicados()`) verifica:
+1. `publicado: true`
+2. Nenhum campo contém `[PREENCHER`
+3. Cada métrica tem `fonte` não-vazio
+
+Se qualquer condição falha, o item **não vai ao ar**. O teste
+`test/prova.test.js` cobre os três cenários.
+
+### Para replicar em outro produto
+
+1. Criar um módulo `config/prova.js` com a mesma estrutura: array de slots,
+   cada um com `publicado: false` e campos `[PREENCHER]`.
+2. Exportar uma função que filtra: `publicado && completo(item)` — onde
+   `completo()` verifica que nenhum campo contém `[PREENCHER` e, para métricas
+   numéricas, que `fonte` é string não-vazia.
+3. No render, chamar a função — nunca acessar o array diretamente.
+4. Escrever um teste que confirma: (a) nada publica por padrão, (b)
+   `publicado: true` com `[PREENCHER]` não passa, (c) completo publica, (d)
+   métrica sem `fonte` não publica.
+
+A trava é **de propósito agressiva**: é mais barato preencher um campo do que
+explicar a um cliente por que o número dele apareceu sem autorização.
+
+---
+
+## 10. N/A para este projeto
 
 - Domínio e DNS: já apontados
 - `www` → apex e http → https: resolvidos na plataforma; confirme uma vez no painel

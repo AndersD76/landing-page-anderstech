@@ -91,7 +91,7 @@
   "taxID": "42.073.716/0001-80",
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "Servicos de Consultoria em Carazinho",
+    "name": "Serviços de Consultoria em Carazinho",
     "itemListElement": [
       {
         "@type": "Offer",
@@ -106,7 +106,7 @@
         "itemOffered": {
           "@type": "Service",
           "name": "PBQP-H",
-          "description": "Qualificação PBQP-H para construtoras de Carazinho e regiao"
+          "description": "Qualificação PBQP-H para construtoras de Carazinho e região"
         }
       },
       {
@@ -121,7 +121,7 @@
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Nao-Conformidade",
+          "name": "Não-Conformidade",
           "description": "Sistema de NC, análise de causa raiz e acoes corretivas"
         }
       }
@@ -321,6 +321,27 @@ a { color: inherit; text-decoration: none; }
   .services-grid { grid-template-columns: 1fr; }
   .cta-buttons { flex-direction: column; align-items: center; }
 }
+
+/* --- CROSS-LINKING REGIONAL --- */
+.region-section { padding: clamp(40px, 7vw, 56px) clamp(22px, 5vw, 80px); }
+.region-section .wrap { max-width: 900px; margin: 0 auto; }
+.region-section h2 {
+  font-family: var(--ff-display); font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  font-weight: 700; color: var(--navy); margin-bottom: 12px;
+}
+.region-section p { font-size: 0.95rem; color: var(--ink-soft); margin-bottom: 20px; }
+.region-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+.region-list li a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; background: var(--white); border: 1px solid var(--line);
+  border-radius: 6px; font-family: var(--ff-display); font-weight: 600;
+  font-size: 0.95rem; color: var(--navy); transition: border-color 0.2s, color 0.2s;
+}
+.region-list li a::before {
+  content: ""; width: 6px; height: 6px; background: var(--red);
+  transform: rotate(45deg); flex: none;
+}
+.region-list li a:hover { border-color: var(--red); color: var(--red); }
 </style>
 </head>
 <body>
@@ -332,93 +353,105 @@ a { color: inherit; text-decoration: none; }
   <div class="wrap">
     <div class="tag">Consultoria Local</div>
     <h1>Consultoria ISO 9001 em <span>Carazinho</span></h1>
-    <p class="subtitle">Gestão da qualidade para agroindústrias, metalúrgicas e cooperativas de Carazinho e regiao. Atendimento presencial desde Passo Fundo, a apenas 45 km.</p>
+    <p class="subtitle">Gestão da qualidade para agroindústrias, metalúrgicas e cooperativas de Carazinho e região. Atendimento presencial desde Passo Fundo, a apenas 45 km.</p>
   </div>
 </section>
 
 <!-- CONTENT -->
 <article class="content">
-  <h2>Carazinho: polo agroindustrial e logistico do planalto medio</h2>
-  <p>Carazinho e um dos municípios mais relevantes do planalto medio gaúcho, com uma população de aproximadamente 62 mil habitantes e uma economia fortemente ancorada no agronegócio e na logística. Localizada a 45 km de Passo Fundo e a cerca de 290 km de Porto Alegre, a cidade ocupa uma posição estratégica na malha rodoviaria e ferroviaria do norte do Rio Grande do Sul, funcionando como entreposto para o escoamento da produção agrícola de toda a regiao.</p>
+  <h2>Carazinho: polo agroindustrial e logístico do planalto medio</h2>
+  <p>Carazinho e um dos municípios mais relevantes do planalto medio gaúcho, com uma população de aproximadamente 62 mil habitantes e uma economia fortemente ancorada no agronegócio e na logística. Localizada a 45 km de Passo Fundo e a cerca de 290 km de Porto Alegre, a cidade ocupa uma posição estratégica na malha rodoviaria e ferroviaria do norte do Rio Grande do Sul, funcionando como entreposto para o escoamento da produção agrícola de toda a região.</p>
 
-  <p>Historicamente, Carazinho se desenvolveu ao redor da ferrovia que conectava o interior gaúcho aos portos de exportacao. Esse papel logistico moldou a vocacao econômica da cidade: armazenagem, transporte, beneficiamento de graos e comercializacao de commodities agrícolas. Hoje, o município concentra silos, unidades de beneficiamento de soja, milho e trigo, alem de agroindústrias que processam materias-primas para mercados nacionais e internacionais.</p>
+  <p>Historicamente, Carazinho se desenvolveu ao redor da ferrovia que conectava o interior gaúcho aos portos de exportação. Esse papel logístico moldou a vocacao econômica da cidade: armazenagem, transporte, beneficiamento de graos e comercialização de commodities agrícolas. Hoje, o município concentra silos, unidades de beneficiamento de soja, milho e trigo, além de agroindústrias que processam materias-primas para mercados nacionais e internacionais.</p>
 
-  <p>O setor cooperativista e uma forca motriz de Carazinho e entorno. Cooperativas como a Cotrijal, com sede em Nao-Me-Toque (a poucos quilometros de distancia), movimentam bilhoes de reais por ano e geram uma cadeia de fornecedores locais que inclui transportadoras, oficinas mecanicas, fabricantes de implementos e prestadores de servicos técnicos. Essa cadeia produtiva exige padrões de qualidade cada vez mais rigorosos, tanto para atender os requisitos internos das cooperativas quanto para viabilizar exportacoes.</p>
+  <p>O setor cooperativista e uma forca motriz de Carazinho e entorno. Cooperativas como a Cotrijal, com sede em Não-Me-Toque (a poucos quilometros de distancia), movimentam bilhões de reais por ano e geram uma cadeia de fornecedores locais que inclui transportadoras, oficinas mecanicas, fabricantes de implementos e prestadores de serviços técnicos. Essa cadeia produtiva exige padrões de qualidade cada vez mais rigorosos, tanto para atender os requisitos internos das cooperativas quanto para viabilizar exportacoes.</p>
 
-  <p>Alem do agronegócio, Carazinho possui um setor metalurgico em crescimento, com empresas que fabricam pecas e componentes para maquinario agrícola. A construcao civil tambem ganha forca com o crescimento urbano do município, impulsionado por programas habitacionais e pela demanda por infraestrutura comercial e industrial.</p>
+  <p>Além do agronegócio, Carazinho possui um setor metalúrgico em crescimento, com empresas que fabricam pecas e componentes para maquinario agrícola. A construção civil também ganha forca com o crescimento urbano do município, impulsionado por programas habitacionais e pela demanda por infraestrutura comercial e industrial.</p>
 
   <h2>Por que a gestão da qualidade e decisiva para empresas de Carazinho</h2>
-  <p>A economia de Carazinho depende de cadeias produtivas que exigem conformidade e rastreabilidade. Quando uma cooperativa exporta soja para a Europa ou a China, cada elo da cadeia precisa demonstrar que opera dentro de padrões controlados. Quando uma metalurgica de Carazinho fornece pecas para um fabricante de colheitadeiras, o cliente exige evidências de controle de processo, inspeção dimensional e gestão de nao-conformidades.</p>
+  <p>A economia de Carazinho depende de cadeias produtivas que exigem conformidade e rastreabilidade. Quando uma cooperativa exporta soja para a Europa ou a China, cada elo da cadeia precisa demonstrar que opera dentro de padrões controlados. Quando uma metalúrgica de Carazinho fornece pecas para um fabricante de colheitadeiras, o cliente exige evidências de controle de processo, inspeção dimensional e gestão de não-conformidades.</p>
 
-  <p>A <strong>ISO 9001</strong> oferece exatamente essa estrutura. Nao se trata apenas de um certificado na parede, mas de um sistema que organiza os processos da empresa, define responsabilidades, estabelece indicadores mensuráveis e cria mecanismos para corrigir desvios antes que eles se transformem em problemas caros. Para empresas de Carazinho que fornecem para grandes cooperativas ou exportam, a certificação ISO 9001 deixou de ser diferencial e se tornou requisito de entrada.</p>
+  <p>A <strong>ISO 9001</strong> oferece exatamente essa estrutura. Não se trata apenas de um certificado na parede, mas de um sistema que organiza os processos da empresa, define responsabilidades, estabelece indicadores mensuráveis e cria mecanismos para corrigir desvios antes que eles se transformem em problemas caros. Para empresas de Carazinho que fornecem para grandes cooperativas ou exportam, a certificação ISO 9001 deixou de ser diferencial e se tornou requisito de entrada.</p>
 
-  <p>No setor de alimentos e agroindústria, a integracao entre ISO 9001 e sistemas de seguranca alimentar como HACCP (Análise de Perigos e Pontos Críticos de Controle) e cada vez mais demandada. Empresas que processam graos, carnes ou laticinios em Carazinho precisam garantir que seus processos atendem simultaneamente aos requisitos de qualidade e de seguranca alimentar. A Anders Tech tem experiência nessa integracao, estruturando sistemas que atendem ambas as frentes sem duplicacao de esforcos.</p>
+  <p>No setor de alimentos e agroindústria, a integração entre ISO 9001 e sistemas de segurança alimentar como HACCP (Análise de Perigos e Pontos Críticos de Controle) e cada vez mais demandada. Empresas que processam graos, carnes ou laticinios em Carazinho precisam garantir que seus processos atendem simultaneamente aos requisitos de qualidade e de segurança alimentar. A Anders Tech tem experiência nessa integração, estruturando sistemas que atendem ambas as frentes sem duplicacao de esforcos.</p>
 
-  <p>Para as <strong>construtoras</strong> de Carazinho, o cenario e igualmente claro. O PBQP-H (Programa Brasileiro da Qualidade e Produtividade do Habitat) e exigido para acessar financiamentos da Caixa Econômica Federal e participar de programas como o Minha Casa Minha Vida. Com o crescimento imobiliario da cidade, construtoras que nao possuem essa qualificação ficam de fora de uma parcela significativa do mercado.</p>
+  <p>Para as <strong>construtoras</strong> de Carazinho, o cenario e igualmente claro. O PBQP-H (Programa Brasileiro da Qualidade e Produtividade do Habitat) e exigido para acessar financiamentos da Caixa Econômica Federal e participar de programas como o Minha Casa Minha Vida. Com o crescimento imobiliario da cidade, construtoras que não possuem essa qualificação ficam de fora de uma parcela significativa do mercado.</p>
 
   <h2>Como a Anders Tech atende Carazinho</h2>
-  <p>A Anders Tech esta sediada em Passo Fundo, a apenas 45 km de Carazinho pela BR-285. Essa proximidade nos permite oferecer atendimento presencial frequente, com visitas semanais ou quinzenais conforme a necessidade de cada projeto. Nao somos uma consultoria de outro estado que aparece a cada dois meses para uma reuniao rapida. Estamos na regiao, conhecemos a realidade econômica do planalto medio e temos disponibilidade para resolver questoes presencialmente com agilidade.</p>
+  <p>A Anders Tech esta sediada em Passo Fundo, a apenas 45 km de Carazinho pela BR-285. Essa proximidade nos permite oferecer atendimento presencial frequente, com visitas semanais ou quinzenais conforme a necessidade de cada projeto. Não somos uma consultoria de outro estado que aparece a cada dois meses para uma reuniao rápida. Estamos na região, conhecemos a realidade econômica do planalto medio e temos disponibilidade para resolver questoes presencialmente com agilidade.</p>
 
-  <p>Nosso trabalho comeca com um <strong>diagnostico gratuito</strong>. Visitamos a empresa em Carazinho, avaliamos a maturidade dos processos existentes, identificamos gaps em relacao a norma desejada e apresentamos uma proposta personalizada com escopo, prazo e investimento. Esse diagnostico nao gera compromisso e serve para que o empresario tome uma decisao informada.</p>
+  <p>Nosso trabalho comeca com um <strong>diagnostico gratuito</strong>. Visitamos a empresa em Carazinho, avaliamos a maturidade dos processos existentes, identificamos gaps em relação a norma desejada e apresentamos uma proposta personalizada com escopo, prazo e investimento. Esse diagnostico não gera compromisso e serve para que o empresario tome uma decisao informada.</p>
 
-  <p>A partir do diagnostico, estruturamos um plano de acao sob medida. Entendemos que cada empresa tem sua realidade: uma agroindústria que processa graos tem processos completamente diferentes de uma metalurgica que fabrica pecas sob encomenda. Por isso, nunca aplicamos modelos prontos. Cada sistema de gestão e construido a partir da operacao real da empresa, envolvendo as equipes que vao opera-lo no dia a dia.</p>
+  <p>A partir do diagnostico, estruturamos um plano de acao sob medida. Entendemos que cada empresa tem sua realidade: uma agroindústria que processa graos tem processos completamente diferentes de uma metalúrgica que fabrica pecas sob encomenda. Por isso, nunca aplicamos modelos prontos. Cada sistema de gestão e construido a partir da operação real da empresa, envolvendo as equipes que vao opera-lo no dia a dia.</p>
 
-  <p>Durante a implantação, realizamos treinamentos praticos com as equipes, elaboramos a documentacao necessária (manual da qualidade, procedimentos, instrucoes de trabalho, registros), implantamos indicadores de desempenho e conduzimos auditorias internas preparatorias. Acompanhamos cada etapa presencialmente ate a auditoria de certificação.</p>
+  <p>Durante a implantação, realizamos treinamentos práticos com as equipes, elaboramos a documentação necessária (manual da qualidade, procedimentos, instruções de trabalho, registros), implantamos indicadores de desempenho e conduzimos auditorias internas preparatorias. Acompanhamos cada etapa presencialmente até a auditoria de certificação.</p>
 
-  <p>Apos a certificação, oferecemos suporte de manutencao. A ISO 9001 e o PBQP-H exigem auditorias de acompanhamento periodicas, e o sistema de gestão precisa continuar vivo e gerando resultados. Nosso suporte inclui auditorias internas, revisao de indicadores, tratamento de nao-conformidades e preparacao para auditorias de recertificacao.</p>
+  <p>Após a certificação, oferecemos suporte de manutenção. A ISO 9001 e o PBQP-H exigem auditorias de acompanhamento periodicas, e o sistema de gestão precisa continuar vivo e gerando resultados. Nosso suporte inclui auditorias internas, revisao de indicadores, tratamento de não-conformidades e preparação para auditorias de recertificacao.</p>
 
   <h2>Setores atendidos em Carazinho</h2>
-  <p>Nossa experiência abrange os principais setores economicos de Carazinho e regiao:</p>
+  <p>Nossa experiência abrange os principais setores econômicos de Carazinho e região:</p>
   <ul>
-    <li><strong>Agroindústria e processamento de alimentos:</strong> beneficiamento de graos, frigorificos, laticinios, cooperativas. Integracao ISO 9001 + HACCP para empresas que exportam ou fornecem para grandes redes.</li>
+    <li><strong>Agroindústria e processamento de alimentos:</strong> beneficiamento de graos, frigorificos, laticinios, cooperativas. Integração ISO 9001 + HACCP para empresas que exportam ou fornecem para grandes redes.</li>
     <li><strong>Metalurgia e implementos agrícolas:</strong> fabricacao de pecas, componentes, estruturas metalicas e implementos. Controle de processos de soldagem, usinagem, tratamento termico e pintura.</li>
     <li><strong>Logística e transporte:</strong> transportadoras e operadores logisticos que precisam demonstrar gestão de qualidade para atender requisitos de grandes clientes e contratos públicos.</li>
-    <li><strong>Construcao civil:</strong> construtoras e incorporadoras que necessitam de PBQP-H para financiamentos habitacionais e licitacoes públicas.</li>
-    <li><strong>Comercio e servicos:</strong> empresas de medio porte que buscam padronizacao e melhoria continua para ganhar competitividade no mercado regional.</li>
+    <li><strong>Construção civil:</strong> construtoras e incorporadoras que necessitam de PBQP-H para financiamentos habitacionais e licitações públicas.</li>
+    <li><strong>Comércio e serviços:</strong> empresas de medio porte que buscam padronização e melhoria continua para ganhar competitividade no mercado regional.</li>
   </ul>
 
   <h2>Resultados concretos para empresas de Carazinho</h2>
-  <p>A implantação de um sistema de gestão da qualidade gera retornos tangiveis que vao muito alem do certificado. Empresas da regiao que passaram pelo processo com a Anders Tech reportam resultados como:</p>
+  <p>A implantação de um sistema de gestão da qualidade gera retornos tangiveis que vao muito além do certificado. Empresas da região que passaram pelo processo com a Anders Tech reportam resultados como:</p>
   <ul>
-    <li>Redução de ate 35% no índice de retrabalho e refugo na produção.</li>
+    <li>Redução de até 35% no índice de retrabalho e refugo na produção.</li>
     <li>Diminuicao significativa de reclamacoes de clientes e devolucoes.</li>
     <li>Acesso a novos clientes e mercados que exigem certificação como pre-requisito.</li>
     <li>Maior previsibilidade na produção, com processos padronizados e indicadores claros.</li>
-    <li>Melhoria na organização interna, com responsabilidades definidas e comunicacao mais eficiente.</li>
-    <li>Preparacao para auditorias de clientes com confianca, sem improvisos de ultima hora.</li>
+    <li>Melhoria na organização interna, com responsabilidades definidas e comunicação mais eficiente.</li>
+    <li>Preparação para auditorias de clientes com confianca, sem improvisos de ultima hora.</li>
   </ul>
 
-  <p>Para cooperativas e agroindústrias, a padronizacao de processos significa menos perdas, mais consistencia no produto final e conformidade com normas sanitarias nacionais e internacionais. Para metalurgicas, significa atender os requisitos de grandes fabricantes de maquinario agrícola sem depender de jeitinho. Para construtoras, significa acessar financiamentos e licitacoes que antes estavam fora de alcance.</p>
+  <p>Para cooperativas e agroindústrias, a padronização de processos significa menos perdas, mais consistencia no produto final e conformidade com normas sanitarias nacionais e internacionais. Para metalurgicas, significa atender os requisitos de grandes fabricantes de maquinario agrícola sem depender de jeitinho. Para construtoras, significa acessar financiamentos e licitações que antes estavam fora de alcance.</p>
 
-  <p>Carazinho e uma cidade com vocacao produtiva clara e um ecossistema empresarial que cresce de forma consistente. Investir em gestão da qualidade nao e um custo, e uma decisao estratégica que posiciona a empresa para competir em mercados cada vez mais exigentes. A Anders Tech esta a 45 km de distancia, pronta para ajudar.</p>
+  <p>Carazinho e uma cidade com vocacao produtiva clara e um ecossistema empresarial que cresce de forma consistente. Investir em gestão da qualidade não e um custo, e uma decisao estratégica que posiciona a empresa para competir em mercados cada vez mais exigentes. A Anders Tech esta a 45 km de distancia, pronta para ajudar.</p>
 </article>
 
 <!-- SERVICES -->
 <section class="services-section">
   <div class="wrap">
-    <h2>Servicos oferecidos em Carazinho</h2>
+    <h2>Serviços oferecidos em Carazinho</h2>
     <div class="services-grid">
       <div class="service-card">
         <div class="label">Certificação</div>
         <h3>ISO 9001</h3>
-        <p>Implantação completa do sistema de gestão da qualidade. Do diagnostico inicial ate a auditoria de certificação, com acompanhamento presencial em Carazinho.</p>
+        <p>Implantação completa do sistema de gestão da qualidade. Do diagnostico inicial até a auditoria de certificação, com acompanhamento presencial em Carazinho.</p>
       </div>
       <div class="service-card">
-        <div class="label">Construcao Civil</div>
+        <div class="label">Construção Civil</div>
         <h3>PBQP-H</h3>
-        <p>Qualificacao para o Programa Brasileiro da Qualidade e Produtividade do Habitat. Essencial para construtoras que atuam com financiamento habitacional em Carazinho e regiao.</p>
+        <p>Qualificação para o Programa Brasileiro da Qualidade e Produtividade do Habitat. Essencial para construtoras que atuam com financiamento habitacional em Carazinho e região.</p>
       </div>
       <div class="service-card">
         <div class="label">Processos</div>
-        <h3>Otimizacao</h3>
-        <p>Mapeamento, padronizacao e melhoria de processos industriais. Redução de retrabalho e aumento de produtividade com diagnostico baseado em dados.</p>
+        <h3>Otimização</h3>
+        <p>Mapeamento, padronização e melhoria de processos industriais. Redução de retrabalho e aumento de produtividade com diagnostico baseado em dados.</p>
       </div>
       <div class="service-card">
         <div class="label">Conformidade</div>
-        <h3>Nao-Conformidade</h3>
-        <p>Implantação de sistema de registro e tratamento de nao-conformidades. Análise de causa raiz, ações corretivas e indicadores de desempenho.</p>
+        <h3>Não-Conformidade</h3>
+        <p>Implantação de sistema de registro e tratamento de não-conformidades. Análise de causa raiz, ações corretivas e indicadores de desempenho.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Cross-linking regional -->
+<section class="region-section">
+  <div class="wrap">
+    <h2>Atendemos também na região</h2>
+    <p>Além de Carazinho, a Anders Tech atende empresas em cidades próximas com a mesma consultoria presencial.</p>
+    <ul class="region-list">
+      <li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>
+      <li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>
+    </ul>
   </div>
 </section>
 
@@ -432,15 +465,15 @@ a { color: inherit; text-decoration: none; }
     </div>
     <div class="faq-item">
       <h3>A Anders Tech atende agroindustrias em Carazinho?</h3>
-      <p>Sim. Atendemos empresas de processamento de alimentos, beneficiamento de graos, cooperativas e agroindustrias em geral. Temos experiência na integracao de HACCP com ISO 9001, permitindo que a empresa atenda requisitos de seguranca alimentar e gestão da qualidade em um sistema unico e eficiente.</p>
+      <p>Sim. Atendemos empresas de processamento de alimentos, beneficiamento de graos, cooperativas e agroindustrias em geral. Temos experiência na integração de HACCP com ISO 9001, permitindo que a empresa atenda requisitos de segurança alimentar e gestão da qualidade em um sistema único e eficiente.</p>
     </div>
     <div class="faq-item">
       <h3>Qual o prazo para certificação ISO 9001 em Carazinho?</h3>
       <p>Em media, de 6 a 12 meses, dependendo da maturidade dos processos. A proximidade entre Carazinho e nosso escritorio em Passo Fundo (45 km) permite visitas frequentes, resolucao agil de pendencias e reduz o tempo total de implantação.</p>
     </div>
     <div class="faq-item">
-      <h3>A Anders Tech atende construcao civil em Carazinho?</h3>
-      <p>Sim. O PBQP-H e essencial para construtoras que participam de licitacoes e financiamentos habitacionais. Com o crescimento do mercado imobiliario de Carazinho, a qualificacao PBQP-H e um passo estratégico para construtoras locais que querem acessar programas federais e ganhar competitividade.</p>
+      <h3>A Anders Tech atende construção civil em Carazinho?</h3>
+      <p>Sim. O PBQP-H e essencial para construtoras que participam de licitações e financiamentos habitacionais. Com o crescimento do mercado imobiliario de Carazinho, a qualificação PBQP-H e um passo estratégico para construtoras locais que querem acessar programas federais e ganhar competitividade.</p>
     </div>
   </div>
 </section>
@@ -448,10 +481,10 @@ a { color: inherit; text-decoration: none; }
 <div class="related-links" style="margin:32px 0;padding:24px;background:var(--paper,#f4f6fa);border-radius:8px">
   <h3 style="font-size:18px;margin-bottom:12px">Ferramentas e conteúdo</h3>
   <ul style="list-style:none;padding:0;display:grid;gap:8px">
-    <li>→ <a href="/calculadora-roi-certificacao">Calculadora de ROI da certificação</a></li>
+    <li>→ <a href="/calculadora-roi-certificação">Calculadora de ROI da certificação</a></li>
     <li>→ <a href="/checklist-iso-9001">Checklist ISO 9001 gratuito (47 pontos)</a></li>
-    <li>→ <a href="/blog/quanto-custa-certificacao-iso-9001">Quanto custa a certificação ISO 9001?</a></li>
-    <li>→ <a href="/blog/como-conseguir-certificacao-iso-9001">Como conseguir a certificação ISO 9001</a></li>
+    <li>→ <a href="/blog/quanto-custa-certificação-iso-9001">Quanto custa a certificação ISO 9001?</a></li>
+    <li>→ <a href="/blog/como-conseguir-certificação-iso-9001">Como conseguir a certificação ISO 9001</a></li>
     <li>→ <a href="/ead/cursos">Cursos EAD de qualidade e ISO 9001</a></li>
   </ul>
 </div>
