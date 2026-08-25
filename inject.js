@@ -115,6 +115,9 @@ const BREADCRUMB_LABELS = {
   'quanto-custa-iso-14001': 'Quanto custa a ISO 14001?',
   'quanto-custa-auditoria-interna': 'Quanto custa a auditoria interna?',
   'quanto-custa-pbqp-h': 'Quanto custa o PBQP-H?',
+  'iso-9001': 'ISO 9001',
+  'pbqp-h': 'PBQP-H',
+  'sebraetec': 'Sebraetec',
 };
 
 function buildBreadcrumbSchema(urlPath) {

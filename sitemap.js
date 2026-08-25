@@ -32,6 +32,11 @@ const CORE_URLS = [
   ['/consultoria-iso-9001-carazinho', '2026-07-12', 'monthly', '0.9'],
   ['/consultoria-iso-9001-marau', '2026-07-12', 'monthly', '0.9'],
 
+  // Serviços
+  ['/iso-9001', '2026-08-25', 'monthly', '0.9'],
+  ['/pbqp-h', '2026-08-25', 'monthly', '0.9'],
+  ['/sebraetec', '2026-08-25', 'monthly', '0.8'],
+
   // SEO Setorial
   ['/iso-9001-metalurgica', '2026-06-06', 'monthly', '0.8'],
   ['/iso-9001-industria-alimenticia', '2026-06-06', 'monthly', '0.8'],
