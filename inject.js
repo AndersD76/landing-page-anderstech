@@ -59,13 +59,13 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
   + '<div class="fl"><a href="/termos-de-uso">Termos</a><a href="/politica-de-privacidade">Privacidade</a>'
   + '<a href="https://anderstech.net"><b>anderstech.net</b></a><a href="https://andersdev.com.br" target="_blank" rel="noopener">andersdev.com.br</a></div></div></footer>';
-const WA_FAB = '<a href="https://wa.me/'+EMPRESA.whatsapp+'?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'
+const WA_FAB = '<a href="https://wa.me/'+EMPRESA.whatsapp+'?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" class="wa-fab" data-at-local="fab" aria-label="WhatsApp" style="position:fixed;right:28px;bottom:28px;z-index:85;width:58px;height:58px;background:#25D366;display:grid;place-items:center;color:#fff;box-shadow:0 14px 32px rgba(37,211,102,.42);border-radius:50%">'
   + '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a>';
 
 // ── Sticky CTA mobile ──
 const STICKY_CTA = '<div class="sticky-cta" id="stickyCta">'
   + '<a class="sc-main" href="/#contato">Agendar diagnóstico gratuito</a>'
-  + '<a class="sc-wa" href="https://wa.me/'+EMPRESA.whatsapp+'?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">'
+  + '<a class="sc-wa" data-at-local="sticky" href="https://wa.me/'+EMPRESA.whatsapp+'?text=Oi%2C%20vim%20pelo%20site%20da%20Anders%20Tech." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">'
   + '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg></a></div>'
   + '<style>.sticky-cta{display:none}@media(max-width:760px){body{padding-bottom:70px}.wa-fab{display:none!important}'
   + '.sticky-cta{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:84;gap:10px;align-items:stretch;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:#0b1730;box-shadow:0 -8px 28px rgba(11,23,48,.35)}'
@@ -135,37 +135,83 @@ function buildBreadcrumbSchema(urlPath) {
 // propriedade de producao. #72: e gravava cookie antes de qualquer escolha.
 const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production';
 
-const COOKIE_BANNER = '<script>'
+// #72 + FASE 1: o banner era o unico gate de consentimento e so era injetado em
+// producao — em dev nenhuma escolha existia, entao a telemetria (que roda nos
+// dois ambientes, por flag propria) nao teria como respeitar a LGPD localmente.
+// Agora sao duas pecas: o CONSENTIMENTO vai sempre; o GA4 so em producao.
+// Ambos leem a mesma chave, e o banner avisa quem estiver ouvindo via evento
+// "at:consent" — e assim que telemetry-client.js despeja a fila que segurou.
+const CONSENT_JS = '<script>(function(){var K="at_cookie_consent";'
+  + 'function aviso(v){try{dispatchEvent(new CustomEvent("at:consent",{detail:v}))}catch(e){}}'
+  + 'window.atConsent={ler:function(){try{return localStorage.getItem(K)}catch(e){return null}},'
+  + 'gravar:function(v){try{localStorage.setItem(K,v)}catch(e){}'
+  + 'if(typeof gtag==="function")gtag("consent","update",{analytics_storage:v==="1"?"granted":"denied"});'
+  + 'aviso(v==="1"?"sim":"nao")}};'
+  + 'var atual=window.atConsent.ler();'
+  + 'if(atual==="1"&&typeof gtag==="function")gtag("consent","update",{analytics_storage:"granted"});'
+  + '})()</' + 'script>';
+
+const GA4_JS = '<script>'
   + 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}'
   + 'gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});'
   + 'gtag("js",new Date());gtag("config","'+EMPRESA.ga4+'");'
+  + 'try{if(localStorage.getItem("at_cookie_consent")==="1")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}'
   + 'var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id='+EMPRESA.ga4+'";document.head.appendChild(s);'
-  + '</'+'script>'
-  + '<div id="ckBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
+  + '</'+'script>';
+
+const COOKIE_BANNER = '<div id="ckBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
   + '<div style="max-width:1080px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
   + '<span style="flex:1;min-width:260px">Usamos cookies de análise para entender como o site é usado. '
   + '<a href="/politica-de-privacidade" style="color:#fff;text-decoration:underline">Política de Privacidade</a>.</span>'
   + '<button id="ckNo" style="background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 16px;cursor:pointer;font-size:14px">Recusar</button>'
   + '<button id="ckYes" style="background:#c5383c;border:none;color:#fff;padding:10px 20px;cursor:pointer;font-weight:600;font-size:14px">Aceitar</button>'
   + '</div></div>'
-  + '<script>!function(){var K="at_cookie_consent";'
-  + 'try{var v=localStorage.getItem(K);if(v==="1"){gtag("consent","update",{analytics_storage:"granted"});return}if(v==="0")return}catch(e){}'
+  + '<script>!function(){if(window.atConsent&&window.atConsent.ler())return;'
   + 'var b=document.getElementById("ckBanner");if(!b)return;b.style.display="block";'
-  + 'document.getElementById("ckYes").onclick=function(){try{localStorage.setItem(K,"1")}catch(e){}b.style.display="none";gtag("consent","update",{analytics_storage:"granted"})};'
-  + 'document.getElementById("ckNo").onclick=function(){try{localStorage.setItem(K,"0")}catch(e){}b.style.display="none"}}()</'
+  + 'document.getElementById("ckYes").onclick=function(){b.style.display="none";window.atConsent.gravar("1")};'
+  + 'document.getElementById("ckNo").onclick=function(){b.style.display="none";window.atConsent.gravar("0")}}()</'
   + 'script>';
+
+// FASE 1: telemetria. Vai no <head> com defer, ANTES do app.js (que fica no fim
+// do body) — app.js apaga as UTMs da URL, entao quem le depois dele nao ve a
+// origem. Arquivo separado, e nao inline, para ser cacheado entre paginas.
+const TELEMETRIA_JS = '<script defer src="/telemetry-client.js"></' + 'script>';
+
+// Origem legivel da pagina, usada na mensagem pre-preenchida do WhatsApp
+// ("Olá! Vim pela página X") e nas props dos eventos. Reaproveita os rotulos
+// que ja existem para o breadcrumb — uma lista so, um rotulo so por pagina.
+function origemDe(urlPath) {
+  if (!urlPath || urlPath === '/') return 'Home';
+  const parts = urlPath.replace(/^\/|\/$/g, '').split('/').filter(Boolean);
+  const chave = parts[parts.length - 1];
+  if (parts[0] === 'glossario' && parts.length > 1) {
+    return 'Glossário — ' + ((TERMOS_BY_SLUG.get(chave) || {}).termo || chave);
+  }
+  return BREADCRUMB_LABELS[chave] || chave.replace(/-/g, ' ');
+}
+
+function metasTelemetria(urlPath) {
+  const rota = urlPath || '/';
+  const origem = origemDe(rota).replace(/"/g, '&quot;');
+  return '<meta name="at-rota" content="' + rota + '">'
+    + '<meta name="at-origem" content="' + origem + '">';
+}
 
 export function injectShared(html, urlPath) {
   const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
   return html
-    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">' + breadcrumb + (IS_PROD ? WA_TRACK_HTML : '') + '</head>')
+    .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">'
+      + metasTelemetria(urlPath) + breadcrumb
+      // GA4 primeiro: define gtag() e o consent default antes de qualquer hit.
+      // CONSENT_JS depois, porque conversa com gtag quando ele existe.
+      + (IS_PROD ? GA4_JS + WA_TRACK_HTML : '') + CONSENT_JS + TELEMETRIA_JS + '</head>')
     .replace('<body>', '<body>' + SKIP_LINK)
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
     // #78: a home anunciava "acesso gratuito ate 29/07" com a promocao ja
     // encerrada. Agora o bloco so existe enquanto a promocao estiver ativa.
     // Banner ancorado em </body>: a home tem rodape proprio, sem #shared-footer.
-    .replace('</body>', (IS_PROD ? COOKIE_BANNER : '') + '</body>')
+    .replace('</body>', COOKIE_BANNER + '</body>')
     // Seção 06 da home era HTML fixo de promoção: título "Grátis", badge em
     // cada card, preço riscado e bloco de pacote a R$ 0. Continuou anunciando
     // gratuidade depois de a promoção encerrar. Agora o servidor resolve.

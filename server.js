@@ -18,6 +18,7 @@ import { renderTermo, renderIndex as renderGlossarioIndex } from './glossario/re
 import { buildSitemap } from './sitemap.js';
 import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
+import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -127,7 +128,7 @@ const staticOpts = {
 // /portal/routes.js, /package-lock.json e /HANDOFF.md respondiam 200 com o
 // conteudo real. Agora so os recursos que as paginas realmente carregam.
 const ARQUIVOS_PUBLICOS = new Set([
-  '/styles.css', '/app.js', '/robots.txt', '/favicon.ico',
+  '/styles.css', '/app.js', '/telemetry-client.js', '/robots.txt', '/favicon.ico',
   '/llms.txt', '/llms-full.txt',
 ]);
 app.use('/assets', express.static(join(__dirname, 'assets'), staticOpts));
@@ -267,6 +268,42 @@ app.post('/api/contact', async (req, res) => {
   } catch (err) {
     console.error('Lead error:', err);
     res.status(500).json({ error: 'Erro ao processar. Tente via WhatsApp.' });
+  }
+});
+
+// ── Telemetria (FASE 1) ─────────────────────────────────────────────────────
+// Limite proprio: /api/contact aceita 5/min porque lead e evento raro. Evento de
+// telemetria e o oposto — uma navegacao normal ja gera varios —, entao usar o
+// mesmo limitador cortaria dado legitimo.
+const rateTelemetria = new Map();
+setInterval(() => {
+  const limite = Date.now() - 60_000;
+  for (const [ip, hits] of rateTelemetria) {
+    const vivos = hits.filter(t => t > limite);
+    if (vivos.length) rateTelemetria.set(ip, vivos); else rateTelemetria.delete(ip);
+  }
+}, 5 * 60_000).unref();
+
+function checkRateTelemetria(ip) {
+  const now = Date.now();
+  const hits = (rateTelemetria.get(ip) || []).filter(t => now - t < 60_000);
+  if (hits.length >= 120) return false;
+  hits.push(now);
+  rateTelemetria.set(ip, hits);
+  return true;
+}
+
+app.post('/api/telemetry', async (req, res) => {
+  // 204 em tudo que nao e abuso: o cliente usa sendBeacon e nao le a resposta.
+  // Falha de telemetria nunca pode virar erro visivel para quem esta navegando.
+  if (!TELEMETRIA_ATIVA) return res.status(204).end();
+  if (!checkRateTelemetria(req.ip)) return res.status(429).end();
+  try {
+    await registrarTelemetria(sql, req.body && req.body.events);
+    res.status(204).end();
+  } catch (err) {
+    console.error('Telemetria error:', err);
+    res.status(204).end();
   }
 });
 

@@ -34,6 +34,7 @@ Consequências práticas:
 | PDF | `pdfkit` — atas (`portal/routes.js`) e certificados EAD (`ead/routes.js`) |
 | Segurança | `helmet` com CSP explícita, `express-session` + `connect-pg-simple`, rate limit em memória, `ADMIN_KEY` com comparação timing-safe |
 | Analytics | GA4 `G-7XL5XVE6QZ` com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**) |
+| Telemetria | `telemetry.js` (adaptador server-side) + `telemetry-client.js` (cliente) + `POST /api/telemetry` → tabela `telemetry_events`. Roda em dev **e** produção, por flag própria |
 | SEO | `sitemap.js` gera `/sitemap.xml` dinâmico; `robots.txt`, `llms.txt`, glossário SSR |
 | Deploy | Railway (NIXPACKS, healthcheck `/healthz`) |
 | CI | GitHub Actions: `node --check` em todo JS versionado + `npm test` + existência de arquivos-chave |
@@ -59,6 +60,11 @@ npm run seed
   sitemap nem no breadcrumb** sem editar `sitemap.js` e `BREADCRUMB_LABELS` em `inject.js`.
 - Dados da empresa (WhatsApp, e-mail, CNPJ, GA4) vivem em `config/empresa.js`. Use
   `EMPRESA` e `waLink()` — não repita literais.
+- **O banner de consentimento agora é injetado sempre** (dev e produção); só o GA4
+  continua restrito a produção. Sem isso a telemetria não teria gate de LGPD em dev.
+- A tabela de telemetria chama **`telemetry_events`**, não `events`: `events` já
+  existe desde a `001_baseline` com outro significado (horas de consultoria do
+  portal, com FK vinda de `atas.event_id`).
 - **O gerador de propostas em PDF é EXTERNO a este repo** (script Python, ReportLab/
   Playwright, template da marca). Este site **não** gera proposta: ele só hospeda a rota
   `/r/<código>` que registra `artifact_scan` e redireciona para a landing com
@@ -126,6 +132,8 @@ inject.js           nav/footer/analytics/breadcrumb injetados server-side
 server.js           rotas, static, /api/contact, admin API, roteamento de pages/ e blog/
 config/empresa.js   dados da empresa — fonte única
 sitemap.js          /sitemap.xml (editar ao criar página)
+telemetry.js        adaptador de telemetria (server) — ponto único de saída de evento
+telemetry-client.js cliente de telemetria (público, injetado em toda página)
 pages/              páginas estáticas → servidas em /<slug>
 blog/               posts → /blog/<slug>
 glossario/          glossário SSR (terms.js + render.js)

@@ -28,8 +28,23 @@
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
+  /* ---- telemetria (FASE 1) — no-op se o cliente nao carregou ---- */
+  function at(evento, props) {
+    if (window.anders && typeof window.anders.track === "function") window.anders.track(evento, props);
+  }
+  function atIdentify(traits) {
+    if (window.anders && typeof window.anders.identify === "function") window.anders.identify(traits);
+  }
+
   /* ---- WhatsApp ---- */
-  function waUrl(msg) { return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(msg || CONFIG.waGreeting); }
+  // Delega para anders.waUrl quando disponivel: e ele que carimba a origem da
+  // pagina e as UTMs. O fallback mantem o link funcionando sem a telemetria.
+  function waUrl(msg) {
+    if (window.anders && typeof window.anders.waUrl === "function") {
+      return window.anders.waUrl(msg || "", CONFIG.whatsapp);
+    }
+    return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(msg || CONFIG.waGreeting);
+  }
   $$("[data-wa]").forEach(function (el) {
     el.href = waUrl();
     el.target = "_blank";
@@ -219,6 +234,11 @@
           showToast("Mensagem enviada! Entraremos em contato.");
           if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "contact", event_label: payload.interesse, value: 1 });
           track("form_submit", { type: "contact" });
+          // Evento literal do servico central. Convive com os de cima de
+          // proposito (duplo disparo): o historico do GA4/Plausible nao pode
+          // ser quebrado enquanto a serie nova nao tiver volume.
+          at("form_submit", { form: "contato", interesse: payload.interesse, path: location.pathname });
+          atIdentify({ email: payload.email, telefone: payload.telefone });
           form.reset();
           setTimeout(function () {
             window.open(waUrl("Oi, sou " + payload.nome + (payload.empresa ? " da " + payload.empresa : "") + ". Acabei de preencher o formulário no site."), "_blank", "noopener");
@@ -323,6 +343,8 @@
         exitOverlay.classList.remove("active");
         if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "lead_magnet", event_label: "checklist_iso_9001", value: 1 });
         track("exit_intent_submit");
+        at("form_submit", { form: "exit_checklist", interesse: "ISO 9001", path: location.pathname });
+        atIdentify({ email: g("email") });
       })
       .catch(function () { showToast("Erro ao enviar. Tente via WhatsApp."); })
       .finally(function () { btn.disabled = false; btn.innerHTML = "<span>Receber checklist</span>"; });

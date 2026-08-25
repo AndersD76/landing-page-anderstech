@@ -95,7 +95,86 @@ auditoria e não foi feito nesta rodada.
 
 ---
 
-## 7. N/A para este projeto
+---
+
+## 7. Telemetria (FASE 1) — Railway → Variables
+
+O serviço central ainda não está no ar. Enquanto isso, o adaptador grava na
+tabela `telemetry_events` do próprio Neon, **no schema do serviço central** — a
+migração depois é um `INSERT ... SELECT`, não um retrabalho.
+
+| Variável | Valor | Bloqueia? |
+|---|---|---|
+| `TELEMETRY_ENABLED` | `true` | não — ausente = ligado; só `false` desliga |
+| `TELEMETRY_KEY` | **gerar no serviço central e colar aqui** | não (ainda não é usada) |
+| `TELEMETRY_ENDPOINT` | deixar vazio até o central subir | não |
+
+Nada aqui bloqueia venda ou deploy: sem as variáveis, a telemetria simplesmente
+grava local. `TELEMETRY_ENABLED` é flag **própria** — não depende do `NODE_ENV`
+que liga o GA4, então a telemetria funciona em dev e em produção. O gate de
+consentimento (LGPD) vale para os dois: nada é enviado nem persistido antes de a
+pessoa responder o banner.
+
+### Quando o serviço central subir — a troca, em 3 passos
+
+1. Preencher `TELEMETRY_ENDPOINT` e `TELEMETRY_KEY` no Railway.
+2. Em `telemetry.js`, trocar o corpo da função `entregar()` — ela já recebe os
+   eventos normalizados e validados; falta só o transporte HTTP. Nenhum outro
+   arquivo muda.
+3. Migrar o histórico:
+
+```sql
+INSERT INTO <central>.events
+  (ts, app, event, anonymous_id, person_id,
+   utm_source, utm_medium, utm_campaign, utm_content, props)
+SELECT ts, app, event, anonymous_id, person_id,
+       utm_source, utm_medium, utm_campaign, utm_content, props
+FROM telemetry_events;
+```
+
+> ⚠️ **A tabela local chama `telemetry_events`, não `events`.** `events` já existe
+> desde a `001_baseline` com outro significado (horas e eventos de consultoria do
+> portal, com FK vinda de `atas.event_id`). As **colunas** são as do serviço
+> central; só o nome local muda, e o `FROM` acima resolve.
+
+### Confira depois do deploy
+
+```sql
+SELECT version FROM schema_migrations WHERE version = '009_telemetria';
+SELECT event, COUNT(*) FROM telemetry_events GROUP BY event ORDER BY 2 DESC;
+```
+
+### Mapeamento dos eventos antigos → novos (duplo disparo em vigor)
+
+Os eventos ad-hoc do GA4/Plausible **continuam disparando**, de propósito: o
+histórico não pode ser quebrado enquanto a série nova não tiver volume. Quando
+houver base de comparação, decidir o que aposentar.
+
+| GA4 / Plausible (antigo, segue vivo) | Onde dispara | Evento literal novo |
+|---|---|---|
+| `contact` (method: whatsapp) | qualquer `a[href*="wa.me"]` (inject.js) | `cta_whatsapp_click` |
+| `contact_whatsapp` | CTAs `[data-wa]` e sticky mobile (app.js) | `cta_whatsapp_click` |
+| `whatsapp_click` / `whatsapp_sticky` (Plausible) | mesmos links | `cta_whatsapp_click` |
+| `generate_lead` (contact) | formulário de contato | `form_submit` + `identify` |
+| `generate_lead` (lead_magnet) | popup de saída / checklist | `form_submit` + `identify` |
+| `form_submit` (Plausible) | formulário de contato | `form_submit` |
+| `diagnosis_click` / `diagnosis_sticky` | CTA sticky "Agendar diagnóstico" | — sem equivalente literal ainda |
+| `cta_click` (Plausible) | botões em geral | — sem equivalente literal ainda |
+| `scroll_section` / `exit_intent_*` | home | — permanecem só no Plausible |
+| — | páginas `/cases/<slug>` (FASE 4) | `case_view` |
+| — | rota `/r/<código>` (FASE 4) | `artifact_scan` |
+
+**Sem equivalente ainda** não é esquecimento: `page_view`, `cta_whatsapp_click`,
+`form_submit`, `case_view` e `artifact_scan` são a lista fechada combinada. Criar
+evento literal fora dela é o que estraga a base do serviço central.
+
+### O que ainda NÃO existe (pendente das próximas fases)
+
+- `case_view` e `artifact_scan` já estão implementados no adaptador e na lista de
+  eventos válidos, mas **nada os dispara ainda** — dependem das páginas `/cases/`
+  e da rota `/r/<código>`, que são da FASE 4.
+
+## 8. N/A para este projeto
 
 - Domínio e DNS: já apontados
 - `www` → apex e http → https: resolvidos na plataforma; confirme uma vez no painel

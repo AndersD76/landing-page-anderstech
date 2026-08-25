@@ -1,0 +1,216 @@
+/* ============================================================
+   ANDERS TECH — telemetria (cliente)
+   Injetado em <head> por inject.js, com defer: roda antes do app.js,
+   que limpa as UTMs da URL. Se a ordem inverter, a origem se perde.
+   ============================================================ */
+(function () {
+  "use strict";
+  if (window.anders) return;              // idempotente: nunca instrumenta duas vezes
+
+  var API = "/api/telemetry";
+  var K_ANON = "at_anonymous_id";
+  var K_UTM = "at_utm";
+  var K_CONSENT = "at_cookie_consent";    // mesma chave do banner (inject.js)
+  var EVENTOS_UNICOS = { page_view: 1, case_view: 1 };
+
+  /* ---------- storage tolerante (modo anônimo, cookie bloqueado) ---------- */
+  function ls(k, v) {
+    try {
+      if (v === undefined) return localStorage.getItem(k);
+      localStorage.setItem(k, v);
+      return v;
+    } catch (e) { return null; }
+  }
+
+  /* ---------- consentimento ---------- */
+  // Antes da escolha: nada sai daqui e nada e persistido. Os eventos ficam na
+  // fila em memoria, na ordem em que aconteceram, e so partem se a pessoa
+  // aceitar — assim o primeiro page_view nao se perde por causa do banner.
+  function consentimento() {
+    var v = ls(K_CONSENT);
+    return v === "1" ? "sim" : v === "0" ? "nao" : "pendente";
+  }
+
+  /* ---------- identificacao anonima ---------- */
+  var anonMemoria = null;
+  function novoId() {
+    try {
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    } catch (e) {}
+    return "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+  }
+  function anonId() {
+    if (!anonMemoria) anonMemoria = novoId();
+    if (consentimento() === "sim") {
+      var salvo = ls(K_ANON);
+      if (salvo) return salvo;
+      ls(K_ANON, anonMemoria);
+    }
+    return anonMemoria;
+  }
+
+  /* ---------- UTM: capturar antes que app.js limpe a URL ---------- */
+  var CAMPOS_UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content"];
+  var utm = {};
+  (function capturarUtm() {
+    var achou = false;
+    try {
+      var q = new URLSearchParams(location.search);
+      for (var i = 0; i < CAMPOS_UTM.length; i++) {
+        var v = q.get(CAMPOS_UTM[i]);
+        if (v) { utm[CAMPOS_UTM[i]] = v.slice(0, 120); achou = true; }
+      }
+    } catch (e) {}
+    if (achou) {
+      // Primeira origem vence dentro da sessao: quem chegou por uma campanha e
+      // depois navegou pelo site continua atribuido a campanha.
+      if (consentimento() === "sim") ls(K_UTM, JSON.stringify(utm));
+      return;
+    }
+    try {
+      var salvo = ls(K_UTM);
+      if (salvo) utm = JSON.parse(salvo) || {};
+    } catch (e) { utm = {}; }
+  })();
+
+  /* ---------- origem legivel da pagina ---------- */
+  function meta(nome) {
+    var m = document.querySelector('meta[name="' + nome + '"]');
+    return m ? m.getAttribute("content") : null;
+  }
+  var ROTA = meta("at-rota") || location.pathname;
+  var ORIGEM = meta("at-origem") || (document.title || "").split("—")[0].trim() || ROTA;
+
+  /* ---------- fila + envio ---------- */
+  var fila = [];
+  var jaEnviado = {};
+  var timer = null;
+
+  function enfileirar(evento, props, extra) {
+    if (EVENTOS_UNICOS[evento]) {
+      if (jaEnviado[evento]) return;        // page_view/case_view: um por carregamento
+      jaEnviado[evento] = 1;
+    }
+    var e = {
+      event: evento,
+      ts: new Date().toISOString(),
+      anonymous_id: anonId(),
+      utm_source: utm.utm_source || null,
+      utm_medium: utm.utm_medium || null,
+      utm_campaign: utm.utm_campaign || null,
+      utm_content: utm.utm_content || null,
+      props: props || {}
+    };
+    if (extra && extra.email) e.email = extra.email;
+    if (extra && extra.telefone) e.telefone = extra.telefone;
+    fila.push(e);
+    agendar(extra && extra.imediato);
+  }
+
+  function agendar(imediato) {
+    if (consentimento() !== "sim") return;   // pendente ou recusado: fila parada
+    if (imediato) { despachar(); return; }
+    if (timer) return;
+    timer = setTimeout(despachar, 1000);
+  }
+
+  function despachar() {
+    clearTimeout(timer); timer = null;
+    if (consentimento() !== "sim" || !fila.length) return;
+    var lote = fila.splice(0, 20);
+    var corpo = JSON.stringify({ events: lote });
+    // sendBeacon sobrevive a navegacao — clique em WhatsApp abre outra aba e a
+    // pagina pode ser descartada antes de um fetch normal terminar.
+    try {
+      if (navigator.sendBeacon && navigator.sendBeacon(API, new Blob([corpo], { type: "application/json" }))) return;
+    } catch (e) {}
+    try {
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: corpo, keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
+
+  /* ---------- links de WhatsApp: origem + UTM ---------- */
+  // Mensagens genericas que nao dizem de onde a pessoa veio. Paginas que ja
+  // trazem texto proprio e especifico mantem o delas — e melhor que o generico.
+  var GENERICAS = /^(oi,?\s*vim pelo site.*|ol[áa],?\s*vim pelo site.*|)$/i;
+
+  function enriquecerWa(a) {
+    if (!a || !a.href || a.href.indexOf("wa.me") === -1) return a;
+    var u;
+    try { u = new URL(a.href); } catch (e) { return a; }
+
+    var texto = (u.searchParams.get("text") || "").trim().replace(/\.$/, "");
+    if (GENERICAS.test(texto)) {
+      u.searchParams.set("text", "Olá! Vim pela página " + ORIGEM + " (" + ROTA + ")");
+    }
+    u.searchParams.set("utm_source", "anderstech");
+    u.searchParams.set("utm_medium", "whatsapp");
+    u.searchParams.set("utm_campaign", ROTA === "/" ? "home" : ROTA.replace(/^\//, "").replace(/\//g, "_"));
+    a.href = u.toString();
+    return a;
+  }
+
+  function enriquecerTodos() {
+    var links = document.querySelectorAll('a[href*="wa.me"]');
+    for (var i = 0; i < links.length; i++) enriquecerWa(links[i]);
+  }
+
+  /* ---------- instrumentacao ---------- */
+  // Um unico listener delegado no documento: elemento que aparece depois
+  // (menu mobile, CTA sticky, exit popup) ja nasce coberto, e re-render nao
+  // multiplica handler — a causa classica de evento duplicado.
+  document.addEventListener("click", function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href*="wa.me"]') : null;
+    if (!a) return;
+    enriquecerWa(a);                        // garante UTM mesmo se o href mudou depois
+    enfileirar("cta_whatsapp_click", {
+      path: ROTA,
+      origem: ORIGEM,
+      local: a.getAttribute("data-at-local") || String(a.className || "").slice(0, 40) || "link"
+    }, { imediato: true });
+  }, true);
+
+  function iniciar() {
+    enriquecerTodos();
+    enfileirar("page_view", { path: ROTA, origem: ORIGEM, referrer: String(document.referrer || "").slice(0, 200) });
+    if (ROTA.indexOf("/cases/") === 0) {
+      enfileirar("case_view", { path: ROTA, slug: ROTA.replace("/cases/", "") });
+    }
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar);
+  else iniciar();
+
+  // Descarrega o que sobrou na fila ao sair da pagina.
+  addEventListener("pagehide", despachar);
+  addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") despachar(); });
+
+  // O banner (inject.js) dispara este evento nas duas respostas. Aceitou:
+  // persiste o id anonimo e despeja a fila na ordem original. Recusou: descarta.
+  addEventListener("at:consent", function (ev) {
+    if (ev.detail === "sim") { anonId(); despachar(); }
+    else { fila.length = 0; }
+  });
+
+  /* ---------- API publica ---------- */
+  window.anders = {
+    track: function (evento, props) { enfileirar(evento, props); },
+    identify: function (traits) {
+      if (!traits || (!traits.email && !traits.telefone)) return;
+      enfileirar("identify", {
+        path: ROTA,
+        tem_email: !!traits.email,
+        tem_telefone: !!traits.telefone
+      }, { email: traits.email, telefone: traits.telefone, imediato: true });
+    },
+    waUrl: function (mensagem, numero) {
+      var a = document.createElement("a");
+      a.href = "https://wa.me/" + (numero || "5554999648368") +
+        (mensagem ? "?text=" + encodeURIComponent(mensagem) : "");
+      return enriquecerWa(a).href;
+    },
+    utm: function () { return JSON.parse(JSON.stringify(utm)); },
+    rota: ROTA,
+    origem: ORIGEM
+  };
+})();
