@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="google-site-verification" content="zjRnS_zGAYUfsd9L-l8qpw2bYEoaeo3L9u-YqhVeqcg" />
-<title>Anders Tech — Gestão, Qualidade e Conformidade para a Indústria</title>
-<meta name="description" content="Consultoria ISO 9001, PBQP-H e otimização de processos para indústrias. Diagnóstico baseado em dados. Passo Fundo e Erechim, RS." />
+<title>Consultoria ISO 9001 e PBQP-H em Passo Fundo e Erechim — Anders Tech</title>
+<meta name="description" content="Implantação de ISO 9001 e PBQP-H para indústrias e construtoras do RS, sem parar a produção. Atendimento direto ou via Sebraetec. Passo Fundo e Erechim." />
 <meta name="keywords" content="consultoria ISO 9001, certificação ISO 9001 RS, PBQP-H, consultor qualidade Passo Fundo, consultor qualidade Erechim, gestão qualidade indústria, otimização processos" />
 <meta name="author" content="Anders Tech" />
 <meta name="robots" content="index, follow" />
@@ -25,13 +25,17 @@
 <meta name="twitter:image" content="https://anderstech.net/assets/og-image.png" />
 <link rel="icon" href="/assets/favicon.png" type="image/png" />
 <link rel="apple-touch-icon" href="/assets/favicon.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2?v=1" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin />
+<!-- Space Mono desenha as tags e chips do hero. Sem preload, ela chegava depois
+     da pintura e empurrava o hero inteiro: era 0,27 do CLS total de 0,27. -->
+<link rel="preload" href="/assets/fonts/space-mono-400-latin.woff2?v=1" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/fonts/space-mono-700-latin.woff2?v=1" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css?v=4" />
 <link rel="dns-prefetch" href="https://plausible.io" />
 <link rel="preload" href="/styles.css?v=4" as="style" />
-<link rel="preload" href="/assets/logo-horizontal-white.png" as="image" fetchpriority="high" />
+<!-- Preload do logo removido: o LCP desta pagina e o texto do hero. Dar
+     fetchpriority=high a um PNG de 92KB atrasava justamente o que e o LCP. -->
 <script defer data-domain="anderstech.net" src="https://plausible.io/js/script.js"></script>
 <script type="application/ld+json">
 {
@@ -95,6 +99,54 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quanto custa a certificação ISO 9001?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não existe preço de tabela, e quem te der um número antes de olhar a operação está chutando. O custo tem duas partes separadas: a consultoria (implantação) e a auditoria da certificadora, que é uma empresa terceira e cobra à parte. O que faz variar: número de colaboradores, quantidade de processos no escopo, quantas unidades entram, e principalmente o quanto já existe organizado — empresa que já tem procedimento e registro anda muito mais rápido que empresa que começa do zero. Se o seu caso se enquadra no Sebraetec, parte do valor da consultoria é subsidiada pelo Sebrae. Detalhei o que compõe o custo em quanto custa a certificação ISO, e dá para simular o retorno na calculadora de ROI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quanto tempo leva até a certificação?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende de três coisas: o tamanho do escopo, o quanto já está documentado e — a que mais pesa — a disponibilidade da sua equipe. O consultor não implanta sozinho: quem opera o processo é quem descreve o processo. A norma também impõe um mínimo natural: é preciso rodar o sistema por um tempo antes da auditoria, porque a certificadora precisa ver registro de análise crítica, de auditoria interna e de ação corretiva acontecendo de verdade. Não dá para certificar um SGQ que nasceu semana passada. Abri esse cálculo em quanto tempo leva para implantar a ISO 9001."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Vamos ter que parar a produção?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não. É a pergunta que mais aparece e a resposta é a mesma sempre: o trabalho acontece no ritmo da fábrica, não contra ele. O que a implantação consome é tempo de conversa com quem faz — encontros curtos com líder de setor, operador e responsável pela qualidade, agendados em torno da produção. A maior parte do procedimento sai de descrever o que a equipe já faz, não de inventar rotina nova. Quando a mudança de processo é inevitável, ela entra por etapa, num setor de cada vez, com a produção rodando."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "E depois da certificação — o que acontece?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "O certificado tem validade e exige auditoria de manutenção periódica e recertificação. Sistema que foi montado só para passar na auditoria começa a se desmanchar já na primeira manutenção, e aí a empresa paga tudo de novo. É por isso que eu não entrego manual pronto: o SGQ é construído com a equipe para que ela consiga tocá-lo sozinha. Auditoria interna, análise crítica e tratamento de não-conformidade viram rotina da casa. Se fizer sentido, sigo com acompanhamento periódico — mas o objetivo declarado é a sua empresa não depender de mim para manter a certificação."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Serve para o meu porte de empresa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A ISO 9001 é proporcional: a norma exige que o sistema seja adequado ao contexto e ao tamanho da organização. Empresa pequena não precisa da mesma estrutura documental de uma multinacional — precisa da estrutura que dá conta dos processos dela. Na prática, o que define se vale a pena não é o número de funcionários, é o motivo: cliente exigindo, licitação, financiamento, exportação, ou desperdício que já dói o bastante para justificar a organização. Empresa pequena e média é também onde o Sebraetec mais ajuda, porque o subsídio do Sebrae é desenhado exatamente para esse porte. Se a dúvida é essa, escrevi sobre em ISO 9001 vale a pena."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -123,19 +175,20 @@
 <header class="nav" id="nav">
   <div class="wrap"><div class="nav-inner">
     <a href="#top" class="brand" aria-label="Anders Tech — início">
-      <img width="320" height="80" src="/assets/logo-horizontal-white.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-dark" style="height:90px;width:auto;object-fit:contain">
-      <img width="320" height="80" src="/assets/logo-horizontal-transparent.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-light" style="height:80px;width:auto;object-fit:contain;display:none">
+      <img width="320" height="80" src="/assets/logo-horizontal-white.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-dark" decoding="async" style="height:90px;width:auto;object-fit:contain">
+      <img width="320" height="80" src="/assets/logo-horizontal-transparent.png" alt="Anders Tech — Gestão com Tecnologia" class="logo-light" fetchpriority="low" decoding="async" style="height:80px;width:auto;object-fit:contain;display:none">
     </a>
     <nav class="nav-links" aria-label="Principal">
-      <a href="#serviços">Serviços</a>
-      <a href="#diferencial">Diferencial</a>
+      <a href="#para-quem">Para quem é</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#faq">Dúvidas</a>
       <a href="#sobre">Sobre</a>
-      <a href="#treinamentos">Cursos</a>
       <a href="/blog">Conteúdo</a>
       <a href="#contato">Contato</a>
     </nav>
     <div class="nav-cta">
-      <a href="tel:+5554999648368" class="nav-phone" aria-label="Ligar" style="color:rgba(255,255,255,.8);font-size:13px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="nav-phone-num">(54) 99964-8368</span></a>
+      <a href="tel:+5554999648368" class="nav-phone" aria-label="Ligar para (54) 99964-8368" style="color:rgba(255,255,255,.8);font-size:13px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:5px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="nav-phone-num">(54) 99964-8368</span></a>
       <a href="/portal" class="btn btn-out-light" style="padding:12px 20px;font-size:13px;border-color:rgba(255,255,255,.25)"><span>Portal</span></a>
       <a href="https://cal.com/daniel-anders-emx5kl" target="_blank" rel="noopener" class="btn btn-red"><span>Agendar Conversa</span></a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
@@ -145,13 +198,16 @@
   </div></div>
 </header>
 <nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel">
-  <a href="#serviços"><i>01</i> Serviços</a>
-  <a href="#diferencial"><i>02</i> Diferencial</a>
-  <a href="#sobre"><i>03</i> Sobre</a>
-  <a href="#treinamentos"><i>04</i> Cursos</a>
-  <a href="/blog"><i>05</i> Conteúdo</a>
-  <a href="#contato"><i>06</i> Contato</a>
-  <a href="https://cal.com/daniel-anders-emx5kl" target="_blank" rel="noopener" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a>
+  <a href="#para-quem"><i>01</i> Para quem é</a>
+  <a href="#como-funciona"><i>02</i> Como funciona</a>
+  <a href="#servicos"><i>03</i> Serviços</a>
+  <a href="#faq"><i>04</i> Dúvidas</a>
+  <a href="#sobre"><i>05</i> Sobre</a>
+  <a href="#treinamentos"><i>06</i> Cursos</a>
+  <a href="/blog"><i>07</i> Conteúdo</a>
+  <a href="#contato"><i>08</i> Contato</a>
+  <!-- CTA do menu mobile passa a ser o WhatsApp, igual ao do hero: um CTA só. -->
+  <a href="#" data-wa data-at-local="menu-mobile" class="btn btn-red btn-lg"><span>Falar no WhatsApp</span></a>
 </nav>
 
 <a id="top"></a>
@@ -165,27 +221,35 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <div class="hero-meta">
-        <span class="tag light">Gestão com Tecnologia</span>
+        <span class="tag light">Prestador Sebraetec</span>
         <span class="mrow">ISO 9001:2015</span>
         <span class="mrow">PBQP-H</span>
         <span class="mrow">Passo Fundo · Erechim · RS</span>
       </div>
+      <!-- REVISAR: headline de resultado (era "Gestão, Qualidade e Conformidade" — nome de
+           categoria, não promessa). Anders valida a promessa antes de publicar. -->
       <h1>
-        <span class="blk">Gestão,</span>
-        <span class="blk"><em>Qualidade</em></span>
-        <span class="blk" style="white-space:nowrap">e <span class="red">Conformidade</span></span>
+        <span class="blk">Sua certificação</span>
+        <span class="blk"><em>ISO 9001</em></span>
+        <span class="blk" style="white-space:nowrap">sem <span class="red">parar a fábrica</span></span>
       </h1>
-      <p class="hero-sub">Consultoria que usa dados para organizar a sua operação — não só preencher requisito.</p>
+      <!-- REVISAR: sub precisa citar região e a credencial Sebraetec sem prometer
+           percentual de subsídio (regra: percentuais são [REVISAR] até o Anders confirmar). -->
+      <p class="hero-sub">Implantação de ISO 9001 e PBQP-H para indústrias e construtoras do Rio Grande do Sul. Atendimento direto ou <strong>via Sebraetec</strong>, com subsídio do Sebrae. Passo Fundo, Erechim e região.</p>
+      <!-- UM CTA dominante (FASE 2). A agenda e o telefone continuam existindo, mas
+           como texto discreto: canal que funciona não se joga fora, só deixa de
+           competir com o WhatsApp pela atenção. data-wa faz o app.js montar o link,
+           e o telemetry-client carimba origem + UTM. -->
       <div class="hero-actions">
-        <a href="https://cal.com/daniel-anders-emx5kl" target="_blank" rel="noopener" class="btn btn-red btn-lg"><span>Agendar diagnóstico gratuito</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></a>
-        <a href="#" data-wa class="btn btn-out-light btn-lg">
+        <a href="#" data-wa data-at-local="hero" class="btn btn-red btn-lg">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 0 1 8.413 3.488 11.82 11.82 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.51 5.26l-.999 3.648 3.978-1.207z"/></svg>
-          <span>WhatsApp</span></a>
-        <a href="tel:+5554999648368" class="btn btn-out-light btn-lg" style="border-color:rgba(255,255,255,.25)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          <span>(54) 99964-8368</span></a>
+          <span>Falar com o Anders no WhatsApp</span></a>
       </div>
+      <p class="hero-alt">Prefere outro canal?
+        <a href="https://cal.com/daniel-anders-emx5kl?utm_source=anderstech&amp;utm_medium=agenda&amp;utm_campaign=home" target="_blank" rel="noopener">Agendar uma conversa</a>
+        <span aria-hidden="true">·</span>
+        <a href="tel:+5554999648368">(54) 99964-8368</a>
+      </p>
       <div class="hero-tools">
         <a href="/calculadora-roi-certificacao" class="hero-tool" data-track="calculadora_roi">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="12" y1="10" x2="14" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="12" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="12" y1="18" x2="16" y2="18"/></svg>
@@ -226,11 +290,94 @@
   </div>
 </section>
 
-<!-- ============ SERVIÇOS ============ -->
-<section class="section serv" id="serviços">
+<!-- ============ PARA QUEM É ============ -->
+<!-- REVISAR: segmentos e o bloco "não é para" descrevem a atuação do Anders.
+     Ele confirma se a lista está certa e se quer mesmo desqualificar em público
+     (desqualificar filtra lead ruim, mas é uma escolha dele). -->
+<section class="section publico" id="para-quem">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-index"><b>01</b> / SERVIÇOS</div>
+      <div class="sec-index"><b>01</b> / PARA QUEM É</div>
+      <div class="sec-title">
+        <span class="tag">Indústria e construção civil</span>
+        <h2>Se a sua operação é assim, a conversa vale</h2>
+      </div>
+    </div>
+
+    <div class="publico-grid">
+      <article class="publico-card reveal">
+        <span class="pc-tag"><span class="dmd"></span> Indústria</span>
+        <h3>ISO 9001</h3>
+        <p>Metalúrgica, alimentícia, agroindústria, cooperativa. Empresa que já produz com qualidade, mas precisa <strong>provar isso no papel</strong> — por exigência de cliente, de licitação ou para parar de perder pedido por falta de certificado.</p>
+        <ul class="pc-list">
+          <li>Cliente grande passou a exigir certificação</li>
+          <li>Retrabalho e refugo que ninguém consegue medir</li>
+          <li>Processo que só funciona porque o veterano sabe de cabeça</li>
+        </ul>
+      </article>
+
+      <article class="publico-card reveal">
+        <span class="pc-tag"><span class="dmd"></span> Construtora</span>
+        <h3>PBQP-H</h3>
+        <p>Construtora residencial ou de grande porte que precisa da qualificação no PBQP-H para <strong>acessar financiamento habitacional e entrar em licitação</strong> — e quer o nível certo, no prazo do edital.</p>
+        <ul class="pc-list">
+          <li>Financiamento da Caixa exige o nível de qualificação</li>
+          <li>Edital com prazo curto e SiAC pendente</li>
+          <li>Obra que repete o mesmo erro em cada canteiro</li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="publico-nao reveal"><span class="dmd"></span> <strong>Não é para</strong> quem quer só o certificado na parede. Se a meta é passar na auditoria sem mudar nada na operação, existe consultoria mais barata que a minha — e você vai precisar dela de novo na próxima recertificação.</p>
+  </div>
+</section>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<!-- REVISAR: os 3 passos descrevem o método do Anders em linhas gerais. Prazos e
+     entregáveis de cada etapa precisam da confirmação dele antes de publicar. -->
+<section class="section metodo" id="como-funciona">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:var(--red-accent)">02</b> / COMO FUNCIONA</div>
+      <div class="sec-title">
+        <span class="tag light">Do diagnóstico à certificação</span>
+        <h2 style="color:#fff">Três passos, sem parar a produção</h2>
+      </div>
+    </div>
+
+    <ol class="metodo-steps">
+      <li class="metodo-step reveal">
+        <span class="ms-no">01</span>
+        <h3>Diagnóstico</h3>
+        <p>Conversa e visita à operação para ver o que <strong>já existe</strong>. Boa parte do que a norma pede, a empresa costuma fazer — só não está escrito. O diagnóstico separa o que aproveita do que falta.</p>
+        <span class="ms-out">Saída: escopo, lacunas e o caminho até a certificação</span>
+      </li>
+      <li class="metodo-step reveal">
+        <span class="ms-no">02</span>
+        <h3>Implantação</h3>
+        <p>Documentação e rotina construídas <strong>junto com a equipe</strong>, no ritmo da produção. Nada de manual escrito por consultor que ninguém lê depois: o procedimento nasce de como o trabalho já é feito.</p>
+        <span class="ms-out">Saída: SGQ funcionando, com indicadores que a equipe usa</span>
+      </li>
+      <li class="metodo-step reveal">
+        <span class="ms-no">03</span>
+        <h3>Auditoria e certificação</h3>
+        <p>Auditoria interna para achar o problema antes do auditor externo, preparação da equipe e acompanhamento na auditoria da certificadora — <strong>do lado de vocês, no dia</strong>.</p>
+        <span class="ms-out">Saída: certificação obtida e mantida na recertificação</span>
+      </li>
+    </ol>
+
+    <div class="metodo-cta reveal">
+      <p>O diagnóstico é o primeiro passo — e é por onde a conversa começa.</p>
+      <a href="#" data-wa data-at-local="metodo" class="btn btn-red"><span>Falar com o Anders no WhatsApp</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIÇOS ============ -->
+<section class="section serv" id="servicos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-index"><b>03</b> / SERVIÇOS</div>
       <div class="sec-title">
         <span class="tag">Quatro frentes de trabalho</span>
         <h2>Do requisito à rotina que funciona</h2>
@@ -270,7 +417,7 @@
   <div class="hero-bg"><span class="g1"></span><span class="grid"></span></div>
   <div class="wrap diff-grid">
     <div class="diff-copy reveal">
-      <div class="sec-index" style="color:var(--on-navy-mute);margin-bottom:18px"><b style="color:#ff6a6a">02</b> / DIFERENCIAL</div>
+      <div class="sec-index" style="color:var(--on-navy-mute);margin-bottom:18px"><b style="color:var(--red-accent)">04</b> / DIFERENCIAL</div>
       <span class="tag light">Diagnóstico real</span>
       <h2>Baseado em dados. Não em formulário.</h2>
       <p class="diff-lead">Em um projeto recente, analisamos <b>18 meses de operação</b> e mais de <b>25.000 mensagens</b> trocadas entre as equipes. O retrabalho rodava a mais de <b>400% da meta</b> — e ninguém tinha enxergado isso na papelada.</p>
@@ -304,85 +451,83 @@
 <section class="section cases" id="cases">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-index"><b>03</b> / CASES</div>
+      <div class="sec-index"><b>05</b> / PROVA</div>
       <div class="sec-title">
         <span class="tag">No chão de fábrica e no canteiro</span>
         <h2>Conformidade que se sustenta</h2>
       </div>
     </div>
-    <div class="cases-grid">
-      <article class="case reveal">
-        <div class="media" style="aspect-ratio:16/10">
-          <span class="case-chip">ISO 9001 + Tecnologia</span>
-          <span class="case-no">CASE — 01</span>
-          <img width="800" height="533" src="/assets/case-01.jpg" alt="PILI Industrial — gestão da qualidade" loading="lazy" />
-        </div>
-        <div class="case-body">
-          <h3>PILI Industrial</h3>
-          <p>Implantação do SGQ integrada a ferramentas digitais de acompanhamento — da documentação à rotina de indicadores em tempo real.</p>
-          <span class="case-res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg> Certificação com processos digitalizados</span>
-        </div>
-      </article>
-      <article class="case reveal">
-        <div class="media" style="aspect-ratio:16/10">
-          <span class="case-chip">PBQP-H · via Sebrae</span>
-          <span class="case-no">CASE — 02</span>
-          <img width="800" height="533" src="/assets/case-02.jpg" alt="Qualificação PBQP-H construção civil" loading="lazy" />
-        </div>
-        <div class="case-body">
-          <h3>Qualificação PBQP-H</h3>
-          <p>Construtora qualificada no PBQP-H em parceria com o Sebrae — habilitando acesso a financiamento habitacional e licitações.</p>
-          <span class="case-res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg> Nível de qualificação atingido no prazo</span>
-        </div>
-      </article>
-      <article class="case reveal">
-        <div class="media" style="aspect-ratio:16/10">
-          <span class="case-chip">Diagnóstico por dados</span>
-          <span class="case-no">CASE — 03</span>
-          <img width="800" height="533" src="/assets/case-03.jpg" alt="Diagnóstico operacional metalurgica" loading="lazy" />
-        </div>
-        <div class="case-body">
-          <h3>Metalúrgica · Diagnóstico Operacional</h3>
-          <p>Análise de 18 meses de comunicação operacional revelou retrabalho a 400% da meta e risco de perda do maior cliente. Plano de ação implementado em 90 dias.</p>
-          <span class="case-res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg> Retrabalho reduzido em 60% no primeiro trimestre</span>
-        </div>
-      </article>
-      <article class="case reveal">
-        <div class="media" style="aspect-ratio:16/10">
-          <span class="case-chip">ISO 9001 · Agroindústria</span>
-          <span class="case-no">CASE — 04</span>
-          <img width="800" height="533" src="/assets/case-04.jpg" alt="Gestão da qualidade cooperativa agrícola" loading="lazy" />
-        </div>
-        <div class="case-body">
-          <h3>Cooperativa Agrícola · SGQ</h3>
-          <p>Implantação de sistema de gestão da qualidade adaptado à realidade cooperativista — padronização de recebimento, processamento e expedição com rastreabilidade completa.</p>
-          <span class="case-res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg> Redução de 35% em não-conformidades de produto</span>
-        </div>
-      </article>
-      <article class="case reveal">
-        <div class="media" style="aspect-ratio:16/10">
-          <span class="case-chip">Otimização de processos</span>
-          <span class="case-no">CASE — 05</span>
-          <img width="800" height="533" src="/assets/case-05.jpg" alt="Otimização de processos indústria alimenticia" loading="lazy" />
-        </div>
-        <div class="case-body">
-          <h3>Indústria Alimentícia · Processos</h3>
-          <p>Mapeamento completo da linha de produção, identificação de 12 pontos de desperdício e implementação de controles visuais. ROI positivo em 4 meses.</p>
-          <span class="case-res"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg> Produtividade +22% sem investimento em equipamento</span>
-        </div>
-      </article>
+    <div id="shared-prova"></div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<!-- REVISAR: as 5 respostas são tecnicamente corretas e deliberadamente NÃO citam
+     preço nem prazo fechado — a regra proíbe número inventado. Onde caberia um
+     valor, a resposta explica o que faz o valor variar e manda para a página de
+     custo. Anders valida antes de publicar; se ele quiser dar faixa de preço ou
+     prazo típico, é só preencher aqui. -->
+<section class="section faq" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-index"><b>06</b> / PERGUNTAS FREQUENTES</div>
+      <div class="sec-title">
+        <span class="tag">As cinco que sempre aparecem</span>
+        <h2>O que costuma travar a decisão</h2>
+      </div>
     </div>
 
-    <figure class="testi reveal">
-      <div class="media">
-        <img width="400" height="400" src="/assets/testimonial.jpg" alt="Ambiente industrial metalurgica RS" loading="lazy" />
-      </div>
-      <div class="testi-body">
-        <span class="qm">&ldquo;</span>
-        <blockquote>Já tínhamos passado por dois consultores que sumiram no meio do projeto. A Anders Tech ficou, entendeu a nossa operação e mostrou onde a gente estava perdendo dinheiro de verdade.</blockquote>
-        <figcaption class="testi-auth"><span class="dmd"></span><div><b>Rafael M.</b> &nbsp; <span>Diretor Industrial · Metalúrgica · RS</span></div></figcaption>
-      </div>
-    </figure>
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>Quanto custa a certificação ISO 9001?</summary>
+        <div class="faq-answer">
+          <p>Não existe preço de tabela, e quem te der um número antes de olhar a operação está chutando. O custo tem <strong>duas partes separadas</strong>: a consultoria (implantação) e a auditoria da certificadora, que é uma empresa terceira e cobra à parte.</p>
+          <p>O que faz variar: número de colaboradores, quantidade de processos no escopo, quantas unidades entram, e principalmente <strong>o quanto já existe organizado</strong> — empresa que já tem procedimento e registro anda muito mais rápido que empresa que começa do zero.</p>
+          <p>Se o seu caso se enquadra no <strong>Sebraetec</strong>, parte do valor da consultoria é subsidiada pelo Sebrae. Detalhei o que compõe o custo em <a href="/quanto-custa-certificacao-iso">quanto custa a certificação ISO</a>, e dá para simular o retorno na <a href="/calculadora-roi-certificacao">calculadora de ROI</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Quanto tempo leva até a certificação?</summary>
+        <div class="faq-answer">
+          <p>Depende de três coisas: o tamanho do escopo, o quanto já está documentado e — a que mais pesa — <strong>a disponibilidade da sua equipe</strong>. O consultor não implanta sozinho: quem opera o processo é quem descreve o processo.</p>
+          <p>A norma também impõe um mínimo natural: é preciso <strong>rodar o sistema por um tempo</strong> antes da auditoria, porque a certificadora precisa ver registro de análise crítica, de auditoria interna e de ação corretiva acontecendo de verdade. Não dá para certificar um SGQ que nasceu semana passada.</p>
+          <p>Abri esse cálculo em <a href="/quanto-tempo-implantar-iso-9001">quanto tempo leva para implantar a ISO 9001</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Vamos ter que parar a produção?</summary>
+        <div class="faq-answer">
+          <p><strong>Não.</strong> É a pergunta que mais aparece e a resposta é a mesma sempre: o trabalho acontece no ritmo da fábrica, não contra ele.</p>
+          <p>O que a implantação consome é <strong>tempo de conversa com quem faz</strong> — encontros curtos com líder de setor, operador e responsável pela qualidade, agendados em torno da produção. A maior parte do procedimento sai de descrever o que a equipe já faz, não de inventar rotina nova.</p>
+          <p>Quando a mudança de processo é inevitável, ela entra por etapa, num setor de cada vez, com a produção rodando.</p>
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>E depois da certificação — o que acontece?</summary>
+        <div class="faq-answer">
+          <p>O certificado tem validade e exige <strong>auditoria de manutenção periódica</strong> e recertificação. Sistema que foi montado só para passar na auditoria começa a se desmanchar já na primeira manutenção, e aí a empresa paga tudo de novo.</p>
+          <p>É por isso que eu não entrego manual pronto: o SGQ é construído com a equipe para que ela consiga tocá-lo sozinha. Auditoria interna, análise crítica e tratamento de não-conformidade viram rotina da casa.</p>
+          <p>Se fizer sentido, sigo com acompanhamento periódico — mas o objetivo declarado é a sua empresa <strong>não depender de mim</strong> para manter a certificação.</p>
+        </div>
+      </details>
+
+      <details class="faq-item reveal">
+        <summary>Serve para o meu porte de empresa?</summary>
+        <div class="faq-answer">
+          <p>A ISO 9001 é <strong>proporcional</strong>: a norma exige que o sistema seja adequado ao contexto e ao tamanho da organização. Empresa pequena não precisa da mesma estrutura documental de uma multinacional — precisa da estrutura que dá conta dos processos dela.</p>
+          <p>Na prática, o que define se vale a pena não é o número de funcionários, é o <strong>motivo</strong>: cliente exigindo, licitação, financiamento, exportação, ou desperdício que já dói o bastante para justificar a organização.</p>
+          <p>Empresa pequena e média é também onde o <strong>Sebraetec</strong> mais ajuda, porque o subsídio do Sebrae é desenhado exatamente para esse porte. Se a dúvida é essa, escrevi sobre em <a href="/iso-9001-vale-a-pena">ISO 9001 vale a pena</a>.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-cta reveal">
+      <span>Ficou uma dúvida que não está aqui?</span>
+      <a href="#" data-wa data-at-local="faq" class="btn btn-red"><span>Perguntar no WhatsApp</span></a>
+    </div>
   </div>
 </section>
 
@@ -395,7 +540,7 @@
       <figcaption class="fig-id"><b>Daniel Anders</b><span>ENG. ELETRICISTA</span></figcaption>
     </figure>
     <div class="sobre-copy reveal">
-      <div class="sec-index"><b>04</b> / SOBRE</div>
+      <div class="sec-index"><b>07</b> / SOBRE</div>
       <span class="tag" style="margin-top:18px">Quem conduz</span>
       <h2>Mentalidade de engenheiro.<br/>Visão de negócio.</h2>
       <div class="role">Engenheiro Eletricista · Consultor ISO 9001 · 15+ anos</div>
@@ -410,10 +555,10 @@
 </section>
 
 <!-- ============ BLOG ============ -->
-<section class="section blog" id="conteúdo">
+<section class="section blog" id="conteudo">
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-index"><b>05</b> / CONTEÚDO</div>
+      <div class="sec-index"><b>08</b> / CONTEÚDO</div>
       <div class="sec-title">
         <span class="tag">Sem enrolação</span>
         <h2>Para decidir com clareza</h2>
@@ -445,7 +590,7 @@
   <div class="hero-bg"><span class="g1"></span><span class="grid"></span></div>
   <div class="wrap">
     <div class="sec-head reveal">
-      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:#ff6a6a">06</b> / TREINAMENTOS</div>
+      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:var(--red-accent)">09</b> / TREINAMENTOS</div>
       <div class="sec-title">
         __PROMO_TAG__
         <h2 style="color:#fff">__TREIN_TITULO__</h2>
@@ -540,7 +685,7 @@
   <div class="hero-bg"><span class="g1"></span><span class="grid"></span></div>
   <div class="wrap contato-grid">
     <div class="reveal">
-      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:#ff6a6a">07</b> / CONTATO</div>
+      <div class="sec-index" style="color:var(--on-navy-mute)"><b style="color:var(--red-accent)">10</b> / CONTATO</div>
       <h2>Vamos conversar sobre a sua operação?</h2>
       <p class="contato-lead">Conte rapidamente o seu cenário. Respondemos com um diagnóstico inicial honesto — sem compromisso.</p>
       <div class="opt">
@@ -602,7 +747,7 @@
   </div>
   <div class="wrap footer-grid">
     <div class="footer-col">
-      <h4>Navegação</h4>
+      <h3>Navegação</h3>
       <ul>
         <li><a href="#servicos">Serviços</a></li>
         <li><a href="#diferencial">Diferencial</a></li>
@@ -614,7 +759,7 @@
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Regiões</h4>
+      <h3>Regiões</h3>
       <ul>
         <li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>
         <li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>
@@ -626,7 +771,7 @@
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Contato</h4>
+      <h3>Contato</h3>
       <ul class="footer-contact">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Passo Fundo · Erechim · RS</li>
         <li><a href="tel:+5554999648368" style="color:inherit;text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> (54) 99964-8368</a></li>

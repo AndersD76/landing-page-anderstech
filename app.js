@@ -262,7 +262,9 @@
   }
 
   // track section views
-  var sections = { "serviços": "servicos", "diferencial": "diferencial", "cases": "cases", "sobre": "sobre", "conteúdo": "conteudo", "contato": "contato" };
+  // Ids passaram a ser sem acento (o nav apontava para #servicos e a seção era
+  // #serviços — o link não ia a lugar nenhum). Seções novas da FASE 2 incluídas.
+  var sections = { "para-quem": "para_quem", "como-funciona": "como_funciona", "servicos": "servicos", "diferencial": "diferencial", "cases": "prova", "faq": "faq", "sobre": "sobre", "conteudo": "conteudo", "contato": "contato" };
   var sectionIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
       if (!en.isIntersecting) return;

@@ -192,7 +192,86 @@ evento literal fora dela é o que estraga a base do serviço central.
   eventos válidos, mas **nada os dispara ainda** — dependem das páginas `/cases/`
   e da rota `/r/<código>`, que são da FASE 4.
 
-## 8. N/A para este projeto
+---
+
+## 8. Landing de conversão (FASE 2) — o que ficou para você
+
+### 8.1 Otimizar dois PNGs — único item que ainda segura o LCP no celular
+
+Não há ferramenta de imagem nesta máquina (o `convert` do PATH é o utilitário
+NTFS do Windows, não o ImageMagick), então isto **não pôde ser feito aqui**.
+
+| Arquivo | Hoje | Renderizado em | Deveria ter |
+|---|---|---|---|
+| `assets/logo-horizontal-transparent.png` | **214 KB** | ~127 × 90 px | ≤ 15 KB — 640 × 160, WebP com PNG de fallback |
+| `assets/logo-horizontal-white.png` | **92 KB** | ~127 × 90 px | ≤ 12 KB — mesma coisa |
+
+Desperdício medido pelo Lighthouse: **293 KiB**. É o que sobrou entre o LCP
+atual no celular (**2,7 s**) e o alvo de 2 s. Resolvido isso, o mobile deve
+fechar em ≈ 2 s — estimativa, não promessa.
+
+Também existe `assets/logo-nav.png` (**375 KB**) que **nenhuma página referencia**.
+Pode apagar.
+
+### 8.2 `onclick=` no painel admin está morto em produção
+
+Achado **fora do escopo da FASE 2**, encontrado porque o mesmo problema quebrou
+uma mudança minha. O CSP do helmet aplica `script-src-attr 'none'`, que bloqueia
+handler em atributo HTML. O Chrome registra:
+
+```
+Executing inline event handler violates the following Content Security Policy
+directive 'script-src-attr 'none''
+```
+
+Afetados (não corrigidos nesta rodada):
+
+- `admin/index.html` — ~13 botões e cabeçalhos de tabela com `onclick=`
+  (login, atualizar, sair, exportar CSV, ordenação, abrir lead, salvar nota)
+- `ead/pages/player.html:477` — `onclick=` dentro de HTML gerado por string
+
+A correção é trocar atributo por `addEventListener`. **Não confirmei no navegador
+se o painel está inteiramente inutilizável** — o CSP é claro, mas vale você abrir
+`/admin` em produção e testar um botão antes de eu mexer.
+
+### 8.3 Prova social — decisão sua
+
+Cinco cases e um depoimento saíram da home: tinham nome de cliente e números não
+verificáveis. Estrutura, o que cada um precisa para voltar e como republicar
+(uma linha em `config/prova.js`) estão em **`PROVA-PENDENTE.md`**.
+
+Enquanto nada estiver autorizado, a seção mostra um bloco honesto com CTA — não
+fica vazia nem exibe `[PREENCHER]` para o visitante.
+
+### 8.4 Textos marcados `[REVISAR]`
+
+Seis blocos de copy novos aguardam sua validação. Encontre todos com:
+
+```bash
+grep -rn "REVISAR:" index.html
+```
+
+Eles são comentários HTML e **não vão para o HTML público em produção** — o
+`injectShared` remove antes de servir. Em dev continuam visíveis no fonte.
+
+### 8.5 Fontes agora são locais
+
+Space Grotesk, Inter e Space Mono saíram do Google Fonts e vivem em
+`assets/fonts/` (220 KB, todas sob SIL Open Font License 1.1). Motivo: bloquear
+a folha de estilo não impede a troca de fonte, só atrasa o download do arquivo —
+o CLS medido oscilava entre 0,05 e 0,33 de uma execução para outra. Com preload
+dos subsets latin, **CLS = 0**.
+
+Trocar uma fonte no futuro: substituir o `.woff2` e **subir o `?v=N`** no
+`@font-face` de `styles.css` — os arquivos são servidos com cache de 1 ano
+`immutable`.
+
+`/admin` e `/portal/*` são servidos por `sendFile`, fora do `injectShared`, e
+**continuam no Google Fonts**. Por isso o CSP mantém `fonts.googleapis.com` e
+`fonts.gstatic.com` liberados. São áreas internas, não páginas de conversão.
+
+
+## 9. N/A para este projeto
 
 - Domínio e DNS: já apontados
 - `www` → apex e http → https: resolvidos na plataforma; confirme uma vez no painel

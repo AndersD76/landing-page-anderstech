@@ -9,7 +9,7 @@ const GLOSSARIO_LASTMOD = '2026-07-12'; // atualizar quando termos forem revisad
 
 // [path, lastmod, changefreq, priority]
 const CORE_URLS = [
-  ['/', '2026-07-12', 'weekly', '1.0'],
+  ['/', '2026-08-25', 'weekly', '1.0'],
 
   // Blog
   ['/blog', '2026-06-06', 'weekly', '0.8'],

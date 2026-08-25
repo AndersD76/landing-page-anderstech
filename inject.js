@@ -4,6 +4,7 @@
 import { PROMO, promoAtiva } from './promo.js';
 import { EMPRESA } from './config/empresa.js';
 import { TERMOS_BY_SLUG } from './glossario/terms.js';
+import { casesPublicados, depoimentosPublicados } from './config/prova.js';
 
 // ── Google Analytics 4 (gtag.js) ──
 const GTAG_HTML = '<script async src=`https://www.googletagmanager.com/gtag/js?id=${EMPRESA.ga4}`></script>'
@@ -22,18 +23,20 @@ const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index
   + '<a href="/" class="brand" aria-label="Anders Tech">'
   + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" width="320" height="80" style="height:80px;width:auto;object-fit:contain"></a>'
   + '<nav class="nav-links" aria-label="Principal">'
-  + '<a href="/#servicos">Serviços</a><a href="/#diferencial">Diferencial</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/ead/cursos">Cursos</a><a href="/#contato">Contato</a></nav>'
+  + '<a href="/#para-quem">Para quem é</a><a href="/#como-funciona">Como funciona</a><a href="/#servicos">Serviços</a><a href="/#faq">Dúvidas</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/#contato">Contato</a></nav>'
   + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a>'
   + '<button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">'
   + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>'
   + '</div></div></div></header>'
   + '<nav class="mobile-menu" id="mobileMenu" aria-label="Menu móvel">'
-  + '<a href="/#servicos"><i>01</i> Serviços</a>'
-  + '<a href="/#diferencial"><i>02</i> Diferencial</a>'
-  + '<a href="/#sobre"><i>03</i> Sobre</a>'
-  + '<a href="/blog"><i>04</i> Conteúdo</a>'
-  + '<a href="/ead/cursos"><i>05</i> Cursos EAD</a>'
-  + '<a href="/#contato"><i>06</i> Contato</a>'
+  + '<a href="/#para-quem"><i>01</i> Para quem é</a>'
+  + '<a href="/#como-funciona"><i>02</i> Como funciona</a>'
+  + '<a href="/#servicos"><i>03</i> Serviços</a>'
+  + '<a href="/#faq"><i>04</i> Dúvidas</a>'
+  + '<a href="/#sobre"><i>05</i> Sobre</a>'
+  + '<a href="/blog"><i>06</i> Conteúdo</a>'
+  + '<a href="/ead/cursos"><i>07</i> Cursos EAD</a>'
+  + '<a href="/#contato"><i>08</i> Contato</a>'
   + '<a href="/#contato" class="btn btn-red btn-lg"><span>Agendar Conversa</span></a></nav>'
   + '<script>!function(){var t=document.getElementById("navToggle"),m=document.getElementById("mobileMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",String(o));document.body.style.overflow=o?"hidden":""});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow=""})})}}()</script>';
 const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
@@ -42,11 +45,11 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<p class="fb-desc">Consultoria de qualidade e conformidade para a indústria. Diagnóstico baseado em dados — método de engenharia.</p>'
   + '<div class="fb-cnpj">CNPJ '+EMPRESA.cnpj+'</div></div>'
   + '<div class="wrap footer-grid">'
-  + '<div class="footer-col"><h4>Navegação</h4><ul>'
+  + '<div class="footer-col"><h3>Navegação</h3><ul>'
   + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
   + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
   + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
-  + '<div class="footer-col"><h4>Regiões</h4><ul>'
+  + '<div class="footer-col"><h3>Regiões</h3><ul>'
   + '<li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>'
   + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
   + '<li><a href="/consultoria-iso-9001-caxias-do-sul">Caxias do Sul</a></li>'
@@ -54,7 +57,7 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<li><a href="/consultoria-iso-9001-bento-goncalves">Bento Gonçalves</a></li>'
   + '<li><a href="/consultoria-iso-9001-carazinho">Carazinho</a></li>'
   + '<li><a href="/consultoria-iso-9001-marau">Marau</a></li></ul></div>'
-  + '<div class="footer-col"><h4>Contato</h4><ul class="footer-contact"><li>'+EMPRESA.cidades+'</li><li>'+EMPRESA.email+'</li></ul>'
+  + '<div class="footer-col"><h3>Contato</h3><ul class="footer-contact"><li>'+EMPRESA.cidades+'</li><li>'+EMPRESA.email+'</li></ul>'
   + '<a href="https://andersdev.com.br" target="_blank" rel="noopener" class="footer-cross">Software sob medida → andersdev.com.br</a></div></div>'
   + '<div class="wrap footer-bot"><p>© 2026 ANDERS TECH · TODOS OS DIREITOS RESERVADOS</p>'
   + '<div class="fl"><a href="/termos-de-uso">Termos</a><a href="/politica-de-privacidade">Privacidade</a>'
@@ -197,9 +200,90 @@ function metasTelemetria(urlPath) {
     + '<meta name="at-origem" content="' + origem + '">';
 }
 
+// ── Prova social (FASE 2) ────────────────────────────────────────────────────
+// Renderizada a partir de config/prova.js, nao escrita a mao no HTML: o que a
+// pagina mostra depende de autorizacao do cliente, e autorizacao muda. Sem case
+// liberado a secao NAO fica vazia nem exibe [PREENCHER] — mostra um bloco
+// honesto que ainda leva ao WhatsApp.
+function esc(t) {
+  return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>';
+
+function renderCase(c, i) {
+  const midia = c.imagem
+    ? '<img width="800" height="533" src="' + esc(c.imagem) + '" alt="' + esc(c.cliente) + ' — ' + esc(c.servico) + '" loading="lazy">'
+    : '';
+  const titulo = c.slug
+    ? '<h3><a href="/cases/' + esc(c.slug) + '">' + esc(c.cliente) + '</a></h3>'
+    : '<h3>' + esc(c.cliente) + '</h3>';
+  return '<article class="case reveal">'
+    + '<div class="media" style="aspect-ratio:16/10">'
+    + '<span class="case-chip">' + esc(c.servico) + '</span>'
+    + '<span class="case-no">CASE — ' + String(i + 1).padStart(2, '0') + '</span>'
+    + midia + '</div>'
+    + '<div class="case-body">' + titulo
+    + '<p>' + esc(c.problema) + '</p>'
+    + '<span class="case-res">' + CHECK_SVG + ' ' + esc(c.resultado) + '</span>'
+    + '</div></article>';
+}
+
+function renderDepoimento(d) {
+  return '<figure class="testi reveal">'
+    + (d.imagem ? '<div class="media"><img width="400" height="400" src="' + esc(d.imagem) + '" alt="" loading="lazy"></div>' : '')
+    + '<div class="testi-body"><span class="qm">&ldquo;</span>'
+    + '<blockquote>' + esc(d.texto) + '</blockquote>'
+    + '<figcaption class="testi-auth"><span class="dmd"></span><div><b>' + esc(d.autor) + '</b> &nbsp; <span>' + esc(d.cargo) + '</span></div></figcaption>'
+    + '</div></figure>';
+}
+
+function renderProva() {
+  const cases = casesPublicados();
+  const depoimentos = depoimentosPublicados();
+
+  if (!cases.length && !depoimentos.length) {
+    // REVISAR: texto do bloco sem case autorizado. E verdadeiro (cliente de
+    // consultoria costuma preferir nao divulgar) e converte — mas o Anders decide
+    // se quer dizer isso em publico.
+    return '<div class="prova-vazia reveal">'
+      + '<p>Boa parte dos meus clientes prefere <strong>não divulgar</strong> que contratou consultoria — e eu respeito isso. '
+      + 'Os cases existem, com nome, número e o antes e depois: eu mostro na conversa, e você fala direto com quem já passou pelo processo.</p>'
+      + '<a href="#" data-wa data-at-local="prova" class="btn btn-red"><span>Ver cases no WhatsApp</span></a>'
+      + '</div>';
+  }
+
+  return (cases.length ? '<div class="cases-grid">' + cases.map(renderCase).join('') + '</div>' : '')
+    + depoimentos.map(renderDepoimento).join('');
+}
+
+// ── Fontes locais em TODAS as paginas ────────────────────────────────────────
+// As 40+ paginas estaticas (blog/, pages/, ead/, portal/) carregavam a folha do
+// Google Fonts no <head> proprio. Com as faces agora declaradas em styles.css
+// apontando para /assets/fonts, essa folha virou requisicao de terceiro que
+// bloqueia a renderizacao e nao serve para nada. Remover arquivo por arquivo
+// seria editar 40+ HTMLs; aqui e uma transformacao so, idempotente.
+const PRELOAD_FONTES = '<link rel="preload" href="/assets/fonts/space-grotesk-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>'
+  + '<link rel="preload" href="/assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>'
+  + '<link rel="preload" href="/assets/fonts/space-mono-400-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>';
+
+function fontesLocais(html) {
+  if (html.includes('/assets/fonts/space-grotesk-latin.woff2')) return html;  // home ja tem
+  const semGoogle = html
+    .replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '')
+    .replace(/<link[^>]*rel="dns-prefetch"[^>]*fonts[^>]*>/g, '');
+  return semGoogle.replace('</head>', PRELOAD_FONTES + '</head>');
+}
+
 export function injectShared(html, urlPath) {
   const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
-  return html
+  // Os marcadores <!-- REVISAR: ... --> sao recado interno para o Anders validar
+  // o texto. Ficam no fonte do repo, mas nao vao para o HTML publico em producao:
+  // quem le o codigo-fonte da pagina nao precisa ver a cozinha.
+  const limpo = IS_PROD ? html.replace(/<!--\s*REVISAR:[\s\S]*?-->\s*/g, '') : html;
+  const base = fontesLocais(limpo);
+  return base
     .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">'
       + metasTelemetria(urlPath) + breadcrumb
       // GA4 primeiro: define gtag() e o consent default antes de qualquer hit.
@@ -208,6 +292,7 @@ export function injectShared(html, urlPath) {
     .replace('<body>', '<body>' + SKIP_LINK)
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
+    .replace('<div id="shared-prova"></div>', renderProva())
     // #78: a home anunciava "acesso gratuito ate 29/07" com a promocao ja
     // encerrada. Agora o bloco so existe enquanto a promocao estiver ativa.
     // Banner ancorado em </body>: a home tem rodape proprio, sem #shared-footer.

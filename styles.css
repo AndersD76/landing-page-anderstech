@@ -1,9 +1,60 @@
-/* ============================================================
-   ANDERS TECH — "Engineering Editorial"
-   Premium redesign · blueprint system · data-as-art
-   ============================================================ */
+/* ── Fontes hospedadas localmente (todas sob SIL Open Font License 1.1) ───────
+   Vinham do Google. O problema nao era a origem: e que bloquear o CSS nao
+   impede a troca de fonte — so atrasa o download do arquivo. O texto era
+   pintado no fallback e reposicionado quando a fonte real chegava, e o CLS
+   medido oscilava de 0,05 a 0,33 entre execucoes do Lighthouse.
+   Mesma origem + preload dos subsets latin = a fonte chega antes da pintura.
+   Space Grotesk e Inter sao variaveis: um arquivo cobre 400-700 de cada.
+   O subset latin-ext so e baixado se a pagina tiver caractere que o exija. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/assets/fonts/space-grotesk-latin.woff2?v=1') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/assets/fonts/space-grotesk-latin-ext.woff2?v=1') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin.woff2?v=1') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/assets/fonts/inter-latin-ext.woff2?v=1') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/space-mono-400-latin.woff2?v=1') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/space-mono-700-latin.woff2?v=1') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-/* ---------------- TOKENS ---------------- */
 :root {
   --navy:      #203864;
   --navy-700:  #2b4a82;
@@ -12,7 +63,7 @@
   --navy-950:  #0b1730;
   --red:       #FE0000;
   --red-600:   #d80a0a;
-  --red-accent:var(--red-accent);
+  --red-accent:#ff6a6a;   /* era var(--red-accent) — auto-referencia, valor invalido: .tag.light herdava cor */
   --paper:     #F4F6FA;
   --paper-2:   #FBFCFE;
   --white:     #FFFFFF;
@@ -178,6 +229,11 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .hero-sub { margin-top: 30px; font-size: clamp(17px, 1.5vw, 21px); color: var(--on-navy-soft); max-width: 46ch; font-weight: 400; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
 .hero-tools { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+/* FASE 2: agenda e telefone deixaram de ser botao para nao competir com o CTA
+   unico do WhatsApp. Continuam clicaveis, so param de disputar a atencao. */
+.hero-alt { margin-top: 18px; font-size: 14px; color: var(--on-navy-mute); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.hero-alt a { color: var(--on-navy-soft); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.25); transition: color .25s, text-decoration-color .25s; }
+.hero-alt a:hover { color: #fff; text-decoration-color: rgba(255,255,255,.7); }
 .hero-tool { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border: 1px solid rgba(255,255,255,.18); color: #fff; font-family: var(--ff-display); font-weight: 500; font-size:0.875rem; transition: border-color .3s, background .3s, transform .3s; }
 .hero-tool:hover { border-color: rgba(255,255,255,.5); background: rgba(255,255,255,.06); transform: translateY(-2px); }
 .hero-tool svg { color: var(--red-accent); flex: none; }
@@ -206,7 +262,7 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .trust-track { display: flex; align-items: center; gap: 0; white-space: nowrap; animation: marq 32s linear infinite; }
 .trust:hover .trust-track { animation-play-state: paused; }
 .trust-item { display: inline-flex; align-items: center; gap: 14px; padding: 22px 38px; font-family: var(--ff-display); font-weight: 500; font-size:1.0625rem; color: #fff; }
-.trust-item .tsub { font-family: var(--ff-mono); font-size:0.6875rem; letter-spacing: .1em; color: var(--on-navy-mute); text-transform: uppercase; }
+.trust-item .tsub { font-family: var(--ff-mono); font-size:0.6875rem; letter-spacing: .1em; color: var(--on-navy-soft); text-transform: uppercase; }  /* era --on-navy-mute: 3,28:1 sobre --navy, reprovado. Agora 6,87:1 */
 .trust-item .dmd { background: var(--red); }
 @keyframes marq { to { transform: translateX(-50%); } }
 
@@ -392,7 +448,7 @@ a.serv-row { text-decoration: none; color: inherit; }
 .footer-big .fb-desc { font-size:0.9375rem; color: var(--on-navy-soft); max-width: 52ch; margin-top: 20px; line-height: 1.6; }
 .footer-big .fb-cnpj { font-family: var(--ff-mono); font-size:0.75rem; letter-spacing: .04em; color: var(--on-navy-mute); margin-top: 14px; }
 .footer-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: clamp(24px,4vw,56px); padding-block: clamp(44px,5vw,64px); }
-.footer-col h4 { color: #fff; font-family: var(--ff-mono); font-size:0.6875rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 400; margin-bottom: 22px; }
+.footer-col h3 { color: #fff; font-family: var(--ff-mono); font-size:0.6875rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 400; margin-bottom: 22px; }
 .footer-col ul { display: flex; flex-direction: column; gap: 13px; }
 .footer-col a, .footer-col li { font-size:0.9375rem; color: var(--on-navy-soft); transition: color .2s; }
 .footer-col a:hover { color: #fff; }
@@ -585,4 +641,61 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: non
   .trein-icon { width: 48px; height: 48px; font-size:0.875rem; }
   .trein-bundle { flex-direction: column; text-align: center; padding: 24px 20px; }
   .trein-bundle-price { align-items: center; }
+}
+
+/* ============================================================
+   FASE 2 — PARA QUEM É  ·  COMO FUNCIONA  ·  FAQ  ·  PROVA
+   ============================================================ */
+
+/* ---- Para quem é ---- */
+.publico-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 56px; }
+.publico-card { border: 1px solid var(--line); background: var(--white); padding: 38px 34px; border-radius: 2px; transition: border-color .35s var(--ease), transform .35s var(--ease); }
+.publico-card:hover { border-color: rgba(32,56,100,.28); transform: translateY(-3px); }
+.pc-tag { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ff-mono); font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-mute); }
+.publico-card h3 { font-size: clamp(26px, 2.4vw, 34px); margin-top: 14px; color: var(--navy); }
+.publico-card p { margin-top: 16px; color: var(--ink-soft); font-size: 16px; line-height: 1.65; }
+.pc-list { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line-soft); display: grid; gap: 11px; list-style: none; }
+.pc-list li { position: relative; padding-left: 20px; font-size: 15px; color: var(--ink-soft); }
+.pc-list li::before { content: ""; position: absolute; left: 0; top: .52em; width: 7px; height: 7px; background: var(--red); transform: rotate(45deg); }
+.publico-nao { margin-top: 34px; padding: 22px 26px; background: var(--paper); border-left: 3px solid var(--navy); font-size: 15px; line-height: 1.65; color: var(--ink-soft); display: flex; gap: 12px; align-items: flex-start; }
+.publico-nao .dmd { margin-top: .45em; }
+.publico-nao strong { color: var(--navy); }
+
+/* ---- Como funciona (fundo navy) ---- */
+.metodo { background: var(--navy-950); color: var(--on-navy); }
+.metodo .sec-title h2 { color: #fff; }
+.metodo-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 56px; counter-reset: passo; }
+.metodo-step { position: relative; padding: 34px 28px; border: 1px solid var(--line-navy); background: rgba(255,255,255,.02); border-radius: 2px; }
+.ms-no { font-family: var(--ff-mono); font-size: .8125rem; letter-spacing: .14em; color: var(--red-accent); }
+.metodo-step h3 { margin-top: 12px; font-size: clamp(21px, 1.8vw, 26px); color: #fff; }
+.metodo-step p { margin-top: 14px; font-size: 15px; line-height: 1.68; color: var(--on-navy-soft); }
+.metodo-step strong { color: #fff; font-weight: 500; }
+.ms-out { display: block; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line-navy); font-family: var(--ff-mono); font-size: .75rem; line-height: 1.5; letter-spacing: .04em; color: var(--on-navy-mute); }
+.metodo-cta { margin-top: 46px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: 34px; border-top: 1px solid var(--line-navy); }
+.metodo-cta p { font-size: clamp(16px, 1.4vw, 19px); color: var(--on-navy-soft); max-width: 46ch; }
+
+/* ---- Prova ---- */
+.prova-vazia { margin-top: 48px; border: 1px solid var(--line); background: var(--paper-2); padding: 44px 40px; display: flex; gap: 30px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.prova-vazia p { font-size: clamp(16px, 1.4vw, 19px); line-height: 1.65; color: var(--ink-soft); max-width: 56ch; }
+.prova-vazia strong { color: var(--navy); }
+
+/* ---- FAQ ---- */
+.faq-list { margin-top: 48px; border-top: 1px solid var(--line); }
+.faq-item { border-bottom: 1px solid var(--line); }
+.faq-item summary { cursor: pointer; list-style: none; padding: 26px 44px 26px 0; position: relative; font-family: var(--ff-display); font-weight: 600; font-size: clamp(17px, 1.5vw, 21px); color: var(--navy); transition: color .25s; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--red); }
+.faq-item summary::after { content: ""; position: absolute; right: 8px; top: 50%; width: 11px; height: 11px; border-right: 2px solid var(--red); border-bottom: 2px solid var(--red); transform: translateY(-70%) rotate(45deg); transition: transform .3s var(--ease); }
+.faq-item[open] summary::after { transform: translateY(-30%) rotate(225deg); }
+.faq-answer { padding: 0 60px 30px 0; font-size: 16px; line-height: 1.72; color: var(--ink-soft); }
+.faq-answer p + p { margin-top: 14px; }
+.faq-answer strong { color: var(--navy); }
+.faq-cta { margin-top: 40px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.faq-cta span { font-size: 16px; color: var(--ink-soft); }
+
+@media (max-width: 900px) {
+  .publico-grid, .metodo-steps { grid-template-columns: 1fr; }
+  .publico-card { padding: 30px 24px; }
+  .faq-answer { padding-right: 20px; }
+  .metodo-cta, .prova-vazia { flex-direction: column; align-items: flex-start; }
 }

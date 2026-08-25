@@ -119,7 +119,11 @@ app.get('/healthz', async (req, res) => {
 const staticOpts = {
   maxAge: '7d',
   setHeaders(res, filePath) {
-    if (/\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2?)$/.test(filePath)) {
+    // Fontes tem URL versionada (?v=N no @font-face), entao podem ser imutaveis:
+    // trocar a fonte = mudar a versao, nao esperar cache expirar.
+    if (/[\\/]fonts[\\/].*\.woff2?$/.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (/\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2?)$/.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
     }
   },
