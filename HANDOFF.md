@@ -144,6 +144,24 @@ SELECT version FROM schema_migrations WHERE version = '009_telemetria';
 SELECT event, COUNT(*) FROM telemetry_events GROUP BY event ORDER BY 2 DESC;
 ```
 
+### Limitações conhecidas — decisões, não bugs
+
+1. **O funil mede só quem consentiu.** Todo evento passa pelo gate do banner:
+   quem recusa ou não responde não gera `page_view`, `cta_whatsapp_click` nem
+   `form_submit`. As taxas do funil são, portanto, **sobre a base consentida** —
+   viés de medição conhecido e aceito, em troca de conformidade com a LGPD. Ao
+   comparar com números de outra fonte (GA4, Plausible, contagem de conversas no
+   WhatsApp), a diferença é esperada e não indica perda de dado.
+   O **lead em si nunca se perde**: `/api/contact` grava em `leads`
+   independentemente do consentimento, com base legal própria.
+
+2. **`cta_whatsapp_click` não fecha automaticamente com a conversa real.** O elo
+   entre o clique e o que chega no WhatsApp é a **mensagem de origem**
+   ("Olá! Vim pela página X") — leitura humana, feita por quem atende. A costura
+   automática por número de telefone depende do serviço central de WhatsApp, que
+   ainda não existe; quando existir, é lá que ela acontece, não aqui. Até então,
+   `cta_whatsapp_click` mede **intenção de contato**, não conversa iniciada.
+
 ### Mapeamento dos eventos antigos → novos (duplo disparo em vigor)
 
 Os eventos ad-hoc do GA4/Plausible **continuam disparando**, de propósito: o
