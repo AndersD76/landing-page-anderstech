@@ -4,7 +4,7 @@
 import { PROMO, promoAtiva } from './promo.js';
 import { EMPRESA } from './config/empresa.js';
 import { TERMOS_BY_SLUG } from './glossario/terms.js';
-import { casesPublicados, depoimentosPublicados } from './config/prova.js';
+import { casesPublicados, depoimentosPublicados, readoutPublicado } from './config/prova.js';
 
 // ── Google Analytics 4 (gtag.js) ──
 const GTAG_HTML = '<script async src=`https://www.googletagmanager.com/gtag/js?id=${EMPRESA.ga4}`></script>'
@@ -21,7 +21,7 @@ const WA_TRACK_HTML = '<script>document.addEventListener("click",function(e){'
 // ── SSR nav/footer for sub-pages ──
 const NAV_HTML = '<header class="nav solid" style="position:sticky;top:0;z-index:80"><div class="wrap"><div class="nav-inner">'
   + '<a href="/" class="brand" aria-label="Anders Tech">'
-  + '<img src="/assets/logo-horizontal-transparent.png" alt="Anders Tech" width="320" height="80" style="height:80px;width:auto;object-fit:contain"></a>'
+  + '<img src="/assets/logo-horizontal-transparent-1x.png" srcset="/assets/logo-horizontal-transparent-1x.png 1x, /assets/logo-horizontal-transparent-2x.png 2x" alt="Anders Tech" width="192" height="90" decoding="async" style="height:80px;width:auto;object-fit:contain"></a>'
   + '<nav class="nav-links" aria-label="Principal">'
   + '<a href="/#para-quem">Para quem é</a><a href="/#como-funciona">Como funciona</a><a href="/#servicos">Serviços</a><a href="/#faq">Dúvidas</a><a href="/#sobre">Sobre</a><a href="/blog">Conteúdo</a><a href="/#contato">Contato</a></nav>'
   + '<div class="nav-cta"><a href="/portal" class="btn btn-out" style="padding:10px 18px;font-size:13px"><span>Portal</span></a><a href="/#contato" class="btn btn-red"><span>Agendar Conversa</span></a>'
@@ -239,6 +239,19 @@ function renderDepoimento(d) {
     + '</div></figure>';
 }
 
+function renderReadout() {
+  const r = readoutPublicado();
+  if (!r) return '';   // sem numero verificado, o hero simplesmente nao tem readout
+  const linhas = r.metricas.map(m =>
+    '<div class="readout-row">'
+    + '<div class="rr-top"><span class="rr-lbl">' + esc(m.label) + '</span>'
+    + '<span class="rr-num">' + esc(m.valor) + '</span></div>'
+    + '<div class="rr-bar"><i data-bar="' + Number(m.barra) + '"></i></div></div>').join('');
+  return '<aside class="readout reveal" aria-label="' + esc(r.rotulo) + '">'
+    + '<div class="readout-h"><span>' + esc(r.rotulo) + '</span><span class="live"><i></i> ao vivo</span></div>'
+    + linhas + '</aside>';
+}
+
 function renderProva() {
   const cases = casesPublicados();
   const depoimentos = depoimentosPublicados();
@@ -293,6 +306,7 @@ export function injectShared(html, urlPath) {
     .replace('<div id="shared-nav"></div>', NAV_HTML)
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
     .replace('<div id="shared-prova"></div>', renderProva())
+    .replace('<div id="shared-readout"></div>', renderReadout())
     // #78: a home anunciava "acesso gratuito ate 29/07" com a promocao ja
     // encerrada. Agora o bloco so existe enquanto a promocao estiver ativa.
     // Banner ancorado em </body>: a home tem rodape proprio, sem #shared-footer.

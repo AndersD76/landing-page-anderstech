@@ -77,3 +77,31 @@ export function pendencias() {
     depoimentos: DEPOIMENTOS.filter(d => !d.publicado || !completo(d)).length,
   };
 }
+
+// ── Readout do hero ──────────────────────────────────────────────────────────
+// Mostrava "18 meses analisados · 25.000+ mensagens lidas · retrabalho a 400% da
+// meta" rotulado como amostra. São os mesmos números do case 3, que saiu da
+// página por não serem verificáveis — manter num lugar e tirar do outro seria
+// incoerência. Mesma trava: só volta com número verificado e a fonte registrada.
+export const READOUT = {
+  publicado: false,
+  rotulo: PENDENTE,              // ex.: "Diagnóstico · amostra"
+  metricas: [
+    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
+    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
+    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
+  ],
+};
+
+// `fonte` não aparece na página. Existe para que nenhum número volte ao ar sem
+// alguém ter escrito de onde ele saiu — é o que faltava nos que saíram.
+export function readoutPublicado() {
+  const r = READOUT;
+  if (!r.publicado) return null;
+  if (typeof r.rotulo !== 'string' || !r.rotulo.trim() || r.rotulo.includes('[PREENCHER')) return null;
+  if (!Array.isArray(r.metricas) || !r.metricas.length) return null;
+  const ok = r.metricas.every(m =>
+    ['label', 'valor', 'fonte'].every(c => typeof m[c] === 'string' && m[c].trim() && !m[c].includes('[PREENCHER'))
+    && Number.isFinite(m.barra) && m.barra > 0);
+  return ok ? r : null;
+}

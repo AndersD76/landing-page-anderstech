@@ -9,6 +9,7 @@
     "dev": "node --watch server.js",
     "seed": "node ead/seed.js",
     "test": "node --test test/asaas.test.js test/migrate.test.js test/telemetry.test.js test/prova.test.js",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "migrate": "node -e \"import('./db/migrate.js').then(async m=>{const {neon}=await import('@neondatabase/serverless');await m.runMigrations(process.env.DATABASE_URL?neon(process.env.DATABASE_URL):null)})\""
   },
   "dependencies": {
@@ -25,5 +26,8 @@
     "multer": "^2.2.0",
     "pdfkit": "^0.18.0",
     "resend": "^6.12.4"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
   }
 }

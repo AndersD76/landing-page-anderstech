@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { CASES, DEPOIMENTOS, casesPublicados, depoimentosPublicados, pendencias } from '../config/prova.js';
+import { CASES, DEPOIMENTOS, READOUT, casesPublicados, depoimentosPublicados, readoutPublicado, pendencias } from '../config/prova.js';
 
 test('nada é publicado enquanto o Anders não autorizar', () => {
   assert.equal(casesPublicados().length, 0);
@@ -55,5 +55,27 @@ test('todo slot declara os campos que o render espera', () => {
     for (const campo of ['publicado', 'texto', 'autor', 'cargo', 'imagem']) {
       assert.ok(campo in d, `slot de depoimento sem o campo ${campo}`);
     }
+  }
+});
+
+test('readout do hero está sob a mesma trava', () => {
+  assert.equal(readoutPublicado(), null, 'não pode publicar sem autorização');
+
+  const original = JSON.parse(JSON.stringify({ p: READOUT.publicado, r: READOUT.rotulo, m: READOUT.metricas }));
+  try {
+    READOUT.publicado = true;
+    assert.equal(readoutPublicado(), null, 'publicado:true com [PREENCHER] não basta');
+
+    READOUT.rotulo = 'Diagnóstico · amostra';
+    READOUT.metricas = [{ label: 'Meses analisados', valor: '18', barra: 80, fonte: 'planilha X' }];
+    assert.ok(readoutPublicado(), 'completo e autorizado deve publicar');
+
+    // número sem fonte declarada é exatamente o que tirou os cases do ar
+    READOUT.metricas = [{ label: 'Meses analisados', valor: '18', barra: 80, fonte: '' }];
+    assert.equal(readoutPublicado(), null, 'métrica sem fonte não pode ir ao ar');
+  } finally {
+    READOUT.publicado = original.p;
+    READOUT.rotulo = original.r;
+    READOUT.metricas = original.m;
   }
 });

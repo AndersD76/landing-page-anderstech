@@ -217,6 +217,11 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .hero-bg .dmd-big::after { content: ""; position: absolute; inset: 30%; border: 1px solid rgba(185,200,228,.08); }
 
 .hero-grid { position: relative; z-index: 3; display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(36px, 5vw, 70px); align-items: center; }
+/* Sem readout autorizado o hero nao renderiza a coluna da direita. Sem esta
+   regra a grade continuaria reservando 1fr vazio e o texto ficaria espremido
+   em 1.5fr sem motivo. */
+.hero-grid:not(:has(.readout)) { grid-template-columns: 1fr; }
+.hero-grid:not(:has(.readout)) .hero-copy { max-width: 72ch; }
 .hero-meta { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; margin-bottom: 30px; }
 .hero-meta .tag.light { font-size:0.7812rem; }
 .hero-meta .mrow { font-family: var(--ff-mono); font-size:0.7188rem; letter-spacing: .14em; color: var(--on-navy-mute); text-transform: uppercase; display: flex; align-items: center; gap: 9px; }

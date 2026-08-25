@@ -196,22 +196,54 @@ evento literal fora dela é o que estraga a base do serviço central.
 
 ## 8. Landing de conversão (FASE 2) — o que ficou para você
 
-### 8.1 Otimizar dois PNGs — único item que ainda segura o LCP no celular
+### 8.1 Imagens — RESOLVIDO, nada a fazer
 
-Não há ferramenta de imagem nesta máquina (o `convert` do PATH é o utilitário
-NTFS do Windows, não o ImageMagick), então isto **não pôde ser feito aqui**.
+Feito por `npm run optimize:images` (`scripts/optimize-images.mjs`, sharp como
+devDependency). Rodar de novo é seguro: o script desfaz a forma anterior antes
+de aplicar, então é idempotente mesmo depois de mudar a estratégia.
 
-| Arquivo | Hoje | Renderizado em | Deveria ter |
-|---|---|---|---|
-| `assets/logo-horizontal-transparent.png` | **214 KB** | ~127 × 90 px | ≤ 15 KB — 640 × 160, WebP com PNG de fallback |
-| `assets/logo-horizontal-white.png` | **92 KB** | ~127 × 90 px | ≤ 12 KB — mesma coisa |
+| | Antes | Depois |
+|---|---|---|
+| Os dois logos, somados | 305,6 KB | **13,4 KB** |
+| Dimensão servida | 1831 × 859 | 192 × 90 (1x) e 384 × 180 (2x) |
+| LCP no celular (4G) | 3,6 s | **2,2 s** |
+| Performance mobile | 89 | **98** |
 
-Desperdício medido pelo Lighthouse: **293 KiB**. É o que sobrou entre o LCP
-atual no celular (**2,7 s**) e o alvo de 2 s. Resolvido isso, o mobile deve
-fechar em ≈ 2 s — estimativa, não promessa.
+**Não gerou WebP, de propósito.** O pedido era WebP com PNG de fallback, mas a
+medição contradiz a suposição: nestes logos — arte chapada com transparência —
+o PNG com paleta dá 2,5 KB e o WebP dá 14,4 KB (lossless, 18,5 KB). Publicar um
+`<source type="image/webp">` maior que o próprio fallback seria piorar de
+propósito. A perda da quantização é imperceptível: comparando as derivadas com o
+original, ambas compostas sobre o navy real da nav, o erro médio ficou em
+0,26–0,55 de 255, concentrado nas bordas de antialiasing.
 
-Também existe `assets/logo-nav.png` (**375 KB**) que **nenhuma página referencia**.
-Pode apagar.
+O script continua gerando e medindo os dois formatos a cada execução. Se um dia
+entrar uma foto ali, o WebP vence sozinho e o `<picture>` aparece sem ninguém
+mexer em código.
+
+**`logo-nav.png` (375 KB) foi removido** — grep no repositório inteiro (HTML,
+JS, CSS, configs, seeds do EAD, templates do portal) não achou uma única
+referência. Está no histórico do git se precisar.
+
+**Os PNGs originais continuam no repositório**, e devem continuar:
+`ead/routes.js` usa `logo-horizontal-transparent.png` como `og:image` da página
+de certificado. Preview social precisa de imagem grande — apontar para a
+derivada de 192 px quebraria o card.
+
+### 8.1.1 Se quiser os últimos 0,2 s de LCP no celular
+
+O LCP hoje é 2,2 s, contra o alvo de 2 s. O que sobrou não é imagem:
+
+| Alavanca | Ganho estimado | Custo |
+|---|---|---|
+| Minificar `styles.css` (51 KB, bloqueia a renderização por 165 ms) | ~100 ms | passa a existir um passo de build para o CSS |
+| CSS crítico inline + resto assíncrono | ~200 ms | complexidade real de manutenção |
+| GA4 carrega 69 KB de JS não usado | ~100 ms no TBT | trocar gtag.js por Measurement Protocol muda o tracking |
+
+Nenhuma foi feita: as três mexem em como o site é construído ou medido, e isso
+é decisão sua, não gold-plating meu. **Todos os critérios declarados já estão
+atendidos** — Lighthouse ≥ 95 em tudo, nas duas plataformas, e a regra de 3 s
+no 4G com folga.
 
 ### 8.2 `onclick=` no painel admin está morto em produção
 

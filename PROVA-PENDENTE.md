@@ -46,19 +46,34 @@ literal, não uma paráfrase.
 
 ---
 
-## Outros números da home que ficaram no ar e merecem checagem
+## Readout do hero — removido, mesma trava
 
-Estes **não foram removidos** — não faziam parte do bloco de prova e a decisão é
-sua. Estão listados porque caem na mesma regra de "nenhum número inventado":
+O painel "Diagnóstico · amostra" do hero saiu. Ele afirmava:
 
-| Onde | O que afirma |
+| Métrica | Valor que exibia |
 |---|---|
-| Hero — "Diagnóstico · amostra" | `18` meses analisados · `25.000+` mensagens lidas · retrabalho a `400%` da meta |
-| Faixa de credenciais | `15+ anos` de experiência |
+| Meses analisados | `18` |
+| Mensagens lidas | `25.000+` |
+| Retrabalho vs. meta | `400%` |
 
-O readout do hero está rotulado "amostra", o que atenua — mas ele repete os
-mesmos números do case 3, que saiu da página por falta de verificação. Vale
-decidir os dois juntos.
+São **os mesmos números do case 3**, que saiu da página por não serem
+verificáveis. Rotular de "amostra" atenuava, mas manter num lugar o que foi
+tirado do outro seria incoerência.
+
+Voltar é preencher `READOUT` em `config/prova.js` e marcar `publicado: true`.
+Cada métrica tem um campo **`fonte`** que **não aparece na página**: existe para
+que nenhum número volte ao ar sem alguém ter escrito de onde ele saiu. É o que
+faltava nos que saíram. A trava exige `label`, `valor` e `fonte` preenchidos e
+`barra` maior que zero.
+
+Enquanto não houver autorização, o hero renderiza sem a coluna da direita — o
+texto ocupa a largura toda, não fica um buraco.
+
+## Ainda no ar, aguardando sua decisão
+
+| Onde | O que afirma | Situação |
+|---|---|---|
+| Faixa de credenciais | `15+ anos` de experiência | mantido — pendente de confirmação do Anders |
 
 ---
 
