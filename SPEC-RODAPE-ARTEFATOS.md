@@ -37,28 +37,42 @@ https://anderstech.net/?utm_source=anderstech&utm_medium=artifact&utm_campaign=<
 
 | Parte | Regra |
 |---|---|
-| `<tipo>` | `p` = proposta · `c` = case · `a` = apresentação |
+| `<tipo>` | `p` = proposta · `c` = case · `r` = relatorio-auditoria · `e` = certificado-ead · `a` = apresentação |
 | Aleatórios | 7 caracteres do alfabeto `abcdefghjkmnpqrstuvwxyz23456789` |
 | Alfabeto | 31 símbolos — **sem `0`, `1`, `i`, `l`, `o`**, que se confundem quando alguém digita o link lido no papel |
 | Espaço | 31⁷ ≈ 27,5 bilhões por tipo — colisão acidental é irrelevante |
 
-Exemplos: `p7k2m9x4` (proposta) · `c3nq8wzr` (case).
+Exemplos: `p7k2m9x4` (proposta) · `c3nq8wzr` (case) · `r5hx4mtn` (relatório) · `e8jw2qkv` (certificado).
 
 **Um código por artefato enviado**, não por modelo. Duas propostas para dois
 clientes = dois códigos. É o que torna o scan atribuível a quem recebeu.
 
-O site aceita qualquer código bem-formado e o registra como texto opaco — **o
-gerador Python não precisa chamar nenhuma API deste repo**. O mapa
-`código → cliente/proposta` fica no seu lado, onde a proposta é gerada.
+O gerador Python registra o código via API antes de embutir no QR:
 
-```python
-import secrets
-ALFABETO = "abcdefghjkmnpqrstuvwxyz23456789"
-
-def novo_codigo(tipo: str) -> str:
-    assert tipo in "pca"
-    return tipo + "".join(secrets.choice(ALFABETO) for _ in range(7))
 ```
+POST https://anderstech.net/api/admin/artifacts
+Authorization: Bearer <ADMIN_KEY>
+Content-Type: application/json
+
+{"tipo": "proposta", "destino": "https://anderstech.net", "label": "Empresa X - ISO 9001"}
+```
+
+Resposta (201):
+
+```json
+{"codigo": "p7k2m9x4", "tipo": "proposta", "url_completa": "https://anderstech.net/r/p7k2m9x4", "url_qr": "https://anderstech.net/r/p7k2m9x4"}
+```
+
+Tipos válidos: `proposta`, `case`, `relatorio-auditoria`, `certificado-ead`, `apresentacao`.
+
+O `destino` é a URL para onde o scan redireciona (landing, página de serviço,
+etc.). O `label` é texto livre para identificação interna. O `url_qr` é o que
+vai codificado no QR — **sem UTMs, que o servidor acrescenta no redirect**.
+
+**Filtro de bot**: bots de preview (WhatsApp, Telegram, Facebook, LinkedIn)
+**não** registram `artifact_scan` — o redirect funciona normalmente, mas o
+evento não entra no funil. Sem isso, cada proposta compartilhada no WhatsApp
+geraria um scan fantasma no ato do envio.
 
 ---
 

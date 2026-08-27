@@ -446,6 +446,117 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
   }
 });
 
+// ── Artifact links (FASE 4) — /r/:codigo ──
+// Bots de preview (WhatsApp, Telegram, Facebook, LinkedIn) fazem fetch de toda
+// URL compartilhada. Sem filtro, cada proposta enviada no zap geraria scan
+// fantasma. O regex cobre os UAs conhecidos; bots desconhecidos passam (falso
+// negativo é preferível a falso positivo que esconderia um scan real).
+const BOT_PREVIEW_RE = /whatsapp|telegrambot|facebookexternalhit|facebot|linkedinbot|slackbot|twitterbot|discordbot|googlebot|bingbot/i;
+
+const ARTIFACT_TIPOS = new Set(['p', 'c', 'r', 'e', 'a']);
+const ARTIFACT_TIPO_NOME = { p: 'proposta', c: 'case', r: 'relatorio-auditoria', e: 'certificado-ead', a: 'apresentacao' };
+const ARTIFACT_NOME_TIPO = Object.fromEntries(Object.entries(ARTIFACT_TIPO_NOME).map(([k, v]) => [v, k]));
+const ARTIFACT_ALFABETO = 'abcdefghjkmnpqrstuvwxyz23456789';
+const ARTIFACT_CODIGO_RE = /^[pcrea][abcdefghjkmnpqrstuvwxyz23456789]{7}$/;
+
+function gerarCodigo(tipo) {
+  let codigo = tipo;
+  for (let i = 0; i < 7; i++) {
+    codigo += ARTIFACT_ALFABETO[crypto.randomInt(ARTIFACT_ALFABETO.length)];
+  }
+  return codigo;
+}
+
+app.get('/r/:codigo', async (req, res) => {
+  const codigo = String(req.params.codigo || '').toLowerCase();
+  if (!ARTIFACT_CODIGO_RE.test(codigo)) {
+    return res.redirect(302, 'https://anderstech.net');
+  }
+
+  if (!sql) return res.redirect(302, 'https://anderstech.net');
+
+  try {
+    const rows = await sql`SELECT tipo, destino, label FROM artifact_links WHERE codigo = ${codigo}`;
+    if (!rows.length) {
+      return res.redirect(302, 'https://anderstech.net');
+    }
+
+    const { tipo, destino, label } = rows[0];
+    const tipoNome = ARTIFACT_TIPO_NOME[tipo] || tipo;
+    const ua = req.headers['user-agent'] || '';
+    const isBot = BOT_PREVIEW_RE.test(ua);
+
+    if (TELEMETRIA_ATIVA && !isBot) {
+      registrarTelemetria(sql, [{
+        event: 'artifact_scan',
+        anonymous_id: null,
+        props: { codigo, tipo: tipoNome, label: label || '' },
+        utm_source: 'anderstech',
+        utm_medium: 'artifact',
+        utm_campaign: `${tipoNome}-${codigo}`,
+      }]).catch(err => {
+        console.error('[artifact_scan] falha ao registrar:', err.message);
+      });
+    }
+    if (isBot) {
+      console.log(`[artifact_scan] bot preview filtrado: ${ua.slice(0, 80)} codigo=${codigo}`);
+    }
+
+    const sep = destino.includes('?') ? '&' : '?';
+    const redir = `${destino}${sep}utm_source=anderstech&utm_medium=artifact&utm_campaign=${encodeURIComponent(tipoNome)}-${codigo}`;
+    res.redirect(302, redir);
+  } catch (err) {
+    console.error('[/r/:codigo] erro:', err.message);
+    res.redirect(302, 'https://anderstech.net');
+  }
+});
+
+app.post('/api/admin/artifacts', adminAuth, async (req, res) => {
+  const { tipo, destino, label, criado_por } = req.body || {};
+  if (!tipo || !destino) {
+    return res.status(400).json({ error: 'tipo e destino são obrigatórios' });
+  }
+
+  const tipoChar = ARTIFACT_NOME_TIPO[tipo];
+  if (!tipoChar) {
+    return res.status(400).json({
+      error: `tipo inválido: ${tipo}`,
+      tipos_validos: Object.keys(ARTIFACT_NOME_TIPO),
+    });
+  }
+
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+
+  try {
+    let codigo;
+    let tentativas = 0;
+    while (tentativas < 5) {
+      codigo = gerarCodigo(tipoChar);
+      const existe = await sql`SELECT 1 FROM artifact_links WHERE codigo = ${codigo}`;
+      if (!existe.length) break;
+      tentativas++;
+    }
+    if (tentativas >= 5) {
+      return res.status(500).json({ error: 'Falha ao gerar código único' });
+    }
+
+    await sql`
+      INSERT INTO artifact_links (codigo, tipo, destino, label, criado_por)
+      VALUES (${codigo}, ${tipoChar}, ${destino}, ${label || null}, ${criado_por || null})
+    `;
+
+    res.status(201).json({
+      codigo,
+      tipo: tipo,
+      url_completa: `https://anderstech.net/r/${codigo}`,
+      url_qr: `https://anderstech.net/r/${codigo}`,
+    });
+  } catch (err) {
+    console.error('[POST /api/admin/artifacts] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao criar artefato' });
+  }
+});
+
 app.use(portalRouter);
 app.use(eadRouter);
 
