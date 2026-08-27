@@ -163,8 +163,10 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
 .wrap { max-width: 900px; margin: 0 auto; padding-inline: clamp(22px, 5vw, 80px); }
 
 /* --- TAG --- */
-.tag { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ff-mono); font-size: 12px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+.tag { display: inline-flex; align-items: center; gap: 9px; font-family: var(--ff-mono); font-size: 12px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--red-600); margin-bottom: 16px; }
 .tag::before { content: ""; width: 7px; height: 7px; background: var(--red); transform: rotate(45deg); flex: none; }
+.tag.light { color: #ff8080; }
+.tag.light::before { background: #ff8080; }
 
 /* --- HERO --- */
 .hero-service {
@@ -186,7 +188,7 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   font-family: var(--ff-display); font-weight: 600; font-size: 15px;
   padding: 16px 32px; border-radius: 2px; border: none;
-  background: var(--red); color: #fff; cursor: pointer;
+  background: var(--red-600); color: #fff; cursor: pointer;
   transition: transform .3s var(--ease), box-shadow .3s;
 }
 .hero-service .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(254,0,0,.25); }
@@ -234,7 +236,7 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
 .related-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
 .related-card { display: block; padding: 24px; background: var(--white); border: 1px solid var(--line); border-radius: 8px; transition: border-color .2s, transform .2s; }
 .related-card:hover { border-color: var(--red); transform: translateY(-2px); }
-.related-card .rc-cat { font-family: var(--ff-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.related-card .rc-cat { font-family: var(--ff-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--red-600); margin-bottom: 6px; }
 .related-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .related-card p { font-size: 0.9rem; color: var(--ink-soft); margin: 0; }
 .cta-section {
@@ -399,6 +401,19 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
         <p>Micro e pequenas empresas podem acessar ISO 9001 com subsídio do Sebrae. Veja se você é elegível.</p>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- Leitura recomendada — evita órfãs -->
+<section class="service-section alt-bg">
+  <div class="wrap">
+    <div class="tag">Leitura recomendada</div>
+    <h2>Aprofunde antes de decidir</h2>
+    <ul>
+      <li><a href="/iso-9001-vale-a-pena" style="color:var(--navy);text-decoration:underline"><strong>ISO 9001 vale a pena?</strong></a> — análise de quando o investimento se paga e quando não faz sentido</li>
+      <li><a href="/quanto-custa-certificacao-iso" style="color:var(--navy);text-decoration:underline"><strong>Quanto custa a certificação ISO 9001?</strong></a> — faixas de investimento por porte e complexidade</li>
+      <li><a href="/checklist-iso-9001" style="color:var(--navy);text-decoration:underline"><strong>Checklist ISO 9001</strong></a> — 47 pontos para verificar antes de chamar o auditor</li>
+    </ul>
   </div>
 </section>
 
