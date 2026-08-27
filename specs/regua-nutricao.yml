@@ -1,0 +1,143 @@
+# ── Régua de nutrição pós-contato ─────────────────────────────────────────────
+# SPEC versionada — nada executa neste repo. O envio é feito por automação
+# externa (Resend, n8n, ou script Python) que lê este contrato.
+#
+# Gatilho: lead entra via /api/contact (form_submit) ou cta_whatsapp_click
+# com identify().
+# Segmento: todos os leads com e-mail que não converteram (status != 'ganho').
+#
+# [REVISAR — Anders valida tom, assunto e conteúdo de cada toque]
+
+versao: "1.0"
+nome: regua-nutricao
+descricao: "3 toques pós-contato para leads que não fecharam na primeira conversa"
+
+gatilho:
+  evento: form_submit
+  condicao: "lead.email IS NOT NULL AND lead.status NOT IN ('ganho', 'perdido')"
+
+segmento:
+  query: |
+    SELECT l.id, l.nome, l.email, l.interesse, l.empresa,
+           l.utm_source, l.utm_medium, l.created_at
+    FROM leads l
+    WHERE l.email IS NOT NULL
+      AND l.status NOT IN ('ganho', 'perdido')
+      AND l.created_at >= NOW() - INTERVAL '60 days'
+  filtros:
+    - "Não recebeu o mesmo toque já (dedup por lead_id + toque_id)"
+    - "Não marcou unsubscribe (campo a criar: leads.email_optout)"
+
+toques:
+  - id: nutricao-t1
+    dias_apos_contato: 7
+    canal: email
+    assunto: "[REVISAR] {nome}, uma ferramenta rápida pra você"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      Semana passada conversamos sobre {interesse}. Enquanto avaliamos
+      juntos, preparei algo que pode ajudar agora:
+
+      → Checklist ISO 9001 — 15 itens que você confere em 10 minutos
+        {link_checklist}
+
+      Se quiser retomar a conversa, é só responder este e-mail ou
+      chamar no WhatsApp:
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+      Anders Tech · Passo Fundo/RS
+    links:
+      link_checklist: "https://anderstech.net/checklist-iso-9001?utm_source=anderstech&utm_medium=email&utm_campaign=nutricao-t1"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Recebi o checklist e quero conversar sobre {interesse}."
+    evento_telemetria: "email_sent"
+    props:
+      regua: nutricao
+      toque: t1
+      conteudo: checklist
+
+  - id: nutricao-t2
+    dias_apos_contato: 21
+    canal: email
+    assunto: "[REVISAR] {nome}, como {empresa_similar} resolveu {problema_similar}"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      Trabalhei com uma {segmento_similar} que enfrentava desafios
+      parecidos com os que você mencionou. Montei um resumo de 1 página
+      do que fizemos e do resultado:
+
+      → Case: {titulo_case}
+        {link_case}
+
+      Se fizer sentido pra {empresa}, vamos marcar 15 minutos pra eu
+      mostrar como seria no seu cenário:
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    condicao_extra: "Só dispara se existir case publicado no segmento do lead"
+    links:
+      link_case: "https://anderstech.net/cases/{slug_case}?utm_source=anderstech&utm_medium=email&utm_campaign=nutricao-t2"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Vi o case e quero conversar sobre consultoria para {empresa}."
+    evento_telemetria: "email_sent"
+    props:
+      regua: nutricao
+      toque: t2
+      conteudo: case
+
+  - id: nutricao-t3
+    dias_apos_contato: 45
+    canal: email
+    assunto: "[REVISAR] {nome}, sobre o Sebraetec — subsídio de até 70%"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      Talvez você não saiba, mas o Sebraetec subsidia até 70% do valor
+      da consultoria em ISO 9001 e PBQP-H para empresas do RS. A
+      próxima rodada de submissão é {data_proxima_rodada}.
+
+      Se {empresa} se enquadra, posso preparar a submissão sem custo
+      nenhum — o subsídio cobre a maior parte do projeto.
+
+      → Como funciona o Sebraetec
+        {link_sebraetec}
+
+      Quer que eu verifique a elegibilidade?
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    condicao_extra: "Só dispara se lead.interesse inclui 'iso' ou 'pbqp' ou 'sebraetec'"
+    links:
+      link_sebraetec: "https://anderstech.net/sebraetec?utm_source=anderstech&utm_medium=email&utm_campaign=nutricao-t3"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero saber se minha empresa é elegível ao Sebraetec."
+    evento_telemetria: "email_sent"
+    props:
+      regua: nutricao
+      toque: t3
+      conteudo: sebraetec
+
+regras:
+  - "Lead que responde qualquer e-mail sai da régua (status muda pra 'contatado')"
+  - "Lead que converte (status='ganho') sai imediatamente"
+  - "Lead que pede unsubscribe sai e é marcado em leads.email_optout"
+  - "Máximo 1 e-mail por lead por semana (proteção contra sobreposição de réguas)"
+  - "Todos os links carregam UTMs: utm_source=anderstech, utm_medium=email, utm_campaign=nutricao-{toque}"
+
+implementacao:
+  nota: |
+    Esta spec NÃO executa neste repo. Implementação recomendada:
+    1. Script Python/Node que roda via cron (diário, 9h BRT)
+    2. Consulta a tabela `leads` com os filtros da spec
+    3. Envia via Resend (API key no .env do script, não deste repo)
+    4. Registra o envio em `lead_events` (event_type='email_sent', payload com toque_id)
+    5. Consulta `lead_events` para dedup antes de cada envio

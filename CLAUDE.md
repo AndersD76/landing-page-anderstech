@@ -136,9 +136,11 @@ telemetry.js        adaptador de telemetria (server) — ponto único de saída 
 telemetry-client.js cliente de telemetria (público, injetado em toda página)
 pages/              páginas estáticas → servidas em /<slug>
 blog/               posts → /blog/<slug>
+cases/              gerador de case (validate.js, pdf.js, render.js) → /cases/<slug>
 glossario/          glossário SSR (terms.js + render.js)
 ead/                cursos, checkout Asaas, certificados
 portal/             área logada de cliente/admin
+specs/              réguas de e-mail como YAML (não executam neste repo)
 migrations/         SQL versionado, aplicado no boot
 AUDITORIA.md        histórico de achados e correções
 HANDOFF.md          o que o humano precisa configurar à mão

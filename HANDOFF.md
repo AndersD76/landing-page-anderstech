@@ -359,7 +359,125 @@ para este tipo de página, eles já estarão prontos.
 visível quanto o JSON-LD no `<head>` — são blocos separados e precisam estar
 em sincronia.
 
-## 11. N/A para este projeto
+## 11. Gerador de case (FASE 4) — como usar
+
+### 11.1 Criar um case via API
+
+```bash
+curl -X POST https://anderstech.net/api/admin/cases \
+  -H "Authorization: Bearer $ADMIN_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "slug": "metalurgica-abc-iso-9001",
+    "publicado": true,
+    "cliente": "Metalúrgica ABC",
+    "segmento": "Metalúrgica",
+    "servico": "ISO 9001",
+    "problema": "Perdia 15% por retrabalho...",
+    "solucao": "Mapeamento de 12 processos-chave...",
+    "resultado": "Retrabalho caiu de 15% para 3% em 6 meses.",
+    "resultado_fonte": "Relatório interno da qualidade, mar/2025",
+    "depoimento_texto": "Mudou a forma como trabalhamos.",
+    "depoimento_autor": "João Silva",
+    "depoimento_cargo": "Diretor Industrial",
+    "depoimento_fonte": "E-mail autorizado em 10/04/2025",
+    "metricas": [
+      {"label": "Redução retrabalho", "valor": "80%", "fonte": "Relatório interno"}
+    ]
+  }'
+```
+
+Resposta (201):
+```json
+{
+  "slug": "metalurgica-abc-iso-9001",
+  "publicado": true,
+  "artifact_codigo": "c7k2m9x4",
+  "url_case": "https://anderstech.net/cases/metalurgica-abc-iso-9001",
+  "url_pdf": "https://anderstech.net/api/admin/cases/metalurgica-abc-iso-9001/pdf",
+  "url_artefato": "https://anderstech.net/r/c7k2m9x4"
+}
+```
+
+### 11.2 Trava de fonte
+
+Todo campo numérico e depoimento **exige `fonte`** (string não-vazia, sem
+`[PREENCHER]`). Sem fonte, o POST retorna 400 com a lista de erros. Mesma
+trava de `config/prova.js` — campo sem fonte **não publica**.
+
+### 11.3 PDF
+
+O PDF é gerado sob demanda em `GET /api/admin/cases/:slug/pdf` (autenticado).
+Usa Poppins (TTF em `assets/fonts/`), identidade de artefato (navy, vermelho,
+diamante). O QR no rodapé é um **placeholder** — o QR real deve ser gerado
+pelo script Python com `qrcode` (SPEC-RODAPE-ARTEFATOS.md §2) e embutido
+manualmente ou via sobreposição no PDF final.
+
+### 11.4 Versão web
+
+Cases com `publicado: true` ficam acessíveis em `/cases/<slug>` (indexável,
+JSON-LD Article, sitemap dinâmico, breadcrumb). O evento `case_view` é
+registrado na telemetria. O CTA leva ao WhatsApp com mensagem que identifica
+o case.
+
+### 11.5 Migration
+
+A migration `011_cases.sql` roda sozinha no boot. Confira:
+```sql
+SELECT version FROM schema_migrations WHERE version = '011_cases';
+SELECT COUNT(*) FROM cases;
+```
+
+---
+
+## 12. Réguas de e-mail (FASE 5) — SPECS, não código
+
+As specs vivem em `specs/regua-nutricao.yml` e `specs/regua-ressurreicao.yml`.
+**Nada executa neste repo** — são contratos para a automação externa.
+
+Antes de implementar:
+1. Validar **todo [REVISAR]** nas specs (assuntos, templates, datas sazonais)
+2. Criar campo `leads.email_optout` (boolean, default false) — migration a
+   fazer quando a automação for construída
+3. Implementar o dedup: consultar `lead_events` antes de cada envio
+
+---
+
+## 13. Lista consolidada de pendências `[PREENCHER]` e `[REVISAR]`
+
+### `[PREENCHER]` — bloqueia publicação se não preenchido
+
+| Arquivo | O que falta | Impacto |
+|---|---|---|
+| `index.html:62` | Schema JSON-LD: `description` do fundador | SEO (schema incompleto) |
+| `index.html:273` | Barra de confiança: "X anos de experiência" | Visitante vê `[PREENCHER]` em dev (removido em prod pelo inject) |
+| `index.html:538` | Bio do fundador: "X anos" | Idem |
+| `pages/checklist-iso-9001.html:973` | "consultor com X anos de experiência" | Idem |
+| `llms.txt:5` | "X years of experience" | LLMs que leem o arquivo |
+| `llms-full.txt:5,10` | "X years of experience" (2 ocorrências) | Idem |
+| `config/prova.js` | 3 cases + 1 depoimento + readout do hero | Seções ficam em modo placeholder até autorização |
+
+**Ação**: preencher o número de anos e a fonte de cada case quando autorizado.
+
+### `[REVISAR]` — conteúdo gerado que precisa validação humana
+
+| Arquivo | O que | Status |
+|---|---|---|
+| `index.html:237` | Percentual de subsídio Sebraetec (comentário HTML) | Aguardando confirmação |
+| `SPEC-RODAPE-ARTEFATOS.md` | Texto do rodapé assinado | Contrato técnico — medidas e cores são finais |
+| `specs/regua-nutricao.yml` | 3 templates de e-mail + assuntos | Todos marcados [REVISAR] |
+| `specs/regua-ressurreicao.yml` | 4 templates + datas sazonais + segmentação | Todos marcados [REVISAR] |
+
+**Ação**: validar tom e conteúdo de cada template antes de ativar a automação.
+
+### TRAVA DE DEPLOY (segue valendo)
+
+Nenhum deploy em produção até validar conteúdo técnico das 3 páginas de serviço:
+`/sebraetec` → `/pbqp-h` → `/iso-9001`.
+
+---
+
+## 14. N/A para este projeto
 
 - Domínio e DNS: já apontados
 - `www` → apex e http → https: resolvidos na plataforma; confirme uma vez no painel

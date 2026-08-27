@@ -19,6 +19,9 @@ import { buildSitemap } from './sitemap.js';
 import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
 import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
+import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
+import { gerarCasePDF } from './cases/pdf.js';
+import { renderCase } from './cases/render.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -99,8 +102,22 @@ app.use((req, res, next) => {
 
 // ── Sitemap dinâmico (antes do static para vencer o arquivo físico, se existir) ──
 let sitemapCache = null;
-app.get('/sitemap.xml', (req, res) => {
-  if (!sitemapCache) sitemapCache = buildSitemap();
+app.get('/sitemap.xml', async (req, res) => {
+  if (!sitemapCache) {
+    let casesUrls = [];
+    if (sql) {
+      try {
+        const rows = await sql`SELECT slug, atualizado_em FROM cases WHERE publicado = TRUE`;
+        casesUrls = rows.map(r => [
+          `/cases/${r.slug}`,
+          r.atualizado_em ? new Date(r.atualizado_em).toISOString().slice(0, 10) : '2026-08-27',
+          'monthly',
+          '0.7',
+        ]);
+      } catch {}
+    }
+    sitemapCache = buildSitemap(casesUrls);
+  }
   res.type('application/xml').send(sitemapCache);
 });
 
@@ -554,6 +571,145 @@ app.post('/api/admin/artifacts', adminAuth, async (req, res) => {
   } catch (err) {
     console.error('[POST /api/admin/artifacts] erro:', err.message);
     res.status(500).json({ error: 'Erro ao criar artefato' });
+  }
+});
+
+// ── Cases (FASE 4) — gerador de case de 1 página ──
+app.post('/api/admin/cases', adminAuth, async (req, res) => {
+  const body = req.body || {};
+  const { slug, cliente, segmento, servico, problema, solucao, resultado,
+    resultado_fonte, depoimento_texto, depoimento_autor, depoimento_cargo,
+    depoimento_fonte, metricas, publicado, criado_por } = body;
+
+  if (!slug || !slugValido(slug)) {
+    return res.status(400).json({ error: 'slug inválido (a-z, 0-9, hifens, 3-80 chars)' });
+  }
+
+  const erros = validarCase(body);
+  if (erros.length) return res.status(400).json({ error: 'Validação falhou', erros });
+
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+
+  try {
+    const existe = await sql`SELECT 1 FROM cases WHERE slug = ${slug}`;
+    if (existe.length) return res.status(409).json({ error: `slug '${slug}' já existe` });
+
+    // cria artifact code automaticamente
+    const tipoChar = 'c';
+    let codigo;
+    let tentativas = 0;
+    while (tentativas < 5) {
+      codigo = gerarCodigo(tipoChar);
+      const dup = await sql`SELECT 1 FROM artifact_links WHERE codigo = ${codigo}`;
+      if (!dup.length) break;
+      tentativas++;
+    }
+    if (tentativas >= 5) {
+      return res.status(500).json({ error: 'Falha ao gerar código de artefato' });
+    }
+
+    const destino = `${process.env.APP_URL || 'https://anderstech.net'}/cases/${slug}`;
+    await sql`INSERT INTO artifact_links (codigo, tipo, destino, label, criado_por)
+      VALUES (${codigo}, ${tipoChar}, ${destino}, ${`Case: ${cliente}`}, ${criado_por || null})`;
+
+    await sql`INSERT INTO cases (slug, publicado, cliente, segmento, servico, problema, solucao,
+        resultado, resultado_fonte, depoimento_texto, depoimento_autor, depoimento_cargo,
+        depoimento_fonte, metricas, artifact_codigo)
+      VALUES (${slug}, ${publicado === true}, ${cliente}, ${segmento}, ${servico},
+        ${problema}, ${solucao}, ${resultado}, ${resultado_fonte},
+        ${depoimento_texto || null}, ${depoimento_autor || null},
+        ${depoimento_cargo || null}, ${depoimento_fonte || null},
+        ${JSON.stringify(metricas || [])}, ${codigo})`;
+
+    sitemapCache = null;
+
+    res.status(201).json({
+      slug,
+      publicado: publicado === true,
+      artifact_codigo: codigo,
+      url_case: `${process.env.APP_URL || 'https://anderstech.net'}/cases/${slug}`,
+      url_pdf: `${process.env.APP_URL || 'https://anderstech.net'}/api/admin/cases/${slug}/pdf`,
+      url_artefato: `${process.env.APP_URL || 'https://anderstech.net'}/r/${codigo}`,
+    });
+  } catch (err) {
+    console.error('[POST /api/admin/cases] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao criar case' });
+  }
+});
+
+app.get('/api/admin/cases', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+  try {
+    const cases = await sql`SELECT * FROM cases ORDER BY criado_em DESC`;
+    res.json(cases);
+  } catch (err) {
+    console.error('[GET /api/admin/cases] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao buscar cases' });
+  }
+});
+
+app.get('/api/admin/cases/:slug/pdf', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+  const slug = String(req.params.slug || '');
+  if (!slugValido(slug)) return res.status(400).json({ error: 'slug inválido' });
+
+  try {
+    const rows = await sql`SELECT * FROM cases WHERE slug = ${slug}`;
+    if (!rows.length) return res.status(404).json({ error: 'Case não encontrado' });
+
+    const c = rows[0];
+    if (typeof c.metricas === 'string') c.metricas = JSON.parse(c.metricas);
+
+    const codigo = c.artifact_codigo || slug;
+    const doc = gerarCasePDF(c, codigo);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="case-${slug}.pdf"`,
+    });
+    doc.pipe(res);
+    doc.end();
+  } catch (err) {
+    console.error('[GET /api/admin/cases/:slug/pdf] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao gerar PDF' });
+  }
+});
+
+// /cases/<slug> — versão web pública do case (só publicados)
+const casesHtmlCache = new Map();
+app.get('/cases/:slug', async (req, res) => {
+  const slug = String(req.params.slug || '');
+  if (!slugValido(slug)) return send404(res);
+
+  let html = casesHtmlCache.get(slug);
+  if (html) return res.type('html').send(html);
+
+  if (!sql) return send404(res);
+  try {
+    const rows = await sql`SELECT * FROM cases WHERE slug = ${slug} AND publicado = TRUE`;
+    if (!rows.length) return send404(res);
+
+    const c = rows[0];
+    if (typeof c.metricas === 'string') c.metricas = JSON.parse(c.metricas);
+
+    if (!casePublicavel(c)) return send404(res);
+
+    html = injectShared(renderCase(c), `/cases/${slug}`);
+    casesHtmlCache.set(slug, html);
+
+    if (TELEMETRIA_ATIVA) {
+      registrarTelemetria(sql, [{
+        event: 'case_view',
+        anonymous_id: null,
+        props: { slug },
+      }]).catch(() => {});
+    }
+
+    res.set('Cache-Control', 'public, max-age=300, stale-while-revalidate=86400');
+    res.type('html').send(html);
+  } catch (err) {
+    console.error('[/cases/:slug] erro:', err.message);
+    send404(res);
   }
 });
 

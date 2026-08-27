@@ -1,0 +1,189 @@
+# ── Régua de ressurreição por pretexto ────────────────────────────────────────
+# SPEC versionada — nada executa neste repo. O envio é feito por automação
+# externa que lê este contrato.
+#
+# Gatilho: relógio de sazonalidade — datas previsíveis do calendário de
+# certificação, auditoria e subsídio que criam pretexto legítimo de contato.
+#
+# [REVISAR — Anders valida gatilhos, tom e conteúdo]
+
+versao: "1.0"
+nome: regua-ressurreicao
+descricao: "Reativação de leads frios usando pretextos sazonais do calendário de certificação"
+
+segmento:
+  query: |
+    SELECT l.id, l.nome, l.email, l.interesse, l.empresa, l.segmento,
+           l.utm_source, l.utm_medium, l.created_at,
+           MAX(le.created_at) AS ultimo_contato
+    FROM leads l
+    LEFT JOIN lead_events le ON le.lead_id = l.id
+    WHERE l.email IS NOT NULL
+      AND l.status IN ('novo', 'contatado', 'qualificado')
+      AND l.created_at < NOW() - INTERVAL '60 days'
+    GROUP BY l.id
+    HAVING MAX(le.created_at) < NOW() - INTERVAL '45 days'
+       OR MAX(le.created_at) IS NULL
+  filtros:
+    - "Lead não recebeu e-mail nos últimos 30 dias (qualquer régua)"
+    - "Lead não marcou unsubscribe (leads.email_optout IS NOT TRUE)"
+
+gatilhos_sazonais:
+  # [REVISAR — Anders confirma as datas e ciclos reais]
+
+  - id: ressurreicao-auditoria-anual
+    nome: "Auditoria anual se aproxima"
+    meses_disparo: [1, 7]  # [REVISAR] jan e jul — depende do ciclo do cliente
+    descricao: |
+      Empresas certificadas passam por auditoria de manutenção anual.
+      O pretexto é a preparação: "sua auditoria está chegando?"
+    segmento_filtro: "interesse ILIKE '%iso%' OR interesse ILIKE '%9001%'"
+    assunto: "[REVISAR] {nome}, a auditoria anual está no radar?"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      O ciclo de auditoria de manutenção costuma cair nesta época do
+      ano. Se {empresa} já é certificada, vale conferir se está tudo
+      em dia — e se ainda não é, este é o melhor momento pra começar
+      (o certificador agenda com antecedência).
+
+      Preparei um checklist rápido com os 15 pontos que o auditor
+      mais olha:
+        {link_checklist}
+
+      Quer uma análise rápida de onde vocês estão?
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    links:
+      link_checklist: "https://anderstech.net/checklist-iso-9001?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-auditoria"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero avaliar como estamos pra próxima auditoria."
+
+  - id: ressurreicao-sebraetec-rodada
+    nome: "Nova rodada do Sebraetec"
+    meses_disparo: [3, 8]  # [REVISAR] meses típicos de abertura de edital
+    descricao: |
+      O Sebraetec abre rodadas periódicas. Pretexto: "abriu a rodada,
+      sua empresa pode se candidatar antes que feche."
+    segmento_filtro: "interesse ILIKE '%sebrae%' OR interesse ILIKE '%subsidio%' OR interesse IS NOT NULL"
+    assunto: "[REVISAR] {nome}, o Sebraetec abriu nova rodada — até 70% subsidiado"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      O Sebraetec abriu a rodada de {mes_rodada} para projetos de
+      consultoria em gestão. Empresas do RS podem ter até 70% do
+      valor subsidiado — e a submissão é por ordem de chegada.
+
+      Se {empresa} se enquadra, posso preparar a proposta técnica
+      sem custo:
+        {link_sebraetec}
+
+      Quer que eu verifique a elegibilidade?
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    links:
+      link_sebraetec: "https://anderstech.net/sebraetec?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-sebraetec"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Vi que abriu a rodada do Sebraetec e quero saber se minha empresa é elegível."
+
+  - id: ressurreicao-pbqp-h-licitacao
+    nome: "Temporada de licitação pública"
+    meses_disparo: [2, 9]  # [REVISAR] meses típicos de abertura de editais de obra pública
+    descricao: |
+      Construtoras precisam de PBQP-H para participar de licitações
+      de habitação popular. Pretexto: "os editais do Minha Casa Minha
+      Vida costumam abrir nesta época."
+    segmento_filtro: "interesse ILIKE '%pbqp%' OR interesse ILIKE '%constru%'"
+    assunto: "[REVISAR] {nome}, os editais de obra pública estão abrindo"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      Os editais de habitação popular costumam abrir nesta época, e
+      o PBQP-H nível A é requisito obrigatório para participar. O
+      processo de certificação leva de 4 a 8 meses — quem começa
+      agora chega a tempo.
+
+      Montei uma página com o que construtoras precisam saber:
+        {link_pbqph}
+
+      Quer saber quanto tempo levaria no caso de {empresa}?
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    links:
+      link_pbqph: "https://anderstech.net/pbqp-h?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-pbqph"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero entender o prazo de certificação PBQP-H para minha construtora."
+
+  - id: ressurreicao-caso-novo
+    nome: "Novo case publicado"
+    meses_disparo: []  # disparo avulso, quando case for publicado
+    descricao: |
+      Quando um case novo é publicado, enviar para leads do mesmo
+      segmento que estão frios. Pretexto natural: "acabei de
+      publicar um resultado real no seu setor."
+    segmento_filtro: "segmento do lead = segmento do case publicado"
+    assunto: "[REVISAR] {nome}, resultado real em {segmento_case}"
+    template: |
+      [REVISAR — Anders valida]
+
+      Olá {nome},
+
+      Acabei de publicar um case de consultoria {servico_case} em
+      uma {segmento_case} aqui do RS. O resultado:
+
+      → {resultado_resumo}
+
+      Veja o case completo:
+        {link_case}
+
+      Quer conversar sobre como seria em {empresa}?
+        {link_whatsapp}
+
+      Abraço,
+      Daniel Anders
+    links:
+      link_case: "https://anderstech.net/cases/{slug_case}?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-case"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Vi o case de {segmento_case} e quero conversar."
+
+segmentacao_por_interesse:
+  descricao: |
+    O primeiro contato do lead determina o interesse principal. A automação
+    usa esse campo para decidir qual gatilho sazonal é relevante.
+  mapeamento:
+    # [REVISAR — Anders confirma mapeamento]
+    - interesse_contem: ["iso", "9001", "qualidade", "gestão"]
+      gatilhos_aplicaveis: [ressurreicao-auditoria-anual, ressurreicao-caso-novo]
+    - interesse_contem: ["pbqp", "constru", "obra", "habitação"]
+      gatilhos_aplicaveis: [ressurreicao-pbqp-h-licitacao, ressurreicao-caso-novo]
+    - interesse_contem: ["sebrae", "subsidio", "financ"]
+      gatilhos_aplicaveis: [ressurreicao-sebraetec-rodada]
+    - interesse_contem: ["*"]  # fallback
+      gatilhos_aplicaveis: [ressurreicao-sebraetec-rodada, ressurreicao-caso-novo]
+
+regras:
+  - "Máximo 1 e-mail de ressurreição a cada 45 dias por lead"
+  - "Lead que responde sai da régua de ressurreição e volta pra régua de nutrição"
+  - "Lead que converte (status='ganho') sai de todas as réguas"
+  - "Lead marcado 'perdido' só recebe ressurreição após 90 dias, e no máximo 2 vezes"
+  - "Unsubscribe é definitivo: leads.email_optout = TRUE, nenhuma régua envia"
+  - "Todos os links: utm_source=anderstech, utm_medium=email, utm_campaign=ressurreicao-{id}"
+
+implementacao:
+  nota: |
+    Esta spec NÃO executa neste repo. Implementação recomendada:
+    1. Cron mensal que verifica quais gatilhos sazonais estão ativos (mês atual)
+    2. Para cada gatilho ativo, consulta leads elegíveis (segmento + filtros)
+    3. Envia via Resend, registra em lead_events (event_type='email_sent')
+    4. O gatilho 'ressurreicao-caso-novo' dispara sob demanda (webhook do
+       POST /api/admin/cases quando publicado=true, ou cron diário que
+       detecta cases novos)
+    5. Dedup obrigatório: consultar lead_events antes de cada envio

@@ -121,6 +121,7 @@ const BREADCRUMB_LABELS = {
   'iso-9001': 'ISO 9001',
   'pbqp-h': 'PBQP-H',
   'sebraetec': 'Sebraetec',
+  'cases': 'Cases',
 };
 
 function buildBreadcrumbSchema(urlPath) {
@@ -134,6 +135,9 @@ function buildBreadcrumbSchema(urlPath) {
   } else if (parts[0] === 'glossario' && parts.length > 1) {
     items.push({ '@type': 'ListItem', position: pos++, name: 'Glossário da Qualidade', item: 'https://anderstech.net/glossario' });
     items.push({ '@type': 'ListItem', position: pos, name: (TERMOS_BY_SLUG.get(parts[1]) || {}).termo || parts[1] });
+  } else if (parts[0] === 'cases' && parts.length > 1) {
+    items.push({ '@type': 'ListItem', position: pos++, name: 'Cases', item: 'https://anderstech.net/cases' });
+    items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[1]] || parts[1].replace(/-/g, ' ') });
   } else {
     items.push({ '@type': 'ListItem', position: pos, name: BREADCRUMB_LABELS[parts[0]] || parts[0] });
   }

@@ -73,10 +73,11 @@ const CORE_URLS = [
   ['/politica-de-privacidade', '2026-06-06', 'yearly', '0.3'],
 ];
 
-export function buildSitemap() {
+export function buildSitemap(casesUrls) {
   const urls = [
     ...CORE_URLS,
     ...TERMOS.map(t => [`/glossario/${t.slug}`, GLOSSARIO_LASTMOD, 'monthly', '0.6']),
+    ...(casesUrls || []),
   ];
   const body = urls
     .map(([loc, lastmod, changefreq, priority]) =>
