@@ -119,7 +119,7 @@ Margens laterais: 20 mm.
       │  ◆ ANDERS TECH                                     │          │ │
  20mm │                                   Cases e prazos   │    QR    │ │
       │  Consultoria ISO 9001 · PBQP-H ·   aponte a câmera→│  20×20mm │ │
- 15mm │  Sebraetec — Passo Fundo/RS                        │          │ │
+ 15mm │  Sebrae Unio — Passo Fundo/RS                      │          │ │
       │                                anderstech.net/r/…  │          │ │
  10mm │  anderstech.net                                    └──────────┘ │  ← base do QR em 5mm
       │                                                                 │
@@ -132,7 +132,7 @@ Margens laterais: 20 mm.
 | Linha | Baseline | Texto | Fonte | Cor |
 |---|---|---|---|---|
 | 1 | y = 20 mm | ◆ + `ANDERS TECH` | Poppins SemiBold 8 pt, tracking 0,10 em | `#0B1730` |
-| 2 | y = 15,5 mm | `Consultoria ISO 9001 · PBQP-H · Sebraetec` | Poppins Regular 7 pt | `#46577A` |
+| 2 | y = 15,5 mm | `Consultoria ISO 9001 · PBQP-H · Sebrae Unio` | Poppins Regular 7 pt | `#46577A` |
 | 3 | y = 11,5 mm | `Passo Fundo/RS · anderstech.net` | Poppins Regular 7 pt | `#46577A` |
 
 **◆ diamante**: quadrado de 2 × 2 mm em `#FE0000`, rotacionado 45°, centro na

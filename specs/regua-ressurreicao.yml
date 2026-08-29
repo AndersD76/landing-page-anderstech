@@ -62,35 +62,35 @@ gatilhos_sazonais:
       link_checklist: "https://anderstech.net/checklist-iso-9001?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-auditoria"
       link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero avaliar como estamos pra próxima auditoria."
 
-  - id: ressurreicao-sebraetec-rodada
-    nome: "Nova rodada do Sebraetec"
-    meses_disparo: [3, 8]  # [REVISAR] meses típicos de abertura de edital
+  - id: ressurreicao-unio-cupom
+    nome: "Cupom de desconto disponível na Unio"
+    meses_disparo: [3, 8]  # [REVISAR] Anders confirma quando o Sebrae libera cupom
     descricao: |
-      O Sebraetec abre rodadas periódicas. Pretexto: "abriu a rodada,
-      sua empresa pode se candidatar antes que feche."
-    segmento_filtro: "interesse ILIKE '%sebrae%' OR interesse ILIKE '%subsidio%' OR interesse IS NOT NULL"
-    assunto: "[REVISAR] {nome}, o Sebraetec abriu nova rodada — até 70% subsidiado"
+      O Sebrae libera cupons de desconto periodicamente na plataforma
+      Unio. Pretexto: "tem cupom disponível, dá pra contratar agora."
+    segmento_filtro: "interesse ILIKE '%sebrae%' OR interesse ILIKE '%unio%' OR interesse IS NOT NULL"
+    assunto: "[REVISAR] {nome}, dá pra contratar consultoria com desconto do Sebrae"
     template: |
       [REVISAR — Anders valida]
 
       Olá {nome},
 
-      O Sebraetec abriu a rodada de {mes_rodada} para projetos de
-      consultoria em gestão. Empresas do RS podem ter até 70% do
-      valor subsidiado — e a submissão é por ordem de chegada.
+      A consultoria em gestão pode ser contratada pela plataforma Unio
+      do Sebrae, com cupom de desconto conforme os critérios deles.
+      São 13 serviços credenciados — de certificação a finanças e
+      processos.
 
-      Se {empresa} se enquadra, posso preparar a proposta técnica
-      sem custo:
-        {link_sebraetec}
+      Se {empresa} se enquadra, posso preparar a proposta técnica:
+        {link_unio}
 
-      Quer que eu verifique a elegibilidade?
+      Quer que eu verifique se sua empresa pode usar?
         {link_whatsapp}
 
       Abraço,
       Daniel Anders
     links:
-      link_sebraetec: "https://anderstech.net/sebraetec?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-sebraetec"
-      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Vi que abriu a rodada do Sebraetec e quero saber se minha empresa é elegível."
+      link_unio: "https://anderstech.net/unio?utm_source=anderstech&utm_medium=email&utm_campaign=ressurreicao-unio"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero saber se minha empresa pode contratar consultoria pela Unio."
 
   - id: ressurreicao-pbqp-h-licitacao
     nome: "Temporada de licitação pública"
@@ -164,10 +164,10 @@ segmentacao_por_interesse:
       gatilhos_aplicaveis: [ressurreicao-auditoria-anual, ressurreicao-caso-novo]
     - interesse_contem: ["pbqp", "constru", "obra", "habitação"]
       gatilhos_aplicaveis: [ressurreicao-pbqp-h-licitacao, ressurreicao-caso-novo]
-    - interesse_contem: ["sebrae", "subsidio", "financ"]
-      gatilhos_aplicaveis: [ressurreicao-sebraetec-rodada]
+    - interesse_contem: ["sebrae", "unio", "cupom", "desconto", "financ"]
+      gatilhos_aplicaveis: [ressurreicao-unio-cupom]
     - interesse_contem: ["*"]  # fallback
-      gatilhos_aplicaveis: [ressurreicao-sebraetec-rodada, ressurreicao-caso-novo]
+      gatilhos_aplicaveis: [ressurreicao-unio-cupom, ressurreicao-caso-novo]
 
 regras:
   - "Máximo 1 e-mail de ressurreição a cada 45 dias por lead"

@@ -63,7 +63,7 @@ function rodape(doc, codigo) {
     .text('ANDERS TECH', MARGEM + 5 * MM, fromBottom(20), { lineBreak: false });
 
   doc.font('Poppins').fontSize(7).fillColor(NAVY_SOFT)
-    .text('Consultoria ISO 9001 · PBQP-H · Sebraetec', MARGEM, fromBottom(15.5), { lineBreak: false });
+    .text('Consultoria ISO 9001 · PBQP-H · Sebrae Unio', MARGEM, fromBottom(15.5), { lineBreak: false });
 
   doc.font('Poppins').fontSize(7).fillColor(NAVY_SOFT)
     .text('Passo Fundo/RS · anderstech.net', MARGEM, fromBottom(11.5), { lineBreak: false });

@@ -95,36 +95,36 @@ toques:
   - id: nutricao-t3
     dias_apos_contato: 45
     canal: email
-    assunto: "[REVISAR] {nome}, sobre o Sebraetec — subsídio de até 70%"
+    assunto: "[REVISAR] {nome}, dá pra contratar com desconto pelo Sebrae"
     template: |
       [REVISAR — Anders valida]
 
       Olá {nome},
 
-      Talvez você não saiba, mas o Sebraetec subsidia até 70% do valor
-      da consultoria em ISO 9001 e PBQP-H para empresas do RS. A
-      próxima rodada de submissão é {data_proxima_rodada}.
+      Talvez você não saiba: a consultoria em ISO 9001 e PBQP-H pode
+      ser contratada pela plataforma Unio do Sebrae, com cupom de
+      desconto conforme os critérios deles.
 
-      Se {empresa} se enquadra, posso preparar a submissão sem custo
-      nenhum — o subsídio cobre a maior parte do projeto.
+      Se {empresa} se enquadra, posso preparar a submissão — eu cuido
+      da tramitação junto ao Sebrae.
 
-      → Como funciona o Sebraetec
-        {link_sebraetec}
+      → Como funciona a Unio
+        {link_unio}
 
-      Quer que eu verifique a elegibilidade?
+      Quer que eu verifique se sua empresa pode usar?
         {link_whatsapp}
 
       Abraço,
       Daniel Anders
-    condicao_extra: "Só dispara se lead.interesse inclui 'iso' ou 'pbqp' ou 'sebraetec'"
+    condicao_extra: "Só dispara se lead.interesse inclui 'iso' ou 'pbqp' ou 'unio' ou 'sebrae'"
     links:
-      link_sebraetec: "https://anderstech.net/sebraetec?utm_source=anderstech&utm_medium=email&utm_campaign=nutricao-t3"
-      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero saber se minha empresa é elegível ao Sebraetec."
+      link_unio: "https://anderstech.net/unio?utm_source=anderstech&utm_medium=email&utm_campaign=nutricao-t3"
+      link_whatsapp: "https://wa.me/5554999648368?text=Olá! Quero saber se minha empresa pode contratar pela Unio."
     evento_telemetria: "email_sent"
     props:
       regua: nutricao
       toque: t3
-      conteudo: sebraetec
+      conteudo: unio
 
 regras:
   - "Lead que responde qualquer e-mail sai da régua (status muda pra 'contatado')"

@@ -100,6 +100,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// O Sebraetec deixou de existir com esse nome — a plataforma do Sebrae se chama
+// Unio. 301 (e nao 302) porque a mudanca e definitiva: transfere para /unio o
+// que /sebraetec ja tinha de indexacao e backlink, em vez de comecar do zero.
+const ROTAS_RENOMEADAS = new Map([
+  ['/sebraetec', '/unio'],
+]);
+
+app.use((req, res, next) => {
+  if (req.method !== 'GET') return next();
+  const destino = ROTAS_RENOMEADAS.get(req.path.toLowerCase());
+  if (destino) {
+    const q = req.originalUrl.slice(req.path.length);
+    return res.redirect(301, destino + q);
+  }
+  next();
+});
+
 // ── Sitemap dinâmico (antes do static para vencer o arquivo físico, se existir) ──
 let sitemapCache = null;
 app.get('/sitemap.xml', async (req, res) => {

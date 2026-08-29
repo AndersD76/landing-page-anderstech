@@ -5,8 +5,16 @@
 
 ## 1. Produto
 
-**Anders Tech** — consultoria em **ISO 9001** e **PBQP-H** de Anders, em **Passo Fundo/RS**.
-Venda **direta** e via **Sebraetec**. Público: **indústrias e construtoras do RS**.
+**Anders Tech** — consultoria em gestão de Anders, em **Passo Fundo/RS**. Carro-chefe:
+**ISO 9001** e **PBQP-H**; o portfólio credenciado tem **13 serviços** (processos,
+finanças, estratégia, inovação, marketing). Venda **direta** ou pela plataforma
+**Unio** do Sebrae. Público: **indústrias e construtoras do RS**.
+
+> **Unio, não "Sebraetec".** O nome antigo saiu do site em 29/08/2026 — a plataforma
+> do Sebrae se chama **Unio** e é **plataforma**, não programa. O modelo é: cliente usa
+> **cupom de desconto** conforme critério do Sebrae; a Anders Tech emite NF para o
+> Sebrae, que paga integral e cobra o cliente. **Não existe "70% de subsídio"** — esse
+> número era invenção do site antigo e foi removido. `/sebraetec` responde 301 → `/unio`.
 
 **Arquétipo: venda por relacionamento.** O site não fecha negócio — ele gera **contato
 qualificado no WhatsApp** e sustenta credibilidade. O fechamento é humano, por conversa.

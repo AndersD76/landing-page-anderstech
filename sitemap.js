@@ -35,7 +35,11 @@ const CORE_URLS = [
   // Serviços
   ['/iso-9001', '2026-08-25', 'monthly', '0.9'],
   ['/pbqp-h', '2026-08-25', 'monthly', '0.9'],
-  ['/sebraetec', '2026-08-25', 'monthly', '0.8'],
+  ['/servicos', '2026-08-29', 'monthly', '0.9'],
+  // /sebraetec virou /unio: o Sebraetec deixou de existir com esse nome, a
+  // plataforma se chama Unio. A rota antiga responde 301 (server.js) e por
+  // isso NAO entra aqui — sitemap so lista URL canonica.
+  ['/unio', '2026-08-29', 'monthly', '0.8'],
 
   // SEO Setorial
   ['/iso-9001-metalurgica', '2026-06-06', 'monthly', '0.8'],

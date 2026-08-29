@@ -338,7 +338,7 @@ explicar a um cliente por que o número dele apareceu sem autorização.
 
 ## 10. FAQPage schema — expectativa correta
 
-As 3 páginas de serviço (`/iso-9001`, `/pbqp-h`, `/sebraetec`) incluem schema
+As 3 páginas de serviço (`/iso-9001`, `/pbqp-h`, `/unio`) incluem schema
 JSON-LD do tipo `FAQPage` com 5 perguntas cada. O schema é **válido e mantido**
 — pode ser verificado no Rich Results Test do Google.
 
@@ -423,6 +423,47 @@ SELECT COUNT(*) FROM cases;
 
 ---
 
+## 11.6 Sebraetec → Unio — o que mudou e o que você precisa fazer
+
+**A correção**: o site chamava a plataforma do Sebrae de "Sebraetec" e a descrevia
+como *programa*. Os dois estavam errados: chama-se **Unio** e é **plataforma**.
+
+Junto com o nome, saiu um número que **nunca foi confirmado**: o site afirmava
+"até 70% de subsídio" e "30% de contrapartida". O modelo real, pelo texto oficial
+da plataforma, é outro — **cupom de desconto** conforme critérios do Sebrae, com a
+Anders Tech emitindo NF para o Sebrae, que paga integral e cobra o cliente.
+Todo percentual foi removido do site.
+
+| O que | Antes | Agora |
+|---|---|---|
+| Nome | Sebraetec | **Unio** |
+| Natureza | "programa" | **plataforma** |
+| Modelo | "70% subsidiado" | **cupom de desconto** (critérios do Sebrae) |
+| URL | `/sebraetec` | `/unio` (a antiga responde **301**) |
+
+### O que você precisa fazer no Google Search Console
+
+O redirect 301 já está no ar em código — o Google transfere a autoridade de
+`/sebraetec` para `/unio` sozinho, mas leva algumas semanas. Para acelerar:
+
+1. **Inspeção de URL** → colar `https://anderstech.net/unio` → **Solicitar indexação**
+2. Repetir para `https://anderstech.net/servicos`
+3. Reenviar o sitemap (agora com **126 URLs**)
+4. Em **Páginas** → acompanhar `/sebraetec` migrar para "Redirecionamento" — é o
+   comportamento esperado, não um erro a corrigir
+
+> Não remova `/sebraetec` pelo "Remoções" do Search Console. O 301 precisa continuar
+> respondendo para transferir o histórico; removê-lo joga fora o que a página já tinha.
+
+### Três `[PREENCHER]` esperando você em `pages/unio.html`
+
+Estão em comentário HTML, e o texto visível descreve o mecanismo sem o número:
+1. **Percentual ou valor do cupom** e seus critérios
+2. **Prazo de tramitação** entre proposta e aprovação
+3. **Critérios de elegibilidade** — porte, faturamento, setor
+
+---
+
 ## 12. Réguas de e-mail (FASE 5) — SPECS, não código
 
 As specs vivem em `specs/regua-nutricao.yml` e `specs/regua-ressurreicao.yml`.
@@ -456,17 +497,17 @@ Antes de implementar:
 
 | Arquivo | O que | Status |
 |---|---|---|
-| `index.html:237` | Percentual de subsídio Sebraetec (comentário HTML) | Aguardando confirmação |
+| `pages/unio.html` | Percentual/valor do cupom, prazo de tramitação e critérios de elegibilidade — 3 `[PREENCHER]` em comentário HTML | Aguardando confirmação |
 | `SPEC-RODAPE-ARTEFATOS.md` | Texto do rodapé assinado | Contrato técnico — medidas e cores são finais |
 | `specs/regua-nutricao.yml` | 3 templates de e-mail + assuntos | Todos marcados [REVISAR] |
 | `specs/regua-ressurreicao.yml` | 4 templates + datas sazonais + segmentação | Todos marcados [REVISAR] |
 
 **Ação**: validar tom e conteúdo de cada template antes de ativar a automação.
 
-### TRAVA DE DEPLOY (segue valendo)
+### TRAVA DE DEPLOY — parcialmente liberada
 
-Nenhum deploy em produção até validar conteúdo técnico das 3 páginas de serviço:
-`/sebraetec` → `/pbqp-h` → `/iso-9001`.
+`/pbqp-h` e `/iso-9001`: **validados pelo Anders em 29/08/2026**.
+Falta validar `/unio` e `/servicos`, criadas nesta rodada.
 
 ---
 
