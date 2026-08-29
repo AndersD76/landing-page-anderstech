@@ -75,7 +75,7 @@
       "name": "Como funciona o cupom de desconto?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A contratação segue a forma de Produto Sebrae. O cliente pode utilizar cupons de desconto conforme critérios pré-definidos pelo Sebrae. A Anders Tech emite a nota fiscal para o Sebrae, o Sebrae paga o valor integral à consultoria e cobra o cliente. Os critérios e o desconto aplicável a cada caso são definidos pelo Sebrae — verificamos junto com você antes de fechar."
+        "text": "A contratação segue a forma de Produto Sebrae. O cupom é aplicado automaticamente no fechamento da compra, dentro da plataforma. O percentual varia conforme a campanha do Sebrae e o serviço contratado, e cada cupom tem limite de valor e de percentual — vale o que for atingido primeiro. Só o que o Sebrae classifica como Produto Sebrae aceita cupom, e os 13 serviços da Anders Tech são todos Produto Sebrae. No fluxo financeiro, a Anders Tech emite a nota fiscal para o Sebrae, o Sebrae paga o valor integral à consultoria e cobra o cliente."
       }
     },
     {
@@ -99,7 +99,7 @@
       "name": "Minha empresa pode usar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A elegibilidade e os critérios de uso do cupom são definidos pelo Sebrae e variam conforme o serviço e o perfil da empresa. A Anders Tech faz o diagnóstico inicial e verifica com você o que se aplica ao seu caso antes de abrir qualquer contratação."
+        "text": "Os critérios do Sebrae para usar cupom na Unio são objetivos: pessoa jurídica ou produtor rural, com cadastro completo na plataforma, faturamento anual de até R$ 4,8 milhões — ou seja, MEI, ME ou EPP — formalizada e com endereço no Rio Grande do Sul. Não há restrição de setor: indústria, construção, comércio e serviços entram igual. Fora desse enquadramento a consultoria continua disponível, só que na contratação direta. A Anders Tech verifica o seu caso no diagnóstico inicial, antes de abrir qualquer contratação."
       }
     }
   ]
@@ -220,9 +220,15 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
     <h2>Unio: a plataforma do Sebrae para contratar consultoria credenciada</h2>
     <p>A Unio não é um programa com edital e inscrição — é a <strong>plataforma</strong> onde o Sebrae reúne fornecedores credenciados de consultoria e onde a contratação acontece de fato. A empresa escolhe o serviço, o fornecedor apresenta a proposta e o contrato é fechado dentro da plataforma.</p>
     <p>A contratação segue a forma de <strong>Produto Sebrae</strong>. Na prática, isso significa que o cliente pode utilizar <strong>cupons de desconto</strong>, conforme critérios pré-definidos pelo Sebrae, e que o fluxo financeiro passa pelo Sebrae: a Anders Tech <strong>emite a nota fiscal para o Sebrae</strong>, o <strong>Sebrae paga o valor integral</strong> à consultoria e <strong>cobra o cliente</strong>.</p>
-    <!-- [PREENCHER — Anders confirma]: percentual/valor do cupom, critérios de elegibilidade e prazo
-         de tramitação. Enquanto não confirmado, descrever apenas o mecanismo, sem número. -->
-    <p>O desconto aplicável ao seu caso depende dos critérios que o Sebrae define para cada cupom e cada serviço. A Anders Tech verifica isso com você antes de qualquer contratação — sem surpresa no meio do caminho.</p>
+    <!-- REVISAR: mecanismo do cupom conferido nas fontes oficiais do Sebrae RS
+         (uniosebrae.com.br e conhecimento.sebraers.com.br, consultadas em 29/08/2026).
+         O percentual NAO esta fixado de proposito: varia por campanha — as fontes
+         mostram 50%, 60% e 70% em momentos diferentes — e o cupom tem teto duplo
+         (valor E percentual, o que for atingido primeiro). Fixar um numero aqui
+         envelhece mal e vira promessa que o Sebrae pode nao honrar na campanha
+         vigente. Anders: se quiser citar a campanha do momento, e aqui. -->
+    <p>O cupom é aplicado <strong>automaticamente no fechamento da compra</strong>, dentro da plataforma. O percentual varia conforme a campanha do Sebrae e o serviço contratado, e cada cupom tem <strong>limite de valor e de percentual — vale o que for atingido primeiro</strong>. A Anders Tech verifica o que está valendo para o seu caso antes de qualquer contratação, sem surpresa no meio do caminho.</p>
+    <p>Vale um detalhe que muda tudo: só o que o Sebrae classifica como <strong>Produto Sebrae</strong> aceita cupom — consultoria de escopo livre negociada direto com o consultor (Produto Mercado) não aceita. <strong>Os 13 serviços da Anders Tech são todos Produto Sebrae</strong>, então todos são passíveis de desconto.</p>
     <p>A Anders Tech é credenciada na Unio com <strong>13 serviços ativos</strong>, distribuídos em cinco categorias: Processos, Finanças, Estratégia, Inovação e Marketing e Vendas.</p>
   </div>
 </section>
@@ -273,8 +279,11 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
 <section class="service-section">
   <div class="wrap">
     <div class="tag">Como funciona</div>
-    <!-- REVISAR: copy novo. Sem prazo numérico — tramitação não foi confirmada pelo Anders.
-         [PREENCHER — Anders confirma]: prazo típico entre proposta e aprovação. -->
+    <!-- REVISAR: o site antigo prometia "2 a 4 semanas de tramitacao". Estava errado
+         por confundir plataforma com programa: na Unio nao ha submissao de projeto
+         nem analise de edital — a contratacao e direta, o cliente aprova a proposta
+         e o servico comeca. Por isso o passo a passo nao tem prazo de aprovacao: nao
+         existe fila. O que tem prazo e a execucao, que depende do escopo. -->
     <h2>Do diagnóstico à entrega, passo a passo</h2>
     <div class="steps">
       <div class="step">
@@ -287,7 +296,7 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
       </div>
       <div class="step">
         <h3>Aprovação e contratação</h3>
-        <p>Você aprova a proposta na Unio. A Anders Tech emite a nota fiscal para o Sebrae, que paga o valor integral à consultoria e faz a cobrança do cliente — você trata de um único fluxo, o do Sebrae.</p>
+        <p>Você aprova a proposta na Unio e o serviço começa — não há edital, fila nem espera por análise. A Anders Tech emite a nota fiscal para o Sebrae, que paga o valor integral à consultoria e faz a cobrança do cliente: você trata de um único fluxo, o do Sebrae. O pagamento é feito dentro da plataforma, com as condições que o Sebrae oferece no momento.</p>
       </div>
       <div class="step">
         <h3>Execução e entrega</h3>
@@ -308,7 +317,7 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
     </div>
     <div class="faq-item">
       <h3>Como funciona o cupom de desconto?</h3>
-      <p>A contratação segue a forma de Produto Sebrae. O cliente pode utilizar cupons de desconto conforme critérios pré-definidos pelo Sebrae. A Anders Tech emite a nota fiscal para o Sebrae, o Sebrae paga o valor integral à consultoria e cobra o cliente. Os critérios e o desconto aplicável a cada caso são definidos pelo Sebrae — verificamos junto com você antes de fechar.</p>
+      <p>A contratação segue a forma de Produto Sebrae. O cupom é aplicado automaticamente no fechamento da compra, dentro da plataforma. O percentual varia conforme a campanha do Sebrae e o serviço contratado, e cada cupom tem limite de valor e de percentual — vale o que for atingido primeiro. Só o que o Sebrae classifica como Produto Sebrae aceita cupom, e os 13 serviços da Anders Tech são todos Produto Sebrae. No fluxo financeiro, a Anders Tech emite a nota fiscal para o Sebrae, o Sebrae paga o valor integral à consultoria e cobra o cliente.</p>
     </div>
     <div class="faq-item">
       <h3>A Anders Tech é credenciada?</h3>
@@ -320,9 +329,14 @@ h1,h2,h3 { font-family: var(--ff-display); font-weight: 600; line-height: 1.15; 
     </div>
     <div class="faq-item">
       <h3>Minha empresa pode usar?</h3>
-      <!-- [PREENCHER — Anders confirma]: critérios objetivos de elegibilidade (porte, faturamento,
-           setor). Nenhum foi confirmado — não inserir número aqui sem validação. -->
-      <p>A elegibilidade e os critérios de uso do cupom são definidos pelo Sebrae e variam conforme o serviço e o perfil da empresa. A Anders Tech faz o diagnóstico inicial e verifica com você o que se aplica ao seu caso antes de abrir qualquer contratação.</p>
+      <!-- REVISAR: criterios conferidos na regra publicada do Sebrae RS para a Unio
+           (conhecimento.sebraers.com.br, consultada em 29/08/2026): pessoa juridica
+           ou produtor rural, cadastro completo na plataforma, faturamento anual ate
+           R$ 4,8 milhoes (MEI, ME ou EPP), formalizado e com endereco no RS.
+           O teto de R$ 4,8 mi e o limite legal de EPP (LC 123/2006), o que da
+           consistencia ao numero. Anders: confirme se o Sebrae RS nao mudou a regra. -->
+      <p>Os critérios do Sebrae para usar cupom na Unio são objetivos: <strong>pessoa jurídica ou produtor rural</strong>, com <strong>cadastro completo na plataforma</strong>, <strong>faturamento anual de até R$ 4,8 milhões</strong> — ou seja, MEI, ME ou EPP — <strong>formalizada e com endereço no Rio Grande do Sul</strong>. Não há restrição de setor: indústria, construção, comércio e serviços entram igual.</p>
+      <p>Fora desse enquadramento a consultoria continua disponível, só que na contratação direta. A Anders Tech verifica o seu caso no diagnóstico inicial, antes de abrir qualquer contratação.</p>
     </div>
   </div>
 </section>
