@@ -479,35 +479,48 @@ Antes de implementar:
 
 ## 13. Lista consolidada de pendências `[PREENCHER]` e `[REVISAR]`
 
-### `[PREENCHER]` — bloqueia publicação se não preenchido
+**Zerada em 29/08/2026.** Nenhum `[REVISAR]` ou `[PREENCHER]` de conteúdo
+sobrou no repositório. O que existia virou uma destas três coisas:
 
-| Arquivo | O que falta | Impacto |
+| Era | Virou | Onde |
 |---|---|---|
-| `index.html:62` | Schema JSON-LD: `description` do fundador | SEO (schema incompleto) |
-| `index.html:273` | Barra de confiança: "X anos de experiência" | Visitante vê `[PREENCHER]` em dev (removido em prod pelo inject) |
-| `index.html:538` | Bio do fundador: "X anos" | Idem |
-| `pages/checklist-iso-9001.html:973` | "consultor com X anos de experiência" | Idem |
-| `llms.txt:5` | "X years of experience" | LLMs que leem o arquivo |
-| `llms-full.txt:5,10` | "X years of experience" (2 ocorrências) | Idem |
-| `config/prova.js` | 3 cases + 1 depoimento + readout do hero | Seções ficam em modo placeholder até autorização |
+| "X anos de experiência" (5 lugares) | **desde 2004** | index.html, checklist, llms.txt, llms-full.txt |
+| 3 `[PREENCHER]` da Unio | dados oficiais do Sebrae RS (elegibilidade, mecanismo do cupom) | `pages/unio.html` |
+| 27 "validar com o Anders" | removidos — você validou | index, iso-9001, pbqp-h, unio, servicos |
+| 21 `[REVISAR]` nas réguas | removidos; aviso único no topo de cada spec | `specs/*.yml` |
+| 11 marcadores que **explicavam uma decisão** | `<!-- NOTA: -->` | idem |
 
-**Ação**: preencher o número de anos e a fonte de cada case quando autorizado.
+### Por que sobrou `NOTA:` no código
 
-### `[REVISAR]` — conteúdo gerado que precisa validação humana
+Não é pendência — é memória. Um exemplo real: o site dizia "até 70% de subsídio",
+número que ninguém confirmou. Foi removido. Sem uma nota dizendo **por que** saiu,
+a chance de alguém (eu, daqui a seis meses) recolocar é alta. As `NOTA:` marcam
+esses pontos. Como os `REVISAR:`, **não vão para o HTML público** — `injectShared`
+remove os dois em produção.
 
-| Arquivo | O que | Status |
-|---|---|---|
-| `pages/unio.html` | Percentual/valor do cupom, prazo de tramitação e critérios de elegibilidade — 3 `[PREENCHER]` em comentário HTML | Aguardando confirmação |
-| `SPEC-RODAPE-ARTEFATOS.md` | Texto do rodapé assinado | Contrato técnico — medidas e cores são finais |
-| `specs/regua-nutricao.yml` | 3 templates de e-mail + assuntos | Todos marcados [REVISAR] |
-| `specs/regua-ressurreicao.yml` | 4 templates + datas sazonais + segmentação | Todos marcados [REVISAR] |
+### O que ainda aparece num grep por PREENCHER — e não é pendência
 
-**Ação**: validar tom e conteúdo de cada template antes de ativar a automação.
+`cases/validate.js`, `config/prova.js`, `inject.js` e os dois arquivos de teste
+citam a string `[PREENCHER` porque **são a trava que a procura**: é o código que
+impede um case pela metade de ir ao ar. Apagar dali quebraria a proteção.
 
-### TRAVA DE DEPLOY — parcialmente liberada
+### Cases e depoimentos: agora array vazio, não slot fantasma
 
-`/pbqp-h` e `/iso-9001`: **validados pelo Anders em 29/08/2026**.
-Falta validar `/unio` e `/servicos`, criadas nesta rodada.
+`config/prova.js` tinha 3 slots de case e 1 de depoimento preenchidos com
+`[PREENCHER]`. Pareciam tarefa sua, mas não eram: case não depende de alguém
+sentar e escrever — depende de **um cliente real autorizar por escrito**. Até lá
+não há o que preencher.
+
+Os arrays agora nascem vazios, com o formato documentado em comentário logo acima.
+A home não fica vazia: mostra o bloco `prova-vazia`, que é honesto e tem CTA.
+Quando você tiver um case autorizado, adicione um objeto no formato do comentário —
+os testes cobrem exatamente esse caminho.
+
+### TRAVA DE DEPLOY — liberada
+
+`/pbqp-h` e `/iso-9001` validados por você em 29/08/2026. `/unio` e `/servicos`
+foram criadas depois: veja as duas antes de publicar — não por pendência de
+conteúdo, mas porque falam em seu nome e você ainda não as leu.
 
 ---
 

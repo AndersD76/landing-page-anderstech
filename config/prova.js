@@ -6,50 +6,42 @@
 //
 // O que estava no ar e o que falta para cada item voltar está em PROVA-PENDENTE.md.
 
-const PENDENTE = '[PREENCHER — aguardando autorização do cliente]';
+// Os arrays nascem VAZIOS de proposito. Slot pre-criado com [PREENCHER] parecia
+// tarefa pendente no grep, mas nao era: case e depoimento nao dependem de alguem
+// sentar e escrever — dependem de um cliente real autorizar por escrito. Ate la
+// nao ha o que preencher, e array vazio diz isso com mais honestidade do que
+// tres slots fantasma. A secao da home nao fica vazia: `renderProva()` em
+// inject.js mostra um bloco proprio quando nao ha nada publicado.
+//
+// Para publicar um case, adicione um objeto neste formato:
+//
+//   {
+//     publicado: true,
+//     slug: 'metalurgica-abc-iso-9001',  // vira /cases/<slug>
+//     cliente: 'Metalúrgica ABC',        // ou "Metalúrgica · RS" se anônimo
+//     segmento: 'Metalúrgica',           // Alimentícia · Construtora · Cooperativa
+//     servico: 'ISO 9001',               // PBQP-H · Diagnóstico
+//     problema: 'Perdia 15% por retrabalho.',   // o que doía antes, 1 ou 2 frases
+//     resultado: 'Retrabalho a 3% em 6 meses.', // o que mudou, com a medição
+//     imagem: '',                        // /assets/case-0X.jpg — vazio usa a marca
+//   }
+//
+// E um depoimento:
+//
+//   {
+//     publicado: true,
+//     texto: 'Mudou a forma como trabalhamos.',  // frase literal, não paráfrase
+//     autor: 'João Silva',               // como o depoente autorizou ser citado
+//     cargo: 'Diretor Industrial · Metalúrgica · RS',
+//     imagem: '',
+//   }
+//
+// A trava abaixo continua valendo: campo vazio ou com [PREENCHER] nao publica,
+// mesmo com `publicado: true`. O que cada item precisa esta em PROVA-PENDENTE.md.
 
-export const CASES = [
-  {
-    publicado: false,
-    slug: '',                    // vira /cases/<slug> na FASE 4
-    cliente: PENDENTE,           // nome da empresa, ou "Metalúrgica · RS" se anônimo
-    segmento: PENDENTE,          // Metalúrgica · Alimentícia · Construtora · Cooperativa
-    servico: PENDENTE,           // ISO 9001 · PBQP-H · Diagnóstico
-    problema: PENDENTE,          // o que doía antes — 1 ou 2 frases
-    resultado: PENDENTE,         // o que mudou, com a medição e a fonte dela
-    imagem: '',                  // /assets/case-0X.jpg — vazio usa fundo da marca
-  },
-  {
-    publicado: false,
-    slug: '',
-    cliente: PENDENTE,
-    segmento: PENDENTE,
-    servico: PENDENTE,
-    problema: PENDENTE,
-    resultado: PENDENTE,
-    imagem: '',
-  },
-  {
-    publicado: false,
-    slug: '',
-    cliente: PENDENTE,
-    segmento: PENDENTE,
-    servico: PENDENTE,
-    problema: PENDENTE,
-    resultado: PENDENTE,
-    imagem: '',
-  },
-];
+export const CASES = [];
 
-export const DEPOIMENTOS = [
-  {
-    publicado: false,
-    texto: PENDENTE,             // frase literal, não paráfrase
-    autor: PENDENTE,             // como o depoente autorizou ser citado
-    cargo: PENDENTE,             // cargo · segmento · estado
-    imagem: '',
-  },
-];
+export const DEPOIMENTOS = [];
 
 // Trava: item com `publicado: true` mas com [PREENCHER] sobrando NÃO vai ao ar.
 // Evita publicar meio case por descuido — o custo de um vazamento desses é a
@@ -83,14 +75,22 @@ export function pendencias() {
 // meta" rotulado como amostra. São os mesmos números do case 3, que saiu da
 // página por não serem verificáveis — manter num lugar e tirar do outro seria
 // incoerência. Mesma trava: só volta com número verificado e a fonte registrada.
+// Mesma logica dos cases: sem numero verificado nao ha o que preencher, entao
+// nasce desligado e sem metrica. Para publicar, preencha assim:
+//
+//   publicado: true,
+//   rotulo: 'Diagnóstico · amostra',
+//   metricas: [
+//     { label: 'Meses analisados', valor: '18', barra: 80,
+//       fonte: 'planilha de produção do cliente X, jan/2025' },
+//   ],
+//
+// `barra` é o preenchimento visual (0–100) e `fonte` nunca aparece na página:
+// existe para que nenhum número volte ao ar sem alguém ter escrito de onde saiu.
 export const READOUT = {
   publicado: false,
-  rotulo: PENDENTE,              // ex.: "Diagnóstico · amostra"
-  metricas: [
-    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
-    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
-    { label: PENDENTE, valor: PENDENTE, barra: 0, fonte: PENDENTE },
-  ],
+  rotulo: '',
+  metricas: [],
 };
 
 // `fonte` não aparece na página. Existe para que nenhum número volte ao ar sem

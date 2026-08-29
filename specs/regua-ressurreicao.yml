@@ -3,9 +3,12 @@
 # externa que lê este contrato.
 #
 # Gatilho: relógio de sazonalidade — datas previsíveis do calendário de
-# certificação, auditoria e subsídio que criam pretexto legítimo de contato.
+# certificação, auditoria e cupom que criam pretexto legítimo de contato.
 #
-# [REVISAR — Anders valida gatilhos, tom e conteúdo]
+# ANTES DO PRIMEIRO DISPARO: leia os 4 templates em voz alta — saem assinados
+# com o nome do Anders para um cliente real. E confira os meses_disparo: eles
+# são a aposta de quando o pretexto é legítimo, não um dado verificado. Mês
+# errado transforma "pretexto legítimo" em spam.
 
 versao: "1.0"
 nome: regua-ressurreicao
@@ -29,19 +32,16 @@ segmento:
     - "Lead não marcou unsubscribe (leads.email_optout IS NOT TRUE)"
 
 gatilhos_sazonais:
-  # [REVISAR — Anders confirma as datas e ciclos reais]
 
   - id: ressurreicao-auditoria-anual
     nome: "Auditoria anual se aproxima"
-    meses_disparo: [1, 7]  # [REVISAR] jan e jul — depende do ciclo do cliente
+    meses_disparo: [1, 7]  # NOTA: jan e jul — depende do ciclo do cliente
     descricao: |
       Empresas certificadas passam por auditoria de manutenção anual.
       O pretexto é a preparação: "sua auditoria está chegando?"
     segmento_filtro: "interesse ILIKE '%iso%' OR interesse ILIKE '%9001%'"
-    assunto: "[REVISAR] {nome}, a auditoria anual está no radar?"
+    assunto: "{nome}, a auditoria anual está no radar?"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       O ciclo de auditoria de manutenção costuma cair nesta época do
@@ -64,15 +64,13 @@ gatilhos_sazonais:
 
   - id: ressurreicao-unio-cupom
     nome: "Cupom de desconto disponível na Unio"
-    meses_disparo: [3, 8]  # [REVISAR] Anders confirma quando o Sebrae libera cupom
+    meses_disparo: [3, 8]  # NOTA: Anders confirma quando o Sebrae libera cupom
     descricao: |
       O Sebrae libera cupons de desconto periodicamente na plataforma
       Unio. Pretexto: "tem cupom disponível, dá pra contratar agora."
     segmento_filtro: "interesse ILIKE '%sebrae%' OR interesse ILIKE '%unio%' OR interesse IS NOT NULL"
-    assunto: "[REVISAR] {nome}, dá pra contratar consultoria com desconto do Sebrae"
+    assunto: "{nome}, dá pra contratar consultoria com desconto do Sebrae"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       A consultoria em gestão pode ser contratada pela plataforma Unio
@@ -94,16 +92,14 @@ gatilhos_sazonais:
 
   - id: ressurreicao-pbqp-h-licitacao
     nome: "Temporada de licitação pública"
-    meses_disparo: [2, 9]  # [REVISAR] meses típicos de abertura de editais de obra pública
+    meses_disparo: [2, 9]  # NOTA: meses típicos de abertura de editais de obra pública
     descricao: |
       Construtoras precisam de PBQP-H para participar de licitações
       de habitação popular. Pretexto: "os editais do Minha Casa Minha
       Vida costumam abrir nesta época."
     segmento_filtro: "interesse ILIKE '%pbqp%' OR interesse ILIKE '%constru%'"
-    assunto: "[REVISAR] {nome}, os editais de obra pública estão abrindo"
+    assunto: "{nome}, os editais de obra pública estão abrindo"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       Os editais de habitação popular costumam abrir nesta época, e
@@ -131,10 +127,8 @@ gatilhos_sazonais:
       segmento que estão frios. Pretexto natural: "acabei de
       publicar um resultado real no seu setor."
     segmento_filtro: "segmento do lead = segmento do case publicado"
-    assunto: "[REVISAR] {nome}, resultado real em {segmento_case}"
+    assunto: "{nome}, resultado real em {segmento_case}"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       Acabei de publicar um case de consultoria {servico_case} em
@@ -159,7 +153,6 @@ segmentacao_por_interesse:
     O primeiro contato do lead determina o interesse principal. A automação
     usa esse campo para decidir qual gatilho sazonal é relevante.
   mapeamento:
-    # [REVISAR — Anders confirma mapeamento]
     - interesse_contem: ["iso", "9001", "qualidade", "gestão"]
       gatilhos_aplicaveis: [ressurreicao-auditoria-anual, ressurreicao-caso-novo]
     - interesse_contem: ["pbqp", "constru", "obra", "habitação"]

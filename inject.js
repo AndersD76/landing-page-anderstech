@@ -303,10 +303,14 @@ function fontesLocais(html) {
 
 export function injectShared(html, urlPath) {
   const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
-  // Os marcadores <!-- REVISAR: ... --> sao recado interno para o Anders validar
-  // o texto. Ficam no fonte do repo, mas nao vao para o HTML publico em producao:
-  // quem le o codigo-fonte da pagina nao precisa ver a cozinha.
-  const limpo = IS_PROD ? html.replace(/<!--\s*REVISAR:[\s\S]*?-->\s*/g, '') : html;
+  // Dois marcadores internos, ambos so para quem le o repo:
+  //   REVISAR: — texto aguardando validacao do Anders (hoje: nenhum)
+  //   NOTA:    — por que a decisao foi essa. Ex.: "o percentual saiu de proposito,
+  //              o modelo da Unio e cupom". Existe para o proximo que mexer aqui
+  //              nao recolocar o numero que a gente acabou de tirar.
+  // Nenhum dos dois vai para o HTML publico: quem le o codigo-fonte da pagina
+  // nao precisa ver a cozinha.
+  const limpo = IS_PROD ? html.replace(/<!--\s*(?:REVISAR|NOTA):[\s\S]*?-->\s*/g, '') : html;
   const base = fontesLocais(limpo);
   return base
     .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">'

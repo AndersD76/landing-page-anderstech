@@ -6,7 +6,10 @@
 # com identify().
 # Segmento: todos os leads com e-mail que não converteram (status != 'ganho').
 #
-# [REVISAR — Anders valida tom, assunto e conteúdo de cada toque]
+# ANTES DO PRIMEIRO DISPARO: leia os 3 templates em voz alta. Eles saem
+# assinados com o nome do Anders para um cliente real — o texto precisa soar
+# como ele fala, não como um gerador escreveu. Ajuste à vontade: a spec é o
+# contrato do fluxo (quando dispara, para quem, com que dedup), não do estilo.
 
 versao: "1.0"
 nome: regua-nutricao
@@ -32,10 +35,8 @@ toques:
   - id: nutricao-t1
     dias_apos_contato: 7
     canal: email
-    assunto: "[REVISAR] {nome}, uma ferramenta rápida pra você"
+    assunto: "{nome}, uma ferramenta rápida pra você"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       Semana passada conversamos sobre {interesse}. Enquanto avaliamos
@@ -63,10 +64,8 @@ toques:
   - id: nutricao-t2
     dias_apos_contato: 21
     canal: email
-    assunto: "[REVISAR] {nome}, como {empresa_similar} resolveu {problema_similar}"
+    assunto: "{nome}, como {empresa_similar} resolveu {problema_similar}"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       Trabalhei com uma {segmento_similar} que enfrentava desafios
@@ -95,18 +94,16 @@ toques:
   - id: nutricao-t3
     dias_apos_contato: 45
     canal: email
-    assunto: "[REVISAR] {nome}, dá pra contratar com desconto pelo Sebrae"
+    assunto: "{nome}, dá pra contratar com desconto pelo Sebrae"
     template: |
-      [REVISAR — Anders valida]
-
       Olá {nome},
 
       Talvez você não saiba: a consultoria em ISO 9001 e PBQP-H pode
       ser contratada pela plataforma Unio do Sebrae, com cupom de
       desconto conforme os critérios deles.
 
-      Se {empresa} se enquadra, posso preparar a submissão — eu cuido
-      da tramitação junto ao Sebrae.
+      Se {empresa} se enquadra, eu cuido da contratação na plataforma —
+      você aprova a proposta e a gente começa.
 
       → Como funciona a Unio
         {link_unio}
