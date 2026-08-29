@@ -269,9 +269,12 @@ function renderProva() {
   const depoimentos = depoimentosPublicados();
 
   if (!cases.length && !depoimentos.length) {
-    // REVISAR: texto do bloco sem case autorizado. E verdadeiro (cliente de
-    // consultoria costuma preferir nao divulgar) e converte — mas o Anders decide
-    // se quer dizer isso em publico.
+    // NOTA: este bloco e o que a home mostra enquanto CASES/DEPOIMENTOS estao
+    // vazios — e nao um placeholder. Transforma a ausencia de case publico em
+    // argumento (sigilo do cliente) e empurra para o WhatsApp, que e a conversao.
+    // Duas afirmacoes aqui falam em nome do Anders: que os clientes preferem nao
+    // divulgar, e que o prospect pode falar com quem ja passou pelo processo.
+    // A segunda e uma promessa — se um dia deixar de ser verdade, o texto muda.
     return '<div class="prova-vazia reveal">'
       + '<p>Boa parte dos meus clientes prefere <strong>não divulgar</strong> que contratou consultoria — e eu respeito isso. '
       + 'Os cases existem, com nome, número e o antes e depois: eu mostro na conversa, e você fala direto com quem já passou pelo processo.</p>'
