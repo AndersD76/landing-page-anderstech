@@ -474,11 +474,14 @@ tr.row-highlight td{background:#dbeafe !important;transition:background .2s}
           +'<span>'+l.titulo+'</span>'
           +'<span class="dur">'+(l.duração||'')+'</span></div>';
       });
-      html+='<div class="mod-header'+(isOpen||i===0?' open':'')+'" onclick="this.classList.toggle(\'open\')">Módulo '+(i+1)+': '+m.titulo+'<span>'+(m.aulas?m.aulas.length:0)+' aulas</span></div>'
+      html+='<div class="mod-header'+(isOpen||i===0?' open':'')+'>Módulo '+(i+1)+': '+m.titulo+'<span>'+(m.aulas?m.aulas.length:0)+' aulas</span></div>'
         +'<div class="mod-lessons"'+(isOpen||i===0?' style="display:block"':'')+'>'+lessons+'</div>';
     });
     sidebar.innerHTML=html;
     if(totalLessons)document.getElementById('progressFill').style.width=Math.round(completedLessons/totalLessons*100)+'%';
+    sidebar.querySelectorAll('.mod-header').forEach(function(el){
+      el.addEventListener('click',function(){this.classList.toggle('open')});
+    });
     sidebar.querySelectorAll('.lesson-link').forEach(function(el){
       el.addEventListener('click',function(){loadLesson(parseInt(el.dataset.id));sidebar.classList.remove('open')});
     });

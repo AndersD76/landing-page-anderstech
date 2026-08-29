@@ -122,7 +122,7 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
     <h2>Anders Tech</h2>
     <p>Painel administrativo</p>
     <input type="password" id="auth-key" placeholder="Chave de acesso" autocomplete="off">
-    <button onclick="doLogin()">Entrar</button>
+    <button id="btn-login">Entrar</button>
     <div class="auth-error" id="auth-error">Chave inválida. Tente novamente.</div>
   </div>
 </div>
@@ -133,8 +133,8 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
     <h1>Anders Tech &middot; Admin</h1>
     <div class="header-actions">
       <span id="last-refresh"></span>
-      <button onclick="loadAll()">&#8635; Atualizar</button>
-      <button onclick="doLogout()">Sair</button>
+      <button id="btn-refresh">&#8635; Atualizar</button>
+      <button id="btn-logout">Sair</button>
     </div>
   </header>
 
@@ -160,8 +160,8 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
 
   <!-- Filters -->
   <div class="filters-bar">
-    <input type="text" id="filter-search" placeholder="Buscar nome ou empresa..." oninput="applyFilters()">
-    <select id="filter-status" onchange="applyFilters()">
+    <input type="text" id="filter-search" placeholder="Buscar nome ou empresa...">
+    <select id="filter-status">
       <option value="">Todos os status</option>
       <option value="novo">Novo</option>
       <option value="contatado">Contatado</option>
@@ -169,14 +169,14 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
       <option value="convertido">Convertido</option>
       <option value="perdido">Perdido</option>
     </select>
-    <select id="filter-interesse" onchange="applyFilters()">
+    <select id="filter-interesse">
       <option value="">Todos os interesses</option>
     </select>
-    <select id="filter-source" onchange="applyFilters()">
+    <select id="filter-source">
       <option value="">Todas as fontes</option>
     </select>
     <div class="spacer"></div>
-    <button class="btn btn-outline" onclick="exportCSV()">&#128229; Exportar CSV</button>
+    <button class="btn btn-outline" id="btn-export">&#128229; Exportar CSV</button>
   </div>
 
   <!-- Table -->
@@ -184,13 +184,13 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
     <table>
       <thead>
         <tr>
-          <th data-sort="id" onclick="sortBy('id')"># <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="created_at" onclick="sortBy('created_at')">Data <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="nome" onclick="sortBy('nome')">Nome <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="empresa" onclick="sortBy('empresa')">Empresa <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="interesse" onclick="sortBy('interesse')">Interesse <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="source" onclick="sortBy('source')">Fonte <span class="sort-icon">&#9650;</span></th>
-          <th data-sort="status" onclick="sortBy('status')">Status <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="id"># <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="created_at">Data <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="nome">Nome <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="empresa">Empresa <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="interesse">Interesse <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="source">Fonte <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="status">Status <span class="sort-icon">&#9650;</span></th>
         </tr>
       </thead>
       <tbody id="leads-body">
@@ -402,7 +402,7 @@ function renderTable() {
   let html = '';
   filteredLeads.forEach(l => {
     const isOpen = expandedId === l.id;
-    html += '<tr class="lead-row' + (isOpen ? ' open' : '') + '" onclick="toggleDetail(' + l.id + ')">';
+    html += '<tr class="lead-row' + (isOpen ? ' open' : '') + '" data-action="toggle-detail" data-lead-id="' + l.id + '">';
     html += '<td>' + l.id + '</td>';
     html += '<td>' + formatDate(l.created_at) + '</td>';
     html += '<td><strong>' + esc(l.nome || '') + '</strong></td>';
@@ -437,14 +437,14 @@ function renderDetailContent(l) {
 
   h += '<div class="detail-actions">';
   h += '<div><label>Alterar status</label>';
-  h += '<select id="status-sel-' + l.id + '" onchange="updateStatus(' + l.id + ')">';
+  h += '<select id="status-sel-' + l.id + '" data-action="update-status" data-lead-id="' + l.id + '">';
   ['novo','contatado','qualificado','convertido','perdido'].forEach(s => {
     h += '<option value="' + s + '"' + (l.status === s ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
   });
   h += '</select></div>';
   h += '<div><label>Adicionar nota</label>';
   h += '<textarea id="note-input-' + l.id + '" placeholder="Escreva uma nota...">' + esc(l.notes || '') + '</textarea></div>';
-  h += '<button class="btn btn-primary" onclick="event.stopPropagation(); saveNote(' + l.id + ')">Salvar nota</button>';
+  h += '<button class="btn btn-primary" data-action="save-note" data-lead-id="' + l.id + '">Salvar nota</button>';
   h += '</div>';
 
   if (l.events && l.events.length) {
@@ -498,7 +498,6 @@ async function toggleDetail(id) {
 
 // ── Actions ──
 async function updateStatus(id) {
-  event.stopPropagation();
   const sel = document.getElementById('status-sel-' + id);
   const newStatus = sel.value;
 
@@ -611,6 +610,48 @@ if (adminKey) {
 // Enter key on auth input
 document.getElementById('auth-key').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
+});
+
+// ── Static event listeners (CSP-safe: nenhum onclick/onchange/oninput inline) ──
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('btn-refresh').addEventListener('click', loadAll);
+document.getElementById('btn-logout').addEventListener('click', doLogout);
+document.getElementById('filter-search').addEventListener('input', applyFilters);
+document.getElementById('filter-status').addEventListener('change', applyFilters);
+document.getElementById('filter-interesse').addEventListener('change', applyFilters);
+document.getElementById('filter-source').addEventListener('change', applyFilters);
+document.getElementById('btn-export').addEventListener('click', exportCSV);
+
+// Sort headers — cada <th data-sort> vira clicável
+document.querySelectorAll('th[data-sort]').forEach(function(th) {
+  th.addEventListener('click', function() {
+    sortBy(this.getAttribute('data-sort'));
+  });
+});
+
+// ── Delegated listeners no tbody (conteúdo dinâmico via renderTable) ──
+var leadsBody = document.getElementById('leads-body');
+
+leadsBody.addEventListener('click', function(e) {
+  var row = e.target.closest('[data-action="toggle-detail"]');
+  if (row) {
+    toggleDetail(Number(row.getAttribute('data-lead-id')));
+    return;
+  }
+  var saveBtn = e.target.closest('[data-action="save-note"]');
+  if (saveBtn) {
+    e.stopPropagation();
+    saveNote(Number(saveBtn.getAttribute('data-lead-id')));
+    return;
+  }
+});
+
+leadsBody.addEventListener('change', function(e) {
+  var sel = e.target.closest('[data-action="update-status"]');
+  if (sel) {
+    e.stopPropagation();
+    updateStatus(Number(sel.getAttribute('data-lead-id')));
+  }
 });
 </script>
 </body>

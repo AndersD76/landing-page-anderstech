@@ -183,7 +183,10 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
 .nav.solid .brand .wm { color: var(--navy); }
 .nav.solid .brand .wm small { color: var(--ink-mute); }
 .nav-links { display: flex; align-items: center; gap: 2px; }
-.nav-links a { font-size:0.9688rem; font-weight: 500; color: var(--on-navy-soft); padding: 9px 15px; border-radius: 2px; position: relative; transition: color .2s; }
+/* white-space: nowrap — sem isso "Para quem é" e "Como funciona" quebravam em
+   duas linhas entre 980px e ~1250px, onde os 7 links + logo + 2 botoes ainda
+   dividem a mesma faixa e o flex comprime cada item ate caber. */
+.nav-links a { font-size:0.9688rem; font-weight: 500; color: var(--on-navy-soft); padding: 9px 15px; border-radius: 2px; position: relative; transition: color .2s; white-space: nowrap; }
 .nav.solid .nav-links a { color: var(--ink-soft); }
 .nav-links a::after { content: ""; position: absolute; left: 15px; right: 15px; bottom: 6px; height: 1px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
 .nav-links a:hover { color: #fff; } .nav-links a:hover::after { transform: scaleX(1); }
@@ -489,6 +492,14 @@ a.serv-row { text-decoration: none; color: inherit; }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
+/* Faixa intermediaria: nav ainda horizontal, mas sem folga para o padding
+   cheio. Aperta o espacamento em vez de deixar o flex comprimir os links. */
+@media (max-width: 1250px) and (min-width: 981px) {
+  .nav-inner { gap: 12px; }
+  .nav-links a { padding: 9px 9px; font-size: 0.9063rem; }
+  .nav-cta { gap: 8px; }
+  .nav-cta .btn-out { padding: 9px 12px !important; }
+}
 @media (max-width: 980px) {
   .nav-links { display: none; }
   .nav-toggle { display: flex; }

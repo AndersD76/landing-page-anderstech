@@ -186,27 +186,27 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <span>Portal Admin</span>
     </div>
     <nav class="sidebar-nav">
-      <a data-section="dashboard" class="active" onclick="switchSection('dashboard')">
+      <a data-section="dashboard" class="active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </a>
-      <a data-section="clientes" onclick="switchSection('clientes')">
+      <a data-section="clientes">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
         Clientes
       </a>
-      <a data-section="eventos" onclick="switchSection('eventos')">
+      <a data-section="eventos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         Eventos
       </a>
-      <a data-section="pagamentos" onclick="switchSection('pagamentos')">
+      <a data-section="pagamentos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
         Pagamentos
       </a>
-      <a data-section="atas" onclick="switchSection('atas')">
+      <a data-section="atas">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         Atas
       </a>
-      <a onclick="doLogout()" style="margin-top:auto">
+      <a id="btn-logout" style="margin-top:auto">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Sair
       </a>
@@ -221,7 +221,7 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <h1 id="topbar-title">Dashboard</h1>
       <div class="topbar-right">
         <span class="user-info">Logado como <strong>Daniel</strong></span>
-        <button class="btn btn-sm btn-secondary" onclick="loadCurrentSection()">&#8635; Atualizar</button>
+        <button class="btn btn-sm btn-secondary" id="btn-refresh">&#8635; Atualizar</button>
       </div>
     </div>
 
@@ -275,7 +275,7 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <div class="section-view" id="sec-clientes">
         <div class="section-header">
           <h2>Clientes</h2>
-          <button class="btn btn-primary" onclick="openModal('cliente')">+ Novo Cliente</button>
+          <button class="btn btn-primary" id="btn-novo-cliente">+ Novo Cliente</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -291,14 +291,14 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <div class="section-view" id="sec-eventos">
         <div class="section-header">
           <h2>Eventos (Horas)</h2>
-          <button class="btn btn-primary" onclick="openModal('evento')">+ Novo Evento</button>
+          <button class="btn btn-primary" id="btn-novo-evento">+ Novo Evento</button>
         </div>
         <div class="filters-bar">
-          <select id="filter-evento-cliente" onchange="loadEventos()">
+          <select id="filter-evento-cliente">
             <option value="">Todos os clientes</option>
           </select>
-          <input type="date" id="filter-evento-de" onchange="loadEventos()" title="Data inicial">
-          <input type="date" id="filter-evento-ate" onchange="loadEventos()" title="Data final">
+          <input type="date" id="filter-evento-de" title="Data inicial">
+          <input type="date" id="filter-evento-ate" title="Data final">
           <span class="spacer"></span>
           <span id="eventos-total-horas" style="font-size:.85rem;color:#666"></span>
         </div>
@@ -316,10 +316,10 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <div class="section-view" id="sec-pagamentos">
         <div class="section-header">
           <h2>Pagamentos</h2>
-          <button class="btn btn-primary" onclick="openModal('pagamento')">+ Novo Pagamento</button>
+          <button class="btn btn-primary" id="btn-novo-pagamento">+ Novo Pagamento</button>
         </div>
         <div class="filters-bar">
-          <select id="filter-pag-cliente" onchange="loadPagamentos()">
+          <select id="filter-pag-cliente">
             <option value="">Todos os clientes</option>
           </select>
         </div>
@@ -337,7 +337,7 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
       <div class="section-view" id="sec-atas">
         <div class="section-header">
           <h2>Atas de Reuni&atilde;o</h2>
-          <button class="btn btn-primary" onclick="openModal('ata')">+ Nova Ata</button>
+          <button class="btn btn-primary" id="btn-nova-ata">+ Nova Ata</button>
         </div>
         <div id="ata-list-view">
           <div class="table-wrap">
@@ -351,9 +351,9 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
         </div>
         <div id="ata-detail-view" style="display:none">
           <div class="ata-actions">
-            <button class="btn btn-secondary" onclick="closeAtaDetail()">&larr; Voltar</button>
-            <button class="btn btn-outline" onclick="editAtaDetail()">Editar</button>
-            <button class="btn btn-primary" onclick="gerarPdfAta()">Gerar PDF</button>
+            <button class="btn btn-secondary" id="btn-close-ata">&larr; Voltar</button>
+            <button class="btn btn-outline" id="btn-edit-ata">Editar</button>
+            <button class="btn btn-primary" id="btn-pdf-ata">Gerar PDF</button>
           </div>
           <div class="ata-viewer" id="ata-viewer-content"></div>
         </div>
@@ -364,16 +364,16 @@ tr.detail-row td{background:#f8f9fb;padding:20px 24px}
 </div><!-- /app-layout -->
 
 <!-- ════════ MODAL ════════ -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModalOverlay(event)">
+<div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
     <div class="modal-header">
       <h3 id="modal-title">Novo</h3>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <button class="modal-close" id="btn-close-modal">&times;</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-primary" id="modal-save" onclick="saveModal()">Salvar</button>
+      <button class="btn btn-secondary" id="btn-cancel-modal">Cancelar</button>
+      <button class="btn btn-primary" id="modal-save">Salvar</button>
     </div>
   </div>
 </div>
@@ -584,15 +584,15 @@ function renderClientes() {
     return;
   }
   tb.innerHTML = clientesCache.map(c => `
-    <tr style="cursor:pointer" onclick="toggleClienteDetail(${c.id}, this)">
+    <tr style="cursor:pointer" data-action="toggle-cliente" data-id="${c.id}">
       <td>${esc(c.nome)}</td>
       <td>${esc(c.empresa || '-')}</td>
       <td>${esc(c.email || '-')}</td>
       <td>${esc(c.telefone || '-')}</td>
       <td><span class="badge badge-${c.ativo === false ? 'inativo' : 'ativo'}">${c.ativo === false ? 'Inativo' : 'Ativo'}</span></td>
       <td>
-        <button class="btn-icon btn-sm" onclick="event.stopPropagation();editCliente(${c.id})" title="Editar">&#9998;</button>
-        <button class="btn-icon btn-sm" onclick="event.stopPropagation();toggleClienteStatus(${c.id})" title="${c.ativo === false ? 'Ativar' : 'Desativar'}">
+        <button class="btn-icon btn-sm" data-action="edit-cliente" data-id="${c.id}" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" data-action="toggle-status" data-id="${c.id}" title="${c.ativo === false ? 'Ativar' : 'Desativar'}">
           ${c.ativo === false ? '&#10003;' : '&#10007;'}
         </button>
       </td>
@@ -697,9 +697,9 @@ function renderEventos(eventos) {
       <td>${e.horas ?? '-'}</td>
       <td>${fmt((e.horas || 0) * (e.valor_hora || 0))}</td>
       <td>
-        <button class="btn-icon btn-sm" onclick="editEvento(${e.id})" title="Editar">&#9998;</button>
-        <button class="btn-icon btn-sm" onclick="deleteEvento(${e.id})" title="Excluir">&#128465;</button>
-        <button class="btn btn-sm btn-outline" onclick="gerarAtaFromEvento(${e.id})">Gerar Ata</button>
+        <button class="btn-icon btn-sm" data-action="edit-evento" data-id="${e.id}" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" data-action="delete-evento" data-id="${e.id}" title="Excluir">&#128465;</button>
+        <button class="btn btn-sm btn-outline" data-action="gerar-ata" data-id="${e.id}">Gerar Ata</button>
       </td>
     </tr>
   `).join('');
@@ -756,8 +756,8 @@ function renderPagamentos(pagamentos) {
       <td>${metodoLabel(p.metodo)}</td>
       <td>${esc(p.observacoes || '-')}</td>
       <td>
-        <button class="btn-icon btn-sm" onclick="editPagamento(${p.id})" title="Editar">&#9998;</button>
-        <button class="btn-icon btn-sm" onclick="deletePagamento(${p.id})" title="Excluir">&#128465;</button>
+        <button class="btn-icon btn-sm" data-action="edit-pagamento" data-id="${p.id}" title="Editar">&#9998;</button>
+        <button class="btn-icon btn-sm" data-action="delete-pagamento" data-id="${p.id}" title="Excluir">&#128465;</button>
       </td>
     </tr>
   `).join('');
@@ -803,9 +803,9 @@ function renderAtas(atas) {
       <td>${esc(a.titulo)}</td>
       <td>${esc(a.evento_descricao || '-')}</td>
       <td>
-        <button class="btn btn-sm btn-outline" onclick="viewAta(${a.id})">Ver</button>
-        <button class="btn btn-sm btn-primary" onclick="gerarPdfAtaById(${a.id})">PDF</button>
-        <button class="btn-icon btn-sm" onclick="deleteAta(${a.id})" title="Excluir">&#128465;</button>
+        <button class="btn btn-sm btn-outline" data-action="view-ata" data-id="${a.id}">Ver</button>
+        <button class="btn btn-sm btn-primary" data-action="pdf-ata" data-id="${a.id}">PDF</button>
+        <button class="btn-icon btn-sm" data-action="delete-ata" data-id="${a.id}" title="Excluir">&#128465;</button>
       </td>
     </tr>
   `).join('');
@@ -1180,6 +1180,92 @@ document.addEventListener('keydown', e => {
 document.querySelector('.topbar h1').addEventListener('click', () => {
   if (window.innerWidth <= 768) {
     document.getElementById('sidebar').classList.toggle('open');
+  }
+});
+
+// ── Event Listeners (CSP-safe — substitui onclick/onchange inline) ──
+
+// Sidebar nav: delegação no container
+document.querySelector('.sidebar-nav').addEventListener('click', function(e) {
+  const link = e.target.closest('[data-section]');
+  if (link) { switchSection(link.dataset.section); return; }
+  if (e.target.closest('#btn-logout')) { doLogout(); }
+});
+
+// Top bar
+document.getElementById('btn-refresh').addEventListener('click', loadCurrentSection);
+
+// Botões "novo" nas seções
+document.getElementById('btn-novo-cliente').addEventListener('click', function() { openModal('cliente'); });
+document.getElementById('btn-novo-evento').addEventListener('click', function() { openModal('evento'); });
+document.getElementById('btn-novo-pagamento').addEventListener('click', function() { openModal('pagamento'); });
+document.getElementById('btn-nova-ata').addEventListener('click', function() { openModal('ata'); });
+
+// Filtros de evento
+document.getElementById('filter-evento-cliente').addEventListener('change', loadEventos);
+document.getElementById('filter-evento-de').addEventListener('change', loadEventos);
+document.getElementById('filter-evento-ate').addEventListener('change', loadEventos);
+
+// Filtro de pagamento
+document.getElementById('filter-pag-cliente').addEventListener('change', loadPagamentos);
+
+// Ata detail buttons
+document.getElementById('btn-close-ata').addEventListener('click', closeAtaDetail);
+document.getElementById('btn-edit-ata').addEventListener('click', editAtaDetail);
+document.getElementById('btn-pdf-ata').addEventListener('click', gerarPdfAta);
+
+// Modal
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+document.getElementById('btn-cancel-modal').addEventListener('click', closeModal);
+document.getElementById('modal-save').addEventListener('click', saveModal);
+
+// Delegação em tabelas dinâmicas — clientes
+document.getElementById('clientes-body').addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.action) {
+    case 'toggle-cliente': toggleClienteDetail(id, el.closest('tr')); break;
+    case 'edit-cliente': e.stopPropagation(); editCliente(id); break;
+    case 'toggle-status': e.stopPropagation(); toggleClienteStatus(id); break;
+  }
+});
+
+// Delegação em tabelas dinâmicas — eventos
+document.getElementById('eventos-body').addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.action) {
+    case 'edit-evento': editEvento(id); break;
+    case 'delete-evento': deleteEvento(id); break;
+    case 'gerar-ata': gerarAtaFromEvento(id); break;
+  }
+});
+
+// Delegação em tabelas dinâmicas — pagamentos
+document.getElementById('pagamentos-body').addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.action) {
+    case 'edit-pagamento': editPagamento(id); break;
+    case 'delete-pagamento': deletePagamento(id); break;
+  }
+});
+
+// Delegação em tabelas dinâmicas — atas
+document.getElementById('atas-body').addEventListener('click', function(e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const id = Number(el.dataset.id);
+  switch (el.dataset.action) {
+    case 'view-ata': viewAta(id); break;
+    case 'pdf-ata': gerarPdfAtaById(id); break;
+    case 'delete-ata': deleteAta(id); break;
   }
 });
 

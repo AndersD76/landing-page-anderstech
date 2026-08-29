@@ -245,26 +245,19 @@ Nenhuma foi feita: as três mexem em como o site é construído ou medido, e iss
 atendidos** — Lighthouse ≥ 95 em tudo, nas duas plataformas, e a regra de 3 s
 no 4G com folga.
 
-### 8.2 `onclick=` no painel admin está morto em produção
+### 8.2 `onclick=` no painel admin — RESOLVIDO
 
-Achado **fora do escopo da FASE 2**, encontrado porque o mesmo problema quebrou
-uma mudança minha. O CSP do helmet aplica `script-src-attr 'none'`, que bloqueia
-handler em atributo HTML. O Chrome registra:
+Todos os `onclick=`, `onchange=` e `oninput=` em atributos HTML foram migrados
+para `addEventListener` (delegação de eventos para conteúdo dinâmico, listeners
+diretos para elementos estáticos). Arquivos corrigidos:
 
-```
-Executing inline event handler violates the following Content Security Policy
-directive 'script-src-attr 'none''
-```
+- `admin/index.html` — 13 handlers estáticos + 3 dinâmicos (delegação no tbody)
+- `portal/admin.html` — 19 handlers estáticos + 11 dinâmicos (delegação por seção)
+- `portal/cliente.html` — 2 handlers dinâmicos (atas)
+- `ead/pages/player.html` — 1 handler dinâmico (módulo toggle)
 
-Afetados (não corrigidos nesta rodada):
-
-- `admin/index.html` — ~13 botões e cabeçalhos de tabela com `onclick=`
-  (login, atualizar, sair, exportar CSV, ordenação, abrir lead, salvar nota)
-- `ead/pages/player.html:477` — `onclick=` dentro de HTML gerado por string
-
-A correção é trocar atributo por `addEventListener`. **Não confirmei no navegador
-se o painel está inteiramente inutilizável** — o CSP é claro, mas vale você abrir
-`/admin` em produção e testar um botão antes de eu mexer.
+Zero `onclick=` ou `on*=` em atributos HTML em todo o projeto. O CSP
+`script-src-attr 'none'` não bloqueia mais nada.
 
 ### 8.3 Prova social — decisão sua
 

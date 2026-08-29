@@ -750,15 +750,21 @@ tr:hover{background:#fafbfd}
       html = '<tr><td colspan="4" class="empty-state">Nenhuma ata registrada.</td></tr>';
     } else {
       sorted.forEach(function(a) {
-        html += '<tr style="cursor:pointer" onclick="window.__openAta(' + a.id + ')">'
+        html += '<tr style="cursor:pointer" data-ata-id="' + a.id + '">'
           + '<td>' + fmtDate(a.data) + '</td>'
           + '<td>' + esc(a.titulo || '-') + '</td>'
           + '<td>' + esc(a.evento || '-') + '</td>'
-          + '<td><button class="download-link" onclick="event.stopPropagation();window.__openAta(' + a.id + ')">Visualizar</button></td>'
+          + '<td><button class="download-link" data-ata-btn="' + a.id + '">Visualizar</button></td>'
           + '</tr>';
       });
     }
     el('atas-tbody').innerHTML = html;
+    el('atas-tbody').querySelectorAll('[data-ata-id]').forEach(function(tr) {
+      tr.addEventListener('click', function() { window.__openAta(parseInt(tr.dataset.ataId)); });
+    });
+    el('atas-tbody').querySelectorAll('[data-ata-btn]').forEach(function(btn) {
+      btn.addEventListener('click', function(e) { e.stopPropagation(); window.__openAta(parseInt(btn.dataset.ataBtn)); });
+    });
   }
 
   // Ata modal
