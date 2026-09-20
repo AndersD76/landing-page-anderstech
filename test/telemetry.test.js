@@ -72,3 +72,25 @@ test('UTM é truncada, nunca rejeitada em silêncio pelo banco', () => {
   const e = normalizar({ event: 'page_view', utm_campaign: 'x'.repeat(500) });
   assert.equal(e.utm_campaign.length, 120);
 });
+
+// ── Sessão e impressão de CTA (lote de medição) ──────────────────────────────
+test('cta_view é nome literal aceito — sem ele não há denominador', () => {
+  assert.equal(normalizar({ event: 'cta_view', props: { path: '/', local: 'hero' } })?.event, 'cta_view');
+  assert.equal(normalizar({ event: 'cta_impression' }), null, 'variação de nome é descartada');
+  assert.equal(normalizar({ event: 'cta_visto' }), null);
+});
+
+test('session_id é validado como o anonymous_id, não confiado', () => {
+  const bom = 'a1b2c3d4e5f6a7b8c9d0e1f2';
+  assert.equal(normalizar({ event: 'page_view', session_id: bom })?.session_id, bom);
+  assert.equal(normalizar({ event: 'page_view', session_id: 'curto' })?.session_id, null);
+  assert.equal(normalizar({ event: 'page_view', session_id: 'tem espaço e acento çã' })?.session_id, null);
+  assert.equal(normalizar({ event: 'page_view' })?.session_id, null, 'ausente vira null');
+});
+
+test('session_id não é PII e convive com person_id', () => {
+  const e = normalizar({ event: 'identify', session_id: 'a1b2c3d4e5f6a7b8', email: 'x@y.com' });
+  assert.ok(e.session_id);
+  assert.ok(e.person_id);
+  assert.equal(JSON.stringify(e.props).includes('x@y.com'), false);
+});

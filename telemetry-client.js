@@ -11,6 +11,8 @@
   var K_ANON = "at_anonymous_id";
   var K_UTM = "at_utm";
   var K_LANDING = "at_landing";
+  var K_SESSAO = "at_sessao";           // {id, visto} — fecha por inatividade
+  var SESSAO_MS = 30 * 60 * 1000;       // 30 min, convenção de mercado
   var K_CONSENT = "at_cookie_consent";    // mesma chave do banner (inject.js)
   var EVENTOS_UNICOS = { page_view: 1, case_view: 1 };
 
@@ -82,6 +84,33 @@
   var ROTA = meta("at-rota") || location.pathname;
   var ORIGEM = meta("at-origem") || (document.title || "").split("—")[0].trim() || ROTA;
 
+  /* ---------- sessao ----------
+     O anonymous_id e identificador de DISPOSITIVO e vive para sempre: sem
+     sessao nao ha como calcular funil nem taxa sobre a etapa anterior, porque
+     duas visitas em meses diferentes eram a mesma linha. A sessao fecha por
+     30 min de inatividade e e renovada a cada evento. */
+  var sessaoMemoria = null;
+  function sessaoId() {
+    var agora = Date.now();
+    var atual = null;
+    try {
+      var cru = ls(K_SESSAO);
+      if (cru) atual = JSON.parse(cru);
+    } catch (e) { atual = null; }
+
+    if (!atual || !atual.id || !atual.visto || agora - atual.visto > SESSAO_MS) {
+      atual = { id: novoId().replace(/-/g, "").slice(0, 32), visto: agora };
+    } else {
+      atual.visto = agora;
+    }
+
+    sessaoMemoria = atual.id;
+    if (consentimento() === "sim") {
+      try { ls(K_SESSAO, JSON.stringify(atual)); } catch (e) {}
+    }
+    return atual.id;
+  }
+
   /* ---------- pagina de entrada da sessao ---------- */
   // Sem isto nao ha como saber qual pagina gera contato: o caminho so existia
   // dentro do props.path de cada evento, e o lead nao guardava nada. Mesma
@@ -109,6 +138,7 @@
       event: evento,
       ts: new Date().toISOString(),
       anonymous_id: anonId(),
+      session_id: sessaoId(),
       utm_source: utm.utm_source || null,
       utm_medium: utm.utm_medium || null,
       utm_campaign: utm.utm_campaign || null,
@@ -213,6 +243,39 @@
   });
 
   /* ---------- API publica ---------- */
+  /* ---------- CTA visto ----------
+     Sem impressao nao ha denominador: 3 cliques nao dizem nada se voce nao sabe
+     se 10 ou 10.000 pessoas viram o botao. Um disparo por CTA por sessao —
+     re-render e scroll de ida e volta nao podem inflar a conta. */
+  var ctasVistos = {};
+  function observarCtas() {
+    if (!window.IntersectionObserver) return;
+    var alvos = document.querySelectorAll('a[href*="wa.me"], [data-wa], [data-cta]');
+    if (!alvos.length) return;
+
+    var obs = new IntersectionObserver(function (entradas) {
+      for (var i = 0; i < entradas.length; i++) {
+        var e = entradas[i];
+        if (!e.isIntersecting) continue;
+        var el = e.target;
+        var local = el.getAttribute("data-cta") || el.getAttribute("data-wa") || el.className || "cta";
+        var chave = ROTA + "|" + local;
+        if (ctasVistos[chave]) { obs.unobserve(el); continue; }
+        ctasVistos[chave] = 1;
+        obs.unobserve(el);            // visto uma vez, nao observa mais
+        enfileirar("cta_view", { path: ROTA, origem: ORIGEM, local: String(local).slice(0, 80) });
+      }
+    }, { threshold: 0.5 });           // metade do botao na tela conta como visto
+
+    for (var j = 0; j < alvos.length; j++) obs.observe(alvos[j]);
+  }
+
+  if (document.readyState === "loading") {
+    addEventListener("DOMContentLoaded", observarCtas);
+  } else {
+    observarCtas();
+  }
+
   window.anders = {
     track: function (evento, props) { enfileirar(evento, props); },
     identify: function (traits) {
@@ -231,6 +294,7 @@
     },
     utm: function () { return JSON.parse(JSON.stringify(utm)); },
     landing: function () { return LANDING; },
+    sessao: function () { return sessaoMemoria || sessaoId(); },
     // Ponto unico de atribuicao para POST /api/contact. Todo formulario do site
     // espalha isto no payload: antes so a home mandava UTM, e lead de
     // calculadora, checklist e pop-up nascia sem origem nenhuma.

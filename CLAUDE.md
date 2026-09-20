@@ -112,7 +112,11 @@ npm run seed
    **Só o PBQP-H sustenta esse eixo** — o Certifiq (ISO 9001) não devolve município.
 5. **Performance**: alvo < 3s em 4G; LCP < 2s na landing; Lighthouse ≥ 95.
 6. **Eventos de telemetria** (nomes literais, sem variação):
-   `page_view` · `cta_whatsapp_click` · `form_submit` · `case_view` · `artifact_scan`.
+   `page_view` · `cta_view` · `cta_whatsapp_click` · `form_submit` · `case_view` · `artifact_scan`.
+   `cta_view` é a impressão do CTA (metade do botão na tela), um disparo por CTA
+   por sessão — sem ele não existe denominador e o CTR é incalculável.
+   Todo evento carrega `session_id`, que fecha por 30 min de inatividade: o
+   `anonymous_id` é identificador de dispositivo e não serve para contar sessão.
    `identify()` quando o usuário fornecer telefone ou e-mail.
    Nenhum evento pode duplicar por re-render.
 7. **LGPD**: telemetria e cookies respeitam o consentimento já implementado

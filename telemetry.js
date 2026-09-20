@@ -21,6 +21,7 @@ export const APP = 'anderstech';
 // forma mais barata de inutilizar uma base de eventos.
 export const EVENTOS = new Set([
   'page_view',
+  'cta_view',
   'cta_whatsapp_click',
   'form_submit',
   'case_view',
@@ -92,11 +93,18 @@ export function normalizar(bruto) {
     ? String(bruto.anonymous_id)
     : null;
 
+  // Mesmo formato do anonymous_id, mesma desconfiança: id fora do padrão é
+  // descartado em vez de gravado como lixo que quebra o GROUP BY.
+  const session_id = /^[A-Za-z0-9_-]{8,64}$/.test(String(bruto.session_id || ''))
+    ? String(bruto.session_id)
+    : null;
+
   return {
     ts: carimbo(bruto.ts),
     app: APP,
     event,
     anonymous_id,
+    session_id,
     person_id: bruto.email || bruto.telefone ? personId(bruto.email || bruto.telefone) : null,
     utm_source: texto(bruto.utm_source, 120),
     utm_medium: texto(bruto.utm_medium, 120),
@@ -124,8 +132,8 @@ async function entregar(sql, eventos) {
   }
   for (const e of eventos) {
     await sql`
-      INSERT INTO telemetry_events (ts, app, event, anonymous_id, person_id, utm_source, utm_medium, utm_campaign, utm_content, props)
-      VALUES (${e.ts}, ${e.app}, ${e.event}, ${e.anonymous_id}, ${e.person_id}, ${e.utm_source}, ${e.utm_medium}, ${e.utm_campaign}, ${e.utm_content}, ${JSON.stringify(e.props)}::jsonb)
+      INSERT INTO telemetry_events (ts, app, event, anonymous_id, session_id, person_id, utm_source, utm_medium, utm_campaign, utm_content, props)
+      VALUES (${e.ts}, ${e.app}, ${e.event}, ${e.anonymous_id}, ${e.session_id}, ${e.person_id}, ${e.utm_source}, ${e.utm_medium}, ${e.utm_campaign}, ${e.utm_content}, ${JSON.stringify(e.props)}::jsonb)
     `;
   }
   return eventos.length;
