@@ -31,14 +31,19 @@ Passo Fundo · RS · (54) 99964-8368<br>
 </div></div></body></html>`;
 }
 
-export function notifyNewLead({ nome, empresa, email, telefone, interesse, mensagem, source, leadId, roiData }) {
+export function notifyNewLead({ nome, empresa, email, telefone, cargo, interesse, mensagem, source, landing_page, utm_medium, utm_campaign, leadId, roiData }) {
+  // Nome agora é opcional (lead da calculadora e do pop-up chega só com
+  // e-mail), então nenhuma linha pode assumir que ele existe.
   const rows = [
-    ['Nome', esc(nome)],
+    ['Nome', esc(nome) || '—'],
     ['Empresa', esc(empresa) || '—'],
+    ['Cargo', esc(cargo) || '—'],
     ['Email', esc(email) || '—'],
     ['Telefone', esc(telefone) || '—'],
     ['Interesse', esc(interesse) || '—'],
     ['Fonte', esc(source) || 'site_form'],
+    ['Página de entrada', esc(landing_page) || '—'],
+    ['Campanha', [esc(utm_medium), esc(utm_campaign)].filter(Boolean).join(' · ') || '—'],
   ].map(([k, v]) => `<tr><td style="padding:6px 12px;font-size:13px;color:#8190ac;border-bottom:1px solid #f0f2f6">${k}</td><td style="padding:6px 12px;font-size:14px;font-weight:500;border-bottom:1px solid #f0f2f6">${v}</td></tr>`).join('');
 
   let roiBlock = '';
@@ -71,7 +76,7 @@ export function autoReplyContact({ nome, interesse }) {
   const tip = matchedTip ? `<p>${matchedTip[1]}</p>` : '';
 
   return layout(`<div class="body">
-<h2>Olá, ${esc(nome.split(' ')[0])}!</h2>
+<h2>Olá${nome ? ', ' + esc(String(nome).split(' ')[0]) : ''}!</h2>
 <p>Recebemos sua mensagem e vamos responder em até <b>24 horas úteis</b>.</p>
 <p>Se precisar falar antes, o Daniel está disponível no WhatsApp:</p>
 <a href="https://wa.me/5554999648368" class="cta">Falar no WhatsApp</a>
@@ -100,7 +105,7 @@ Senha temporária: <b>${esc(senhaTemporaria)}</b>
 
 export function checklistDelivery({ nome }) {
   return layout(`<div class="body">
-<h2>${esc(nome.split(' ')[0])}, aqui está seu Checklist ISO 9001</h2>
+<h2>${nome ? esc(String(nome).split(' ')[0]) + ', aqui' : 'Aqui'} está seu Checklist ISO 9001</h2>
 <p>Obrigado pelo interesse. O <b>Checklist Diagnóstico ISO 9001 — 47 pontos</b> está pronto para uso.</p>
 <p>Use este checklist para avaliar em quais requisitos sua empresa já atende e onde precisa melhorar antes de uma auditoria.</p>
 <div class="meta">

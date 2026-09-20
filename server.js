@@ -19,6 +19,7 @@ import { buildSitemap } from './sitemap.js';
 import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
 import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
+import { validarContato, primeiroNome, identificacao } from './config/contato.js';
 import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
 import { gerarCasePDF } from './cases/pdf.js';
 import { renderCase } from './cases/render.js';
@@ -255,58 +256,78 @@ app.post('/api/contact', async (req, res) => {
     return res.status(429).json({ error: 'Muitas tentativas. Aguarde um minuto.' });
   }
 
-  const { nome, empresa, email, telefone, interesse, mensagem, source, utm_source, utm_medium, utm_campaign, website, roiData } = req.body;
+  const { website, roiData } = req.body;
 
+  // Honeypot: responde ok para o robô não descobrir que foi barrado.
   if (website) return res.json({ ok: true });
 
-  if (!nome || (!email && !telefone)) {
-    return res.status(400).json({ error: 'Nome e ao menos email ou telefone são obrigatórios.' });
+  // A validação saiu daqui para config/contato.js para poder ser testada com o
+  // payload exato de cada tela. `nome` deixou de ser obrigatorio: era ele que
+  // recusava 100% dos leads da calculadora de ROI e do pop-up de saida.
+  const v = validarContato(req.body);
+  if (!v.ok) {
+    return res.status(400).json({ error: v.erro, campo: v.campo, ...(v.sugestao ? { sugestao: v.sugestao } : {}) });
   }
+  const d = v.dados;
 
+  let leadId = null;
   try {
-    let leadId = null;
     if (sql) {
       const result = await sql`
-        INSERT INTO leads (nome, empresa, email, telefone, interesse, mensagem, source, utm_source, utm_medium, utm_campaign)
-        VALUES (${nome}, ${empresa || null}, ${email || null}, ${telefone || null}, ${interesse || null}, ${mensagem || null}, ${source || 'site_form'}, ${utm_source || null}, ${utm_medium || null}, ${utm_campaign || null})
+        INSERT INTO leads (nome, empresa, email, telefone, cargo, interesse, mensagem, source, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+        VALUES (${d.nome}, ${d.empresa}, ${d.email}, ${d.telefone}, ${d.cargo}, ${d.interesse}, ${d.mensagem}, ${d.source}, ${d.landing_page}, ${d.utm_source}, ${d.utm_medium}, ${d.utm_campaign}, ${d.utm_content}, ${d.utm_term})
         RETURNING id
       `;
       leadId = result[0]?.id;
       if (leadId) {
-        const eventPayload = roiData ? { source, interesse, roiData } : { source, interesse };
+        const eventPayload = roiData
+          ? { source: d.source, interesse: d.interesse, landing_page: d.landing_page, roiData }
+          : { source: d.source, interesse: d.interesse, landing_page: d.landing_page };
         await sql`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${leadId}, 'form_submit', ${JSON.stringify(eventPayload)}::jsonb)`;
       }
     }
+  } catch (err) {
+    console.error('Lead error (gravação):', err);
+    return res.status(500).json({ error: 'Erro ao processar. Tente via WhatsApp.' });
+  }
 
-    if (resend) {
+  // Envio de e-mail fora do try da gravação. Antes os dois estavam no mesmo
+  // bloco: falha do Resend com o lead JÁ salvo devolvia 500, a tela dizia "erro
+  // ao enviar" e a pessoa reenviava — lead duplicado no banco.
+  if (resend) {
+    try {
       await resend.emails.send({
         from: 'Anders Tech <noreply@anderstech.net>',
         to: process.env.NOTIFY_EMAIL || 'danielanders76@gmail.com',
-        subject: `[Anders Tech] Novo lead: ${nome}${empresa ? ` — ${empresa}` : ''}`,
-        html: notifyNewLead({ nome, empresa, email, telefone, interesse, mensagem, source, leadId, roiData }),
+        subject: `[Anders Tech] Novo lead: ${identificacao(d)}${d.empresa ? ` — ${d.empresa}` : ''}`,
+        html: notifyNewLead({ ...d, mensagem: d.mensagem, leadId, roiData }),
       });
 
-      if (email) {
-        const isChecklist = source === 'lead_magnet_checklist';
+      if (d.email) {
+        const isChecklist = d.source === 'lead_magnet_checklist';
+        const tratamento = primeiroNome(d.nome);
         await resend.emails.send({
           from: 'Daniel Anders · Anders Tech <noreply@anderstech.net>',
-          to: email,
+          to: d.email,
           subject: isChecklist
-            ? `${nome.split(' ')[0]}, seu Checklist ISO 9001 está aqui`
-            : `${nome.split(' ')[0]}, recebemos sua mensagem — Anders Tech`,
+            ? `${tratamento ? tratamento + ', seu' : 'Seu'} Checklist ISO 9001 está aqui`
+            : `${tratamento ? tratamento + ', recebemos' : 'Recebemos'} sua mensagem — Anders Tech`,
           html: isChecklist
-            ? checklistDelivery({ nome })
-            : autoReplyContact({ nome, interesse }),
+            ? checklistDelivery({ nome: tratamento })
+            : autoReplyContact({ nome: tratamento, interesse: d.interesse }),
         });
       }
+    } catch (err) {
+      // Lead está salvo. Aviso que falhou é problema de operação, não motivo
+      // para dizer à pessoa que a mensagem dela não chegou.
+      console.error(`Lead error (e-mail) — lead #${leadId} FOI gravado:`, err);
     }
-
-    console.log(`Lead #${leadId} (${interesse})`);
-    res.json({ ok: true, id: leadId });
-  } catch (err) {
-    console.error('Lead error:', err);
-    res.status(500).json({ error: 'Erro ao processar. Tente via WhatsApp.' });
+  } else if (leadId) {
+    console.warn(`[lead] RESEND_API_KEY ausente — lead #${leadId} gravado sem aviso ao dono`);
   }
+
+  console.log(`Lead #${leadId} (${d.interesse || 'sem interesse'}) origem=${d.landing_page || '-'} utm=${d.utm_medium || '-'}`);
+  res.json({ ok: true, id: leadId });
 });
 
 // ── Telemetria (FASE 1) ─────────────────────────────────────────────────────

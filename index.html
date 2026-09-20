@@ -804,6 +804,11 @@
     <h3>Receba o Checklist ISO 9001 grátis</h3>
     <p>47 pontos de diagnóstico para avaliar a maturidade da sua operação. Direto no seu email.</p>
     <form class="exit-form" id="exitForm">
+      <!-- Nome opcional: o servidor aceita lead sem nome, mas quem informa
+           chega identificado no aviso do Anders. Nao é `required` de propósito
+           — campo obrigatório antes da entrega derruba a conversão. -->
+      <label for="exit-nome" class="sr-only">Nome</label>
+      <input id="exit-nome" type="text" name="nome" placeholder="Seu nome (opcional)" autocomplete="name" />
       <label for="exit-email" class="sr-only">Email</label>
       <input id="exit-email" type="email" name="email" placeholder="seu@email.com" required />
       <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>

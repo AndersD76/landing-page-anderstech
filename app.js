@@ -25,6 +25,25 @@
     waGreeting: "Olá! Vim pelo site da Anders Tech e gostaria de falar sobre gestão da qualidade / certificação."
   };
 
+  /* ---- atribuicao unica para todo POST /api/contact ----
+     A origem vem da PRIMEIRA visita (window.anders, telemetry-client), nao da
+     URL do momento: quem chegou por campanha, navegou e voltou para preencher
+     perdia a UTM. O _savedUtm cobre o que a telemetria nao rastreia (utm_term)
+     e o caso de ela nao ter carregado. */
+  function atribuicao() {
+    var atr = { landing_page: location.pathname, utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "", utm_term: "" };
+    try {
+      if (window.anders && window.anders.atribuicao) {
+        var a = window.anders.atribuicao();
+        for (var k in a) if (a[k]) atr[k] = a[k];
+      }
+    } catch (e) {}
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(function (k) {
+      if (!atr[k] && _savedUtm[k]) atr[k] = _savedUtm[k];
+    });
+    return atr;
+  }
+
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
@@ -214,13 +233,14 @@
       submitBtn.disabled = true;
       submitBtn.innerHTML = "<span>Enviando...</span>";
 
+      var atr = atribuicao();
       var payload = {
         nome: g("nome"), empresa: g("empresa"), email: g("email"),
         telefone: g("telefone"), interesse: g("interesse"), mensagem: g("mensagem"),
         source: "site_form",
-        utm_source: _savedUtm.utm_source || "",
-        utm_medium: _savedUtm.utm_medium || "",
-        utm_campaign: _savedUtm.utm_campaign || ""
+        landing_page: atr.landing_page,
+        utm_source: atr.utm_source, utm_medium: atr.utm_medium,
+        utm_campaign: atr.utm_campaign, utm_content: atr.utm_content, utm_term: atr.utm_term
       };
 
       fetch("/api/contact", {
@@ -247,8 +267,12 @@
           throw new Error(result.data.error || "Erro");
         }
       })
-      .catch(function () {
-        showToast("Erro ao enviar. Tente via WhatsApp.");
+      .catch(function (err) {
+        // Mostra a mensagem do servidor quando existe — e ela pode trazer a
+        // sugestao de dominio ("Você quis dizer fulano@gmail.com?"). Falha de
+        // rede cai no texto generico.
+        var msg = err && err.message && err.message !== "Erro" ? err.message : "Erro ao enviar. Tente via WhatsApp.";
+        showToast(msg);
       })
       .finally(function () {
         submitBtn.disabled = false;
@@ -331,24 +355,38 @@
       btn.disabled = true;
       btn.innerHTML = "<span>Enviando...</span>";
 
+      var atrExit = atribuicao();
       fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          nome: g("nome"),
           email: g("email"),
-          source: "lead_magnet_checklist", interesse: "ISO 9001 — implantação / manutenção"
+          source: "lead_magnet_checklist", interesse: "ISO 9001 — implantação / manutenção",
+          landing_page: atrExit.landing_page,
+          utm_source: atrExit.utm_source, utm_medium: atrExit.utm_medium,
+          utm_campaign: atrExit.utm_campaign, utm_content: atrExit.utm_content, utm_term: atrExit.utm_term
         })
       })
-      .then(function (res) { return res.json(); })
-      .then(function () {
+      // res.ok CHECADO: antes este .then ignorava o status e a tela dizia
+      // "Checklist enviado" para um 400 — o servidor exigia `nome`, este form
+      // nao mandava nome, e 100% dos leads morriam com a pessoa agradecida.
+      .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+      .then(function (result) {
+        if (!result.ok) throw new Error((result.data && result.data.error) || "Erro");
         showToast("Checklist enviado para o seu email!");
         exitOverlay.classList.remove("active");
+        // Evento de conversao so depois do lead gravado: antes o GA4 contava
+        // conversao para lead que nunca existiu.
         if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "lead_magnet", event_label: "checklist_iso_9001", value: 1 });
         track("exit_intent_submit");
         at("form_submit", { form: "exit_checklist", interesse: "ISO 9001", path: location.pathname });
         atIdentify({ email: g("email") });
       })
-      .catch(function () { showToast("Erro ao enviar. Tente via WhatsApp."); })
+      .catch(function (err) {
+        var msg = err && err.message && err.message !== "Erro" ? err.message : "Erro ao enviar. Tente via WhatsApp.";
+        showToast(msg);
+      })
       .finally(function () { btn.disabled = false; btn.innerHTML = "<span>Receber checklist</span>"; });
     });
   }

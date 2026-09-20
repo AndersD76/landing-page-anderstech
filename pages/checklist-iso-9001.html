@@ -1039,14 +1039,24 @@ h1,h2,h3,h4 { font-family: var(--ff-display); font-weight: 600; line-height: 1.0
         return;
       }
 
-      /* Prepare payload */
+      /* Prepare payload. A atribuicao vem do telemetry-client: este formulario
+         nao enviava UTM nenhuma, e o lead do checklist nascia sem origem. O
+         `cargo` ja era coletado aqui e o servidor descartava em silencio — a
+         migration 012 criou a coluna. */
+      var atrCheck = (window.anders && window.anders.atribuicao)
+        ? window.anders.atribuicao()
+        : { landing_page: location.pathname, utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "" };
+
       var payload = {
         nome: nome.value.trim(),
         email: email.value.trim(),
         empresa: empresa.value.trim(),
         cargo: (form.querySelector('[name="cargo"]').value || "").trim(),
         source: "lead_magnet_checklist",
-        interesse: "ISO 9001"
+        interesse: "ISO 9001",
+        landing_page: atrCheck.landing_page,
+        utm_source: atrCheck.utm_source, utm_medium: atrCheck.utm_medium,
+        utm_campaign: atrCheck.utm_campaign, utm_content: atrCheck.utm_content
       };
 
       /* POST to API */

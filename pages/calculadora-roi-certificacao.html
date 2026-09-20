@@ -651,6 +651,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
           <!-- 5. Email — captura antes do resultado -->
           <div class="field">
+            <label for="calc-nome">Nome</label>
+            <input type="text" id="calc-nome" name="nome" placeholder="Como te chamamos? (opcional)" autocomplete="name" />
+          </div>
+          <div class="field">
             <label for="calc-email">Email corporativo <span class="req">*</span></label>
             <input type="email" id="calc-email" name="email" placeholder="você@empresa.com.br" required />
           </div>
@@ -668,7 +672,12 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </button>
         </div>
-      <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/política-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p></form>
+      <!-- Aviso de falha real no registro do contato. Só aparece quando o
+           servidor recusa: antes um 400 era engolido e ninguém sabia. -->
+      <p id="calc-aviso" hidden role="alert" style="font-size:13px;color:#c5383c;margin-top:12px;line-height:1.5;font-weight:600"></p>
+      <!-- Link corrigido: o href tinha acento (/política-de-privacidade) e a
+           rota real é /politica-de-privacidade — dava 404. -->
+      <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/politica-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p></form>
     </section>
 
     <!-- RESULTS -->
@@ -1025,10 +1034,6 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
     /* Show results */
     resultsSection.classList.add("visible");
 
-    /* Analytics */
-    if(typeof gtag==="function")gtag("event","generate_lead",{event_category:"tool",event_label:"calculadora_roi",value:1});
-    if(typeof plausible==="function")plausible("calc_roi_lead",{props:{setor:setor,faturamento:faturamento}});
-
     /* Animate chart bars after a short delay */
     setTimeout(function () {
       chartInvest.style.height = investHeight + "px";
@@ -1040,18 +1045,53 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
 
-    /* Send lead to API (background — don't block the result) */
+    /* Envio do lead. O resultado continua aparecendo antes (regra do produto:
+       entregar primeiro), mas o envio agora é VERIFICADO. Antes o payload nao
+       levava `nome`, o servidor exigia `nome`, toda submissao voltava 400 e o
+       `.catch(function(){})` engolia — pior: um 400 nao cai no catch, porque o
+       fetch deu certo. Resultado: 100% dos leads da calculadora eram perdidos
+       em silencio enquanto o GA4 contava conversao. */
+    var atrCalc = (window.anders && window.anders.atribuicao)
+      ? window.anders.atribuicao()
+      : { landing_page: location.pathname, utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "" };
+
     fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        nome: (document.getElementById("calc-nome") || {}).value || "",
         email: calcEmail,
         telefone: calcTel,
         source: "calculadora_roi",
         interesse: "ISO 9001 — implantação / manutenção",
+        landing_page: atrCalc.landing_page,
+        utm_source: atrCalc.utm_source, utm_medium: atrCalc.utm_medium,
+        utm_campaign: atrCalc.utm_campaign, utm_content: atrCalc.utm_content,
         roiData: { faturamento: faturamento, funcionarios: funcionarios, setor: setor, motivacao: motivacao, investMin: r.investMin, investMax: r.investMax, savings24: r.savings24, roi: r.roi }
       })
-    }).catch(function () {});
+    })
+    .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+    .then(function (result) {
+      if (!result.ok) throw new Error((result.data && result.data.error) || "Erro");
+      /* Conversao so depois do lead gravado. */
+      if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "tool", event_label: "calculadora_roi", value: 1 });
+      if (typeof plausible === "function") plausible("calc_roi_lead", { props: { setor: setor, faturamento: faturamento } });
+      if (window.anders) {
+        window.anders.track("form_submit", { form: "calculadora_roi", interesse: "ISO 9001", path: location.pathname });
+        window.anders.identify({ email: calcEmail, telefone: calcTel });
+      }
+    })
+    .catch(function (err) {
+      /* Falhou de verdade: avisa em vez de fingir que deu certo. O resultado
+         na tela continua valido — o que falhou foi o registro do contato. */
+      var aviso = document.getElementById("calc-aviso");
+      if (aviso) {
+        aviso.textContent = (err && err.message && err.message !== "Erro")
+          ? err.message
+          : "Não conseguimos registrar seu contato. Fale no WhatsApp para receber o detalhamento.";
+        aviso.hidden = false;
+      }
+    });
   });
 
 })();

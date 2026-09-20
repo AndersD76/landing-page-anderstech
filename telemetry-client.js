@@ -10,6 +10,7 @@
   var API = "/api/telemetry";
   var K_ANON = "at_anonymous_id";
   var K_UTM = "at_utm";
+  var K_LANDING = "at_landing";
   var K_CONSENT = "at_cookie_consent";    // mesma chave do banner (inject.js)
   var EVENTOS_UNICOS = { page_view: 1, case_view: 1 };
 
@@ -80,6 +81,19 @@
   }
   var ROTA = meta("at-rota") || location.pathname;
   var ORIGEM = meta("at-origem") || (document.title || "").split("—")[0].trim() || ROTA;
+
+  /* ---------- pagina de entrada da sessao ---------- */
+  // Sem isto nao ha como saber qual pagina gera contato: o caminho so existia
+  // dentro do props.path de cada evento, e o lead nao guardava nada. Mesma
+  // regra da UTM: a primeira pagina vence, quem entrou por um artigo e foi
+  // preencher o formulario na home continua atribuido ao artigo.
+  var LANDING = ROTA;
+  (function capturarLanding() {
+    if (consentimento() !== "sim") return;   // sem consentimento: so a rota atual, em memoria
+    var salvo = ls(K_LANDING);
+    if (salvo) { LANDING = salvo; return; }
+    ls(K_LANDING, ROTA);
+  })();
 
   /* ---------- fila + envio ---------- */
   var fila = [];
@@ -188,7 +202,13 @@
   // O banner (inject.js) dispara este evento nas duas respostas. Aceitou:
   // persiste o id anonimo e despeja a fila na ordem original. Recusou: descarta.
   addEventListener("at:consent", function (ev) {
-    if (ev.detail === "sim") { anonId(); despachar(); }
+    if (ev.detail === "sim") {
+      anonId();
+      // Aceitou depois de navegar: grava a pagina de entrada agora, senao a
+      // atribuicao se perde na proxima navegacao.
+      if (!ls(K_LANDING)) ls(K_LANDING, LANDING);
+      despachar();
+    }
     else { fila.length = 0; }
   });
 
@@ -210,6 +230,19 @@
       return enriquecerWa(a).href;
     },
     utm: function () { return JSON.parse(JSON.stringify(utm)); },
+    landing: function () { return LANDING; },
+    // Ponto unico de atribuicao para POST /api/contact. Todo formulario do site
+    // espalha isto no payload: antes so a home mandava UTM, e lead de
+    // calculadora, checklist e pop-up nascia sem origem nenhuma.
+    atribuicao: function () {
+      return {
+        landing_page: LANDING,
+        utm_source: utm.utm_source || "",
+        utm_medium: utm.utm_medium || "",
+        utm_campaign: utm.utm_campaign || "",
+        utm_content: utm.utm_content || ""
+      };
+    },
     rota: ROTA,
     origem: ORIGEM
   };

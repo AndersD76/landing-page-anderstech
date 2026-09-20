@@ -477,7 +477,11 @@ a { color: inherit; text-decoration: none; }
     var msg = 'Olá, usei a calculadora de custo da certificação ISO 9001 no site (faixa ' + money(lo) + ' a ' + money(hi) + ') e quero uma proposta exata para minha empresa.';
     document.getElementById('calcWa').href = 'https://wa.me/5554999648368?text=' + encodeURIComponent(msg);
     document.getElementById('calcResult').hidden = false;
-    if (typeof gtag === 'function') gtag('event', 'generate_lead', { event_category: 'calculadora', event_label: 'custo_iso_' + porte, value: 1 });
+    // `generate_lead` removido: esta calculadora nao tem formulario nem POST —
+    // nao captura contato nenhum. Contar conversao aqui inflava o GA4 e
+    // apontava para a pagina errada na hora de decidir onde investir.
+    // O evento que importa aqui e o clique no WhatsApp, ja rastreado pelo
+    // telemetry-client via cta_whatsapp_click.
     if (typeof plausible === 'function') plausible('calc_custo_iso', { props: { porte: porte } });
   });
 })();
