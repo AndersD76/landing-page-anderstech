@@ -1,0 +1,46 @@
+name: Carga PBQP-H
+
+# Os certificados vencem: sem recarga mensal as 161 páginas do PBQP-H viram
+# dado velho, e dado velho é pior que nenhum — a página afirma vigência.
+# A trava de sanidade em scripts/carrega-siac.mjs aborta se a fonte devolver
+# muito menos do que na carga anterior, então o job falha em vez de publicar
+# páginas esvaziadas.
+on:
+  schedule:
+    - cron: '0 8 1 * *'   # dia 1 de cada mês, 08:00 UTC (05:00 em Brasília)
+  workflow_dispatch:       # permite rodar à mão pelo painel do GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  carga:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Baixar e validar a base do SiAC
+        run: node scripts/carrega-siac.mjs
+
+      - name: Testes (gate, unicidade de título, vazamento de contato)
+        run: npm test
+
+      - name: Commitar o snapshot se mudou
+        run: |
+          if git diff --quiet -- data/pbqph-siac.json; then
+            echo "Base sem alteração — nada a commitar."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/pbqph-siac.json
+          VIGENTES=$(node -e "console.log(JSON.parse(require('fs').readFileSync('data/pbqph-siac.json','utf8')).total_vigentes)")
+          git commit -m "chore(pbqp-h): carga automática — ${VIGENTES} certificados vigentes"
+          git push

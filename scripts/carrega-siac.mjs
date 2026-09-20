@@ -11,7 +11,7 @@
 // Uso: node scripts/carrega-siac.mjs
 //      DATABASE_URL=... node scripts/carrega-siac.mjs
 
-import { writeFileSync, mkdirSync } from 'fs';
+import { writeFileSync, mkdirSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { normalizaRegistro, agrupaPorMunicipio, GATE_MUNICIPIO } from '../pbqph/normaliza.js';
@@ -42,6 +42,26 @@ console.log(`  descartados: ${bruto.length - registros.length} (expirado, suspen
 const municipios = agrupaPorMunicipio(registros);
 const publicaveis = municipios.filter((m) => m.publicavel);
 console.log(`  municípios: ${municipios.length} · acima do gate (${GATE_MUNICIPIO}): ${publicaveis.length}`);
+
+// Trava de sanidade. A carga é automática e roda sem ninguém olhando: se a
+// fonte mudar de formato ou devolver meia base, o certo é ABORTAR e manter o
+// snapshot anterior no ar, não publicar 161 páginas esvaziadas. Queda grande
+// pode ser real, e aí a carga roda de novo com CARGA_FORCA=1.
+try {
+  const anterior = JSON.parse(readFileSync(DESTINO, 'utf8'));
+  const antes = anterior.total_vigentes || 0;
+  if (antes > 0) {
+    const queda = (antes - registros.length) / antes;
+    console.log(`  carga anterior: ${antes} vigentes · variação: ${(-queda * 100).toFixed(1)}%`);
+    if (queda > 0.2 && !process.env.CARGA_FORCA) {
+      console.error(`\nABORTADO: queda de ${(queda * 100).toFixed(1)}% em relação à carga anterior (${antes} → ${registros.length}).`);
+      console.error('Confira a fonte antes de publicar. Se a queda for real: CARGA_FORCA=1 node scripts/carrega-siac.mjs');
+      process.exit(1);
+    }
+  }
+} catch {
+  console.log('  carga anterior: nenhuma (primeira execução)');
+}
 
 // A data da carga vem do relógio da carga, nunca escrita à mão: é ela que
 // aparece no carimbo "Fonte: X — atualizado em ..." de toda página.
