@@ -718,6 +718,28 @@
             <option>Outro / não sei ainda</option>
           </select>
         </div>
+        <!-- Papel e prazo: os dois campos que ordenam a fila comercial. Ambos
+             opcionais, com "prefiro não dizer" como padrão — campo obrigatório
+             a mais derruba a conversão, e resposta forçada mente. -->
+        <div class="field"><label for="f-cargo">Seu papel na empresa</label>
+          <select id="f-cargo" name="cargo">
+            <option value="" selected>Prefiro não dizer</option>
+            <option value="socio_diretor">Sócio ou diretor</option>
+            <option value="gerente_qualidade">Gerente da qualidade</option>
+            <option value="gerente_operacao">Gerente de operação ou produção</option>
+            <option value="engenheiro_tecnico">Engenheiro ou técnico</option>
+            <option value="administrativo">Administrativo</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="field"><label for="f-prazo">Quando pretende decidir</label>
+          <select id="f-prazo" name="prazo">
+            <option value="" selected>Prefiro não dizer</option>
+            <option value="agora">Agora — já é prioridade</option>
+            <option value="90_dias">Nos próximos 90 dias</option>
+            <option value="avaliando">Só avaliando por enquanto</option>
+          </select>
+        </div>
         <div class="field full"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="mensagem" placeholder="Conte um pouco sobre a sua operação e o que você precisa resolver."></textarea></div>
         <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
       </div>

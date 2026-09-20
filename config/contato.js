@@ -22,8 +22,12 @@ const DOMINIOS = {
   uol: 'uol.com.br', terra: 'terra.com.br', bol: 'bol.com.br',
 };
 
+// Prazo de decisão: lista fechada. Texto livre aqui viraria campo inútil para
+// ordenar fila — o que importa é poder filtrar "quem decide agora".
+export const PRAZOS = new Set(['agora', '90_dias', 'avaliando']);
+
 const LIMITES = {
-  nome: 120, empresa: 160, email: 190, telefone: 40, cargo: 120,
+  nome: 120, empresa: 160, email: 190, telefone: 40, cargo: 120, prazo: 40,
   interesse: 160, mensagem: 4000, source: 60, landing_page: 300,
   utm_source: 120, utm_medium: 120, utm_campaign: 120, utm_content: 120, utm_term: 120,
 };
@@ -101,6 +105,7 @@ export function validarContato(body) {
       email,
       telefone,
       cargo: texto(b.cargo, LIMITES.cargo),
+      prazo: PRAZOS.has(String(b.prazo || '').trim()) ? String(b.prazo).trim() : null,
       interesse: texto(b.interesse, LIMITES.interesse),
       mensagem: texto(b.mensagem, LIMITES.mensagem),
       source: texto(b.source, LIMITES.source) || 'site_form',

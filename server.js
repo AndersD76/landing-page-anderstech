@@ -234,6 +234,10 @@ inicializarPbqph(sql).catch(err => console.error('[pbqph] falha ao inicializar:'
 
 const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
 
+// Rótulo legível do prazo de decisão, para o assunto do aviso e o corpo do
+// e-mail. O banco guarda a chave; humano lê a frase.
+const ROTULO_PRAZO = { agora: 'DECIDE AGORA', '90_dias': 'próximos 90 dias', avaliando: 'só avaliando' };
+
 const rateLimit = new Map();
 // #40: o Map crescia sem limite — entrada de IP nunca era removida.
 setInterval(() => {
@@ -281,8 +285,8 @@ app.post('/api/contact', async (req, res) => {
   try {
     if (sql) {
       const result = await sql`
-        INSERT INTO leads (nome, empresa, email, telefone, cargo, interesse, mensagem, source, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
-        VALUES (${d.nome}, ${d.empresa}, ${d.email}, ${d.telefone}, ${d.cargo}, ${d.interesse}, ${d.mensagem}, ${d.source}, ${d.landing_page}, ${d.utm_source}, ${d.utm_medium}, ${d.utm_campaign}, ${d.utm_content}, ${d.utm_term})
+        INSERT INTO leads (nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
+        VALUES (${d.nome}, ${d.empresa}, ${d.email}, ${d.telefone}, ${d.cargo}, ${d.prazo}, ${d.interesse}, ${d.mensagem}, ${d.source}, ${d.landing_page}, ${d.utm_source}, ${d.utm_medium}, ${d.utm_campaign}, ${d.utm_content}, ${d.utm_term})
         RETURNING id
       `;
       leadId = result[0]?.id;
@@ -306,7 +310,9 @@ app.post('/api/contact', async (req, res) => {
       await resend.emails.send({
         from: 'Anders Tech <noreply@anderstech.net>',
         to: process.env.NOTIFY_EMAIL || 'danielanders76@gmail.com',
-        subject: `[Anders Tech] Novo lead: ${identificacao(d)}${d.empresa ? ` — ${d.empresa}` : ''}`,
+        // Assunto que já diz quem é e qual a urgência: é por ele que o Anders
+        // decide o que abrir primeiro, sem entrar no painel.
+        subject: `[Anders Tech] Novo lead: ${identificacao(d)}${d.empresa ? ` — ${d.empresa}` : ''}${d.prazo ? ` · ${ROTULO_PRAZO[d.prazo] || d.prazo}` : ''}`,
         html: notifyNewLead({ ...d, mensagem: d.mensagem, leadId, roiData }),
       });
 

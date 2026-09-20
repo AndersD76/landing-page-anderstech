@@ -237,6 +237,7 @@
       var payload = {
         nome: g("nome"), empresa: g("empresa"), email: g("email"),
         telefone: g("telefone"), interesse: g("interesse"), mensagem: g("mensagem"),
+        cargo: g("cargo"), prazo: g("prazo"),
         source: "site_form",
         landing_page: atr.landing_page,
         utm_source: atr.utm_source, utm_medium: atr.utm_medium,

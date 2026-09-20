@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { validarContato, emailValido, sugestaoEmail, telefoneValido, primeiroNome, identificacao } from '../config/contato.js';
+import { validarContato, emailValido, sugestaoEmail, telefoneValido, primeiroNome, identificacao, PRAZOS } from '../config/contato.js';
 
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
 
@@ -22,7 +22,7 @@ const PAYLOADS = {
   home: {
     nome: 'Daniel Anders', empresa: 'Anders Tech', email: 'contato@exemplo.com.br',
     telefone: '(54) 99964-8368', interesse: 'ISO 9001 — implantação / manutenção',
-    mensagem: 'Quero certificar a fábrica.', source: 'site_form',
+    mensagem: 'Quero certificar a fábrica.', cargo: 'socio_diretor', prazo: 'agora', source: 'site_form',
     landing_page: '/', utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '', utm_term: '',
   },
 
@@ -39,6 +39,7 @@ const PAYLOADS = {
   // pages/calculadora-roi-certificacao.html — a isca que vazava 100%
   calculadora_roi: {
     nome: '', email: 'gestor@industria.com.br', telefone: '',
+    cargo: 'gerente_qualidade', prazo: '90_dias',
     source: 'calculadora_roi', interesse: 'ISO 9001 — implantação / manutenção',
     landing_page: '/calculadora-roi-certificacao',
     utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '',
@@ -120,6 +121,20 @@ test('assunto do aviso não quebra sem nome', () => {
   assert.equal(identificacao({ nome: null, email: 'x@y.com', telefone: null }), 'x@y.com');
   assert.equal(identificacao({ nome: 'Ana Lima', email: 'x@y.com' }), 'Ana Lima');
   assert.equal(identificacao({ nome: null, email: null, telefone: '5499' }), '5499');
+});
+
+test('prazo só aceita a lista fechada — texto livre não ordena fila', () => {
+  for (const p of PRAZOS) {
+    assert.equal(validarContato({ email: 'a@b.com', prazo: p }).dados.prazo, p);
+  }
+  assert.equal(validarContato({ email: 'a@b.com', prazo: 'semana que vem' }).dados.prazo, null);
+  assert.equal(validarContato({ email: 'a@b.com' }).dados.prazo, null, 'ausente vira null, não string vazia');
+});
+
+test('cargo e prazo sobrevivem à validação nas fixtures reais', () => {
+  assert.equal(validarContato(PAYLOADS.home).dados.prazo, 'agora');
+  assert.equal(validarContato(PAYLOADS.home).dados.cargo, 'socio_diretor');
+  assert.equal(validarContato(PAYLOADS.calculadora_roi).dados.prazo, '90_dias');
 });
 
 test('honeypot não é campo de dado', () => {

@@ -31,13 +31,14 @@ Passo Fundo · RS · (54) 99964-8368<br>
 </div></div></body></html>`;
 }
 
-export function notifyNewLead({ nome, empresa, email, telefone, cargo, interesse, mensagem, source, landing_page, utm_medium, utm_campaign, leadId, roiData }) {
+export function notifyNewLead({ nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_medium, utm_campaign, leadId, roiData }) {
   // Nome agora é opcional (lead da calculadora e do pop-up chega só com
   // e-mail), então nenhuma linha pode assumir que ele existe.
   const rows = [
     ['Nome', esc(nome) || '—'],
     ['Empresa', esc(empresa) || '—'],
     ['Cargo', esc(cargo) || '—'],
+    ['Prazo de decisão', { agora: 'Decide agora', '90_dias': 'Próximos 90 dias', avaliando: 'Só avaliando' }[prazo] || '—'],
     ['Email', esc(email) || '—'],
     ['Telefone', esc(telefone) || '—'],
     ['Interesse', esc(interesse) || '—'],

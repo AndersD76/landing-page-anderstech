@@ -649,19 +649,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
             </select>
           </div>
 
-          <!-- 5. Email — captura antes do resultado -->
-          <div class="field">
-            <label for="calc-nome">Nome</label>
-            <input type="text" id="calc-nome" name="nome" placeholder="Como te chamamos? (opcional)" autocomplete="name" />
-          </div>
-          <div class="field">
-            <label for="calc-email">Email corporativo <span class="req">*</span></label>
-            <input type="email" id="calc-email" name="email" placeholder="você@empresa.com.br" required />
-          </div>
-          <div class="field">
-            <label for="calc-telefone">Telefone / WhatsApp</label>
-            <input type="tel" id="calc-telefone" name="telefone" placeholder="(54) 9 0000-0000" />
-          </div>
+          <!-- Os campos de contato saíram daqui. Pedir e-mail ANTES do
+               resultado derruba a conversão: a pessoa não sabe ainda se o
+               número vale a troca. A captura agora acontece depois do
+               resultado, na seção #captura. -->
           <!-- Honeypot -->
           <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
         </div>
@@ -672,12 +663,10 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </button>
         </div>
-      <!-- Aviso de falha real no registro do contato. Só aparece quando o
-           servidor recusa: antes um 400 era engolido e ninguém sabia. -->
-      <p id="calc-aviso" hidden role="alert" style="font-size:13px;color:#c5383c;margin-top:12px;line-height:1.5;font-weight:600"></p>
-      <!-- Link corrigido: o href tinha acento (/política-de-privacidade) e a
-           rota real é /politica-de-privacidade — dava 404. -->
-      <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/politica-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p></form>
+      <!-- Aviso de consentimento e mensagens de erro migraram para a seção
+           #captura: este formulário não coleta mais dado pessoal nenhum, só
+           calcula. -->
+      </form>
     </section>
 
     <!-- RESULTS -->
@@ -738,6 +727,58 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
 
       <div class="disclaimer">
         * Os valores apresentados sao estimativas baseadas em medias de mercado e dados de projetos anteriores da Anders Tech. O retorno real depende das condições específicas de cada empresa. Este calculo não constitui proposta comercial.
+      </div>
+
+      <!-- Captura DEPOIS do resultado. O número já está na tela e a troca fica
+           honesta: e-mail em troca do detalhamento, não do resultado. O prazo
+           de decisão é o campo que mais ordena a fila comercial. -->
+      <div id="captura" style="background:#fff;border:1px solid rgba(32,56,100,.14);border-radius:12px;padding:26px 28px;margin-top:28px">
+        <h3 style="font-family:'Space Grotesk',system-ui,sans-serif;font-size:1.15rem;color:#203864;margin-bottom:6px">Quer o detalhamento por e-mail?</h3>
+        <p style="font-size:.95rem;color:#46577a;margin-bottom:18px">Enviamos a memória de cálculo, o que compõe cada faixa de investimento e por onde começar na sua operação.</p>
+        <form id="capturaForm" novalidate>
+          <div class="calc-form-grid">
+            <div class="field">
+              <label for="calc-nome">Nome</label>
+              <input type="text" id="calc-nome" name="nome" placeholder="Como te chamamos?" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="calc-email">Email corporativo <span class="req">*</span></label>
+              <input type="email" id="calc-email" name="email" placeholder="você@empresa.com.br" autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="calc-telefone">Telefone / WhatsApp</label>
+              <input type="tel" id="calc-telefone" name="telefone" placeholder="(54) 9 0000-0000" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="calc-cargo">Seu papel na empresa</label>
+              <select id="calc-cargo" name="cargo">
+                <option value="" selected>Prefiro não dizer</option>
+                <option value="socio_diretor">Sócio ou diretor</option>
+                <option value="gerente_qualidade">Gerente da qualidade</option>
+                <option value="gerente_operacao">Gerente de operação ou produção</option>
+                <option value="engenheiro_tecnico">Engenheiro ou técnico</option>
+                <option value="administrativo">Administrativo</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="calc-prazo">Quando pretende decidir</label>
+              <select id="calc-prazo" name="prazo">
+                <option value="" selected>Prefiro não dizer</option>
+                <option value="agora">Agora — já é prioridade</option>
+                <option value="90_dias">Nos próximos 90 dias</option>
+                <option value="avaliando">Só avaliando por enquanto</option>
+              </select>
+            </div>
+            <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off" /></div>
+          </div>
+          <div class="form-actions" style="margin-top:8px">
+            <button type="submit" class="btn btn-red btn-lg"><span>Receber o detalhamento</span></button>
+          </div>
+          <p id="calc-aviso" hidden role="alert" style="font-size:13px;color:#c5383c;margin-top:12px;line-height:1.5;font-weight:600"></p>
+          <p id="calc-ok" hidden role="status" style="font-size:14px;color:#1c7a3e;margin-top:12px;line-height:1.5;font-weight:600">Pronto — o detalhamento está a caminho do seu e-mail.</p>
+          <p style="font-size:12px;color:#6b7280;margin-top:12px;line-height:1.5">Ao enviar, você concorda com o tratamento dos seus dados para retorno comercial, conforme a <a href="/politica-de-privacidade" style="color:#c5383c">Política de Privacidade</a>.</p>
+        </form>
       </div>
     </section>
 
@@ -954,6 +995,9 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   /* ---- FORM SUBMIT ---- */
   var form = document.getElementById("roiForm");
   var resultsSection = document.getElementById("calcResults");
+  /* Último cálculo exibido. O formulário de captura envia isto junto, para o
+     aviso ao Anders chegar com os números que a pessoa viu na tela. */
+  var ultimoCalculo = null;
   var leadSection = document.getElementById("leadSection");
 
   form.addEventListener("submit", function (e) {
@@ -1021,18 +1065,17 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
     var hp = form.querySelector('input[name="website"]');
     if (hp && hp.value) return;
 
-    /* Capture lead — email required */
-    var calcEmail = document.getElementById("calc-email").value.trim();
-    var calcTel = document.getElementById("calc-telefone").value.trim();
-    if (!calcEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(calcEmail)) {
-      var ef = document.getElementById("calc-email");
-      ef.focus(); ef.style.borderColor = "var(--red)";
-      setTimeout(function () { ef.style.borderColor = ""; }, 2000);
-      return;
-    }
-
-    /* Show results */
+    /* Resultado PRIMEIRO, sem pedir nada em troca. O gate de e-mail que ficava
+       aqui derrubava a conversão: a pessoa era obrigada a entregar o contato
+       antes de saber se o número valia alguma coisa. A captura passou para a
+       seção #captura, que aparece junto com o resultado. */
     resultsSection.classList.add("visible");
+
+    /* Guarda o cálculo para o formulário de captura enviar junto. */
+    ultimoCalculo = {
+      faturamento: faturamento, funcionarios: funcionarios, setor: setor, motivacao: motivacao,
+      investMin: r.investMin, investMax: r.investMax, savings24: r.savings24, roi: r.roi
+    };
 
     /* Animate chart bars after a short delay */
     setTimeout(function () {
@@ -1045,12 +1088,38 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
 
-    /* Envio do lead. O resultado continua aparecendo antes (regra do produto:
-       entregar primeiro), mas o envio agora é VERIFICADO. Antes o payload nao
-       levava `nome`, o servidor exigia `nome`, toda submissao voltava 400 e o
-       `.catch(function(){})` engolia — pior: um 400 nao cai no catch, porque o
-       fetch deu certo. Resultado: 100% dos leads da calculadora eram perdidos
-       em silencio enquanto o GA4 contava conversao. */
+  });
+
+  /* ── Captura, depois do resultado ──────────────────────────────────────────
+     Formulário separado: o cálculo não depende dele e ele não bloqueia o
+     cálculo. O envio é VERIFICADO — antes o payload não levava `nome`, o
+     servidor exigia `nome`, toda submissão voltava 400 e o `.catch(){}` engolia
+     (pior: um 400 nem cai no catch, porque o fetch deu certo). 100% dos leads
+     da calculadora se perdiam enquanto o GA4 contava conversão. */
+  var capturaForm = document.getElementById("capturaForm");
+  if (capturaForm) capturaForm.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+
+    var aviso = document.getElementById("calc-aviso");
+    var ok = document.getElementById("calc-ok");
+    var botao = capturaForm.querySelector('button[type="submit"]');
+    var val = function (id) { var e = document.getElementById(id); return e ? e.value.trim() : ""; };
+
+    if (capturaForm.querySelector('input[name="website"]').value) return;
+
+    var email = val("calc-email");
+    var telefone = val("calc-telefone");
+    if (!email && !telefone) {
+      aviso.textContent = "Informe e-mail ou telefone para podermos enviar.";
+      aviso.hidden = false;
+      document.getElementById("calc-email").focus();
+      return;
+    }
+
+    aviso.hidden = true;
+    botao.disabled = true;
+    botao.querySelector("span").textContent = "Enviando...";
+
     var atrCalc = (window.anders && window.anders.atribuicao)
       ? window.anders.atribuicao()
       : { landing_page: location.pathname, utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "" };
@@ -1059,38 +1128,43 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        nome: (document.getElementById("calc-nome") || {}).value || "",
-        email: calcEmail,
-        telefone: calcTel,
+        nome: val("calc-nome"),
+        email: email,
+        telefone: telefone,
+        cargo: val("calc-cargo"),
+        prazo: val("calc-prazo"),
         source: "calculadora_roi",
         interesse: "ISO 9001 — implantação / manutenção",
         landing_page: atrCalc.landing_page,
         utm_source: atrCalc.utm_source, utm_medium: atrCalc.utm_medium,
         utm_campaign: atrCalc.utm_campaign, utm_content: atrCalc.utm_content,
-        roiData: { faturamento: faturamento, funcionarios: funcionarios, setor: setor, motivacao: motivacao, investMin: r.investMin, investMax: r.investMax, savings24: r.savings24, roi: r.roi }
+        roiData: ultimoCalculo
       })
     })
     .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
     .then(function (result) {
       if (!result.ok) throw new Error((result.data && result.data.error) || "Erro");
-      /* Conversao so depois do lead gravado. */
+      ok.hidden = false;
+      capturaForm.querySelector(".calc-form-grid").style.display = "none";
+      botao.style.display = "none";
+      /* Conversão só depois do lead gravado. */
       if (typeof gtag === "function") gtag("event", "generate_lead", { event_category: "tool", event_label: "calculadora_roi", value: 1 });
-      if (typeof plausible === "function") plausible("calc_roi_lead", { props: { setor: setor, faturamento: faturamento } });
+      if (typeof plausible === "function") plausible("calc_roi_lead", { props: { setor: (ultimoCalculo || {}).setor || "" } });
       if (window.anders) {
         window.anders.track("form_submit", { form: "calculadora_roi", interesse: "ISO 9001", path: location.pathname });
-        window.anders.identify({ email: calcEmail, telefone: calcTel });
+        window.anders.identify({ email: email, telefone: telefone });
       }
     })
     .catch(function (err) {
-      /* Falhou de verdade: avisa em vez de fingir que deu certo. O resultado
-         na tela continua valido — o que falhou foi o registro do contato. */
-      var aviso = document.getElementById("calc-aviso");
-      if (aviso) {
-        aviso.textContent = (err && err.message && err.message !== "Erro")
-          ? err.message
-          : "Não conseguimos registrar seu contato. Fale no WhatsApp para receber o detalhamento.";
-        aviso.hidden = false;
-      }
+      aviso.textContent = (err && err.message && err.message !== "Erro")
+        ? err.message
+        : "Não conseguimos registrar seu contato. Fale no WhatsApp para receber o detalhamento.";
+      aviso.hidden = false;
+    })
+    .finally(function () {
+      botao.disabled = false;
+      var s = botao.querySelector("span");
+      if (s) s.textContent = "Receber o detalhamento";
     });
   });
 
