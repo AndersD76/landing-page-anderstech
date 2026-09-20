@@ -124,6 +124,8 @@ const BREADCRUMB_LABELS = {
   'unio': 'Unio',
   'servicos': 'Serviços',
   'cases': 'Cases',
+  'pbqp-h': 'PBQP-H',
+  'construtoras': 'Construtoras qualificadas',
 };
 
 function buildBreadcrumbSchema(urlPath) {
@@ -305,7 +307,11 @@ function fontesLocais(html) {
 }
 
 export function injectShared(html, urlPath) {
-  const breadcrumb = urlPath ? buildBreadcrumbSchema(urlPath) : '';
+  // Idempotencia de schema: pagina que ja traz o proprio BreadcrumbList (as do
+  // PBQP-H por municipio tem cinco niveis) nao recebe o generico de dois niveis
+  // por cima — dois BreadcrumbList na mesma pagina e dado estruturado conflitante.
+  const jaTemBreadcrumb = /"@type"\s*:\s*"BreadcrumbList"/.test(html);
+  const breadcrumb = urlPath && !jaTemBreadcrumb ? buildBreadcrumbSchema(urlPath) : '';
   // Dois marcadores internos, ambos so para quem le o repo:
   //   REVISAR: — texto aguardando validacao do Anders (hoje: nenhum)
   //   NOTA:    — por que a decisao foi essa. Ex.: "o percentual saiu de proposito,

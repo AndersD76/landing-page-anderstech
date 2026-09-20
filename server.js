@@ -20,6 +20,8 @@ import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
 import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
 import { validarContato, primeiroNome, identificacao } from './config/contato.js';
+import { renderMunicipio, renderUf, renderHub } from './pbqph/render.js';
+import { inicializar as inicializarPbqph, urlsIndexaveis as urlsIndexaveisPbqph } from './pbqph/dados.js';
 import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
 import { gerarCasePDF } from './cases/pdf.js';
 import { renderCase } from './cases/render.js';
@@ -134,7 +136,7 @@ app.get('/sitemap.xml', async (req, res) => {
         ]);
       } catch {}
     }
-    sitemapCache = buildSitemap(casesUrls);
+    sitemapCache = buildSitemap(casesUrls, urlsIndexaveisPbqph());
   }
   res.type('application/xml').send(sitemapCache);
 });
@@ -224,6 +226,11 @@ runMigrations(sql).catch(err => {
   console.error('FATAL: falha ao aplicar migrações:', err);
   if (IS_PROD) process.exit(1);
 });
+
+// Carrega o PBQP-H na memória no boot. Cai no snapshot versionado se o banco
+// não responder: centenas de páginas indexadas não podem virar 500 porque o
+// Neon hibernou.
+inicializarPbqph(sql).catch(err => console.error('[pbqph] falha ao inicializar:', err));
 
 const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
 
@@ -775,6 +782,39 @@ app.get('/glossario/:slug', (req, res) => {
     glossarioCache.set(slug, html);
   }
   res.type('html').send(html);
+});
+
+// ── PBQP-H por município (SSR com cache em memória) ──────────────────────────
+// Os dados só mudam quando scripts/carrega-siac.mjs roda, então o cache morre
+// no restart, igual ao glossário. Município abaixo do gate ainda responde, mas
+// com noindex — quem chegou por um link vê o dado; o Google não indexa.
+const pbqphCache = new Map();
+function servePbqph(res, chave, gerar, rota) {
+  let html = pbqphCache.get(chave);
+  if (!html) {
+    const page = gerar();
+    if (!page) return send404(res);
+    html = injectShared(page, rota);
+    pbqphCache.set(chave, html);
+  }
+  res.type('html').send(html);
+}
+
+app.get('/pbqp-h/construtoras', (req, res) => {
+  servePbqph(res, '__hub__', () => renderHub(), '/pbqp-h/construtoras');
+});
+
+app.get('/pbqp-h/construtoras/:uf', (req, res) => {
+  const uf = String(req.params.uf || '').toLowerCase();
+  if (!/^[a-z]{2}$/.test(uf)) return send404(res);
+  servePbqph(res, `uf:${uf}`, () => renderUf(uf), `/pbqp-h/construtoras/${uf}`);
+});
+
+app.get('/pbqp-h/construtoras/:uf/:municipio', (req, res) => {
+  const uf = String(req.params.uf || '').toLowerCase();
+  const municipio = String(req.params.municipio || '').toLowerCase();
+  if (!/^[a-z]{2}$/.test(uf) || !/^[a-z0-9-]+$/.test(municipio)) return send404(res);
+  servePbqph(res, `m:${uf}/${municipio}`, () => renderMunicipio(uf, municipio), `/pbqp-h/construtoras/${uf}/${municipio}`);
 });
 
 function safePath(base, userInput) {

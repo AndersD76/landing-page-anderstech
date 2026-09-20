@@ -77,10 +77,14 @@ const CORE_URLS = [
   ['/politica-de-privacidade', '2026-06-06', 'yearly', '0.3'],
 ];
 
-export function buildSitemap(casesUrls) {
+// As URLs do PBQP-H vêm dos MESMOS dados que renderizam as páginas, nunca de
+// lista à mão: município abaixo do gate não é oferecido ao Google, e some do
+// sitemap sozinho quando a carga seguinte o derrubar.
+export function buildSitemap(casesUrls, pbqphUrls) {
   const urls = [
     ...CORE_URLS,
     ...TERMOS.map(t => [`/glossario/${t.slug}`, GLOSSARIO_LASTMOD, 'monthly', '0.6']),
+    ...(pbqphUrls || []),
     ...(casesUrls || []),
   ];
   const body = urls
