@@ -101,6 +101,15 @@ npm run seed
    fornecido vira `[PREENCHER]`. Todo texto de marketing sai marcado `[REVISAR]`.
 4. **SEO**: `title` e `meta description` únicos por página; canonical; sitemap automático.
    **Proibido gerar páginas por cidade em massa** — doorway page é punição do Google.
+   **Exceção autorizada pelo Anders em 20/09/2026**, e só ela: página por cidade
+   construída sobre **dado próprio da cidade** — lista nominal das empresas, contagem
+   e vencimentos, vindos de fonte pública carimbada. O que a regra proíbe continua
+   proibido: texto genérico com o nome da cidade trocado.
+   **Quality gate obrigatório: menos de 5 registros vigentes no município → a página
+   não existe** (`noindex` e fora do sitemap). Registro sem data de validade não
+   conta. Fonte incompleta excluindo cidade é o sistema funcionando, não falha.
+   Medido em 20/09/2026: 25 municípios passam em RS+SC+PR, 107 no Brasil.
+   **Só o PBQP-H sustenta esse eixo** — o Certifiq (ISO 9001) não devolve município.
 5. **Performance**: alvo < 3s em 4G; LCP < 2s na landing; Lighthouse ≥ 95.
 6. **Eventos de telemetria** (nomes literais, sem variação):
    `page_view` · `cta_whatsapp_click` · `form_submit` · `case_view` · `artifact_scan`.
