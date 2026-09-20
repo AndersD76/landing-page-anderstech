@@ -10,7 +10,7 @@
 
 import { EMPRESA, waLink } from '../config/empresa.js';
 import { formataDataBR, GATE_MUNICIPIO } from './normaliza.js';
-import { municipio as buscaMunicipio, municipiosDaUf, ufs, dados } from './dados.js';
+import { municipio as buscaMunicipio, municipiosDaUf, ufs, dados, organismo as buscaOrganismo, organismos as listaOrganismos, GATE_ORGANISMO as GATE_ORG } from './dados.js';
 
 const SITE = 'https://anderstech.net';
 
@@ -323,9 +323,120 @@ ${migalhas(itens)}
 ${carimbo()}
 <h2>Estados</h2>
 <ul class="grid-links">${lista.map((u) => `<li><a href="/pbqp-h/construtoras/${u.uf.toLowerCase()}"><b>${esc(UF_NOME[u.uf] || u.uf)}</b><span>${u.total} empresas · ${u.publicaveis} cidade${u.publicaveis === 1 ? '' : 's'}</span></a></li>`).join('')}</ul>
+
+<h2>Por organismo certificador</h2>
+<p>O mesmo registro, visto pelo outro lado: <a href="/pbqp-h/certificadoras"><strong>quais organismos certificam construtoras no PBQP-H</strong></a> e quantas cada um mantém com certificado vigente.</p>
 </div>
 
 ${ctaWhats('Olá! Vim pela página de construtoras com PBQP-H e quero falar sobre a qualificação da minha construtora.')}
+` + FOOT;
+}
+
+// ── Página da certificadora ──────────────────────────────────────────────────
+// O registro oficial responde uma empresa por vez e nunca diz quantas cada
+// organismo certifica nem onde. Essa é a compilação que não existe em lugar
+// nenhum — e é o que dá à página motivo para existir.
+export function renderCertificadora(slugBusca) {
+  const o = buscaOrganismo(slugBusca);
+  if (!o) return null;
+
+  const path = `/pbqp-h/certificadoras/${o.slug}`;
+  const principais = o.ufs.slice(0, 5).map(([uf, n]) => `${uf} (${n})`).join(', ');
+
+  const title = `${o.nome} no PBQP-H: ${o.total} construtoras certificadas em ${o.ufs.length} estados | Anders Tech`;
+  const desc = `${o.nome} mantém ${o.total} construtoras com certificação SiAC vigente, em ${o.municipios} municípios e ${o.ufs.length} estados: ${o.nivelA} no nível A e ${o.nivelB} no nível B. Maior presença em ${principais}.`;
+
+  const itens = [
+    { nome: 'Início', url: '/' },
+    { nome: 'PBQP-H', url: '/pbqp-h' },
+    { nome: 'Certificadoras', url: '/pbqp-h/certificadoras' },
+    { nome: o.nome },
+  ];
+
+  const limite = new Date();
+  limite.setUTCFullYear(limite.getUTCFullYear() + 1);
+  const amostra = o.empresas.slice(0, 120);
+
+  return head({ title, desc, path, jsonLd: [breadcrumbLd(itens)], noindex: !o.publicavel }) + `
+<section class="hero"><div class="wrap">
+${migalhas(itens)}
+<div class="tag">Organismo certificador</div>
+<h1>${esc(o.nome)} no PBQP-H</h1>
+<p class="lead">Quantas construtoras este organismo mantém certificadas no SiAC, em que níveis e em quais estados.</p>
+<div class="stats">
+<div class="stat"><b>${o.total}</b><span>Construtoras</span></div>
+<div class="stat"><b>${o.ufs.length}</b><span>Estados</span></div>
+<div class="stat"><b>${o.municipios}</b><span>Municípios</span></div>
+<div class="stat"><b>${o.vencendo12m}</b><span>Vencem em 12 meses</span></div>
+</div>
+</div></section>
+
+<div class="content">
+${!o.publicavel ? `<div class="aviso"><strong>Amostra pequena.</strong> Este organismo tem menos de ${GATE_ORG} certificados vigentes, então a página não entra na busca.</div>` : ''}
+<p>A <strong>${esc(o.nome)}</strong> responde por <strong>${o.total}</strong> certificados PBQP-H vigentes: <strong>${o.nivelA}</strong> no nível A e <strong>${o.nivelB}</strong> no nível B. A maior concentração está em ${esc(principais)}.</p>
+${carimbo()}
+
+<h2>Distribuição por estado</h2>
+<ul class="grid-links">${o.ufs.map(([uf, n]) => `<li><a href="/pbqp-h/construtoras/${uf.toLowerCase()}"><b>${esc(UF_NOME[uf] || uf)}</b><span>${n} construtora${n > 1 ? 's' : ''}</span></a></li>`).join('')}</ul>
+
+<h2>Construtoras certificadas</h2>
+${o.empresas.length > amostra.length ? `<p style="font-size:.93rem;color:var(--ink-mute)">Mostrando as ${amostra.length} com vencimento mais próximo, de ${o.total}.</p>` : ''}
+<div class="tabela-wrap"><table>
+<thead><tr><th>Empresa</th><th>Nível</th><th>Cidade</th><th>Validade</th></tr></thead>
+<tbody>${amostra.map((e) => `<tr>
+<td><span class="emp">${esc(e.empresa)}</span>${e.cnpj ? `<span class="cnpj">${esc(e.cnpj)}</span>` : ''}</td>
+<td><span class="nv nv-${esc(e.nivel || '')}">${esc(e.nivel || '—')}</span></td>
+<td><a href="/pbqp-h/construtoras/${e.uf.toLowerCase()}/${e.municipio_slug}">${esc(e.municipio_titulo)}/${esc(e.uf)}</a></td>
+<td class="vence${new Date(e.validade) <= limite ? ' perto' : ''}">${esc(formataDataBR(new Date(e.validade)) || '—')}</td>
+</tr>`).join('')}</tbody>
+</table></div>
+
+<h2>Como escolher o organismo certificador</h2>
+<p>O organismo é quem audita e emite o certificado — não é quem implanta o sistema. Quem implanta é a consultoria ou a própria equipe; quem certifica precisa ser independente, e por isso não pode ter participado da implantação. Volume de certificados diz sobre experiência no setor, não sobre rigor: o requisito é o mesmo para todos, porque a norma é a mesma.</p>
+<p>Veja o programa em <a href="/pbqp-h"><strong>PBQP-H: o que é e como qualificar</strong></a> e o panorama por cidade em <a href="/pbqp-h/construtoras"><strong>construtoras com PBQP-H por município</strong></a>.</p>
+</div>
+
+${ctaWhats(`Olá! Vim pela página da certificadora ${o.nome} e quero falar sobre a qualificação PBQP-H da minha construtora.`)}
+` + FOOT;
+}
+
+// ── Hub de certificadoras ────────────────────────────────────────────────────
+export function renderCertificadorasHub() {
+  const lista = listaOrganismos().filter((o) => o.publicavel);
+  if (!lista.length) return null;
+
+  const path = '/pbqp-h/certificadoras';
+  const total = lista.reduce((s, o) => s + o.total, 0);
+
+  const title = `Certificadoras do PBQP-H: ${lista.length} organismos e ${total} construtoras certificadas | Anders Tech`;
+  const desc = `Quais organismos certificam construtoras no SiAC/PBQP-H e quantas cada um mantém com certificado vigente. ${lista.length} organismos respondem por ${total} certificados no Brasil.`;
+
+  const itens = [
+    { nome: 'Início', url: '/' },
+    { nome: 'PBQP-H', url: '/pbqp-h' },
+    { nome: 'Certificadoras' },
+  ];
+
+  return head({ title, desc, path, jsonLd: [breadcrumbLd(itens)], noindex: false }) + `
+<section class="hero"><div class="wrap">
+${migalhas(itens)}
+<div class="tag">SiAC · Organismos</div>
+<h1>Quem certifica construtoras no PBQP-H</h1>
+<p class="lead">O registro oficial responde uma empresa por vez e nunca diz quantas cada organismo certifica. Aqui está a conta.</p>
+<div class="stats">
+<div class="stat"><b>${lista.length}</b><span>Organismos</span></div>
+<div class="stat"><b>${total}</b><span>Certificados vigentes</span></div>
+</div>
+</div></section>
+
+<div class="content">
+<p>O organismo certificador audita e emite o certificado; ele <strong>não pode</strong> ter participado da implantação do sistema, porque a avaliação precisa ser independente. Volume indica experiência no setor, não rigor — o requisito da norma é o mesmo para todos.</p>
+${carimbo()}
+<h2>Organismos com certificados vigentes</h2>
+<ul class="grid-links">${lista.map((o) => `<li><a href="/pbqp-h/certificadoras/${o.slug}"><b>${esc(o.nome)}</b><span>${o.total} construtoras · ${o.ufs.length} estados</span></a></li>`).join('')}</ul>
+</div>
+
+${ctaWhats('Olá! Vim pela página de certificadoras do PBQP-H e quero falar sobre a qualificação da minha construtora.')}
 ` + FOOT;
 }
 

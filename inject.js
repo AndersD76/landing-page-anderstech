@@ -126,6 +126,7 @@ const BREADCRUMB_LABELS = {
   'cases': 'Cases',
   'pbqp-h': 'PBQP-H',
   'construtoras': 'Construtoras qualificadas',
+  'certificadoras': 'Certificadoras',
 };
 
 function buildBreadcrumbSchema(urlPath) {

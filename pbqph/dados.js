@@ -102,6 +102,86 @@ export function ufs() {
     .sort((a, b) => b.total - a.total);
 }
 
+// Gate do eixo de certificadora. Mais alto que o de município porque a página
+// promete panorama nacional do organismo — com 5 certificados não há panorama.
+export const GATE_ORGANISMO = 20;
+
+let cacheOrganismos = null;
+
+/**
+ * Agrupa por organismo certificador. É o dado que ninguém compilou: o registro
+ * oficial responde uma empresa por vez e não diz quantas cada OAC certifica,
+ * nem onde.
+ *
+ * O eixo de SUBSETOR foi descartado de propósito: a fonte escreve o mesmo
+ * subsetor de quatro formas ("Obras de Edificações", "Obras de Edifcações",
+ * "Obras de Edficações", "Obras de Edificação") e consolidar isso seria
+ * adivinhar qual foi a intenção — proibido pela regra 3 do CLAUDE.md.
+ */
+export function organismos() {
+  if (cacheOrganismos) return cacheOrganismos;
+  const d = dados();
+  const mapa = new Map();
+
+  // Agrupa por SLUG, não pelo nome: a fonte escreve o mesmo organismo de duas
+  // formas ("CSC LA" com 59 certificados e "CSC-LA" com 2). Agrupar por nome
+  // criava duas entidades disputando a mesma URL — uma acima do gate e outra
+  // abaixo, e a de baixo vazava para o sitemap. Unificar hífen e espaço é
+  // normalização, não adivinhação: nenhuma letra muda.
+  const variantes = new Map();
+  for (const r of d.registros) {
+    if (!r.organismo) continue;
+    const chave = slugOrganismo(r.organismo);
+    if (!chave) continue;
+    if (!mapa.has(chave)) mapa.set(chave, { nome: r.organismo, slug: chave, empresas: [] });
+    mapa.get(chave).empresas.push(r);
+
+    // A grafia exibida é a mais frequente, não a primeira que apareceu.
+    if (!variantes.has(chave)) variantes.set(chave, new Map());
+    const v = variantes.get(chave);
+    v.set(r.organismo, (v.get(r.organismo) || 0) + 1);
+  }
+  for (const [chave, v] of variantes) {
+    mapa.get(chave).nome = [...v.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  }
+
+  const em12meses = new Date();
+  em12meses.setUTCFullYear(em12meses.getUTCFullYear() + 1);
+
+  cacheOrganismos = [...mapa.values()]
+    .map((o) => {
+      o.empresas.sort((a, b) => a.validade.localeCompare(b.validade));
+      const niveis = { A: 0, B: 0 };
+      for (const e of o.empresas) if (niveis[e.nivel] !== undefined) niveis[e.nivel]++;
+      const ufsAtendidas = new Map();
+      for (const e of o.empresas) ufsAtendidas.set(e.uf, (ufsAtendidas.get(e.uf) || 0) + 1);
+      return {
+        ...o,
+        total: o.empresas.length,
+        nivelA: niveis.A,
+        nivelB: niveis.B,
+        ufs: [...ufsAtendidas.entries()].sort((a, b) => b[1] - a[1]),
+        municipios: new Set(o.empresas.map((e) => `${e.uf}/${e.municipio_slug}`)).size,
+        vencendo12m: o.empresas.filter((e) => new Date(e.validade) <= em12meses).length,
+        publicavel: o.empresas.length >= GATE_ORGANISMO,
+      };
+    })
+    .sort((a, b) => b.total - a.total);
+
+  return cacheOrganismos;
+}
+
+function slugOrganismo(nome) {
+  return String(nome)
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+export function organismo(slugBuscado) {
+  const alvo = String(slugBuscado || '').toLowerCase();
+  return organismos().find((o) => o.slug === alvo) || null;
+}
+
 /** Só o que entra no sitemap: página abaixo do gate não é oferecida ao Google. */
 export function urlsIndexaveis() {
   const d = dados();
@@ -110,6 +190,10 @@ export function urlsIndexaveis() {
   for (const [uf] of d.porUf) urls.push([`/pbqp-h/construtoras/${uf.toLowerCase()}`, lastmod, 'weekly', '0.7']);
   for (const m of d.publicaveis) {
     urls.push([`/pbqp-h/construtoras/${m.uf.toLowerCase()}/${m.slug}`, lastmod, 'monthly', '0.7']);
+  }
+  urls.push(['/pbqp-h/certificadoras', lastmod, 'weekly', '0.7']);
+  for (const o of organismos().filter((x) => x.publicavel)) {
+    urls.push([`/pbqp-h/certificadoras/${o.slug}`, lastmod, 'monthly', '0.6']);
   }
   return urls;
 }

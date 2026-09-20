@@ -20,7 +20,7 @@ import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
 import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
 import { validarContato, primeiroNome, identificacao } from './config/contato.js';
-import { renderMunicipio, renderUf, renderHub } from './pbqph/render.js';
+import { renderMunicipio, renderUf, renderHub, renderCertificadora, renderCertificadorasHub } from './pbqph/render.js';
 import { inicializar as inicializarPbqph, urlsIndexaveis as urlsIndexaveisPbqph } from './pbqph/dados.js';
 import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
 import { gerarCasePDF } from './cases/pdf.js';
@@ -808,6 +808,19 @@ function servePbqph(res, chave, gerar, rota) {
 
 app.get('/pbqp-h/construtoras', (req, res) => {
   servePbqph(res, '__hub__', () => renderHub(), '/pbqp-h/construtoras');
+});
+
+// Certificadoras ANTES da rota de UF: /pbqp-h/certificadoras nao colide com
+// /pbqp-h/construtoras/:uf porque o prefixo e outro, mas a ordem deixa a
+// intencao explicita para quem mexer aqui depois.
+app.get('/pbqp-h/certificadoras', (req, res) => {
+  servePbqph(res, '__certificadoras__', () => renderCertificadorasHub(), '/pbqp-h/certificadoras');
+});
+
+app.get('/pbqp-h/certificadoras/:slug', (req, res) => {
+  const slug = String(req.params.slug || '').toLowerCase();
+  if (!/^[a-z0-9-]+$/.test(slug)) return send404(res);
+  servePbqph(res, `oc:${slug}`, () => renderCertificadora(slug), `/pbqp-h/certificadoras/${slug}`);
 });
 
 app.get('/pbqp-h/construtoras/:uf', (req, res) => {

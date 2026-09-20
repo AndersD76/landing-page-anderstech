@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { normalizaRegistro, agrupaPorMunicipio, nomeMunicipio, slug, capitaliza, corrigeTexto, parseDataBR, GATE_MUNICIPIO } from '../pbqph/normaliza.js';
-import { dados, urlsIndexaveis } from '../pbqph/dados.js';
-import { renderMunicipio, renderUf, renderHub } from '../pbqph/render.js';
+import { dados, urlsIndexaveis, organismos, GATE_ORGANISMO } from '../pbqph/dados.js';
+import { renderMunicipio, renderUf, renderHub, renderCertificadora } from '../pbqph/render.js';
 
 const FUTURO = '31/12/2030';
 const PASSADO = '01/01/2020';
@@ -148,4 +148,39 @@ test('hub e UF renderizam com número real', () => {
 
 test('rota inexistente devolve null, não página vazia', () => {
   assert.equal(renderMunicipio('rs', 'cidade-que-nao-existe'), null);
+});
+
+// ── Eixo de certificadora ────────────────────────────────────────────────────
+test('certificadora: gate de 20 separa quem tem página de quem não tem', () => {
+  const orgs = organismos();
+  assert.ok(orgs.length >= 20, `poucos organismos: ${orgs.length}`);
+  for (const o of orgs) {
+    assert.equal(o.publicavel, o.total >= GATE_ORGANISMO, `${o.nome} com ${o.total} classificado errado`);
+  }
+});
+
+test('certificadora: title e description únicos, com números próprios', () => {
+  const titulos = new Set();
+  for (const o of organismos().filter((x) => x.publicavel)) {
+    const html = renderCertificadora(o.slug);
+    const t = /<title>(.*?)<\/title>/.exec(html)[1];
+    assert.equal(titulos.has(t), false, `title repetido: ${t}`);
+    assert.match(t, new RegExp(`${o.total} construtoras`));
+    titulos.add(t);
+  }
+});
+
+test('certificadora: só as publicáveis entram no sitemap', () => {
+  const urls = urlsIndexaveis().map(([u]) => u);
+  for (const o of organismos().filter((x) => !x.publicavel)) {
+    assert.equal(urls.includes(`/pbqp-h/certificadoras/${o.slug}`), false, `${o.nome} não podia estar no sitemap`);
+  }
+  assert.ok(urls.includes('/pbqp-h/certificadoras'), 'hub de certificadoras fora do sitemap');
+});
+
+test('certificadora: cada linha liga para a página do município', () => {
+  const o = organismos().find((x) => x.publicavel);
+  const html = renderCertificadora(o.slug);
+  assert.match(html, /\/pbqp-h\/construtoras\/[a-z]{2}\/[a-z0-9-]+/);
+  assert.equal(renderCertificadora('organismo-que-nao-existe'), null);
 });
