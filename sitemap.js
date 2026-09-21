@@ -72,9 +72,10 @@ const CORE_URLS = [
   // Glossário (índice)
   ['/glossario', GLOSSARIO_LASTMOD, 'weekly', '0.8'],
 
-  // Legal
-  ['/termos-de-uso', '2026-06-06', 'yearly', '0.3'],
-  ['/politica-de-privacidade', '2026-06-06', 'yearly', '0.3'],
+  // Termos de uso e política de privacidade NÃO entram: as duas páginas têm
+  // `noindex`, e oferecê-las no sitemap era mandar o Google indexar o que a
+  // página proíbe. O Search Console acusava "Excluída pela tag noindex".
+  // test/urls.test.js barra qualquer URL do sitemap com noindex.
 ];
 
 // As URLs do PBQP-H vêm dos MESMOS dados que renderizam as páginas, nunca de

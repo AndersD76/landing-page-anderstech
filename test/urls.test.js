@@ -82,3 +82,25 @@ test('og:url bate com o canonical da mesma página', () => {
   }
   assert.equal(divergentes.length, 0, divergentes.join('\n  '));
 });
+
+// Sitemap e noindex não podem se contradizer: URL oferecida no sitemap com
+// `noindex` na página aparece no Search Console como "Excluída pela tag noindex"
+// — era o caso dos termos de uso e da política de privacidade.
+test('nenhuma URL do sitemap aponta para página com noindex', async () => {
+  const { buildSitemap } = await import('../sitemap.js');
+  const { urlsIndexaveis } = await import('../pbqph/dados.js');
+  const xml = buildSitemap([], urlsIndexaveis());
+  const caminhos = [...xml.matchAll(/<loc>https:\/\/anderstech\.net([^<]*)<\/loc>/g)].map((m) => m[1] || '/');
+
+  const conflitos = [];
+  for (const c of caminhos) {
+    let arq = null;
+    if (c.startsWith('/blog/')) arq = join(RAIZ, 'blog', c.slice(6) + '.html');
+    else if (!c.slice(1).includes('/') && c !== '/') arq = join(RAIZ, 'pages', c.slice(1) + '.html');
+    if (!arq) continue;
+    let html;
+    try { html = readFileSync(arq, 'utf8'); } catch { continue; }
+    if (/<meta name="robots" content="[^"]*noindex/i.test(html)) conflitos.push(c);
+  }
+  assert.equal(conflitos.length, 0, `no sitemap com noindex: ${conflitos.join(', ')}`);
+});
