@@ -26,6 +26,16 @@ const DOMINIOS = {
 // ordenar fila — o que importa é poder filtrar "quem decide agora".
 export const PRAZOS = new Set(['agora', '90_dias', 'avaliando']);
 
+// Rótulo legível do prazo, para o assunto do aviso e o painel. O banco guarda a
+// chave; humano lê a frase.
+export const ROTULO_PRAZO = { agora: 'DECIDE AGORA', '90_dias': 'próximos 90 dias', avaliando: 'só avaliando' };
+
+// Fonte única dos status do lead. Morava só no server.js, e o painel /admin
+// tinha a própria lista — com "convertido", que o servidor recusava com 400.
+// O painel dizia "Status atualizado" e o banco continuava igual: marcar lead
+// como fechado nunca funcionou. test/contato.test.js confere as duas listas.
+export const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
+
 const LIMITES = {
   nome: 120, empresa: 160, email: 190, telefone: 40, cargo: 120, prazo: 40,
   interesse: 160, mensagem: 4000, source: 60, landing_page: 300,

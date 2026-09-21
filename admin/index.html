@@ -67,7 +67,13 @@ tr.lead-row:hover{background:#f8f9fb}
 .badge-contatado{background:#fef3c7;color:#b45309}
 .badge-qualificado{background:#d1fae5;color:#047857}
 .badge-perdido{background:#e5e7eb;color:#6b7280}
-.badge-convertido{background:#ede9fe;color:#6d28d9}
+.badge-proposta{background:#ede9fe;color:#6d28d9}
+.badge-ganho{background:#dcfce7;color:#15803d}
+/* Prazo de decisão: é o que ordena a fila. "Agora" grita de propósito. */
+.prazo{display:inline-block;padding:3px 9px;border-radius:12px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.prazo-agora{background:#fee2e2;color:#b91c1c}
+.prazo-90_dias{background:#fef3c7;color:#b45309}
+.prazo-avaliando{background:#f3f4f6;color:#6b7280}
 
 /* Expanded row */
 tr.lead-detail{display:none}
@@ -156,18 +162,34 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
       <div class="stat-label">Por fonte</div>
       <div class="stat-value" id="stat-sources" style="font-size:.85rem;line-height:1.6">-</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-label">Fila aberta por prazo</div>
+      <div class="stat-value" id="stat-prazo" style="font-size:.85rem;line-height:1.6">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Página que gerou o lead</div>
+      <div class="stat-value" id="stat-landing" style="font-size:.8rem;line-height:1.6">-</div>
+    </div>
   </div>
 
   <!-- Filters -->
   <div class="filters-bar">
-    <input type="text" id="filter-search" placeholder="Buscar nome ou empresa...">
+    <input type="text" id="filter-search" placeholder="Buscar nome, empresa, e-mail ou telefone...">
     <select id="filter-status">
       <option value="">Todos os status</option>
       <option value="novo">Novo</option>
       <option value="contatado">Contatado</option>
       <option value="qualificado">Qualificado</option>
-      <option value="convertido">Convertido</option>
+      <option value="proposta">Proposta</option>
+      <option value="ganho">Ganho</option>
       <option value="perdido">Perdido</option>
+    </select>
+    <select id="filter-prazo">
+      <option value="">Todos os prazos</option>
+      <option value="agora">Decide agora</option>
+      <option value="90_dias">Próximos 90 dias</option>
+      <option value="avaliando">Só avaliando</option>
+      <option value="__vazio">Não informado</option>
     </select>
     <select id="filter-interesse">
       <option value="">Todos os interesses</option>
@@ -190,11 +212,12 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
           <th data-sort="empresa">Empresa <span class="sort-icon">&#9650;</span></th>
           <th data-sort="interesse">Interesse <span class="sort-icon">&#9650;</span></th>
           <th data-sort="source">Fonte <span class="sort-icon">&#9650;</span></th>
+          <th data-sort="prazo">Prazo <span class="sort-icon">&#9650;</span></th>
           <th data-sort="status">Status <span class="sort-icon">&#9650;</span></th>
         </tr>
       </thead>
       <tbody id="leads-body">
-        <tr><td colspan="7" class="loading"><div class="spinner"></div><br>Carregando...</td></tr>
+        <tr><td colspan="8" class="loading"><div class="spinner"></div><br>Carregando...</td></tr>
       </tbody>
     </table>
   </div>
@@ -205,6 +228,15 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
 
 <script>
 // ── State ──
+// Espelho de STATUS_LEAD e ROTULO_PRAZO de config/contato.js. O painel tinha a
+// própria lista, com "convertido", que o servidor recusava — e a tela dizia
+// "Status atualizado" mesmo assim. test/contato.test.js falha se divergir.
+const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
+const ROTULO_PRAZO = { agora: 'Decide agora', '90_dias': 'Próx. 90 dias', avaliando: 'Só avaliando' };
+// Ordem da fila: quem decide agora vem primeiro. Ordem alfabética punha
+// "90_dias" antes de "agora".
+const RANK_PRAZO = { agora: 0, '90_dias': 1, avaliando: 2 };
+
 let adminKey = sessionStorage.getItem('adminKey') || '';
 let allLeads = [];
 let filteredLeads = [];
@@ -258,6 +290,21 @@ function apiFetch(url, opts = {}) {
   return fetch(url, { ...opts, headers });
 }
 
+// PATCH que só retorna se o banco gravou. Erro traz a mensagem do servidor.
+async function patchLead(id, corpo) {
+  const res = await apiFetch('/api/admin/leads/' + id, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(corpo)
+  });
+  if (!res.ok) {
+    let msg = 'HTTP ' + res.status;
+    try { const d = await res.json(); if (d && d.error) msg = d.error; } catch (e) {}
+    throw new Error(msg);
+  }
+  return res.json().catch(() => ({}));
+}
+
 async function apiJSON(url, opts = {}) {
   const res = await apiFetch(url, opts);
   if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -299,6 +346,25 @@ function renderStats(s) {
   } else {
     document.getElementById('stat-sources').textContent = 'Sem dados';
   }
+
+  const elPrazo = document.getElementById('stat-prazo');
+  if (s.by_prazo && s.by_prazo.length) {
+    const ordenado = s.by_prazo.slice().sort((a, b) => (RANK_PRAZO[a.prazo] ?? 9) - (RANK_PRAZO[b.prazo] ?? 9));
+    elPrazo.innerHTML = ordenado
+      .map(x => '<div>' + esc(ROTULO_PRAZO[x.prazo] || 'Não informado') + ': <strong>' + x.count + '</strong></div>')
+      .join('');
+  } else {
+    elPrazo.textContent = 'Sem dados';
+  }
+
+  const elLanding = document.getElementById('stat-landing');
+  if (s.by_landing && s.by_landing.length) {
+    elLanding.innerHTML = s.by_landing.slice(0, 6)
+      .map(x => '<div>' + esc(x.landing_page) + ': <strong>' + x.count + '</strong></div>')
+      .join('');
+  } else {
+    elLanding.textContent = 'Sem dados';
+  }
 }
 
 function timeAgo(dateStr) {
@@ -337,13 +403,17 @@ function applyFilters() {
   const status = document.getElementById('filter-status').value;
   const interesse = document.getElementById('filter-interesse').value;
   const source = document.getElementById('filter-source').value;
+  const prazo = document.getElementById('filter-prazo').value;
 
   filteredLeads = allLeads.filter(l => {
+    if (prazo === '__vazio' && l.prazo) return false;
+    if (prazo && prazo !== '__vazio' && l.prazo !== prazo) return false;
     if (status && l.status !== status) return false;
     if (interesse && l.interesse !== interesse) return false;
     if (source && l.source !== source) return false;
     if (search) {
-      const hay = norm((l.nome || '') + ' ' + (l.empresa || ''));
+      // E-mail e telefone entram na busca: lead sem nome só é achável por eles.
+      const hay = norm((l.nome || '') + ' ' + (l.empresa || '') + ' ' + (l.email || '') + ' ' + (l.telefone || ''));
       if (!hay.includes(search)) return false;
     }
     return true;
@@ -383,6 +453,7 @@ function sortLeads() {
     let vb = b[sortField] || '';
     if (sortField === 'id') { va = Number(va); vb = Number(vb); }
     if (sortField === 'created_at') { va = new Date(va).getTime(); vb = new Date(vb).getTime(); }
+    if (sortField === 'prazo') { va = RANK_PRAZO[a.prazo] ?? 9; vb = RANK_PRAZO[b.prazo] ?? 9; }
     if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
     if (va < vb) return sortDir === 'asc' ? -1 : 1;
     if (va > vb) return sortDir === 'asc' ? 1 : -1;
@@ -395,7 +466,7 @@ function renderTable() {
   const tbody = document.getElementById('leads-body');
 
   if (!filteredLeads.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><h3>Nenhum lead encontrado</h3><p>Ajuste os filtros ou aguarde novos leads.</p></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><h3>Nenhum lead encontrado</h3><p>Ajuste os filtros ou aguarde novos leads.</p></td></tr>';
     return;
   }
 
@@ -405,15 +476,18 @@ function renderTable() {
     html += '<tr class="lead-row' + (isOpen ? ' open' : '') + '" data-action="toggle-detail" data-lead-id="' + l.id + '">';
     html += '<td>' + l.id + '</td>';
     html += '<td>' + formatDate(l.created_at) + '</td>';
-    html += '<td><strong>' + esc(l.nome || '') + '</strong></td>';
+    // Nome é opcional desde a migration 012: lead da calculadora e do pop-up
+    // chega só com e-mail. Linha em branco escondia quem era.
+    html += '<td><strong>' + esc(l.nome || l.email || l.telefone || '—') + '</strong></td>';
     html += '<td>' + esc(l.empresa || '—') + '</td>';
     html += '<td>' + esc(l.interesse || '—') + '</td>';
     html += '<td>' + esc(l.source || '—') + '</td>';
+    html += '<td>' + (l.prazo ? '<span class="prazo prazo-' + esc(l.prazo) + '">' + esc(ROTULO_PRAZO[l.prazo] || l.prazo) + '</span>' : '—') + '</td>';
     html += '<td><span class="badge badge-' + (l.status || 'novo') + '">' + esc(l.status || 'novo') + '</span></td>';
     html += '</tr>';
 
     html += '<tr class="lead-detail' + (isOpen ? ' open' : '') + '" id="detail-' + l.id + '">';
-    html += '<td colspan="7"><div id="detail-content-' + l.id + '">';
+    html += '<td colspan="8"><div id="detail-content-' + l.id + '">';
     if (isOpen) html += renderDetailContent(l);
     html += '</div></td></tr>';
   });
@@ -426,10 +500,14 @@ function renderDetailContent(l) {
   h += field('Email', l.email);
   h += field('Telefone', l.telefone);
   h += field('Mensagem', l.mensagem);
+  h += field('Cargo', l.cargo);
+  h += field('Prazo de decisão', l.prazo ? (ROTULO_PRAZO[l.prazo] || l.prazo) : null);
+  h += field('Página de entrada', l.landing_page);
   h += field('Fonte', l.source);
   h += field('UTM Source', l.utm_source);
   h += field('UTM Medium', l.utm_medium);
   h += field('UTM Campaign', l.utm_campaign);
+  h += field('UTM Content', l.utm_content);
   h += field('Criado em', l.created_at ? new Date(l.created_at).toLocaleString('pt-BR') : '—');
   h += field('Atualizado em', l.updated_at ? new Date(l.updated_at).toLocaleString('pt-BR') : '—');
   h += field('Notas', l.notes);
@@ -438,7 +516,7 @@ function renderDetailContent(l) {
   h += '<div class="detail-actions">';
   h += '<div><label>Alterar status</label>';
   h += '<select id="status-sel-' + l.id + '" data-action="update-status" data-lead-id="' + l.id + '">';
-  ['novo','contatado','qualificado','convertido','perdido'].forEach(s => {
+  STATUS_LEAD.forEach(s => {
     h += '<option value="' + s + '"' + (l.status === s ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
   });
   h += '</select></div>';
@@ -502,11 +580,9 @@ async function updateStatus(id) {
   const newStatus = sel.value;
 
   try {
-    await apiFetch('/api/admin/leads/' + id, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: newStatus })
-    });
+    // apiFetch não checa res.ok: um 400 do servidor não virava exceção, e a
+    // tela confirmava uma mudança que o banco tinha recusado.
+    await patchLead(id, { status: newStatus });
 
     const idx = allLeads.findIndex(l => l.id === id);
     if (idx >= 0) allLeads[idx].status = newStatus;
@@ -516,7 +592,10 @@ async function updateStatus(id) {
     showToast('Status atualizado para "' + newStatus + '"');
     renderTable();
   } catch (e) {
-    showToast('Erro ao atualizar status', true);
+    showToast('Status NÃO foi salvo: ' + e.message, true);
+    // Devolve o select ao valor real do banco, em vez de deixar a tela mentindo.
+    const lead = allLeads.find(l => l.id === id);
+    if (lead) sel.value = lead.status || 'novo';
   }
 }
 
@@ -525,11 +604,7 @@ async function saveNote(id) {
   const notes = textarea.value.trim();
 
   try {
-    await apiFetch('/api/admin/leads/' + id, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ notes })
-    });
+    await patchLead(id, { notes });
 
     const idx = allLeads.findIndex(l => l.id === id);
     if (idx >= 0) allLeads[idx].notes = notes;
@@ -546,7 +621,7 @@ async function saveNote(id) {
 function exportCSV() {
   if (!filteredLeads.length) { showToast('Nenhum lead para exportar', true); return; }
 
-  const headers = ['ID','Data','Nome','Empresa','Email','Telefone','Interesse','Fonte','Status','UTM Source','UTM Medium','UTM Campaign','Notas'];
+  const headers = ['ID','Data','Nome','Empresa','Email','Telefone','Cargo','Prazo','Interesse','Fonte','Página de entrada','Status','UTM Source','UTM Medium','UTM Campaign','Notas'];
   const rows = filteredLeads.map(l => [
     l.id,
     l.created_at ? new Date(l.created_at).toLocaleString('pt-BR') : '',
@@ -554,8 +629,11 @@ function exportCSV() {
     l.empresa || '',
     l.email || '',
     l.telefone || '',
+    l.cargo || '',
+    l.prazo ? (ROTULO_PRAZO[l.prazo] || l.prazo) : '',
     l.interesse || '',
     l.source || '',
+    l.landing_page || '',
     l.status || '',
     l.utm_source || '',
     l.utm_medium || '',
@@ -618,6 +696,7 @@ document.getElementById('btn-refresh').addEventListener('click', loadAll);
 document.getElementById('btn-logout').addEventListener('click', doLogout);
 document.getElementById('filter-search').addEventListener('input', applyFilters);
 document.getElementById('filter-status').addEventListener('change', applyFilters);
+document.getElementById('filter-prazo').addEventListener('change', applyFilters);
 document.getElementById('filter-interesse').addEventListener('change', applyFilters);
 document.getElementById('filter-source').addEventListener('change', applyFilters);
 document.getElementById('btn-export').addEventListener('click', exportCSV);

@@ -19,7 +19,7 @@ import { buildSitemap } from './sitemap.js';
 import { runMigrations } from './db/migrate.js';
 import { injectShared } from './inject.js';
 import { registrar as registrarTelemetria, ATIVA as TELEMETRIA_ATIVA } from './telemetry.js';
-import { validarContato, primeiroNome, identificacao } from './config/contato.js';
+import { validarContato, primeiroNome, identificacao, STATUS_LEAD, ROTULO_PRAZO } from './config/contato.js';
 import { renderMunicipio, renderUf, renderHub, renderCertificadora, renderCertificadorasHub } from './pbqph/render.js';
 import { inicializar as inicializarPbqph, urlsIndexaveis as urlsIndexaveisPbqph } from './pbqph/dados.js';
 import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
@@ -232,11 +232,8 @@ runMigrations(sql).catch(err => {
 // Neon hibernou.
 inicializarPbqph(sql).catch(err => console.error('[pbqph] falha ao inicializar:', err));
 
-const STATUS_LEAD = ['novo', 'contatado', 'qualificado', 'proposta', 'ganho', 'perdido'];
-
-// Rótulo legível do prazo de decisão, para o assunto do aviso e o corpo do
-// e-mail. O banco guarda a chave; humano lê a frase.
-const ROTULO_PRAZO = { agora: 'DECIDE AGORA', '90_dias': 'próximos 90 dias', avaliando: 'só avaliando' };
+// STATUS_LEAD e ROTULO_PRAZO vêm de config/contato.js — fonte única, compartilhada
+// com o painel /admin e com os testes.
 
 const rateLimit = new Map();
 // #40: o Map crescia sem limite — entrada de IP nunca era removida.
@@ -409,13 +406,17 @@ app.get('/admin', (req, res) => res.sendFile(join(__dirname, 'admin', 'index.htm
 app.get('/api/admin/stats', adminAuth, async (req, res) => {
   if (!sql) return res.status(503).json({ error: 'Servico temporariamente indisponivel' });
   try {
-    const [totalR, monthR, latestR, sourceR, interesseR, statusR] = await Promise.all([
+    const [totalR, monthR, latestR, sourceR, interesseR, statusR, landingR, prazoR] = await Promise.all([
       sql`SELECT COUNT(*)::int AS count FROM leads`,
       sql`SELECT COUNT(*)::int AS count FROM leads WHERE created_at >= date_trunc('month', NOW())`,
       sql`SELECT created_at FROM leads ORDER BY created_at DESC LIMIT 1`,
       sql`SELECT COALESCE(source, 'direto') AS source, COUNT(*)::int AS count FROM leads GROUP BY source ORDER BY count DESC`,
       sql`SELECT COALESCE(interesse, 'não informado') AS interesse, COUNT(*)::int AS count FROM leads GROUP BY interesse ORDER BY count DESC`,
       sql`SELECT COALESCE(status, 'novo') AS status, COUNT(*)::int AS count FROM leads GROUP BY status ORDER BY count DESC`,
+      // Qual página gera contato. Só existe a partir da migration 012: lead
+      // anterior a ela não tem página de entrada, e aparece como "sem registro".
+      sql`SELECT COALESCE(landing_page, 'sem registro') AS landing_page, COUNT(*)::int AS count FROM leads GROUP BY landing_page ORDER BY count DESC LIMIT 12`,
+      sql`SELECT COALESCE(prazo, 'nao_informado') AS prazo, COUNT(*)::int AS count FROM leads WHERE status NOT IN ('ganho', 'perdido') OR status IS NULL GROUP BY prazo ORDER BY count DESC`,
     ]);
     res.json({
       total: totalR[0]?.count || 0,
@@ -424,6 +425,9 @@ app.get('/api/admin/stats', adminAuth, async (req, res) => {
       by_source: sourceR,
       by_interesse: interesseR,
       by_status: statusR,
+      by_landing: landingR,
+      by_prazo: prazoR,
+      status_validos: STATUS_LEAD,
     });
   } catch (err) {
     console.error('Admin stats error:', err);

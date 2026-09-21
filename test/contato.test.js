@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { validarContato, emailValido, sugestaoEmail, telefoneValido, primeiroNome, identificacao, PRAZOS } from '../config/contato.js';
+import { validarContato, emailValido, sugestaoEmail, telefoneValido, primeiroNome, identificacao, PRAZOS, STATUS_LEAD } from '../config/contato.js';
 
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
 
@@ -165,4 +165,43 @@ test('todo chamador de /api/contact tem fixture neste arquivo', () => {
     esperado,
     `arquivos que chamam /api/contact: ${chamadores.join(', ')} — atualize PAYLOADS ao criar formulário novo`
   );
+});
+
+// ── Painel /admin ────────────────────────────────────────────────────────────
+// O painel tinha a própria lista de status, com "convertido". O servidor recusava
+// com 400, mas a tela usava um fetch que não checava res.ok e dizia "Status
+// atualizado" — marcar lead como fechado nunca funcionou. Mesma classe do bug da
+// calculadora: a tela confirmava o que o banco recusou.
+const ADMIN = readFileSync(join(RAIZ, 'admin', 'index.html'), 'utf8');
+
+test('painel oferece exatamente os status que o servidor aceita', () => {
+  const m = /const STATUS_LEAD = (\[[^\]]*\]);/.exec(ADMIN);
+  assert.ok(m, 'STATUS_LEAD não declarado no painel');
+  const doPainel = JSON.parse(m[1].replace(/'/g, '"'));
+  assert.deepEqual(doPainel, STATUS_LEAD, 'painel e servidor divergem');
+
+  const filtro = [...ADMIN.matchAll(/<select id="filter-status">([\s\S]*?)<\/select>/g)][0][1];
+  const opcoes = [...filtro.matchAll(/value="([^"]+)"/g)].map((x) => x[1]);
+  assert.deepEqual(opcoes, STATUS_LEAD, 'filtro de status do painel diverge do servidor');
+});
+
+test('painel não confirma alteração sem checar a resposta do servidor', () => {
+  assert.match(ADMIN, /async function patchLead/, 'patchLead sumiu');
+  assert.match(ADMIN, /if \(!res\.ok\)/, 'patchLead não confere res.ok');
+  // Nenhum PATCH fora de patchLead: apiFetch cru não lança em 400. Só uma
+  // ocorrência de method 'PATCH' pode existir — a de dentro do patchLead.
+  const patches = ADMIN.match(/method:\s*'PATCH'/g) || [];
+  assert.equal(patches.length, 1, `PATCH fora do patchLead (${patches.length} ocorrências)`);
+  for (const fn of ['updateStatus', 'saveNote']) {
+    const corpo = new RegExp(`async function ${fn}\\([^)]*\\)\\s*\\{([\\s\\S]*?)\\n\\}`).exec(ADMIN);
+    assert.ok(corpo, `${fn} não encontrada`);
+    assert.match(corpo[1], /patchLead\(/, `${fn} não usa patchLead`);
+  }
+});
+
+test('prazos do painel são os mesmos do servidor', () => {
+  const m = /const RANK_PRAZO = (\{[^}]*\});/.exec(ADMIN);
+  assert.ok(m, 'RANK_PRAZO não declarado no painel');
+  const chaves = Object.keys(JSON.parse(m[1].replace(/'/g, '"').replace(/(\w+):/g, '"$1":')));
+  assert.deepEqual(chaves.sort(), [...PRAZOS].sort());
 });
