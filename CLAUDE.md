@@ -44,6 +44,8 @@ Consequências práticas:
 | Analytics | GA4 `G-7XL5XVE6QZ` com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**) |
 | Telemetria | `telemetry.js` (adaptador server-side) + `telemetry-client.js` (cliente) + `POST /api/telemetry` → tabela `telemetry_events`. Roda em dev **e** produção, por flag própria |
 | SEO | `sitemap.js` gera `/sitemap.xml` dinâmico; `robots.txt`, `llms.txt`, glossário SSR |
+| SEO programático | `pbqph/` — páginas de PBQP-H por município e por certificadora, SSR com cache, a partir de `data/pbqph-siac.json` (carga mensal por `.github/workflows/carga-pbqph.yml`) |
+| Extração | Playwright (**devDependency**, só em `scripts/`) — o Certifiq só se deixa consultar por navegador. Não roda no servidor |
 | Deploy | Railway (NIXPACKS, healthcheck `/healthz`) |
 | CI | GitHub Actions: `node --check` em todo JS versionado + `npm test` + existência de arquivos-chave |
 
@@ -51,7 +53,7 @@ Consequências práticas:
 ```bash
 npm start      # produção (node server.js)
 npm run dev    # node --watch server.js  → http://localhost:3001
-npm test       # node --test test/asaas.test.js test/migrate.test.js
+npm test       # 7 arquivos em test/ — lista completa no package.json
 npm run migrate
 npm run seed
 ```
@@ -70,6 +72,9 @@ npm run seed
   `EMPRESA` e `waLink()` — não repita literais.
 - **O banner de consentimento agora é injetado sempre** (dev e produção); só o GA4
   continua restrito a produção. Sem isso a telemetria não teria gate de LGPD em dev.
+- **URL nunca leva acento.** Uma correção de acentuação em massa já transformou
+  `certificacao` em `certificação` em 110 links e em 13 canonicals — todos 404.
+  `test/urls.test.js` barra isso e confere que todo canonical aponta para rota que existe.
 - A tabela de telemetria chama **`telemetry_events`**, não `events`: `events` já
   existe desde a `001_baseline` com outro significado (horas de consultoria do
   portal, com FK vinda de `atas.event_id`).
@@ -141,8 +146,8 @@ externo quanto para o que sai do `pdfkit` daqui.
 (display), Inter (corpo) e Space Mono (mono). **Poppins é a fonte dos artefatos**, não do
 site. Não "corrigir" um pelo outro sem decisão do Anders.
 
-> Bug conhecido: `styles.css:15` tem `--red-accent: var(--red-accent)` — auto-referência,
-> valor inválido. Afeta `.tag.light`. Corrigir na rodada que tocar a landing.
+> O bug da auto-referência em `--red-accent` (`styles.css`) já foi corrigido: hoje vale
+> `#ff6a6a`, com comentário explicando a origem.
 
 ## 6. Mapa rápido
 
