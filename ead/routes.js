@@ -26,6 +26,7 @@ const router = Router();
 // Launch promotion — data parametrizada em promo.js (env EAD_PROMO_FIM)
 // ═══════════════════════════════════════════════════════════════════
 import { PROMO, promoAtiva } from '../promo.js';
+import { renderGrade, renderDetalhe, injetar } from './render.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // Database initialization
@@ -1090,7 +1091,29 @@ function sendEadPage(filename, req, res) {
 }
 
 router.get('/ead', (req, res) => res.redirect('/ead/cursos'));
-router.get('/ead/cursos', (req, res) => { if (!sendEadPage('cursos.html', req, res)) res.redirect('/'); });
+// A grade era montada só no navegador: o Google via "Carregando cursos...".
+// Agora sai pronta do servidor; o script da página sobrescreve depois com o
+// estado de quem está logado.
+router.get('/ead/cursos', async (req, res) => {
+  try {
+    const filePath = join(__dirname, 'pages', 'cursos.html');
+    if (!existsSync(filePath)) return res.redirect('/');
+    let html = readFileSync(filePath, 'utf8');
+    if (sql) {
+      const cursos = await sql`
+        SELECT c.slug, c.titulo, c.subtitulo, c.descricao, c.carga_horaria, c.preco, c.preco_original,
+          (SELECT COUNT(*)::int FROM ead_modules m WHERE m.course_id = c.id) AS total_modulos,
+          (SELECT COUNT(*)::int FROM ead_lessons l JOIN ead_modules m ON l.module_id = m.id WHERE m.course_id = c.id) AS total_aulas
+        FROM ead_courses c WHERE c.ativo = true ORDER BY c.ordem
+      `;
+      html = injetar(html, '<div class="loading">Carregando cursos...</div>', renderGrade(cursos, promoAtiva()));
+    }
+    res.type('html').send(injectShared(html, req.path));
+  } catch (err) {
+    console.error('EAD cursos SSR error:', err);
+    if (!sendEadPage('cursos.html', req, res)) res.redirect('/');
+  }
+});
 // #65: as 4 paginas de curso tinham o MESMO <title>, sem description, sem
 // canonical, sem Open Graph e sem conteudo no HTML — tudo vinha por JS. Sao as
 // paginas de produto: agora as tags saem prontas do servidor, com preco no
@@ -1149,6 +1172,25 @@ router.get('/ead/curso/:slug', async (req, res) => {
 
         html = html.replace(/<title>[^<]*<\/title>/, `<title>${e(titulo)}</title>`)
                    .replace('</head>', head + '</head>');
+
+        // O corpo também era só JavaScript: o <h1>, o preço e a ementa vinham
+        // do navegador. Em página de PRODUTO isso significa quatro cursos
+        // invisíveis para busca. Agora o conteúdo sai no primeiro byte.
+        const linhas = await sql`
+          SELECT m.id AS modulo_id, m.titulo AS modulo, m.ordem AS modulo_ordem,
+                 l.titulo AS aula, l.duracao, l.entregavel_titulo, l.ordem AS aula_ordem
+            FROM ead_modules m
+            LEFT JOIN ead_lessons l ON l.module_id = m.id
+           WHERE m.course_id = (SELECT id FROM ead_courses WHERE slug = ${req.params.slug})
+           ORDER BY m.ordem, l.ordem
+        `;
+        const porModulo = new Map();
+        for (const r of linhas) {
+          if (!porModulo.has(r.modulo_id)) porModulo.set(r.modulo_id, { titulo: r.modulo, aulas: [] });
+          if (r.aula) porModulo.get(r.modulo_id).aulas.push({ titulo: r.aula, duracao: r.duracao, entregavel_titulo: r.entregavel_titulo });
+        }
+        html = injetar(html, '<div class="loading">Carregando curso...</div>',
+          renderDetalhe(c, [...porModulo.values()], promoAtiva()));
       }
     }
     res.type('html').send(injectShared(html, req.path));
