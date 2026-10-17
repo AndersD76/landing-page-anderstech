@@ -53,6 +53,16 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
   + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
   + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
+  // As 161 paginas de PBQP-H penduravam num unico link, em pages/pbqp-h.html:
+  // profundidade 4 a partir de um site que o Google mal visita. No rodape elas
+  // ficam a um clique de QUALQUER pagina, inclusive da home.
+  + '<div class="footer-col"><h3>Dados públicos</h3><ul>'
+  + '<li><a href="/pbqp-h/construtoras">Construtoras com PBQP-H por cidade</a></li>'
+  + '<li><a href="/pbqp-h/certificadoras">Certificadoras do PBQP-H</a></li>'
+  + '<li><a href="/pbqp-h/construtoras/rs">PBQP-H no Rio Grande do Sul</a></li>'
+  + '<li><a href="/pbqp-h/construtoras/sc">PBQP-H em Santa Catarina</a></li>'
+  + '<li><a href="/pbqp-h/construtoras/pr">PBQP-H no Paraná</a></li>'
+  + '<li><a href="/pbqp-h/construtoras/sp">PBQP-H em São Paulo</a></li></ul></div>'
   + '<div class="footer-col"><h3>Regiões</h3><ul>'
   + '<li><a href="/consultoria-iso-9001-passo-fundo">Passo Fundo</a></li>'
   + '<li><a href="/consultoria-iso-9001-erechim">Erechim</a></li>'
