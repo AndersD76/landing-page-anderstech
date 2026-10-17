@@ -309,12 +309,24 @@ const PRELOAD_FONTES = '<link rel="preload" href="/assets/fonts/space-grotesk-la
   + '<link rel="preload" href="/assets/fonts/inter-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>'
   + '<link rel="preload" href="/assets/fonts/space-mono-400-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>';
 
+// Pagina que nao carrega styles.css (as do EAD) nao tem @font-face nenhum: o
+// preload baixava 3 woff2 que o navegador descartava, e o texto caia na fonte
+// do sistema mesmo com font-family: 'Space Grotesk' no CSS da pagina. Declarar
+// aqui faz o download servir para alguma coisa.
+const FONT_FACE = '<style>'
+  + "@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/space-grotesk-latin.woff2?v=1') format('woff2')}"
+  + "@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;font-display:swap;src:url('/assets/fonts/inter-latin.woff2?v=1') format('woff2')}"
+  + "@font-face{font-family:'Space Mono';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/space-mono-400-latin.woff2?v=1') format('woff2')}"
+  + '</style>';
+
 function fontesLocais(html) {
   if (html.includes('/assets/fonts/space-grotesk-latin.woff2')) return html;  // home ja tem
   const semGoogle = html
     .replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '')
     .replace(/<link[^>]*rel="dns-prefetch"[^>]*fonts[^>]*>/g, '');
-  return semGoogle.replace('</head>', PRELOAD_FONTES + '</head>');
+  // styles.css traz o @font-face; sem ele, declara inline.
+  const faces = semGoogle.includes('/styles.css') ? '' : FONT_FACE;
+  return semGoogle.replace('</head>', PRELOAD_FONTES + faces + '</head>');
 }
 
 export function injectShared(html, urlPath) {

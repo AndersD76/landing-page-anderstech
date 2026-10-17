@@ -26,7 +26,7 @@ const router = Router();
 // Launch promotion — data parametrizada em promo.js (env EAD_PROMO_FIM)
 // ═══════════════════════════════════════════════════════════════════
 import { PROMO, promoAtiva } from '../promo.js';
-import { renderGrade, renderDetalhe, injetar } from './render.js';
+import { renderGrade, renderDetalhe, injetar, schemaCursos } from './render.js';
 
 // ═══════════════════════════════════════════════════════════════════
 // Database initialization
@@ -1107,6 +1107,9 @@ router.get('/ead/cursos', async (req, res) => {
         FROM ead_courses c WHERE c.ativo = true ORDER BY c.ordem
       `;
       html = injetar(html, '<div class="loading">Carregando cursos...</div>', renderGrade(cursos, promoAtiva()));
+      // Troca o ItemList de preços fixos pelo gerado do banco.
+      html = html.replace(/<script type="application\/ld\+json">\s*\{\s*"@context"[^]*?"@type":\s*"ItemList"[^]*?<\/script>/,
+        `<script type="application/ld+json">${JSON.stringify(schemaCursos(cursos, APP_URL))}</script>`);
     }
     res.type('html').send(injectShared(html, req.path));
   } catch (err) {

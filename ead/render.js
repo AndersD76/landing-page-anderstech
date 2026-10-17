@@ -103,3 +103,41 @@ export function injetar(html, placeholder, conteudo) {
   if (!html.includes(placeholder)) return html;
   return html.replace(placeholder, conteudo);
 }
+
+/**
+ * JSON-LD ItemList dos cursos, gerado do banco.
+ * O bloco em cursos.html tinha os preços escritos à mão (397, 497, 297, 197).
+ * Enquanto batem com o banco, tudo bem; no dia em que o Anders mudar um preço,
+ * o dado estruturado passa a contradizer o que a página mostra — e dado
+ * estruturado divergente do conteúdo visível rende ação manual do Google.
+ */
+export function schemaCursos(cursos, siteUrl = 'https://anderstech.net') {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Cursos de Qualidade e ISO 9001',
+    description: 'Cursos online de ISO 9001:2015, Auditor Interno, Gestão de Processos e 5S com templates prontos e certificado.',
+    url: `${siteUrl}/ead/cursos`,
+    numberOfItems: cursos.length,
+    itemListElement: cursos.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Course',
+        name: c.titulo,
+        description: String(c.subtitulo || c.descricao || '').slice(0, 300),
+        url: `${siteUrl}/ead/curso/${c.slug}`,
+        provider: { '@type': 'Organization', name: 'Anders Tech', url: siteUrl },
+        inLanguage: 'pt-BR',
+        isAccessibleForFree: false,
+        offers: {
+          '@type': 'Offer',
+          price: Number(c.preco).toFixed(2),
+          priceCurrency: 'BRL',
+          availability: 'https://schema.org/InStock',
+          url: `${siteUrl}/ead/curso/${c.slug}`,
+        },
+      },
+    })),
+  };
+}
