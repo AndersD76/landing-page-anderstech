@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Tráfego — Anders Tech</title>
+<style>
+:root{--navy:#0b1730;--navy-3:#203864;--red:#FE0000;--paper:#F4F6FA;--ink:#16233f;--ink-soft:#46577a;--ink-mute:#8190ac;--line:rgba(32,56,100,.14)}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Poppins',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+header{background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header h1{font-size:1.05rem;font-weight:600}
+header a{color:#b9c8e4;font-size:.82rem;text-decoration:none}
+header a:hover{color:#fff;text-decoration:underline}
+.spacer{flex:1}
+select,button{font:inherit;border-radius:4px;border:1px solid var(--line);padding:6px 10px;background:#fff;color:var(--ink);cursor:pointer}
+header select,header button{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff}
+main{max-width:1200px;margin:0 auto;padding:22px 28px 60px}
+#auth{max-width:340px;margin:80px auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px}
+#auth input{width:100%;padding:10px;border:1px solid var(--line);border-radius:4px;margin:10px 0;font:inherit}
+#auth button{width:100%;background:var(--red);color:#fff;border:0;padding:11px;font-weight:600}
+.erro{color:var(--red);font-size:.85rem;margin-top:8px;display:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.card .rot{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+.card .val{font-size:1.7rem;font-weight:700;color:var(--navy);line-height:1.2}
+.card .sub{font-size:.75rem;color:var(--ink-soft)}
+section{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+section h2{font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+section p.ajuda{font-size:.78rem;color:var(--ink-mute);margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);padding:6px 10px 6px 0;border-bottom:1px solid var(--line)}
+td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.barra{height:6px;background:var(--navy-3);border-radius:3px;min-width:2px}
+.dias{display:flex;align-items:flex-end;gap:3px;height:120px;margin-top:6px}
+.dias div{flex:1;background:var(--navy-3);border-radius:2px 2px 0 0;min-height:2px;position:relative}
+.dias div:hover{background:var(--red)}
+.dias div span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--ink-soft);white-space:nowrap;opacity:0}
+.dias div:hover span{opacity:1}
+.vazio{color:var(--ink-mute);font-size:.85rem;padding:10px 0}
+.funil li{list-style:none;display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.88rem}
+.funil li:last-child{border-bottom:0}
+.funil .etapa{width:180px;color:var(--navy);font-weight:500}
+.funil .taxa{font-size:.78rem;color:var(--ink-soft);width:90px;text-align:right}
+</style>
+</head>
+<body>
+
+<div id="auth">
+  <h1 style="font-size:1rem;color:#0b1730">Tráfego — Anders Tech</h1>
+  <input type="password" id="chave" placeholder="Chave de acesso" autocomplete="off">
+  <button id="entrar">Entrar</button>
+  <div class="erro" id="erro">Chave inválida.</div>
+</div>
+
+<div id="app" style="display:none">
+<header>
+  <h1>Tráfego</h1>
+  <a href="/admin">← Leads</a>
+  <div class="spacer"></div>
+  <select id="periodo">
+    <option value="7">7 dias</option>
+    <option value="30" selected>30 dias</option>
+    <option value="90">90 dias</option>
+  </select>
+  <button id="atualizar">Atualizar</button>
+  <button id="sair">Sair</button>
+</header>
+
+<main>
+  <div class="cards" id="cards"></div>
+
+  <section>
+    <h2>Visitas por dia</h2>
+    <p class="ajuda">Barra = sessões distintas. Passe o mouse para ver a data.</p>
+    <div class="dias" id="grafico"></div>
+  </section>
+
+  <section>
+    <h2>Funil por sessão</h2>
+    <p class="ajuda">Taxa calculada sobre a etapa anterior. Sem o CTA visto não há denominador: é por isso que ele existe.</p>
+    <ul class="funil" id="funil"></ul>
+  </section>
+
+  <section>
+    <h2>Páginas mais vistas</h2>
+    <p class="ajuda">Caminho gravado em props.path de cada page_view.</p>
+    <table><thead><tr><th>Página</th><th class="num">Pageviews</th><th class="num">Sessões</th><th style="width:30%"></th></tr></thead><tbody id="paginas"></tbody></table>
+  </section>
+
+  <section>
+    <h2>Origem do tráfego</h2>
+    <p class="ajuda">UTM gravada na primeira visita da sessão. "direto" = sem UTM na URL.</p>
+    <table><thead><tr><th>Origem</th><th>Meio</th><th class="num">Pageviews</th><th class="num">Sessões</th></tr></thead><tbody id="origens"></tbody></table>
+  </section>
+
+  <section>
+    <h2>Leads por página de entrada</h2>
+    <p class="ajuda">Vem da tabela leads, não da telemetria: é a página que realmente gerou contato.</p>
+    <table><thead><tr><th>Página de entrada</th><th class="num">Leads</th></tr></thead><tbody id="leads"></tbody></table>
+  </section>
+</main>
+</div>
+
+<script>
+let chave = sessionStorage.getItem('adminKey') || '';
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+async function pedir(dias) {
+  const r = await fetch('/api/admin/trafego?dias=' + dias, { headers: { Authorization: 'Bearer ' + chave } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+const ROTULO = {
+  page_view: 'Visitou a página',
+  cta_view: 'Viu o botão (CTA)',
+  cta_whatsapp_click: 'Clicou no WhatsApp',
+  form_submit: 'Enviou formulário',
+};
+const ORDEM = ['page_view', 'cta_view', 'cta_whatsapp_click', 'form_submit'];
+
+function pintar(d) {
+  const totalPv = d.por_dia.reduce((s, x) => s + x.pageviews, 0);
+  const totalSe = d.por_dia.reduce((s, x) => s + x.sessoes, 0);
+  const porEvento = Object.fromEntries(d.funil.map(f => [f.event, f.sessoes]));
+  const leads = d.leads_por_entrada.reduce((s, x) => s + x.leads, 0);
+
+  $('cards').innerHTML = [
+    ['Pageviews', totalPv, 'no período'],
+    ['Sessões', totalSe, 'visitas distintas'],
+    ['Cliques no WhatsApp', porEvento.cta_whatsapp_click || 0, 'sessões que clicaram'],
+    ['Leads', leads, 'formulários gravados'],
+  ].map(([rot, val, sub]) => `<div class="card"><div class="rot">${rot}</div><div class="val">${val}</div><div class="sub">${sub}</div></div>`).join('');
+
+  const max = Math.max(1, ...d.por_dia.map(x => x.sessoes));
+  $('grafico').innerHTML = d.por_dia.length
+    ? d.por_dia.map(x => `<div style="height:${Math.round(x.sessoes / max * 100)}%"><span>${x.dia}: ${x.sessoes} sessões · ${x.pageviews} pv</span></div>`).join('')
+    : '<p class="vazio">Sem dados no período.</p>';
+
+  let anterior = null;
+  $('funil').innerHTML = ORDEM.map(ev => {
+    const n = porEvento[ev] || 0;
+    const taxa = anterior === null || anterior === 0 ? '—' : Math.round(n / anterior * 100) + '% da etapa anterior';
+    anterior = n;
+    const larg = Math.round((n / Math.max(1, porEvento.page_view || 1)) * 100);
+    return `<li><span class="etapa">${ROTULO[ev]}</span><b>${n}</b><div class="barra" style="width:${larg}%"></div><span class="taxa">${taxa}</span></li>`;
+  }).join('');
+
+  const maxPv = Math.max(1, ...d.por_pagina.map(x => x.pageviews));
+  $('paginas').innerHTML = d.por_pagina.length
+    ? d.por_pagina.map(x => `<tr><td>${esc(x.pagina)}</td><td class="num">${x.pageviews}</td><td class="num">${x.sessoes}</td><td><div class="barra" style="width:${Math.round(x.pageviews / maxPv * 100)}%"></div></td></tr>`).join('')
+    : '<tr><td colspan="4" class="vazio">Sem dados.</td></tr>';
+
+  $('origens').innerHTML = d.por_origem.length
+    ? d.por_origem.map(x => `<tr><td>${esc(x.origem)}</td><td>${esc(x.meio)}</td><td class="num">${x.pageviews}</td><td class="num">${x.sessoes}</td></tr>`).join('')
+    : '<tr><td colspan="4" class="vazio">Sem dados.</td></tr>';
+
+  $('leads').innerHTML = d.leads_por_entrada.length
+    ? d.leads_por_entrada.map(x => `<tr><td>${esc(x.pagina)}</td><td class="num">${x.leads}</td></tr>`).join('')
+    : '<tr><td colspan="2" class="vazio">Nenhum lead no período.</td></tr>';
+}
+
+async function carregar() {
+  try {
+    pintar(await pedir($('periodo').value));
+  } catch (e) {
+    alert('Erro ao carregar: ' + e.message);
+  }
+}
+
+async function entrar() {
+  chave = $('chave').value.trim();
+  try {
+    const d = await pedir(30);
+    sessionStorage.setItem('adminKey', chave);
+    $('auth').style.display = 'none';
+    $('app').style.display = 'block';
+    pintar(d);
+  } catch (e) {
+    $('erro').style.display = 'block';
+    chave = '';
+  }
+}
+
+$('entrar').addEventListener('click', entrar);
+$('chave').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+$('atualizar').addEventListener('click', carregar);
+$('periodo').addEventListener('change', carregar);
+$('sair').addEventListener('click', () => { sessionStorage.removeItem('adminKey'); location.reload(); });
+
+if (chave) entrar();
+</script>
+</body>
+</html>

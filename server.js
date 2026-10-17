@@ -401,6 +401,60 @@ function timingSafeEqual(a, b) {
 
 // ── Admin: serve panel ──
 app.get('/admin', (req, res) => res.sendFile(join(__dirname, 'admin', 'index.html')));
+app.get('/admin/trafego', (req, res) => res.sendFile(join(__dirname, 'admin', 'trafego.html')));
+
+// ── Painel de tráfego ────────────────────────────────────────────────────────
+// Lê telemetry_events, que já grava page_view, cta_view, cta_whatsapp_click e
+// form_submit com session_id e UTM. O caminho da página vive em props->>'path'
+// (JSONB, sem índice): aceitável no volume atual, vira índice se crescer.
+app.get('/api/admin/trafego', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Servico temporariamente indisponivel' });
+  const dias = Math.min(Math.max(parseInt(req.query.dias, 10) || 30, 1), 180);
+  try {
+    const [porDia, porPagina, porOrigem, funil, entradaLeads] = await Promise.all([
+      sql`
+        SELECT to_char(date_trunc('day', ts), 'YYYY-MM-DD') AS dia,
+               COUNT(*) FILTER (WHERE event = 'page_view')::int AS pageviews,
+               COUNT(DISTINCT session_id) FILTER (WHERE session_id IS NOT NULL)::int AS sessoes
+          FROM telemetry_events
+         WHERE ts > NOW() - (${dias} || ' days')::interval
+         GROUP BY 1 ORDER BY 1`,
+      sql`
+        SELECT COALESCE(props->>'path', '(sem rota)') AS pagina,
+               COUNT(*)::int AS pageviews,
+               COUNT(DISTINCT session_id)::int AS sessoes
+          FROM telemetry_events
+         WHERE event = 'page_view' AND ts > NOW() - (${dias} || ' days')::interval
+         GROUP BY 1 ORDER BY 2 DESC LIMIT 40`,
+      sql`
+        SELECT COALESCE(NULLIF(utm_source, ''), 'direto') AS origem,
+               COALESCE(NULLIF(utm_medium, ''), '—') AS meio,
+               COUNT(*) FILTER (WHERE event = 'page_view')::int AS pageviews,
+               COUNT(DISTINCT session_id)::int AS sessoes
+          FROM telemetry_events
+         WHERE ts > NOW() - (${dias} || ' days')::interval
+         GROUP BY 1, 2 ORDER BY 3 DESC LIMIT 25`,
+      // Funil por SESSÃO distinta — é o que permite taxa sobre a etapa anterior.
+      sql`
+        SELECT event, COUNT(DISTINCT session_id)::int AS sessoes
+          FROM telemetry_events
+         WHERE session_id IS NOT NULL
+           AND event IN ('page_view', 'cta_view', 'cta_whatsapp_click', 'form_submit')
+           AND ts > NOW() - (${dias} || ' days')::interval
+         GROUP BY 1`,
+      // Qual página de entrada virou lead de verdade (vem de leads, não da telemetria).
+      sql`
+        SELECT COALESCE(landing_page, '(sem registro)') AS pagina, COUNT(*)::int AS leads
+          FROM leads
+         WHERE created_at > NOW() - (${dias} || ' days')::interval
+         GROUP BY 1 ORDER BY 2 DESC LIMIT 20`,
+    ]);
+    res.json({ dias, por_dia: porDia, por_pagina: porPagina, por_origem: porOrigem, funil, leads_por_entrada: entradaLeads });
+  } catch (err) {
+    console.error('Admin trafego error:', err);
+    res.status(500).json({ error: 'Erro ao buscar tráfego' });
+  }
+});
 
 // ── Admin API routes ──
 app.get('/api/admin/stats', adminAuth, async (req, res) => {
