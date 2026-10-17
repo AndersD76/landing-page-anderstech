@@ -1,0 +1,27 @@
+name: IndexNow
+
+# Avisa Bing e Yandex a cada publicação no master. O Google ignora o protocolo,
+# mas o Bing alimenta ChatGPT e Copilot — para um site novo é a via mais rápida
+# de sair do zero fora do Google.
+#
+# O script aborta sozinho se a chave ainda não estiver publicada, então rodar
+# antes do deploy terminar não envia lote quebrado: falha visível e pronto.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  avisar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Esperar o deploy publicar a versão nova
+        run: sleep 90
+      - name: Notificar Bing e Yandex
+        run: node scripts/indexnow.mjs
