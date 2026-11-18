@@ -53,7 +53,7 @@ Consequências práticas:
 ```bash
 npm start      # produção (node server.js)
 npm run dev    # node --watch server.js  → http://localhost:3001
-npm test       # 7 arquivos em test/ — lista completa no package.json
+npm test       # 8 arquivos em test/ — lista completa no package.json
 npm run migrate
 npm run seed
 ```
@@ -164,7 +164,7 @@ pages/              páginas estáticas → servidas em /<slug>
 blog/               posts → /blog/<slug>
 cases/              gerador de case (validate.js, pdf.js, render.js) → /cases/<slug>
 glossario/          glossário SSR (terms.js + render.js)
-ead/                cursos, checkout Asaas, certificados
+ead/                cursos, checkout Asaas, cupons (regra em ead/cupons.js, painel em /admin/cupons), certificados
 portal/             área logada de cliente/admin
 specs/              réguas de e-mail como YAML (não executam neste repo)
 migrations/         SQL versionado, aplicado no boot

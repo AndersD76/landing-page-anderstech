@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Cupons — Anders Tech</title>
+<style>
+:root{--navy:#0b1730;--navy-3:#203864;--red:#FE0000;--paper:#F4F6FA;--ink:#16233f;--ink-soft:#46577a;--ink-mute:#8190ac;--line:rgba(32,56,100,.14);--green:#15803d}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Poppins',system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+header{background:var(--navy);color:#fff;padding:16px 28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header h1{font-size:1.05rem;font-weight:600}
+header a{color:#b9c8e4;font-size:.82rem;text-decoration:none}
+header a:hover{color:#fff;text-decoration:underline}
+.spacer{flex:1}
+select,button,input{font:inherit;border-radius:4px;border:1px solid var(--line);padding:7px 10px;background:#fff;color:var(--ink)}
+button{cursor:pointer}
+header button{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff}
+main{max-width:1200px;margin:0 auto;padding:22px 28px 60px}
+#auth{max-width:340px;margin:80px auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px}
+#auth input{width:100%;padding:10px;margin:10px 0}
+#auth button{width:100%;background:var(--red);color:#fff;border:0;padding:11px;font-weight:600}
+.erro{color:var(--red);font-size:.85rem;margin-top:8px;display:none}
+section{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-bottom:18px}
+section h2{font-size:.95rem;font-weight:600;color:var(--navy);margin-bottom:4px}
+p.ajuda{font-size:.78rem;color:var(--ink-mute);margin-bottom:14px}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 16px}
+.form label{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px}
+.form input,.form select{width:100%}
+.form .dica{font-size:.72rem;color:var(--ink-soft);margin-top:3px}
+.acoes-form{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.btn-criar{background:var(--red);color:#fff;border:0;padding:10px 22px;font-weight:600}
+.btn-criar:disabled{opacity:.6;cursor:not-allowed}
+#previa{font-size:.85rem;color:var(--ink-soft)}
+#previa b{color:var(--navy)}
+#msgForm{font-size:.85rem}
+#msgForm.ok{color:var(--green)}
+#msgForm.falha{color:var(--red)}
+.tabela{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th{text-align:left;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);padding:6px 10px 6px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tr.novo td{background:#fff7d6}
+.codigo{font-family:ui-monospace,Consolas,monospace;font-weight:600;color:var(--navy);white-space:nowrap}
+.obs{font-size:.74rem;color:var(--ink-mute)}
+.st{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.st-ativo{background:#dcfce7;color:#15803d}
+.st-off{background:#e5e7eb;color:#6b7280}
+.st-exp{background:#fef3c7;color:#b45309}
+.acoes{display:flex;gap:6px;flex-wrap:wrap}
+.acoes button{font-size:.75rem;padding:4px 9px}
+.vazio{color:var(--ink-mute);font-size:.85rem;padding:10px 0}
+#toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:6px;font-size:.85rem;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media(max-width:640px){header{padding:12px 16px}main{padding:16px 16px 40px}section{padding:14px}}
+</style>
+</head>
+<body>
+
+<div id="auth">
+  <h1 style="font-size:1rem;color:#0b1730">Cupons — Anders Tech</h1>
+  <input type="password" id="chave" placeholder="Chave de acesso" autocomplete="off">
+  <button id="entrar">Entrar</button>
+  <div class="erro" id="erro">Chave inválida.</div>
+</div>
+
+<div id="app" style="display:none">
+<header>
+  <h1>Cupons do EAD</h1>
+  <a href="/admin">← Leads</a>
+  <a href="/admin/trafego">Tráfego</a>
+  <div class="spacer"></div>
+  <button id="sair">Sair</button>
+</header>
+
+<main>
+  <section>
+    <h2>Novo cupom</h2>
+    <p class="ajuda">O desconto é aplicado no checkout e o aluno paga só a diferença, por Pix ou cartão. Cupom de 100% libera a matrícula sem pagamento. Cada conta usa o mesmo cupom uma vez só.</p>
+    <div class="form">
+      <div>
+        <label for="percentual">Desconto</label>
+        <select id="percentual"></select>
+      </div>
+      <div>
+        <label for="curso">Vale para</label>
+        <select id="curso"><option value="">Todos os cursos</option></select>
+      </div>
+      <div>
+        <label for="max_usos">Limite de usos</label>
+        <input type="number" id="max_usos" min="1" step="1" placeholder="Sem limite">
+        <div class="dica">1 = só a primeira pessoa que usar.</div>
+      </div>
+      <div>
+        <label for="valido_ate">Válido até</label>
+        <input type="date" id="valido_ate">
+        <div class="dica">Vazio = não expira.</div>
+      </div>
+      <div>
+        <label for="email">E-mail do destinatário</label>
+        <input type="email" id="email" placeholder="Opcional">
+        <div class="dica">Preenchido: só essa conta consegue usar.</div>
+      </div>
+      <div>
+        <label for="codigo">Código</label>
+        <input type="text" id="codigo" placeholder="Gerado automaticamente" maxlength="32" style="text-transform:uppercase">
+        <div class="dica">Código fácil (ex.: ALUNO50) pode ser adivinhado. Para 90% e 100%, deixe o sistema gerar.</div>
+      </div>
+      <div>
+        <label for="observacao">Observação</label>
+        <input type="text" id="observacao" maxlength="200" placeholder="Ex.: alunos do 5S — novembro">
+      </div>
+    </div>
+    <div class="acoes-form">
+      <button class="btn-criar" id="criar">Criar cupom</button>
+      <span id="previa"></span>
+      <span id="msgForm"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cupons criados</h2>
+    <p class="ajuda">"Usos" conta só compras aprovadas: Pix gerado e não pago não consome o cupom. Os links já levam o cupom aplicado e a UTM do canal.</p>
+    <div class="tabela">
+      <table>
+        <thead><tr><th>Código</th><th>Desconto</th><th>Curso</th><th>Usos</th><th>Validade</th><th>Destinatário</th><th>Status</th><th>Enviar</th></tr></thead>
+        <tbody id="lista"><tr><td colspan="8" class="vazio">Carregando...</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let chave = sessionStorage.getItem('adminKey') || '';
+let cursos = [];
+let cupons = [];
+let novoId = null;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const moeda = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const data = (iso) => new Date(iso).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
+async function api(url, opts = {}) {
+  const headers = { Authorization: 'Bearer ' + chave };
+  if (opts.body) headers['Content-Type'] = 'application/json';
+  const r = await fetch(url, { ...opts, headers });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(d.error || 'HTTP ' + r.status); e.status = r.status; throw e; }
+  return d;
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// clipboard só existe em contexto seguro; fora dele, mostra o texto para copiar à mão.
+function copiar(texto, aviso) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(texto).then(() => toast(aviso), () => prompt('Copie:', texto));
+  } else {
+    prompt('Copie:', texto);
+  }
+}
+
+// Link com o cupom já aplicado. Cupom de curso vai direto ao checkout; cupom
+// geral vai à lista de cursos, que guarda o código até o checkout.
+function linkCupom(k, meio) {
+  const caminho = k.curso_slug ? '/ead/checkout/' + k.curso_slug : '/ead/cursos';
+  const q = new URLSearchParams({
+    cupom: k.codigo,
+    utm_source: 'anderstech',
+    utm_medium: meio,
+    utm_campaign: 'cupom-' + k.codigo.toLowerCase(),
+  });
+  return location.origin + caminho + '?' + q.toString();
+}
+
+function mensagemWhatsApp(k) {
+  const alvo = k.curso_titulo ? 'no curso ' + k.curso_titulo : 'nos cursos online da Anders Tech';
+  const linhas = [
+    k.percentual === 100
+      ? 'Cupom de acesso gratuito ' + alvo + ': ' + k.codigo
+      : 'Cupom de ' + k.percentual + '% de desconto ' + alvo + ': ' + k.codigo,
+  ];
+  if (k.valido_ate) linhas.push('Válido até ' + data(k.valido_ate) + '.');
+  linhas.push('Use por aqui: ' + linkCupom(k, 'whatsapp'));
+  return linhas.join('\n');
+}
+
+function situacao(k) {
+  if (!k.ativo) return ['Desativado', 'st-off'];
+  if (k.valido_ate && new Date(k.valido_ate) < new Date()) return ['Expirado', 'st-exp'];
+  if (k.max_usos != null && k.usos >= k.max_usos) return ['Esgotado', 'st-exp'];
+  return ['Ativo', 'st-ativo'];
+}
+
+function pintar() {
+  if (!cupons.length) {
+    $('lista').innerHTML = '<tr><td colspan="8" class="vazio">Nenhum cupom criado ainda.</td></tr>';
+    return;
+  }
+  $('lista').innerHTML = cupons.map(k => {
+    const [rot, cls] = situacao(k);
+    return `<tr class="${k.id === novoId ? 'novo' : ''}">
+      <td><span class="codigo">${esc(k.codigo)}</span>${k.observacao ? `<div class="obs">${esc(k.observacao)}</div>` : ''}</td>
+      <td>${k.percentual}%</td>
+      <td>${k.curso_titulo ? esc(k.curso_titulo) : 'Todos'}</td>
+      <td>${k.usos}${k.max_usos != null ? ' / ' + k.max_usos : ''}</td>
+      <td>${k.valido_ate ? data(k.valido_ate) : '—'}</td>
+      <td>${k.email ? esc(k.email) : '—'}</td>
+      <td><span class="st ${cls}">${rot}</span></td>
+      <td><div class="acoes">
+        <button data-acao="codigo" data-id="${k.id}">Código</button>
+        <button data-acao="whatsapp" data-id="${k.id}">WhatsApp</button>
+        <button data-acao="email" data-id="${k.id}">Link e-mail</button>
+        <button data-acao="ativo" data-id="${k.id}">${k.ativo ? 'Desativar' : 'Reativar'}</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function atualizaPrevia() {
+  const pct = Number($('percentual').value);
+  const slug = $('curso').value;
+  const alvo = slug ? cursos.filter(c => c.slug === slug) : cursos;
+  $('previa').innerHTML = alvo.map(c => {
+    const final = Math.round(Number(c.preco) * 100 * (100 - pct) / 100) / 100;
+    return `${esc(c.titulo.split(' — ')[0].split(':')[0])}: ${moeda(c.preco)} → <b>${final === 0 ? 'grátis' : moeda(final)}</b>`;
+  }).join(' · ');
+}
+
+async function carregar() {
+  const d = await api('/api/admin/cupons');
+  cursos = d.cursos;
+  cupons = d.cupons;
+  if (!$('percentual').options.length) {
+    $('percentual').innerHTML = d.percentuais.map(p => `<option value="${p}"${p === 20 ? ' selected' : ''}>${p}%</option>`).join('');
+    $('curso').innerHTML = '<option value="">Todos os cursos</option>' +
+      cursos.map(c => `<option value="${esc(c.slug)}">${esc(c.titulo)} (${moeda(c.preco)})</option>`).join('');
+  }
+  atualizaPrevia();
+  pintar();
+}
+
+async function criar() {
+  const btn = $('criar');
+  const msg = $('msgForm');
+  btn.disabled = true;
+  msg.className = '';
+  msg.textContent = '';
+  try {
+    const k = await api('/api/admin/cupons', {
+      method: 'POST',
+      body: JSON.stringify({
+        percentual: Number($('percentual').value),
+        curso_slug: $('curso').value,
+        max_usos: $('max_usos').value,
+        valido_ate: $('valido_ate').value,
+        email: $('email').value,
+        codigo: $('codigo').value,
+        observacao: $('observacao').value,
+      }),
+    });
+    novoId = k.id;
+    ['max_usos', 'valido_ate', 'email', 'codigo', 'observacao'].forEach(id => { $(id).value = ''; });
+    await carregar();
+    msg.className = 'ok';
+    msg.textContent = 'Cupom ' + k.codigo + ' criado. Use os botões da tabela para enviar.';
+  } catch (e) {
+    msg.className = 'falha';
+    msg.textContent = e.message;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+$('lista').addEventListener('click', async (ev) => {
+  const b = ev.target.closest('button[data-acao]');
+  if (!b) return;
+  const k = cupons.find(x => String(x.id) === b.dataset.id);
+  if (!k) return;
+  const acao = b.dataset.acao;
+  if (acao === 'codigo') return copiar(k.codigo, 'Código copiado');
+  if (acao === 'whatsapp') return copiar(mensagemWhatsApp(k), 'Mensagem copiada: cole no WhatsApp');
+  if (acao === 'email') return copiar(linkCupom(k, 'email'), 'Link copiado: cole no e-mail');
+  if (acao === 'ativo') {
+    try {
+      await api('/api/admin/cupons/' + k.id, { method: 'PATCH', body: JSON.stringify({ ativo: !k.ativo }) });
+      await carregar();
+      toast(k.ativo ? 'Cupom desativado' : 'Cupom reativado');
+    } catch (e) {
+      toast('Erro: ' + e.message);
+    }
+  }
+});
+
+async function entrar() {
+  if (!chave) chave = $('chave').value.trim();
+  try {
+    await carregar();
+    sessionStorage.setItem('adminKey', chave);
+    $('auth').style.display = 'none';
+    $('app').style.display = 'block';
+  } catch (e) {
+    $('erro').textContent = e.status === 401 ? 'Chave inválida.' : 'Erro: ' + e.message;
+    $('erro').style.display = 'block';
+    chave = '';
+  }
+}
+
+$('entrar').addEventListener('click', () => { chave = ''; entrar(); });
+$('chave').addEventListener('keydown', e => { if (e.key === 'Enter') { chave = ''; entrar(); } });
+$('criar').addEventListener('click', criar);
+$('percentual').addEventListener('change', atualizaPrevia);
+$('curso').addEventListener('change', atualizaPrevia);
+$('sair').addEventListener('click', () => { sessionStorage.removeItem('adminKey'); location.reload(); });
+
+if (chave) entrar();
+</script>
+</body>
+</html>

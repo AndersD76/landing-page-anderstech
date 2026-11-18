@@ -25,6 +25,7 @@ import { inicializar as inicializarPbqph, urlsIndexaveis as urlsIndexaveisPbqph 
 import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
 import { gerarCasePDF } from './cases/pdf.js';
 import { renderCase } from './cases/render.js';
+import { validaNovoCupom, PERCENTUAIS as PERCENTUAIS_CUPOM } from './ead/cupons.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -106,8 +107,13 @@ app.use((req, res, next) => {
 // O Sebraetec deixou de existir com esse nome — a plataforma do Sebrae se chama
 // Unio. 301 (e nao 302) porque a mudanca e definitiva: transfere para /unio o
 // que /sebraetec ja tinha de indexacao e backlink, em vez de comecar do zero.
+// ISO 14001 e a página de alimentos (que prometia integração com BPF, HACCP e
+// FSSC) saíram em 18/11/2026: o Anders não presta esses serviços. As páginas
+// tinham indexação, então 301 para a página mais próxima em vez de 404.
 const ROTAS_RENOMEADAS = new Map([
   ['/sebraetec', '/unio'],
+  ['/quanto-custa-iso-14001', '/quanto-custa-certificacao-iso'],
+  ['/iso-9001-industria-alimenticia', '/iso-9001'],
 ]);
 
 app.use((req, res, next) => {
@@ -402,6 +408,7 @@ function timingSafeEqual(a, b) {
 // ── Admin: serve panel ──
 app.get('/admin', (req, res) => res.sendFile(join(__dirname, 'admin', 'index.html')));
 app.get('/admin/trafego', (req, res) => res.sendFile(join(__dirname, 'admin', 'trafego.html')));
+app.get('/admin/cupons', (req, res) => res.sendFile(join(__dirname, 'admin', 'cupons.html')));
 
 // ── Painel de tráfego ────────────────────────────────────────────────────────
 // Lê telemetry_events, que já grava page_view, cta_view, cta_whatsapp_click e
@@ -781,6 +788,69 @@ app.get('/api/admin/cases/:slug/pdf', adminAuth, async (req, res) => {
   } catch (err) {
     console.error('[GET /api/admin/cases/:slug/pdf] erro:', err.message);
     res.status(500).json({ error: 'Erro ao gerar PDF' });
+  }
+});
+
+// ── Cupons do EAD ────────────────────────────────────────────────────────────
+// Regra de desconto em ead/cupons.js. Aqui só o cadastro: criar, listar e
+// ligar/desligar. Não há DELETE: pedido aprovado aponta para o cupom.
+app.get('/api/admin/cupons', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+  try {
+    const [cupons, cursos] = await Promise.all([
+      sql`
+        SELECT k.id, k.codigo, k.percentual, k.email, k.max_usos, k.usos, k.valido_ate,
+               k.ativo, k.observacao, k.created_at, c.slug AS curso_slug, c.titulo AS curso_titulo
+        FROM ead_coupons k LEFT JOIN ead_courses c ON c.id = k.course_id
+        ORDER BY k.created_at DESC LIMIT 500
+      `,
+      sql`SELECT slug, titulo, preco FROM ead_courses WHERE ativo = true ORDER BY ordem`,
+    ]);
+    res.json({ cupons, cursos, percentuais: PERCENTUAIS_CUPOM });
+  } catch (err) {
+    console.error('[GET /api/admin/cupons] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao listar cupons' });
+  }
+});
+
+app.post('/api/admin/cupons', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+  const v = validaNovoCupom(req.body);
+  if (v.erro) return res.status(400).json({ error: v.erro });
+
+  try {
+    let courseId = null;
+    if (v.cursoSlug) {
+      const cursos = await sql`SELECT id FROM ead_courses WHERE slug = ${v.cursoSlug}`;
+      if (!cursos.length) return res.status(400).json({ error: 'Curso não encontrado' });
+      courseId = cursos[0].id;
+    }
+    const rows = await sql`
+      INSERT INTO ead_coupons (codigo, percentual, course_id, email, max_usos, valido_ate, observacao)
+      VALUES (${v.codigo}, ${v.percentual}, ${courseId}, ${v.email}, ${v.maxUsos}, ${v.validoAte ? v.validoAte.toISOString() : null}, ${v.observacao})
+      ON CONFLICT (codigo) DO NOTHING
+      RETURNING *
+    `;
+    if (!rows.length) return res.status(409).json({ error: `Já existe um cupom com o código ${v.codigo}.` });
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('[POST /api/admin/cupons] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao criar cupom' });
+  }
+});
+
+app.patch('/api/admin/cupons/:id', adminAuth, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Banco indisponível' });
+  const id = parseInt(req.params.id, 10);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'id inválido' });
+  if (typeof req.body?.ativo !== 'boolean') return res.status(400).json({ error: 'Envie { ativo: true|false }' });
+  try {
+    const rows = await sql`UPDATE ead_coupons SET ativo = ${req.body.ativo} WHERE id = ${id} RETURNING id, ativo`;
+    if (!rows.length) return res.status(404).json({ error: 'Cupom não encontrado' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('[PATCH /api/admin/cupons/:id] erro:', err.message);
+    res.status(500).json({ error: 'Erro ao atualizar cupom' });
   }
 });
 

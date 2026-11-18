@@ -14,7 +14,7 @@
 
 ## Descrição do Negócio (750 caracteres)
 
-Consultoria em gestão da qualidade e conformidade para indústrias do Rio Grande do Sul. Implantação e manutenção de ISO 9001, PBQP-H, HACCP e otimização de processos. Atendemos metalúrgicas, agroindústrias, construtoras e cooperativas com diagnóstico baseado em dados e método de engenharia. Sede em Passo Fundo, atendimento presencial em todo o planalto médio e serra gaúcha. Diagnóstico gratuito. CNPJ 42.073.716/0001-80.
+Consultoria em gestão da qualidade e conformidade para indústrias do Rio Grande do Sul. Implantação e manutenção de ISO 9001, PBQP-H e otimização de processos. Atendemos metalúrgicas, agroindústrias, construtoras e cooperativas com diagnóstico baseado em dados e método de engenharia. Sede em Passo Fundo, atendimento presencial em todo o planalto médio e serra gaúcha. Diagnóstico gratuito. CNPJ 42.073.716/0001-80.
 
 ---
 
@@ -67,5 +67,5 @@ Consultoria em gestão da qualidade e conformidade para indústrias do Rio Grand
 
 ### Post 10 — Oferta
 **Título:** Consultoria para agroindústrias e cooperativas
-**Texto:** Agroindústrias e cooperativas agrícolas do RS precisam de sistemas de gestão para exportar, atender auditorias de clientes e cumprir normas sanitárias. Integramos ISO 9001 com BPF, HACCP e requisitos MAPA/ANVISA.
+**Texto:** Agroindústrias e cooperativas agrícolas do RS precisam de sistemas de gestão para exportar, atender auditorias de clientes e cumprir normas sanitárias. Implantamos a ISO 9001 com foco em rastreabilidade, controle de fornecedores e preparo para auditorias de clientes. [REVISAR — BPF/HACCP saíram do portfólio em 18/11/2026]
 **CTA:** Agendar diagnóstico → https://cal.com/daniel-anders-emx5kl

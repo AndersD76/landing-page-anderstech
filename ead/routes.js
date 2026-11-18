@@ -10,6 +10,7 @@ import { readFileSync, existsSync } from 'fs';
 import { injectShared } from '../inject.js';
 import { eadBoasVindas, eadMatriculaConfirmada } from '../emails.js';
 import * as asaas from './asaas.js';
+import { normalizaCodigo, aplicaDesconto, avaliaCupom, VALOR_MINIMO_COBRANCA } from './cupons.js';
 import { criarToken, consumirToken, emailReset } from '../db/senha.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -53,7 +54,7 @@ const regAttempts = new Map();
 // #40: os Maps cresciam sem limite. Varredura periodica das janelas vencidas.
 setInterval(() => {
   const agora = Date.now();
-  for (const [m, janela] of [[regAttempts, 60 * 60_000], [loginAttempts, 15 * 60_000]]) {
+  for (const [m, janela] of [[regAttempts, 60 * 60_000], [loginAttempts, 15 * 60_000], [cupomAttempts, 15 * 60_000]]) {
     for (const [k, v] of m) if (agora - v.start > janela) m.delete(k);
   }
 }, 10 * 60_000).unref();
@@ -84,6 +85,23 @@ function loginRateLimit(req, res, next) {
     entry.count++;
   } else {
     loginAttempts.set(key, { start: now, count: 1 });
+  }
+  next();
+}
+
+// Cupom é segredo curto: sem limite, dava para testar códigos em sequência.
+// Só conta quando há cupom na requisição, para não frear o checkout normal.
+const cupomAttempts = new Map();
+function cupomRateLimit(req, res, next) {
+  if (!req.body?.cupom && !req.body?.codigo) return next();
+  const key = req.ip;
+  const now = Date.now();
+  const entry = cupomAttempts.get(key);
+  if (entry && now - entry.start < 15 * 60 * 1000) {
+    if (entry.count >= 20) return res.status(429).json({ error: 'Muitas tentativas de cupom. Aguarde 15 minutos.' });
+    entry.count++;
+  } else {
+    cupomAttempts.set(key, { start: now, count: 1 });
   }
   next();
 }
@@ -768,20 +786,65 @@ router.get('/ead/api/certificate/:code', certRateLimit, async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════
-// Checkout / Payment (Mercado Pago)
+// Checkout / Pagamento (Asaas) e cupons de desconto
 // ═══════════════════════════════════════════════════════════════════
 
-router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
-  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
-  if (!asaas.asaasConfigurado()) {
-    // Fail-closed: sem chave, recusar em vez de liberar grátis.
-    console.error('ASAAS_API_KEY não configurada — checkout recusado');
-    return res.status(503).json({ error: 'Pagamento não configurado. Entre em contato com o suporte.' });
+// Carrega e avalia o cupom para este aluno e este curso. Sem código, devolve o
+// preço cheio. O valor cobrado é SEMPRE calculado aqui, a partir do banco —
+// nunca do que o navegador mostrou na prévia.
+async function resolveCupom(codigoBruto, course, userId) {
+  const codigo = normalizaCodigo(codigoBruto);
+  if (!codigo) return { cupom: null, valores: aplicaDesconto(course.preco, 0) };
+
+  const [cupons, users] = await Promise.all([
+    sql`SELECT * FROM ead_coupons WHERE codigo = ${codigo}`,
+    sql`SELECT email FROM ead_users WHERE id = ${userId}`,
+  ]);
+  const cupom = cupons[0];
+  let jaUsou = false;
+  if (cupom) {
+    const usados = await sql`
+      SELECT 1 FROM ead_orders
+      WHERE user_id = ${userId} AND cupom_id = ${cupom.id} AND status = 'aprovado' LIMIT 1
+    `;
+    jaUsou = usados.length > 0;
   }
+
+  const r = avaliaCupom(cupom, { courseId: course.id, email: users[0]?.email, jaUsou });
+  if (!r.ok) return { erro: r.erro };
+
+  const valores = aplicaDesconto(course.preco, cupom.percentual);
+  if (valores.valor_final > 0 && valores.valor_final < VALOR_MINIMO_COBRANCA) {
+    return { erro: `O valor com desconto fica abaixo do mínimo de cobrança (R$ ${VALOR_MINIMO_COBRANCA},00).` };
+  }
+  return { cupom, valores };
+}
+
+// Prévia do desconto para a tela de checkout.
+router.post('/ead/api/cupom', requireEadAuth, cupomRateLimit, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
+  try {
+    const { courseSlug, codigo } = req.body || {};
+    if (!normalizaCodigo(codigo)) return res.status(400).json({ error: 'Informe o código do cupom.' });
+
+    const courses = await sql`SELECT id, preco FROM ead_courses WHERE slug = ${courseSlug} AND ativo = true`;
+    if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
+
+    const r = await resolveCupom(codigo, courses[0], req.session.eadUser.id);
+    if (r.erro) return res.status(400).json({ error: r.erro });
+    res.json({ ok: true, codigo: r.cupom.codigo, percentual: r.cupom.percentual, ...r.valores });
+  } catch (err) {
+    console.error('EAD cupom error:', err.message);
+    res.status(500).json({ error: 'Não foi possível validar o cupom. Tente novamente.' });
+  }
+});
+
+router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res) => {
+  if (!sql) return res.status(503).json({ error: 'Serviço temporariamente indisponível' });
 
   try {
     const userId = req.session.eadUser.id;
-    const { courseSlug, metodo, cpfCnpj } = req.body;
+    const { courseSlug, metodo, cpfCnpj, cupom: codigoCupom } = req.body;
 
     const courses = await sql`SELECT * FROM ead_courses WHERE slug = ${courseSlug} AND ativo = true`;
     if (!courses.length) return res.status(404).json({ error: 'Curso não encontrado' });
@@ -793,6 +856,50 @@ router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
     `;
     if (jaMatriculado.length) {
       return res.json({ ok: true, status: 'aprovado', redirect: '/ead/player/' + courseSlug });
+    }
+
+    const resolvido = await resolveCupom(codigoCupom, course, userId);
+    if (resolvido.erro) return res.status(400).json({ error: resolvido.erro, cupomInvalido: true });
+    const { cupom, valores } = resolvido;
+    const cupomId = cupom ? cupom.id : null;
+
+    // Cupom de 100%: matrícula sem gateway e sem CPF. Uma instrução só: o uso
+    // do cupom é reservado com a condição de limite DENTRO do UPDATE, então dois
+    // alunos usando a última vaga ao mesmo tempo não passam os dois.
+    if (cupom && valores.valor_final === 0) {
+      const linhas = await sql`
+        WITH reserva AS (
+          UPDATE ead_coupons SET usos = usos + 1
+          WHERE id = ${cupom.id} AND ativo AND (max_usos IS NULL OR usos < max_usos)
+          RETURNING id
+        ), pedido AS (
+          INSERT INTO ead_orders (user_id, course_id, valor, valor_original, metodo, status, cupom_id, paid_at)
+          SELECT ${userId}::int, ${course.id}::int, 0, ${valores.valor_original}::numeric, 'cupom', 'aprovado', id, NOW()
+          FROM reserva
+          RETURNING id
+        )
+        INSERT INTO ead_enrollments (user_id, course_id, order_id)
+        SELECT ${userId}::int, ${course.id}::int, id FROM pedido
+        ON CONFLICT (user_id, course_id) DO UPDATE SET revogada_em = NULL, revogada_motivo = NULL
+        RETURNING id
+      `;
+      if (!linhas.length) {
+        return res.status(400).json({ error: 'Este cupom já atingiu o limite de usos.', cupomInvalido: true });
+      }
+      await avisaMatricula({ user_id: userId, course_id: course.id });
+      return res.json({ ok: true, status: 'aprovado', redirect: '/ead/player/' + courseSlug });
+    }
+
+    // A tela só manda 'cupom' depois de a prévia mostrar 100%. Se o cupom mudou
+    // no meio do caminho, não vale cair numa cobrança de cartão que ninguém pediu.
+    if (metodo === 'cupom') {
+      return res.status(409).json({ error: 'O desconto deste cupom mudou. Recarregue a página.', cupomInvalido: true });
+    }
+
+    if (!asaas.asaasConfigurado()) {
+      // Fail-closed: sem chave, recusar em vez de liberar grátis.
+      console.error('ASAAS_API_KEY não configurada — checkout recusado');
+      return res.status(503).json({ error: 'Pagamento não configurado. Entre em contato com o suporte.' });
     }
 
     const users = await sql`SELECT id, nome, email, telefone, cpf_cnpj, asaas_customer_id FROM ead_users WHERE id = ${userId}`;
@@ -815,12 +922,15 @@ router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
 
     const metodoInterno = metodo === 'pix' ? 'pix' : 'cartao';
 
-    // Reaproveita cobrança pendente em vez de criar outra a cada tentativa.
+    // Reaproveita cobrança pendente em vez de criar outra a cada tentativa —
+    // mas só a do MESMO valor e cupom: quem gerou um Pix cheio e depois aplicou
+    // cupom não pode receber de volta o QR code sem desconto.
     const pendente = await sql`
       SELECT id, metodo, asaas_invoice_url, pix_qr_code, pix_qr_code_base64
       FROM ead_orders
       WHERE user_id = ${userId} AND course_id = ${course.id} AND status = 'pendente'
         AND metodo = ${metodoInterno} AND asaas_payment_id IS NOT NULL
+        AND valor = ${valores.valor_final} AND cupom_id IS NOT DISTINCT FROM ${cupomId}
       ORDER BY created_at DESC LIMIT 1
     `;
     if (pendente.length) {
@@ -834,16 +944,19 @@ router.post('/ead/api/checkout', requireEadAuth, async (req, res) => {
     }
 
     const order = await sql`
-      INSERT INTO ead_orders (user_id, course_id, valor, metodo, status)
-      VALUES (${userId}, ${course.id}, ${course.preco}, ${metodoInterno}, 'pendente') RETURNING id
+      INSERT INTO ead_orders (user_id, course_id, valor, valor_original, metodo, status, cupom_id)
+      VALUES (${userId}, ${course.id}, ${valores.valor_final}, ${valores.valor_original}, ${metodoInterno}, 'pendente', ${cupomId})
+      RETURNING id
     `;
     const orderId = order[0].id;
 
     // O valor cobrado vem SEMPRE do banco, nunca do corpo da requisição.
     const cobranca = await asaas.criarCobranca({
       customerId,
-      valor: course.preco,
-      descricao: `Curso: ${course.titulo}`,
+      valor: valores.valor_final,
+      descricao: cupom
+        ? `Curso: ${course.titulo} (cupom ${cupom.codigo}, ${cupom.percentual}% de desconto)`
+        : `Curso: ${course.titulo}`,
       orderId,
       billingType: metodo === 'pix' ? 'PIX' : 'CREDIT_CARD',
     });
@@ -908,11 +1021,15 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
 
     if (libera) {
       if (order.status === 'aprovado') return res.sendStatus(200);
-      await sql.transaction([
+      const ops = [
         sql`UPDATE ead_orders SET status = 'aprovado', asaas_payment_id = ${String(payment.id)}, paid_at = NOW() WHERE id = ${orderId}`,
         sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${order.user_id}, ${order.course_id}, ${orderId})
             ON CONFLICT (user_id, course_id) DO UPDATE SET revogada_em = NULL, revogada_motivo = NULL`,
-      ]);
+      ];
+      // Cupom só conta uso quando o dinheiro entra. Sem condição de limite aqui:
+      // o aluno já pagou, então o uso é honrado mesmo que estoure o máximo.
+      if (order.cupom_id) ops.push(sql`UPDATE ead_coupons SET usos = usos + 1 WHERE id = ${order.cupom_id}`);
+      await sql.transaction(ops);
       await avisaMatricula(order);
     } else if (revoga) {
       await sql.transaction([

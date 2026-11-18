@@ -83,7 +83,6 @@ Common pitfalls: excessive bureaucracy, single-person delegation, ignoring shop 
 
 ## Sector-Specific Pages
 - ISO 9001 for Metallurgy: https://anderstech.net/iso-9001-metalurgica
-- ISO 9001 for Food Industry: https://anderstech.net/iso-9001-industria-alimenticia
 - ISO 9001 for Agricultural Cooperatives: https://anderstech.net/iso-9001-cooperativa-agricola
 - ISO 9001 for Construction: https://anderstech.net/iso-9001-construtora
 - PBQP-H for Residential Construction: https://anderstech.net/pbqp-h-construtora-residencial

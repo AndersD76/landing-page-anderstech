@@ -52,6 +52,20 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 .btn-pay.green:hover{background:#15803d}
 
 .error{background:#fef2f2;color:#dc2626;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
+
+.cupom-box{margin:-8px 0 20px;font-size:13px}
+.cupom-link{color:var(--navy);text-decoration:underline;cursor:pointer;background:none;border:none;font:inherit;padding:0}
+.cupom-form{display:none;gap:8px;margin-top:8px}
+.cupom-form.aberto{display:flex}
+.cupom-form input{flex:1;min-width:0;padding:10px;border:1px solid #ddd;font-family:var(--ff-mono);font-size:13px;text-transform:uppercase}
+.cupom-form button{padding:10px 14px;border:none;background:var(--navy);color:#fff;font-family:var(--ff-display);font-weight:600;cursor:pointer}
+.cupom-form button:disabled{opacity:.6;cursor:not-allowed}
+.cupom-msg{margin-top:8px}
+.cupom-msg.ok{color:var(--green);font-weight:600}
+.cupom-msg.falha{color:#dc2626}
+.cupom-msg button{background:none;border:none;color:var(--mute);text-decoration:underline;cursor:pointer;font:inherit;font-weight:400;margin-left:6px;padding:0}
+.gratis-bloco{display:none;text-align:center}
+.gratis-bloco p{font-size:12px;color:var(--mute);margin-top:12px}
 .security{font-size:11px;color:var(--mute);text-align:center;margin-top:16px}
 
 .status-msg{text-align:center;padding:20px;font-size:15px}
@@ -76,7 +90,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
 </main>
 
 <footer class="ead-footer">
-  <p>Pagamento seguro via Mercado Pago &middot; &copy; 2026 Anders Tech</p>
+  <p>Pagamento seguro via Asaas &middot; &copy; 2026 Anders Tech</p>
 </footer>
 
 <script>
@@ -139,9 +153,17 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       +'<li>Casos reais anonimizados da indústria</li></ul></div>'
       +'<div class="payment-box">'
       +'<h2>Pagamento</h2>'
-      +(c.preco_original?'<span class="price-old">De '+fmt(c.preco_original)+'</span>':'')
-      +'<div class="price">'+fmt(c.preco)+'</div>'
+      +'<span class="price-old" id="priceOld"'+(c.preco_original?'':' style="display:none"')+'>'+(c.preco_original?'De '+fmt(c.preco_original):'')+'</span>'
+      +'<div class="price" id="priceNow">'+fmt(c.preco)+'</div>'
+      +'<div class="cupom-box" id="cupomBox">'
+      +'<button type="button" class="cupom-link" id="cupomAbrir">Tem um cupom de desconto?</button>'
+      +'<div class="cupom-form" id="cupomForm"><input id="cupomInput" placeholder="Código do cupom" maxlength="32" autocomplete="off" aria-label="Código do cupom"><button type="button" id="cupomAplicar">Aplicar</button></div>'
+      +'<div class="cupom-msg" id="cupomMsg"></div></div>'
       +'<div class="error" id="payError"></div>'
+      +'<div class="gratis-bloco" id="gratisBloco">'
+      +'<button class="btn-pay green" id="btnCupomGratis">Liberar meu acesso</button>'
+      +'<p>Cupom de 100%: nenhum pagamento é cobrado.</p></div>'
+      +'<div id="pagarBloco">'
       +'<div class="method-tabs">'
       +'<div class="method-tab active" data-method="pix">PIX</div>'
       +'<div class="method-tab" data-method="card">Cartão</div></div>'
@@ -149,10 +171,10 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pagamento instantâneo via PIX. Acesso liberado imediatamente após confirmação.</p>'
       +'<button class="btn-pay green" id="btnPix">Gerar PIX</button></div>'
       +'<div class="method-content" id="methodCard">'
-      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartão de crédito via Mercado Pago. Parcelamento disponível.</p>'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartão de crédito na página segura do Asaas.</p>'
       +'<button class="btn-pay" id="btnCard">Pagar com cartão</button></div>'
-      +'<div id="pixResult"></div>'
-      +'<div class="security">Pagamento processado pelo Mercado Pago. Seus dados estão protegidos.</div></div>';
+      +'<div id="pixResult"></div></div>'
+      +'<div class="security">Pagamento processado pelo Asaas. Seus dados estão protegidos.</div></div>';
 
     // Tab switching
     document.querySelectorAll('.method-tab').forEach(function(tab){
@@ -165,6 +187,86 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
     });
 
 
+    // ── Cupom de desconto ──
+    // A prévia só mostra o preço. Quem decide o valor cobrado é o servidor, que
+    // recalcula o cupom no POST /checkout.
+    var cupom=null; // {codigo, percentual, valor_original, desconto, valor_final}
+    function valorAtual(){return cupom?cupom.valor_final:Number(c.preco)}
+    function esqueceCupom(){try{sessionStorage.removeItem('ead_cupom')}catch(e){}}
+    function cupomMsg(txt,cls){var m=document.getElementById('cupomMsg');m.className='cupom-msg'+(cls?' '+cls:'');m.textContent=txt||''}
+
+    function pintaPreco(){
+      var old=document.getElementById('priceOld'), now=document.getElementById('priceNow');
+      var gratis=cupom&&cupom.valor_final===0;
+      if(cupom){old.textContent='De '+fmt(cupom.valor_original);old.style.display='block'}
+      else if(c.preco_original){old.textContent='De '+fmt(c.preco_original);old.style.display='block'}
+      else{old.style.display='none'}
+      now.textContent=gratis?'Grátis':fmt(valorAtual());
+      document.getElementById('gratisBloco').style.display=gratis?'block':'none';
+      document.getElementById('pagarBloco').style.display=gratis?'none':'block';
+    }
+
+    function removeCupom(){
+      cupom=null;esqueceCupom();
+      document.getElementById('cupomInput').value='';
+      cupomMsg('');pintaPreco();
+    }
+
+    function aplicaCupom(codigo){
+      codigo=String(codigo||'').trim().toUpperCase();
+      if(!codigo){cupomMsg('Digite o código do cupom.','falha');return}
+      var btn=document.getElementById('cupomAplicar');
+      btn.disabled=true;cupomMsg('Validando...');
+      fetch(API+'/cupom',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,codigo:codigo})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+      .then(function(r){
+        btn.disabled=false;
+        if(!r.ok){cupom=null;pintaPreco();cupomMsg(r.data.error||'Cupom inválido.','falha');return}
+        cupom=r.data;pintaPreco();
+        var m=document.getElementById('cupomMsg');
+        m.className='cupom-msg ok';
+        m.textContent='Cupom '+cupom.codigo+' aplicado: '+cupom.percentual+'% de desconto (− '+fmt(cupom.desconto)+').';
+        var x=document.createElement('button');x.type='button';x.textContent='remover';x.addEventListener('click',removeCupom);m.appendChild(x);
+      })
+      .catch(function(){btn.disabled=false;cupomMsg('Erro de conexão. Tente novamente.','falha')});
+    }
+
+    document.getElementById('cupomAbrir').addEventListener('click',function(){
+      document.getElementById('cupomForm').classList.add('aberto');
+      document.getElementById('cupomInput').focus();
+    });
+    document.getElementById('cupomAplicar').addEventListener('click',function(){aplicaCupom(document.getElementById('cupomInput').value)});
+    document.getElementById('cupomInput').addEventListener('keydown',function(e){if(e.key==='Enter')aplicaCupom(this.value)});
+
+    // Link enviado com ?cupom=CODIGO (direto ou guardado pela lista de cursos).
+    var cupomInicial=new URLSearchParams(window.location.search).get('cupom');
+    if(!cupomInicial){try{cupomInicial=sessionStorage.getItem('ead_cupom')}catch(e){}}
+    if(cupomInicial){
+      try{sessionStorage.setItem('ead_cupom',cupomInicial)}catch(e){}
+      document.getElementById('cupomForm').classList.add('aberto');
+      document.getElementById('cupomInput').value=cupomInicial;
+      aplicaCupom(cupomInicial);
+    }
+
+    // Cupom de 100%: matricula sem passar pelo Asaas.
+    document.getElementById('btnCupomGratis').addEventListener('click',function(){
+      var btn=this;btn.disabled=true;btn.textContent='Liberando...';
+      document.getElementById('payError').style.display='none';
+      fetch(API+'/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({courseSlug:slug,metodo:'cupom',cupom:cupom&&cupom.codigo})})
+      .then(function(r){return r.json().then(function(d){return{ok:r.ok,data:d}})})
+      .then(function(r){
+        if(r.data.status==='aprovado'){esqueceCupom();window.location.href='/ead/player/'+slug;return}
+        document.getElementById('payError').textContent=r.data.error||'Não foi possível liberar o acesso.';
+        document.getElementById('payError').style.display='block';
+        btn.disabled=false;btn.textContent='Liberar meu acesso';
+      })
+      .catch(function(){
+        document.getElementById('payError').textContent='Erro de conexão. Tente novamente.';
+        document.getElementById('payError').style.display='block';
+        btn.disabled=false;btn.textContent='Liberar meu acesso';
+      });
+    });
+
     // ── CPF/CNPJ: exigido pelo Asaas para emitir a cobranca ──
     function pedeDocumento(){
       var atual=(document.getElementById('cpfCnpj')||{}).value||'';
@@ -176,6 +278,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
     function corpoCheckout(met){
       var b={courseSlug:slug,metodo:met};
       if(docAluno)b.cpfCnpj=docAluno;
+      if(cupom)b.cupom=cupom.codigo;
       return JSON.stringify(b);
     }
 
@@ -213,7 +316,10 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
         if(r.data.qr_code)html+='<div class="pix-code" title="Clique para copiar" id="pixCopy">'+r.data.qr_code+'</div>';
         html+='<div class="status-msg pending" id="pixStatus">Aguardando pagamento...</div></div>';
         document.getElementById('pixResult').innerHTML=html;
-        if(typeof gtag==="function")gtag("event","begin_checkout",{currency:"BRL",value:c.preco,event_category:"ead"});
+        // QR code gerado tem valor fixo: trocar o cupom agora mostraria um preço
+        // e cobraria outro. Para mudar, recarrega a página.
+        document.getElementById('cupomBox').style.display='none';
+        if(typeof gtag==="function")gtag("event","begin_checkout",{currency:"BRL",value:valorAtual(),event_category:"ead"});
         if(typeof plausible==="function")plausible("ead_checkout_pix");
         btn.style.display='none';
         if(r.data.qr_code){
@@ -237,7 +343,7 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
             .then(function(x){return x.json()})
             .then(function(d){
               if(d.status==='aprovado'){
-                clearInterval(poll);
+                clearInterval(poll);esqueceCupom();
                 if(typeof gtag==="function")gtag("event","purchase",{currency:"BRL",transaction_id:orderId,event_category:"ead"});
                 if(typeof plausible==="function")plausible("ead_purchase");
                 st.className='status-msg success';

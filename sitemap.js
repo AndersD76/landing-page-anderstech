@@ -43,7 +43,6 @@ const CORE_URLS = [
 
   // SEO Setorial
   ['/iso-9001-metalurgica', '2026-06-06', 'monthly', '0.8'],
-  ['/iso-9001-industria-alimenticia', '2026-06-06', 'monthly', '0.8'],
   ['/iso-9001-cooperativa-agricola', '2026-06-06', 'monthly', '0.8'],
   ['/iso-9001-construtora', '2026-06-06', 'monthly', '0.8'],
   ['/pbqp-h-construtora-residencial', '2026-06-06', 'monthly', '0.8'],
@@ -52,7 +51,6 @@ const CORE_URLS = [
   // Decisão / custo (BOFU)
   ['/iso-9001-vale-a-pena', '2026-06-06', 'monthly', '0.7'],
   ['/quanto-custa-certificacao-iso', '2026-07-12', 'monthly', '0.9'],
-  ['/quanto-custa-iso-14001', '2026-07-12', 'monthly', '0.8'],
   ['/quanto-custa-auditoria-interna', '2026-07-12', 'monthly', '0.8'],
   ['/quanto-custa-pbqp-h', '2026-07-12', 'monthly', '0.8'],
   ['/quanto-tempo-implantar-iso-9001', '2026-06-06', 'monthly', '0.7'],
