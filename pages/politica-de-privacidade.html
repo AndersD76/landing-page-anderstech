@@ -33,7 +33,7 @@
   <div class="wrap" style="max-width:820px">
     <div class="sec-index" style="margin-bottom:18px"><b>LEGAL</b> / PRIVACIDADE</div>
     <h1 style="font-size:clamp(32px,4vw,48px);color:var(--navy);margin-bottom:12px">Política de Privacidade</h1>
-    <p style="font-family:var(--ff-mono);font-size:12px;color:var(--ink-mute);letter-spacing:.1em;text-transform:uppercase;margin-bottom:40px">Última atualização: junho de 2026 · Em conformidade com a LGPD (Lei 13.709/2018)</p>
+    <p style="font-family:var(--ff-mono);font-size:12px;color:var(--ink-mute);letter-spacing:.1em;text-transform:uppercase;margin-bottom:40px">Última atualização: 18 de novembro de 2026 · Em conformidade com a LGPD (Lei 13.709/2018)</p>
 
     <div style="color:var(--ink-soft);font-size:16px;line-height:1.8">
       <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">1. Controlador dos dados</h2>
@@ -48,7 +48,10 @@
         <li><b>Checklist / lead magnet:</b> nome, email e empresa.</li>
         <li><b>Calculadora ROI:</b> faturamento estimado, número de funcionários, setor (dados da empresa, não pessoais).</li>
         <li><b>Portal do Cliente:</b> nome, email, empresa, CNPJ, telefone.</li>
-        <li><b>Analytics:</b> dados anônimos de navegação via Plausible Analytics (sem cookies, sem dados pessoais).</li>
+        <li><b>Compra de curso e contratação de consultoria pelo site:</b> nome, email, telefone, CPF ou CNPJ e, na consultoria, razão social, endereço e dados de quem assina o contrato. O pagamento é processado pelo Asaas.</li>
+        <li><b>Programa de parceiros:</b> nome, empresa, email, telefone e cidade de quem se cadastra.</li>
+        <li><b>Origem da visita:</b> página de entrada, site de onde você veio e parâmetros de campanha (UTM). Com o seu consentimento de marketing, também o identificador de clique do anúncio (gclid, gbraid, wbraid, msclkid, fbclid ou li_fat_id).</li>
+        <li><b>Estatísticas de uso:</b> com o seu consentimento de análise, páginas vistas e cliques em botões, pelo Google Analytics 4 e por telemetria própria gravada no nosso banco. A telemetria própria não guarda nome, e o email ou telefone informado num formulário fica só como hash (código irreversível).</li>
       </ul>
 
       <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">3. Finalidade do tratamento</h2>
@@ -65,7 +68,8 @@
       <ul style="padding-left:24px;list-style:disc;margin:12px 0">
         <li><b>Consentimento</b> (Art. 7, I da LGPD): ao preencher formulários voluntariamente</li>
         <li><b>Execução de contrato</b> (Art. 7, V): para clientes com contrato ativo</li>
-        <li><b>Interesse legítimo</b> (Art. 7, IX): para melhorias no site baseadas em analytics anônimo</li>
+        <li><b>Interesse legítimo</b> (Art. 7, IX): para registrar a origem de um contato que você nos enviou (página de entrada e campanha) e responder a ele</li>
+        <li><b>Consentimento específico</b>, dado no aviso de cookies e revogável a qualquer momento: estatísticas de uso (análise) e medição de anúncios (marketing)</li>
       </ul>
 
       <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">5. Compartilhamento de dados</h2>
@@ -74,17 +78,28 @@
         <li><b>Resend</b> (envio de emails transacionais) — política: resend.com/privacy</li>
         <li><b>Neon</b> (banco de dados) — dados armazenados em servidor nos EUA com criptografia</li>
         <li><b>Railway</b> (hospedagem) — dados em trânsito via HTTPS/TLS</li>
+        <li><b>Asaas</b> (pagamentos) — dados necessários para emitir a cobrança</li>
+        <li><b>Google</b> (Google Analytics 4) — só com o seu consentimento de análise</li>
+        <li><b>Google Ads, Microsoft Advertising e Meta</b> — só com o seu consentimento de marketing, e só quando você chegou por um anúncio dessas plataformas: informamos que o clique virou contato ou compra (identificador do clique, data, valor e, para a Meta, email e telefone em hash). Serve para medir o resultado do anúncio.</li>
       </ul>
-      <p>Não vendemos, alugamos ou compartilhamos seus dados pessoais com terceiros para fins de marketing.</p>
+      <p>Não vendemos nem alugamos seus dados pessoais.</p>
 
-      <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">6. Cookies</h2>
-      <p>Utilizamos <b>Plausible Analytics</b>, que não utiliza cookies e não coleta dados pessoais. O Portal do Cliente utiliza cookies de sessão estritamente necessários para autenticação — eles expiram ao fechar o navegador ou após 24 horas.</p>
+      <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">6. Cookies e armazenamento no navegador</h2>
+      <ul style="padding-left:24px;list-style:disc;margin:12px 0">
+        <li><b>Necessários:</b> sessão do Portal do Cliente e da área de cursos (autenticação; expira em 24 horas) e a sua escolha no aviso de cookies.</li>
+        <li><b>Parceiro (<code>at_parceiro</code>):</b> se você chegou pelo link de um parceiro, guarda só o código desse parceiro por 90 dias, para que a indicação seja registrada. Não contém dado pessoal.</li>
+        <li><b>Análise (com consentimento):</b> cookies do Google Analytics 4, identificador anônimo e sessão da telemetria própria, e o cookie <code>at_attr</code> com a origem da visita (90 dias).</li>
+        <li><b>Marketing (com consentimento):</b> o identificador de clique do anúncio é acrescentado ao <code>at_attr</code>.</li>
+      </ul>
+      <p>Você pode mudar a sua escolha quando quiser: <button type="button" id="ckReabrir" style="background:none;border:1px solid var(--line,#c9d2e0);padding:6px 12px;cursor:pointer;font:inherit;color:var(--navy)">Rever preferências de cookies</button></p>
+      <script>document.getElementById('ckReabrir').addEventListener('click',function(){try{localStorage.removeItem('at_cookie_consent');localStorage.removeItem('at_consent_mkt')}catch(e){}document.cookie='at_attr=; path=/; max-age=0; SameSite=Lax';location.reload()});</script>
 
       <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">7. Retenção de dados</h2>
       <ul style="padding-left:24px;list-style:disc;margin:12px 0">
         <li><b>Leads:</b> mantidos por até 24 meses após o último contato</li>
         <li><b>Dados de clientes:</b> mantidos durante a vigência do contrato e por 5 anos após o encerramento (obrigação legal)</li>
-        <li><b>Analytics:</b> dados anônimos sem prazo definido</li>
+        <li><b>Estatísticas de uso:</b> até 24 meses</li>
+        <li><b>Origem e conversões enviadas a plataformas de anúncio:</b> até 24 meses no nosso banco; nas plataformas, conforme a política de cada uma</li>
       </ul>
 
       <h2 style="font-size:22px;color:var(--navy);margin:32px 0 12px">8. Seus direitos (LGPD Art. 18)</h2>

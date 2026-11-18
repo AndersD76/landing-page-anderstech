@@ -70,7 +70,9 @@ jobs:
         run: |
           # Antes: 8 URLs fixas escritas a mao, enquanto o sitemap tem 123.
           # Agora le o proprio sitemap, entao conteudo novo sempre e notificado.
-          URLS=$(curl -s https://anderstech.net/sitemap.xml             | grep -o '<loc>[^<]*</loc>' | sed 's|<loc>||;s|</loc>||'             | head -1000 | jq -R . | jq -s .)
+          # /sitemap.xml virou índice por tipo (18/11/2026): lê cada parte.
+          URLS=$(for parte in $(curl -s https://anderstech.net/sitemap.xml | grep -o '<loc>[^<]*</loc>' | sed 's|<loc>||;s|</loc>||'); do
+                   curl -s "$parte" | grep -o '<loc>[^<]*</loc>' | sed 's|<loc>||;s|</loc>||'; done | head -10000 | jq -R . | jq -s .)
           COUNT=$(echo "$URLS" | jq 'length')
           echo "Notificando IndexNow: $COUNT URLs"
           curl -s -X POST "https://api.indexnow.org/indexnow"             -H "Content-Type: application/json"             -d "$(jq -n --argjson u "$URLS" '{
@@ -78,3 +80,56 @@ jobs:
                   key: "f6ba6a9696c4426b9a20bd3baa58e3ec",
                   keyLocation: "https://anderstech.net/f6ba6a9696c4426b9a20bd3baa58e3ec.txt",
                   urlList: $u }')" || echo "IndexNow ping falhou (nao bloqueante)"
+
+  # ── Portão de segurança e qualidade (18/11/2026) ─────────────────────────────
+  # Merge bloqueado só por: testes (inclui seguranca.test.js e urls.test.js de
+  # SEO), fumaça E2E, Semgrep em severidade ERROR, audit crítico/alto, gitleaks
+  # e orçamento do Lighthouse nas páginas de conversão.
+
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks no histórico inteiro
+        run: |
+          curl -sSL -o gl.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz
+          tar -xzf gl.tgz gitleaks
+          ./gitleaks git . --config .gitleaks.toml --redact --no-banner
+
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install --quiet semgrep==1.186.0
+      - name: Semgrep (bloqueia só severidade ERROR)
+        run: semgrep scan --config p/javascript --config p/expressjs --config p/secrets --metrics=off --severity ERROR --error --exclude node_modules --exclude 'ead/seed*.js'
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Fumaça E2E (desktop e celular; falha com erro no console)
+        run: node scripts/fumaca-e2e.mjs
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Lighthouse com orçamento nas páginas de conversão
+        run: |
+          PORT=3001 NODE_ENV=development npm start &
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:3001/robots.txt >/dev/null && break; sleep 1; done
+          npx --yes @lhci/cli@0.14.0 autorun --config=lighthouserc.json

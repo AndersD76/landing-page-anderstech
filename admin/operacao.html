@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Operação — Anders Tech</title>
+<style>
+:root{--navy:#0b1730;--red:#FE0000;--paper:#F4F6FA;--ink:#16233f;--mute:#8190ac;--line:rgba(32,56,100,.14)}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.45}
+header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header a{color:#b9c8e4;text-decoration:none;font-size:.82rem}
+.tabs button{background:none;border:0;color:#b9c8e4;font:inherit;padding:6px 10px;cursor:pointer;border-bottom:2px solid transparent}
+.tabs button.on{color:#fff;border-bottom-color:var(--red)}
+main{max-width:1240px;margin:0 auto;padding:18px 24px 60px}
+#auth{max-width:340px;margin:80px auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}
+#auth input{width:100%;padding:10px;margin:10px 0;border:1px solid var(--line);border-radius:4px}
+#auth button{width:100%;background:var(--red);color:#fff;border:0;padding:11px;font-weight:700;border-radius:4px;cursor:pointer}
+section{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px;overflow-x:auto}
+h2{font-size:.95rem;color:var(--navy);margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:5px 8px 5px 0;border-bottom:1px solid var(--line)}
+td{padding:5px 8px 5px 0;border-bottom:1px solid var(--line);vertical-align:top}
+pre{white-space:pre-wrap;background:var(--paper);padding:8px;border-radius:4px;font-size:.78rem;max-height:200px;overflow:auto}
+button.p{font:inherit;font-size:.75rem;padding:3px 8px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer}
+.tag{display:inline-block;padding:1px 7px;border-radius:9px;font-size:.7rem;background:var(--paper);border:1px solid var(--line)}
+.on-tag{background:#dcfce7;border-color:#86efac}
+.vazio{color:var(--mute)}
+</style>
+</head>
+<body>
+<div id="auth"><b>Operação — Anders Tech</b><input type="password" id="chave" placeholder="Chave de acesso"><button id="entrar">Entrar</button><div id="erro" style="color:var(--red);display:none">Chave inválida.</div></div>
+<div id="app" style="display:none">
+<header><b>Operação</b><a href="/admin">Leads</a><a href="/admin/crescimento">Crescimento</a><a href="/admin/organico">Orgânico</a>
+<div class="tabs" id="tabs"><button data-t="estado" class="on">Estado</button><button data-t="contas">Outbound</button><button data-t="tarefas">Tarefas</button><button data-t="fila">Fila de e-mails</button><button data-t="posts">Posts</button><button data-t="parceiros">Parceiros-alvo</button><button data-t="midia">Mídia paga</button></div></header>
+<main id="m"></main>
+</div>
+<script>
+let chave = sessionStorage.getItem('adminKey') || '', aba = 'estado';
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api = async (p, o = {}) => { const r = await fetch(p, { ...o, headers: { Authorization: 'Bearer ' + chave, 'Content-Type': 'application/json', ...(o.headers || {}) } }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; };
+const tab = (cab, linhas, vazio = 'Nada aqui ainda.') => linhas.length ? `<table><thead><tr>${cab.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas.map(l => `<tr>${l.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>` : `<p class="vazio">${vazio}</p>`;
+const tg = (on, txt) => `<span class="tag ${on ? 'on-tag' : ''}">${txt}: ${on ? 'ligado' : 'desligado'}</span>`;
+
+const ABAS = {
+  async estado() {
+    const e = await api('/api/admin/operacao/estado');
+    return `<section><h2>O que está ligado</h2><p>${tg(e.outbound, 'Outbound (OUTBOUND_ATIVO)')} ${tg(e.regua, 'Régua (REGUA_ATIVA)')} ${tg(e.whatsapp, 'WhatsApp Cloud API')} ${tg(e.meta, 'Meta CAPI')} ${tg(e.google_data_manager, 'Google Data Manager')} ${tg(e.microsoft_uet, 'Microsoft UET')} ${tg(e.google_ads_custo, 'Custo Google Ads')} ${tg(e.feed_csv, 'Feed CSV')} ${tg(e.resend, 'Resend')}</p>
+<p style="margin-top:8px" class="vazio">Mensagem a terceiros (outbound, régua) só sai com a variável ligada no Railway. Descadastro em 1 clique em toda mensagem.</p></section>
+<section><h2>Fila</h2>${tab(['Tipo', 'Status', 'Quantas'], (e.fila || []).map(f => [esc(f.tipo), esc(f.status), f.n]))}</section>
+<section><h2>Contas de outbound</h2>${tab(['Status', 'Contas', 'Com e-mail'], (e.contas || []).map(c => [esc(c.status), c.n, c.com_email]))}</section>
+<section><h2>As 5 objeções (para a ligação)</h2>${tab(['Objeção', 'Resposta'], e.objecoes.map(([o, r]) => [esc(o), esc(r)]))}</section>`;
+  },
+  async contas() {
+    const l = await api('/api/admin/operacao/contas');
+    return `<section><h2>Contas (dado próprio: PBQP-H a até 300 km)</h2><p style="margin-bottom:8px"><button class="p" id="sinc">Atualizar contas e contatos do SiAC</button> <button class="p" id="lote">Iniciar sequência nas 15 melhores</button></p>
+${tab(['Score', 'Empresa', 'Cidade', 'km', 'Validade', 'Seg.', 'E-mail', 'Status', ''], l.map(c => [c.score, `${esc(c.empresa)}<br><small>${esc(c.motivos)}</small>`, `${esc(c.municipio)}/${esc(c.uf)}`, c.km, c.validade ? new Date(c.validade).toLocaleDateString('pt-BR') : '—', esc(c.segmento), esc(c.email || '—'),
+  `<select data-conta="${esc(c.cnpj)}">${['novo', 'em_sequencia', 'respondeu', 'sair', 'cliente', 'descartado'].map(s => `<option ${s === c.status ? 'selected' : ''}>${s}</option>`).join('')}</select>`,
+  c.status === 'novo' && c.email ? `<button class="p" data-iniciar="${esc(c.cnpj)}">Iniciar</button>` : '']), 'Clique em "Atualizar contas" para montar a lista.')}</section>`;
+  },
+  async tarefas() {
+    const l = (await api('/api/admin/operacao/mensagens?tipo=tarefa')).filter(m => m.status === 'agendada');
+    return `<section><h2>Ligações e LinkedIn (toque 3 do outbound)</h2>${tab(['Quando', 'Empresa', 'Telefone', 'Roteiro de 60 s', ''], l.map(m => [new Date(m.agendada_para).toLocaleString('pt-BR'), esc((m.params || {}).empresa), esc((m.params || {}).telefone || '—'), `<pre>${esc(m.roteiro)}</pre>`, `<button class="p" data-feita="${m.id}">Feita</button>`]))}</section>`;
+  },
+  async fila() {
+    const l = (await api('/api/admin/operacao/mensagens')).filter(m => m.tipo !== 'tarefa');
+    return `<section><h2>E-mails (outbound e régua)</h2>${tab(['Quando', 'Tipo', 'Modelo', 'Para', 'Status', 'Cliques', ''], l.map(m => [new Date(m.agendada_para).toLocaleString('pt-BR'), esc(m.tipo), esc(m.chave), esc(m.email), esc(m.status) + (m.erro ? `<br><small style="color:#b91c1c">${esc(m.erro)}</small>` : ''), m.cliques, m.status === 'agendada' ? `<button class="p" data-cancelar="${m.id}">Cancelar</button>` : '']))}</section>`;
+  },
+  async posts() {
+    const l = await api('/api/admin/operacao/posts');
+    return `<section><h2>30 posts (3 por semana)</h2>${tab(['#', 'Semana', 'Tipo', 'Texto', 'Link (com UTM)', ''], l.map(p => [p.n, p.semana, esc(p.tipo), `<pre>${esc(p.texto)}</pre>${p.aguarda ? `<small style="color:#b45309">Aguarda: ${esc(p.aguarda)}</small>` : ''}`, `<small>${esc(p.link)}</small><br><button class="p" data-copiarpost="${p.n}">Copiar texto + link</button>`, p.publicado ? `<span class="tag on-tag">publicado</span>` : `<button class="p" data-publicado="${p.n}">Marcar publicado</button>`]))}</section>`;
+  },
+  async parceiros() {
+    const l = await api('/api/admin/operacao/parceiros-alvo');
+    return `<section><h2>50 parceiros-alvo (primeiro contato por e-mail ou formulário; nunca WhatsApp frio)</h2>${tab(['Organização', 'Tipo', 'Por quê', 'Mensagem', 'Situação'], l.map(p => [`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.nome)}</a><br><small>${esc(p.cidade)}/${esc(p.uf)}</small>`, esc(p.tipo), esc(p.motivo), `<b>${esc(p.mensagem.assunto)}</b><pre>${esc(p.mensagem.corpo)}</pre>`,
+      `<select data-alvo="${esc(p.chave)}"><option value="">—</option>${['contatado', 'respondeu', 'parceiro', 'sem_interesse'].map(s => `<option ${p.situacao && p.situacao.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select>`]))}</section>`;
+  },
+  async midia() {
+    const arq = ['1-campanhas.csv', '2-grupos.csv', '3-palavras.csv', '4-negativas.csv', '5-anuncios-rsa.csv', '6-sitelinks.csv', '7-callouts.csv'];
+    return `<section><h2>Google Ads Editor: arquivos de importação (na ordem)</h2><p>${arq.map(a => `<button class="p" data-baixar="${a}">${a}</button>`).join(' ')}</p>
+<p style="margin-top:10px" class="vazio">Campanhas sobem pausadas. Conta: marcação automática ligada; sufixo de URL final <code>utm_source=google&amp;utm_medium=cpc&amp;utm_campaign={campaignid}&amp;utm_content={adgroupid}&amp;utm_term={keyword}</code>; ações de conversão "Lead site", "Compra" e "Checkout iniciado". Microsoft: Importar do Google Ads, verba a 1/6.</p></section>`;
+  },
+};
+
+async function pintar() { $('m').innerHTML = '<p class="vazio">Carregando…</p>'; try { $('m').innerHTML = await ABAS[aba](); } catch (e) { $('m').innerHTML = `<p style="color:var(--red)">${esc(e.message)}</p>`; } }
+async function entrar(v) {
+  chave = (v !== undefined ? v : $('chave').value).trim();
+  try { await api('/api/admin/operacao/estado'); sessionStorage.setItem('adminKey', chave); $('auth').style.display = 'none'; $('app').style.display = 'block'; pintar(); }
+  catch { $('erro').style.display = 'block'; }
+}
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  try {
+    if (b.dataset.t) { aba = b.dataset.t; document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b)); return pintar(); }
+    if (b.id === 'sinc') { b.textContent = 'Atualizando…'; const r = await api('/api/admin/operacao/contas/sincronizar', { method: 'POST' }); alert(`${r.contas} contas na área; ${r.comEmail ?? '?'} com e-mail.`); return pintar(); }
+    if (b.id === 'lote') { const r = await api('/api/admin/operacao/contas/iniciar-lote', { method: 'POST', body: JSON.stringify({ n: 15 }) }); alert(`${r.iniciadas} sequência(s) iniciada(s).`); return pintar(); }
+    if (b.dataset.iniciar) { await api('/api/admin/operacao/contas/' + encodeURIComponent(b.dataset.iniciar) + '/iniciar', { method: 'POST' }); return pintar(); }
+    if (b.dataset.feita) { await api('/api/admin/operacao/mensagens/' + b.dataset.feita + '/feita', { method: 'POST' }); return pintar(); }
+    if (b.dataset.cancelar) { await api('/api/admin/operacao/mensagens/' + b.dataset.cancelar + '/cancelar', { method: 'POST' }); return pintar(); }
+    if (b.dataset.publicado) { const url = prompt('Link do post publicado (opcional):') || ''; await api('/api/admin/operacao/posts/' + b.dataset.publicado, { method: 'POST', body: JSON.stringify({ url }) }); return pintar(); }
+    if (b.dataset.copiarpost) { const tr = b.closest('tr'); await navigator.clipboard.writeText(tr.querySelector('pre').textContent + '\n\n' + tr.querySelector('small').textContent); b.textContent = 'Copiado'; }
+    if (b.dataset.baixar) { const r = await fetch('/api/admin/midia/' + b.dataset.baixar, { headers: { Authorization: 'Bearer ' + chave } }); const a = document.createElement('a'); a.href = URL.createObjectURL(await r.blob()); a.download = b.dataset.baixar; a.click(); }
+  } catch (err) { alert(err.message); }
+});
+document.addEventListener('change', async (e) => {
+  const s = e.target;
+  try {
+    if (s.dataset.conta) await api('/api/admin/operacao/contas/' + encodeURIComponent(s.dataset.conta), { method: 'PATCH', body: JSON.stringify({ status: s.value }) });
+    if (s.dataset.alvo && s.value) await api('/api/admin/operacao/parceiros-alvo/' + s.dataset.alvo, { method: 'PATCH', body: JSON.stringify({ status: s.value }) });
+  } catch (err) { alert(err.message); }
+});
+$('entrar').addEventListener('click', () => entrar());
+$('chave').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+if (chave) entrar(chave);
+</script>
+</body>
+</html>

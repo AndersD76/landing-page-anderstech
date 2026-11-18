@@ -141,6 +141,7 @@ tr.lead-detail td{background:#f8f9fb;padding:16px 24px}
       <span id="last-refresh"></span>
       <a href="/admin/cupons" style="color:#fff;font-size:.85rem;opacity:.85">Cupons EAD</a>
       <a href="/admin/trafego" style="color:#fff;font-size:.85rem;opacity:.85">Tráfego</a>
+      <a href="/admin/crescimento" style="color:#fff;font-size:.85rem;opacity:.85">Crescimento</a>
       <button id="btn-refresh">&#8635; Atualizar</button>
       <button id="btn-logout">Sair</button>
     </div>
@@ -483,7 +484,8 @@ function renderTable() {
     html += '<td><strong>' + esc(l.nome || l.email || l.telefone || '—') + '</strong></td>';
     html += '<td>' + esc(l.empresa || '—') + '</td>';
     html += '<td>' + esc(l.interesse || '—') + '</td>';
-    html += '<td>' + esc(l.source || '—') + '</td>';
+    // Score e canal (migration 018): a fila se ordena por quem vale atender primeiro.
+    html += '<td>' + esc(l.source || '—') + (l.canal ? '<br><small style="color:#8190ac">' + esc(l.canal) + '</small>' : '') + (l.score != null ? ' <small title="score" style="font-weight:700">· ' + esc(l.score) + '</small>' : '') + '</td>';
     html += '<td>' + (l.prazo ? '<span class="prazo prazo-' + esc(l.prazo) + '">' + esc(ROTULO_PRAZO[l.prazo] || l.prazo) + '</span>' : '—') + '</td>';
     html += '<td><span class="badge badge-' + (l.status || 'novo') + '">' + esc(l.status || 'novo') + '</span></td>';
     html += '</tr>';
@@ -506,6 +508,11 @@ function renderDetailContent(l) {
   h += field('Prazo de decisão', l.prazo ? (ROTULO_PRAZO[l.prazo] || l.prazo) : null);
   h += field('Página de entrada', l.landing_page);
   h += field('Fonte', l.source);
+  h += field('Canal', l.canal);
+  h += field('Score', l.score != null ? l.score + '/100' + (Array.isArray(l.score_motivos) && l.score_motivos.length ? ' — ' + l.score_motivos.join(', ') : '') : null);
+  h += field('Parceiro', l.parceiro_codigo);
+  h += field('Clique de anúncio', l.atribuicao && l.atribuicao.lt ? ['gclid', 'gbraid', 'wbraid', 'msclkid', 'fbclid', 'li_fat_id'].filter(k => l.atribuicao.lt[k] || (l.atribuicao.ft && l.atribuicao.ft[k])).join(', ') || null : null);
+  h += field('Primeira resposta', l.primeira_resposta_em ? new Date(l.primeira_resposta_em).toLocaleString('pt-BR') : null);
   h += field('UTM Source', l.utm_source);
   h += field('UTM Medium', l.utm_medium);
   h += field('UTM Campaign', l.utm_campaign);

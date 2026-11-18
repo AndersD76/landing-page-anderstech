@@ -27,6 +27,14 @@ export const EVENTOS = new Set([
   'case_view',
   'artifact_scan',
   'identify',
+  // Iscas e funil orgânico (18/11/2026, pedido do Anders). Propriedades
+  // obrigatórias em props: page_type, cluster, consulta_alvo, isca_id
+  // (organico/taxonomia.js). Ver CLAUDE.md, regra 6.
+  'isca_vista',
+  'isca_iniciada',
+  'isca_concluida',
+  'lead_capturado',
+  'cta_produto_clicado',
 ]);
 
 // Flag própria, independente do NODE_ENV que liga o GA4: a telemetria roda em

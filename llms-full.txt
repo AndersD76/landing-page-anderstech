@@ -12,7 +12,7 @@ Daniel Anders — Electrical Engineer, ISO 9001 Consultant, working in business 
 ## Services
 
 ### ISO 9001 Implementation & Maintenance
-Full implementation and maintenance of Quality Management Systems according to ISO 9001:2015. Preparation for certification audits and ongoing surveillance audits. Applicable to any industry sector.
+Full implementation and maintenance of Quality Management Systems according to ISO 9001:2015 and the new ISO 9001:2026 (published 16 Sep 2026; transition deadline 30 Sep 2029 — see https://anderstech.net/iso-9001-2026). Preparation for certification audits and ongoing surveillance audits. Applicable to any industry sector.
 
 ### PBQP-H Qualification
 Qualification for Brazil's Quality and Productivity Program for Housing (Programa Brasileiro da Qualidade e Produtividade do Habitat). Required for construction companies to access government housing financing (Minha Casa Minha Vida / Casa Verde e Amarela) and public tenders.

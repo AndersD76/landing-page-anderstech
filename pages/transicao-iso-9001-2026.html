@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diagnóstico de Transição ISO 9001:2026 Grátis — Anders Tech</title>
+<meta name="description" content="10 perguntas sobre o que mudou na ISO 9001:2026. Veja na hora quanto do seu sistema já está pronto, o que falta em cada requisito e quanto tempo você tem até 30/09/2029." />
+<meta name="author" content="Daniel Anders" />
+<!-- REVISAR: isca principal da onda ISO 9001:2026 (18/11/2026). As perguntas seguem os
+     pontos da seção 3 do documento de transição da Global ACI; o "o que fazer" de cada
+     lacuna fala em nome do Daniel. -->
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://anderstech.net/transicao-iso-9001-2026" />
+<meta property="og:title" content="Diagnóstico de transição ISO 9001:2026" />
+<meta property="og:description" content="10 perguntas, resultado na hora: o que já está pronto e o que falta para a versão 2026." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://anderstech.net/transicao-iso-9001-2026" />
+<meta property="og:image" content="https://anderstech.net/assets/og-image.png" />
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/assets/favicon.png" type="image/png" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Diagnóstico de transição ISO 9001:2026",
+  "url": "https://anderstech.net/transicao-iso-9001-2026",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "pt-BR",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+  "provider": { "@type": "Organization", "name": "Anders Tech", "url": "https://anderstech.net/" }
+}
+</script>
+<style>
+.dg-hero{background:#0b1730;color:#fff;padding:clamp(40px,7vw,72px) 16px clamp(28px,5vw,44px)}
+.dg-hero .wrap,.dg-main{max-width:820px;margin:0 auto}
+.dg-hero .tag{font-family:var(--ff-mono,monospace);font-size:.74rem;font-weight:700;color:#FE0000;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.dg-hero h1{font-family:var(--ff-display,system-ui);font-size:clamp(1.7rem,4.4vw,2.4rem);line-height:1.15;margin-bottom:12px;color:#fff}
+.dg-hero p{color:#b9c8e4;font-size:1.04rem;line-height:1.6}
+.dg-main{padding:24px 16px 72px;color:#16233f}
+.dg-q{background:#fff;border:1px solid rgba(32,56,100,.14);border-radius:8px;padding:16px 18px;margin-bottom:12px}
+.dg-q .req{font-family:var(--ff-mono,monospace);font-size:.72rem;color:#d80a0a;font-weight:700;letter-spacing:.06em}
+.dg-q p{margin:4px 0 10px;font-size:1rem;line-height:1.55}
+.dg-op{display:flex;gap:8px;flex-wrap:wrap}
+.dg-op label{border:1px solid #c9d2e0;border-radius:6px;padding:8px 14px;cursor:pointer;font-size:.93rem;display:flex;gap:6px;align-items:center}
+.dg-op input{accent-color:#203864}
+.dg-sel{width:100%;max-width:420px;padding:10px 12px;border:1px solid #c9d2e0;border-radius:6px;font:inherit}
+.dg-btn{background:#d80a0a;color:#fff;border:0;border-radius:6px;padding:14px 22px;font:inherit;font-weight:700;cursor:pointer}
+.dg-res{background:#fff;border:2px solid #203864;border-radius:10px;padding:22px;margin-top:22px}
+.dg-nota{font-family:var(--ff-display,system-ui);font-size:3rem;font-weight:700;color:#0b1730;line-height:1}
+.dg-barra{height:10px;background:#e6ebf3;border-radius:5px;margin:10px 0 16px;overflow:hidden}
+.dg-barra i{display:block;height:100%;background:#203864}
+.dg-gap{border-left:3px solid #d80a0a;padding:6px 0 6px 12px;margin:10px 0}
+.dg-gap.parcial{border-color:#e0a800}
+.dg-gap b{color:#0b1730}
+.dg-prazo{background:#fff7d6;border-left:4px solid #e0a800;padding:12px 14px;margin:16px 0;font-size:.97rem}
+.dg-share{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.dg-share input{flex:1;min-width:220px;padding:9px;border:1px solid #c9d2e0;border-radius:6px;font-size:.85rem}
+.dg-share button,.dg-share a{border:1px solid #203864;background:#fff;color:#203864;border-radius:6px;padding:9px 14px;font:inherit;font-size:.9rem;cursor:pointer;text-decoration:none}
+.dg-form{background:#f4f6fa;border-radius:8px;padding:18px;margin-top:20px}
+.dg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 14px}
+.dg-grid label{display:block;font-size:.8rem;font-weight:600;color:#46577a;margin-bottom:3px}
+.dg-grid input,.dg-grid select{width:100%;padding:10px;border:1px solid #c9d2e0;border-radius:6px;font:inherit}
+.dg-msg{margin-top:10px;font-size:.95rem}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div id="shared-nav"></div>
+<main>
+<section class="dg-hero"><div class="wrap">
+  <div class="tag">Ferramenta grátis · ISO 9001:2026</div>
+  <h1>Diagnóstico de transição para a ISO 9001:2026</h1>
+  <p>10 perguntas sobre o que mudou na norma publicada em 16/09/2026. O resultado aparece na hora, com o que falta em cada requisito e quanto tempo você tem até o prazo final de 30/09/2029. Não precisa se cadastrar para ver.</p>
+</div></section>
+
+<div class="dg-main">
+  <form id="dg" novalidate data-isca="diagnostico-transicao-2026" data-isca-pos="ferramenta">
+    <div class="dg-q"><div class="req">5.1.1 · LIDERANÇA</div><p>A direção promove de forma explícita a cultura da qualidade e o comportamento ético, com evidência (comunicados, reuniões, reconhecimento)?</p><div class="dg-op" data-q="0"></div></div>
+    <div class="dg-q"><div class="req">5.2.1 · POLÍTICA</div><p>A política da qualidade foi revista para refletir o contexto atual e a direção estratégica da empresa?</p><div class="dg-op" data-q="1"></div></div>
+    <div class="dg-q"><div class="req">6.1.1 · RISCOS E OPORTUNIDADES</div><p>Riscos e oportunidades são levantados a partir do contexto (4.1) e das partes interessadas (4.2), num registro próprio?</p><div class="dg-op" data-q="2"></div></div>
+    <div class="dg-q"><div class="req">6.1.2 · AÇÕES PARA RISCOS</div><p>Cada risco relevante tem ação definida, responsável e avaliação de eficácia?</p><div class="dg-op" data-q="3"></div></div>
+    <div class="dg-q"><div class="req">6.1.3 · AÇÕES PARA OPORTUNIDADES</div><p>As oportunidades têm plano de ação próprio, separado dos riscos, e não só "risco positivo"?</p><div class="dg-op" data-q="4"></div></div>
+    <div class="dg-q"><div class="req">6.3 · MUDANÇAS</div><p>Quando o sistema muda (processo, estrutura, produto), vocês monitoram a eficácia da mudança, comunicam e analisam o resultado?</p><div class="dg-op" data-q="5"></div></div>
+    <div class="dg-q"><div class="req">7.3 · CONSCIENTIZAÇÃO</div><p>O treinamento de integração e a reciclagem cobrem cultura da qualidade e ética, além de política e objetivos?</p><div class="dg-op" data-q="6"></div></div>
+    <div class="dg-q"><div class="req">9.3.2 · ANÁLISE CRÍTICA</div><p>A pauta da análise crítica cobre todas as entradas obrigatórias, inclusive as mudanças nas necessidades das partes interessadas?</p><div class="dg-op" data-q="7"></div></div>
+    <div class="dg-q"><div class="req">4.1 / 4.2 · CLIMA</div><p>A empresa avaliou se mudança climática é questão relevante e se clientes ou outras partes interessadas têm requisitos sobre isso?</p><div class="dg-op" data-q="8"></div></div>
+    <div class="dg-q"><div class="req">ESTRUTURA</div><p>A documentação (matriz de requisitos, manual, procedimentos) já usa a numeração e os termos da versão 2026?</p><div class="dg-op" data-q="9"></div></div>
+
+    <div class="dg-q"><div class="req">SUA PRÓXIMA AUDITORIA</div><p>Quando é a próxima auditoria da certificadora (manutenção ou recertificação)?</p>
+      <select class="dg-sel" id="aud">
+        <option value="0">Ainda não sou certificado</option>
+        <option value="1">Em até 6 meses</option>
+        <option value="2">Entre 6 e 12 meses</option>
+        <option value="3">Entre 12 e 24 meses</option>
+        <option value="4">Daqui a mais de 24 meses</option>
+        <option value="5" selected>Não sei</option>
+      </select></div>
+    <button class="dg-btn" type="submit">Ver meu resultado</button>
+  </form>
+
+  <div id="res" class="dg-res" hidden aria-live="polite"></div>
+
+  <noscript><p>O cálculo do resultado precisa de JavaScript. As perguntas e o que fazer em cada ponto estão na página <a href="/iso-9001-2026">ISO 9001:2026: o que muda</a>.</p></noscript>
+
+  <p style="margin-top:26px;font-size:.95rem">Quer entender cada mudança antes? Leia <a href="/iso-9001-2026">ISO 9001:2026: o que muda e o prazo de transição</a>.</p>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script>
+(function () {
+  "use strict";
+  var REQ = [
+    ['5.1.1 Liderança', 'Definir como a direção promove cultura da qualidade e ética (comunicação, exemplo, reconhecimento) e guardar evidência.'],
+    ['5.2.1 Política', 'Revisar a política junto com o planejamento estratégico e o contexto, e redivulgar.'],
+    ['6.1.1 Riscos e oportunidades', 'Montar o registro de riscos e oportunidades a partir do contexto e das partes interessadas.'],
+    ['6.1.2 Ações para riscos', 'Dar a cada risco relevante ação, responsável, prazo e verificação de eficácia.'],
+    ['6.1.3 Ações para oportunidades', 'Criar plano próprio para as oportunidades, separado do tratamento de riscos.'],
+    ['6.3 Mudanças', 'Incluir no controle de mudanças: monitorar a eficácia, comunicar e analisar o resultado.'],
+    ['7.3 Conscientização', 'Atualizar o treinamento de integração e a reciclagem com cultura da qualidade e ética.'],
+    ['9.3.2 Análise crítica', 'Atualizar pauta e modelo de ata com todas as entradas obrigatórias e as mudanças das partes interessadas.'],
+    ['4.1/4.2 Clima', 'Registrar a avaliação sobre mudança climática no contexto e nos requisitos das partes interessadas.'],
+    ['Estrutura e termos', 'Atualizar a matriz de requisitos, o manual e as referências para a numeração da versão 2026.']
+  ];
+  var OPC = [['S', 'Sim'], ['P', 'Em parte'], ['N', 'Não']];
+  var AUD = ['Ainda não sou certificado', 'Em até 6 meses', 'Entre 6 e 12 meses', 'Entre 12 e 24 meses', 'Mais de 24 meses', 'Não sei'];
+  var form = document.getElementById('dg'), res = document.getElementById('res');
+
+  var grupos = form.querySelectorAll('.dg-op');
+  for (var i = 0; i < grupos.length; i++) {
+    var q = grupos[i].getAttribute('data-q'), h = '';
+    for (var j = 0; j < OPC.length; j++) {
+      h += '<label><input type="radio" name="q' + q + '" value="' + OPC[j][0] + '"> ' + OPC[j][1] + '</label>';
+    }
+    grupos[i].innerHTML = h;
+  }
+
+  function lerRespostas() {
+    var r = '';
+    for (var i = 0; i < REQ.length; i++) {
+      var m = form.querySelector('input[name="q' + i + '"]:checked');
+      r += m ? m.value : '-';
+    }
+    return r + document.getElementById('aud').value;
+  }
+  function aplicar(cod) {
+    for (var i = 0; i < REQ.length; i++) {
+      var el = form.querySelector('input[name="q' + i + '"][value="' + cod[i] + '"]');
+      if (el) el.checked = true;
+    }
+    var a = cod.charAt(REQ.length);
+    if (/[0-5]/.test(a)) document.getElementById('aud').value = a;
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  // Prazo: a data final é fixa (30/09/2029). O que muda por empresa é quantas
+  // auditorias cabem até lá e quando a certificadora estará acreditada (até
+  // 30/09/2027 pelo cronograma oficial).
+  function textoPrazo(aud) {
+    var hoje = new Date(), fim = new Date('2029-09-30T23:59:59-03:00');
+    var meses = Math.max(0, Math.round((fim - hoje) / (30.44 * 86400000)));
+    var base = 'Faltam cerca de <b>' + meses + ' meses</b> até 30/09/2029, o prazo final da transição. ';
+    if (aud === '0') return base + 'Como você ainda não é certificado: a partir de 31/03/2028 só existe certificação inicial pela versão 2026. Vale implantar já pelos requisitos novos.';
+    if (aud === '1' || aud === '2') return base + 'Sua próxima auditoria é em até 12 meses. Pergunte à certificadora se ela já estará acreditada para a 2026 nessa data (o cronograma oficial vai até 30/09/2027). Se não estiver, use essa auditoria para fechar as lacunas e planeje a transição para a seguinte.';
+    if (aud === '3') return base + 'Sua próxima auditoria é em 12 a 24 meses. É provável que ela já possa ser a de transição: feche as lacunas antes e combine com a certificadora.';
+    if (aud === '4') return base + 'Sua próxima auditoria passa de 24 meses. Confira se ela acontece antes de 30/09/2029. Se não, a transição precisa de uma auditoria especial.';
+    return base + 'Descubra a data da sua próxima auditoria: é ela que define quando a transição pode ser feita.';
+  }
+
+  function mostrar(cod, rolar) {
+    var pontos = 0, respondidas = 0, gaps = [];
+    for (var i = 0; i < REQ.length; i++) {
+      var c = cod.charAt(i);
+      if (c === 'S') { pontos += 2; respondidas++; }
+      else if (c === 'P') { pontos += 1; respondidas++; gaps.push([i, 'parcial']); }
+      else if (c === 'N') { respondidas++; gaps.push([i, 'nao']); }
+    }
+    if (respondidas < REQ.length) { alert('Responda as 10 perguntas para ver o resultado.'); return false; }
+    var pct = Math.round(pontos / (REQ.length * 2) * 100);
+    var aud = cod.charAt(REQ.length);
+    var url = location.origin + '/transicao-iso-9001-2026?r=' + cod;
+    var nivel = pct >= 80 ? 'Seu sistema está perto da versão 2026.' : pct >= 50 ? 'Metade do caminho: as lacunas são pontuais, mas existem.' : 'Há trabalho real antes da auditoria de transição.';
+    var h = '<div class="dg-nota">' + pct + '%</div><div class="dg-barra"><i style="width:' + pct + '%"></i></div>'
+      + '<p><b>' + nivel + '</b> ' + (gaps.length ? gaps.length + ' de 10 pontos pedem ajuste.' : 'Nenhuma lacuna nos 10 pontos.') + '</p>'
+      + '<div class="dg-prazo">' + textoPrazo(aud) + '</div>';
+    if (gaps.length) {
+      h += '<h3 style="margin:14px 0 4px">O que fazer, ponto a ponto</h3>';
+      for (var g = 0; g < gaps.length; g++) {
+        var r = REQ[gaps[g][0]];
+        h += '<div class="dg-gap ' + (gaps[g][1] === 'parcial' ? 'parcial' : '') + '"><b>' + esc(r[0]) + '</b> (' + (gaps[g][1] === 'parcial' ? 'em parte' : 'não atende') + '): ' + esc(r[1]) + '</div>';
+      }
+    }
+    h += '<p style="margin-top:14px;font-size:.92rem">Guarde ou compartilhe este resultado (o link reabre as mesmas respostas):</p>'
+      + '<div class="dg-share"><input id="dgUrl" readonly value="' + esc(url) + '"><button type="button" id="dgCopiar">Copiar link</button>'
+      + '<a id="dgWaShare" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent('Diagnóstico de transição ISO 9001:2026 — ' + url + '?utm_source=anderstech&utm_medium=whatsapp&utm_campaign=isca-transicao-2026') + '">Enviar no WhatsApp</a></div>'
+      + '<form class="dg-form" id="dgLead" novalidate><h3 style="margin:0 0 6px">Receber por e-mail e conversar com o Daniel</h3>'
+      + '<p style="font-size:.92rem;margin:0 0 12px">Você recebe o link deste resultado no seu e-mail, e o Daniel entra em contato para ajudar a planejar a transição.</p>'
+      + '<div class="dg-grid"><div><label for="lNome">Nome</label><input id="lNome" autocomplete="name"></div>'
+      + '<div><label for="lEmpresa">Empresa</label><input id="lEmpresa" autocomplete="organization"></div>'
+      + '<div><label for="lEmail">E-mail *</label><input id="lEmail" type="email" autocomplete="email"></div>'
+      + '<div><label for="lTel">WhatsApp</label><input id="lTel" type="tel" autocomplete="tel"></div>'
+      + '<div><label for="lCargo">Cargo</label><input id="lCargo" placeholder="Ex.: gerente da qualidade"></div>'
+      + '<div><label for="lPrazo">Quando quer resolver?</label><select id="lPrazo"><option value="">Escolha</option><option value="agora">Agora</option><option value="90_dias">Nos próximos 90 dias</option><option value="avaliando">Só avaliando</option></select></div></div>'
+      + '<label style="display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:.88rem;color:#46577a"><input type="checkbox" id="lOptin"> <span>Quero receber, por e-mail, conteúdo sobre a transição para a ISO 9001:2026 (no máximo 4 mensagens; descadastro em 1 clique).</span></label>'
+      + '<input class="hp" id="lWeb" tabindex="-1" autocomplete="off" aria-hidden="true">'
+      + '<button class="dg-btn" style="margin-top:12px" type="submit">Receber e falar com o Daniel</button><div class="dg-msg" id="lMsg" role="status"></div></form>'
+      + '<p style="margin-top:14px;font-size:.92rem">Prefere direto? <a id="dgWa" href="#" target="_blank" rel="noopener">Mande o resultado no WhatsApp do Daniel</a>.</p>';
+    res.innerHTML = h; res.hidden = false;
+    if (window.anders && window.anders.isca) window.anders.isca('isca_concluida', 'diagnostico-transicao-2026', { pct: pct });
+    try { history.replaceState(null, '', '/transicao-iso-9001-2026?r=' + cod); } catch (e) {}
+    var resumo = 'Diagnóstico de transição ISO 9001:2026: ' + pct + '% pronto, ' + gaps.length + ' lacuna(s). Próxima auditoria: ' + AUD[+aud] + '. ' + url;
+    var waMsg = 'Olá! Vim pela página Diagnóstico de transição ISO 9001:2026. ' + resumo;
+    document.getElementById('dgWa').href = window.anders && window.anders.waUrl ? window.anders.waUrl(waMsg) : 'https://wa.me/5554999648368?text=' + encodeURIComponent(waMsg);
+    document.getElementById('dgCopiar').onclick = function () {
+      var u = document.getElementById('dgUrl'); u.select();
+      try { navigator.clipboard.writeText(u.value); } catch (e) { document.execCommand('copy'); }
+      this.textContent = 'Copiado';
+    };
+    document.getElementById('dgLead').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var msg = document.getElementById('lMsg');
+      var v = function (id) { return document.getElementById(id).value; };
+      if (!v('lEmail')) { msg.style.color = '#b91c1c'; msg.textContent = 'Informe o e-mail para receber.'; return; }
+      msg.style.color = '#46577a'; msg.textContent = 'Enviando…';
+      var atr = window.anders && window.anders.atribuicao ? window.anders.atribuicao() : {};
+      fetch("/api/contact", {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: v('lNome'), empresa: v('lEmpresa'), email: v('lEmail'), telefone: v('lTel'), cargo: v('lCargo'), prazo: v('lPrazo'),
+          website: v('lWeb'), source: 'isca_transicao_2026', interesse: 'Transição ISO 9001:2026', mensagem: resumo,
+          optin_marketing: document.getElementById('lOptin').checked, isca_id: 'diagnostico-transicao-2026', consulta_alvo: 'transição iso 9001 2026',
+          diagnostico: { pct: pct, lacunas: gaps.length, url: url },
+          landing_page: atr.landing_page || '/transicao-iso-9001-2026', utm_source: atr.utm_source || '', utm_medium: atr.utm_medium || '',
+          utm_campaign: atr.utm_campaign || '', utm_content: atr.utm_content || ''
+        })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (x) {
+          if (!x.ok) { msg.style.color = '#b91c1c'; msg.textContent = x.j.error || 'Não foi possível enviar.'; return; }
+          msg.style.color = '#15803d'; msg.textContent = 'Pronto. O link do resultado foi para o seu e-mail e o Daniel vai entrar em contato.';
+          if (window.anders) { window.anders.track('form_submit', { path: '/transicao-iso-9001-2026', origem: 'Diagnóstico de transição' }); window.anders.isca('lead_capturado', 'diagnostico-transicao-2026'); window.anders.identify({ email: v('lEmail'), telefone: v('lTel') }); }
+        })
+        .catch(function () { msg.style.color = '#b91c1c'; msg.textContent = 'Falha de conexão. Tente de novo ou mande pelo WhatsApp.'; });
+    });
+    if (rolar) res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return true;
+  }
+
+  form.addEventListener('submit', function (ev) { ev.preventDefault(); mostrar(lerRespostas(), true); });
+
+  var r = new URLSearchParams(location.search).get('r');
+  if (r && /^[SPN]{10}[0-5]$/.test(r)) { aplicar(r); mostrar(r, false); }
+})();
+</script>
+</body>
+</html>

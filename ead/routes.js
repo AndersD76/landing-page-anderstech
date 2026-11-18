@@ -12,6 +12,10 @@ import { eadBoasVindas, eadMatriculaConfirmada } from '../emails.js';
 import * as asaas from './asaas.js';
 import { normalizaCodigo, aplicaDesconto, avaliaCupom, VALOR_MINIMO_COBRANCA } from './cupons.js';
 import { tratarWebhookConsultoria } from '../consultoria/routes.js';
+import { registrarConversao } from '../growth/conversoes.js';
+import { origemDoLead, registrarLeadDeOrigem } from '../growth/leads.js';
+import { pagamentoConfere } from '../growth/pagamento.js';
+import { aoCheckout, aoCobrancaVencida } from '../growth/mensageria.js';
 import { criarToken, consumirToken, emailReset } from '../db/senha.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -945,12 +949,28 @@ router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res
       }
     }
 
+    const origem = origemDoLead(req, {});
     const order = await sql`
-      INSERT INTO ead_orders (user_id, course_id, valor, valor_original, metodo, status, cupom_id)
-      VALUES (${userId}, ${course.id}, ${valores.valor_final}, ${valores.valor_original}, ${metodoInterno}, 'pendente', ${cupomId})
+      INSERT INTO ead_orders (user_id, course_id, valor, valor_original, metodo, status, cupom_id,
+                              atribuicao, canal, consent_marketing, parceiro_codigo)
+      VALUES (${userId}, ${course.id}, ${valores.valor_final}, ${valores.valor_original}, ${metodoInterno}, 'pendente', ${cupomId},
+              ${origem.atribuicao ? JSON.stringify(origem.atribuicao) : null}::jsonb, ${origem.canal}, ${origem.consent_marketing}, ${origem.parceiro_codigo})
       RETURNING id
     `;
     const orderId = order[0].id;
+    await registrarConversao(sql, { evento: 'checkout_started', refTipo: 'ead_order', refId: orderId, valor: valores.valor_final, origem });
+    // Caixa única de leads: um lead por pessoa e curso, não um por tentativa
+    // (trocar de Pix para boleto gera outro pedido, não outro lead).
+    const jaLead = await sql`
+      SELECT id FROM leads WHERE source = 'ead_checkout' AND email = ${user.email}
+         AND interesse = ${'Curso: ' + course.titulo} LIMIT 1`;
+    if (!jaLead.length) {
+      await registrarLeadDeOrigem(sql, {
+        origem, source: 'ead_checkout', nome: user.nome, email: user.email, telefone: user.telefone,
+        interesse: 'Curso: ' + course.titulo, mensagem: `Pedido nº ${orderId} · ${metodoInterno} · R$ ${valores.valor_final}`,
+        refTipo: 'ead_order', refId: orderId, valor: valores.valor_final,
+      });
+    }
 
     // O valor cobrado vem SEMPRE do banco, nunca do corpo da requisição.
     const cobranca = await asaas.criarCobranca({
@@ -962,6 +982,11 @@ router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res
       orderId,
       billingType: { pix: 'PIX', boleto: 'BOLETO', cartao: 'CREDIT_CARD' }[metodoInterno],
     });
+
+    // Lembrete de checkout abandonado (1 h e 24 h): só agenda com REGUA_ATIVA=true,
+    // e só sai se o pedido ainda estiver pendente na hora do envio.
+    await aoCheckout(sql, { refTipo: 'ead_order', refId: orderId, email: user.email, produto: 'Curso ' + course.titulo,
+      fatura: cobranca.invoiceUrl || null, voltar: '/ead/checkout/' + course.slug }).catch(e => console.error('[regua] checkout EAD:', e.message));
 
     if (metodoInterno === 'pix') {
       const qr = await asaas.obterQrCodePix(cobranca.id);
@@ -1004,6 +1029,16 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
     return res.sendStatus(401);
   }
 
+  // Camada extra opcional: o Asaas publica os IPs de saída do webhook
+  // (docs.asaas.com, "IPs oficiais", conferido em 18/11/2026). Desligada por
+  // padrão porque o sandbox usa outros IPs; ligar em produção com
+  // ASAAS_WEBHOOK_IPS=52.67.12.206,18.230.8.159,54.94.136.112,54.94.183.101
+  const ipsAsaas = String(process.env.ASAAS_WEBHOOK_IPS || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (ipsAsaas.length && !ipsAsaas.includes(String(req.ip || '').replace(/^::ffff:/, ''))) {
+    console.error(`Webhook Asaas: IP fora da lista (${req.ip})`);
+    return res.sendStatus(403);
+  }
+
   if (!sql) return res.sendStatus(503);
 
   try {
@@ -1025,6 +1060,12 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
 
     if (libera) {
       if (order.status === 'aprovado') return res.sendStatus(200);
+      // O corpo do webhook não é prova: confere na API do Asaas (growth/pagamento.js).
+      const conf = await pagamentoConfere(payment, { referencia: `ead-order-${orderId}`, valorMinimo: order.valor }, asaas.obterCobranca);
+      if (!conf.ok) {
+        console.error(`Webhook Asaas NÃO conferiu, pedido EAD #${orderId}: ${conf.motivo} — nada liberado`);
+        return res.sendStatus(200);
+      }
       const ops = [
         sql`UPDATE ead_orders SET status = 'aprovado', asaas_payment_id = ${String(payment.id)}, paid_at = NOW() WHERE id = ${orderId}`,
         sql`INSERT INTO ead_enrollments (user_id, course_id, order_id) VALUES (${order.user_id}, ${order.course_id}, ${orderId})
@@ -1034,6 +1075,18 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
       // o aluno já pagou, então o uso é honrado mesmo que estoure o máximo.
       if (order.cupom_id) ops.push(sql`UPDATE ead_coupons SET usos = usos + 1 WHERE id = ${order.cupom_id}`);
       await sql.transaction(ops);
+      // Venda só existe a partir daqui (webhook conferido), nunca pelo navegador.
+      await registrarConversao(sql, {
+        evento: 'payment_succeeded', refTipo: 'ead_order', refId: orderId, valor: order.valor,
+        origem: { canal: order.canal, atribuicao: order.atribuicao, parceiro_codigo: order.parceiro_codigo, consent_marketing: order.consent_marketing },
+      });
+      try {
+        await sql`
+          UPDATE leads SET status = 'ganho', updated_at = NOW()
+           WHERE source = 'ead_checkout' AND status IS DISTINCT FROM 'ganho'
+             AND email = (SELECT email FROM ead_users WHERE id = ${order.user_id})
+             AND interesse = (SELECT 'Curso: ' || titulo FROM ead_courses WHERE id = ${order.course_id})`;
+      } catch (e) { console.error('[leads] ganho EAD:', e.message); }
       await avisaMatricula(order);
     } else if (revoga) {
       await sql.transaction([
@@ -1044,6 +1097,11 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
       console.warn(`Matrícula revogada: pedido #${orderId}, evento ${event}`);
     } else {
       await sql`UPDATE ead_orders SET status = ${status} WHERE id = ${orderId}`;
+      if (status === 'vencido' && order.status === 'pendente') {
+        const u = await sql`SELECT u.email, c.titulo FROM ead_users u, ead_courses c WHERE u.id = ${order.user_id} AND c.id = ${order.course_id}`;
+        if (u[0]) await aoCobrancaVencida(sql, { refTipo: 'ead_order', refId: orderId, email: u[0].email, produto: 'Curso ' + u[0].titulo, fatura: order.asaas_invoice_url })
+          .catch(e => console.error('[regua] vencida EAD:', e.message));
+      }
     }
 
     res.sendStatus(200);

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Seja Parceiro da Anders Tech: Indique Empresas — Anders Tech</title>
+<meta name="description" content="Contadores, consultores e engenheiros que atendem indústrias e construtoras do RS: cadastre-se, receba um link próprio e acompanhe suas indicações num painel." />
+<meta name="author" content="Anders Tech" />
+<!-- NOTA: noindex e fora do sitemap até o Anders validar as regras e a contrapartida
+     do programa (TODO-VALIDAR em aquisicao/LANCAMENTO.md). A página só promete o que o
+     sistema faz: cadastro, aprovação manual, link, painel. A contrapartida não aparece
+     em número porque ainda não foi definida. -->
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://anderstech.net/seja-parceiro" />
+<meta property="og:title" content="Seja parceiro da Anders Tech" />
+<meta property="og:description" content="Indique indústrias e construtoras que precisam de ISO 9001 ou PBQP-H e acompanhe tudo num painel." />
+<meta property="og:url" content="https://anderstech.net/seja-parceiro" />
+<meta property="og:image" content="https://anderstech.net/assets/og-image.png" />
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/assets/favicon.png" type="image/png" />
+<style>
+.sp-hero{background:#0b1730;color:#fff;padding:clamp(40px,7vw,72px) 16px clamp(32px,5vw,52px)}
+.sp-hero .wrap,.sp-main{max-width:900px;margin:0 auto}
+.sp-hero .tag{font-family:var(--ff-mono,monospace);font-size:.74rem;font-weight:700;color:#FE0000;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.sp-hero h1{font-family:var(--ff-display,system-ui);font-size:clamp(1.7rem,4.4vw,2.4rem);line-height:1.15;margin-bottom:12px;color:#fff}
+.sp-hero p{color:#b9c8e4;font-size:1.05rem;max-width:660px;line-height:1.6}
+.sp-main{padding:28px 16px 72px}
+.sp-card{background:#fff;border:1px solid rgba(32,56,100,.14);border-radius:8px;padding:22px clamp(16px,3vw,26px);margin-bottom:18px}
+.sp-card h2{font-family:var(--ff-display,system-ui);font-size:1.15rem;color:#203864;margin-bottom:10px}
+.sp-card ol,.sp-card ul{padding-left:20px;line-height:1.7;color:#16233f}
+.sp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 16px}
+.sp-campo label{display:block;font-size:.8rem;font-weight:600;color:#46577a;margin-bottom:4px}
+.sp-campo input,.sp-campo select,.sp-campo textarea{width:100%;padding:10px 12px;border:1px solid #c9d2e0;border-radius:6px;font:inherit;font-size:.95rem;background:#fff;color:#16233f}
+.sp-aceite{display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.92rem}
+.sp-btn{background:#d80a0a;color:#fff;border:0;border-radius:6px;padding:13px 22px;font:inherit;font-weight:700;cursor:pointer}
+.sp-msg{margin-top:12px;font-size:.95rem}
+.sp-msg.erro{color:#b91c1c}.sp-msg.ok{color:#15803d}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div id="shared-nav"></div>
+<main>
+<section class="sp-hero"><div class="wrap">
+  <div class="tag">Programa de parceiros</div>
+  <h1>Indique empresas que precisam de ISO 9001 ou PBQP-H</h1>
+  <p>Para contadores, consultores, engenheiros e associações que atendem indústrias e construtoras do RS. Você recebe um link próprio e acompanha num painel quem chegou por ele.</p>
+</div></section>
+
+<div class="sp-main">
+  <div class="sp-card">
+    <h2>Como funciona</h2>
+    <ol>
+      <li>Você se cadastra aqui. O Daniel analisa e entra em contato para aprovar o cadastro.</li>
+      <li>Aprovado, você recebe um link no formato <code>anderstech.net/p/seu-codigo</code> e um painel próprio.</li>
+      <li>Quem clica no seu link fica marcado como sua indicação por 90 dias naquele navegador.</li>
+      <li>No painel você vê cliques, contatos e contratações pagas que vieram de você.</li>
+    </ol>
+  </div>
+
+  <div class="sp-card" id="regras">
+    <h2>Regras do programa</h2>
+    <ul>
+      <li>O link só passa a contar depois que o cadastro é aprovado.</li>
+      <li>A marcação da indicação é um cookie com o seu código, sem dado pessoal de quem clicou (veja a <a href="/politica-de-privacidade">Política de Privacidade</a>).</li>
+      <li>Por privacidade, o painel mostra só data e situação de cada indicação, nunca o nome ou o contato da empresa indicada.</li>
+      <li>Nada de mensagem em massa, lista comprada ou WhatsApp para quem não pediu em nome da Anders Tech, e nada de prometer preço, prazo ou resultado de certificação.</li>
+      <li>A contrapartida por indicação é combinada com o Daniel na aprovação do cadastro.</li>
+    </ul>
+  </div>
+
+  <form class="sp-card" id="form" novalidate>
+    <h2>Cadastro</h2>
+    <div class="sp-grid">
+      <div class="sp-campo"><label for="nome">Seu nome *</label><input id="nome" name="nome" autocomplete="name" required></div>
+      <div class="sp-campo"><label for="empresa">Empresa ou escritório</label><input id="empresa" name="empresa" autocomplete="organization"></div>
+      <div class="sp-campo"><label for="tipo">Você atua com</label>
+        <select id="tipo" name="tipo">
+          <option value="contabilidade">Contabilidade</option>
+          <option value="consultoria">Consultoria (outra área)</option>
+          <option value="engenharia">Engenharia ou arquitetura</option>
+          <option value="associacao">Associação ou sindicato</option>
+          <option value="software">Software de gestão</option>
+          <option value="outro">Outro</option>
+        </select></div>
+      <div class="sp-campo"><label for="cidade">Cidade</label><input id="cidade" name="cidade" autocomplete="address-level2"></div>
+      <div class="sp-campo"><label for="email">E-mail *</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="sp-campo"><label for="telefone">WhatsApp</label><input id="telefone" name="telefone" type="tel" autocomplete="tel" placeholder="(54) 9 9999-9999"></div>
+    </div>
+    <div class="sp-campo" style="margin-top:12px"><label for="mensagem">Que tipo de empresa você atende? (opcional)</label><textarea id="mensagem" name="mensagem" rows="3"></textarea></div>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="sp-aceite"><input type="checkbox" id="aceite"> <span>Li e concordo com as <a href="#regras">regras do programa</a>.</span></label>
+    <button class="sp-btn" type="submit">Enviar cadastro</button>
+    <div class="sp-msg" id="msg" role="status"></div>
+  </form>
+
+  <p style="font-size:.95rem">Prefere conversar antes? <a href="#" data-wa data-at-local="seja-parceiro">Fale com o Daniel no WhatsApp</a>.</p>
+</div>
+</main>
+<div id="shared-footer"></div>
+<script>
+(function () {
+  var f = document.getElementById('form'), msg = document.getElementById('msg');
+  var wa = document.querySelector('[data-wa]');
+  if (wa) wa.href = (window.anders && window.anders.waUrl) ? window.anders.waUrl('Olá! Vim pela página Seja parceiro (/seja-parceiro)') : 'https://wa.me/5554999648368?text=' + encodeURIComponent('Olá! Vim pela página Seja parceiro (/seja-parceiro)');
+  f.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    msg.className = 'sp-msg'; msg.textContent = 'Enviando…';
+    var v = function (id) { return document.getElementById(id).value; };
+    fetch('/api/parceiros', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: v('nome'), empresa: v('empresa'), tipo: v('tipo'), cidade: v('cidade'), email: v('email'),
+        telefone: v('telefone'), mensagem: v('mensagem'), website: f.website.value, aceite: document.getElementById('aceite').checked,
+        atrib: window.anders && window.anders.atrib ? window.anders.atrib() : null })
+    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        if (!x.ok) { msg.className = 'sp-msg erro'; msg.textContent = x.j.error || 'Não foi possível enviar.'; return; }
+        msg.className = 'sp-msg ok';
+        msg.textContent = 'Cadastro recebido. O Daniel vai entrar em contato pelo e-mail ou WhatsApp que você informou.';
+        if (window.anders) { window.anders.track('form_submit', { path: '/seja-parceiro', origem: 'Seja parceiro' }); window.anders.identify({ email: v('email'), telefone: v('telefone') }); }
+        f.reset();
+      })
+      .catch(function () { msg.className = 'sp-msg erro'; msg.textContent = 'Falha de conexão. Tente de novo ou fale pelo WhatsApp.'; });
+  });
+})();
+</script>
+</body>
+</html>

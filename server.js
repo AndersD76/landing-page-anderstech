@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
 import crypto from 'crypto';
-import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
+import { notifyNewLead, autoReplyContact, checklistDelivery, diagnosticoTransicaoDelivery } from './emails.js';
 import { router as portalRouter } from './portal/routes.js';
 import { eadRouter } from './ead/routes.js';
 import { router as consultoriaRouter } from './consultoria/routes.js';
@@ -27,6 +27,19 @@ import { validarCase, casePublicavel, slugValido } from './cases/validate.js';
 import { gerarCasePDF } from './cases/pdf.js';
 import { renderCase } from './cases/render.js';
 import { validaNovoCupom, PERCENTUAIS as PERCENTUAIS_CUPOM } from './ead/cupons.js';
+import { scoreLead } from './growth/atribuicao.js';
+import { registrarConversao } from './growth/conversoes.js';
+import { origemDoLead, paginasDaSessao } from './growth/leads.js';
+import { router as growthRouter, iniciarDespachoConversoes } from './growth/routes.js';
+import { aoLeadIsca } from './growth/mensageria.js';
+import { aoLeadIscaOrganica } from './organico/iscas.js';
+import { middleware as monitorCrawlers } from './organico/crawlers.js';
+import { router as organicoRouter } from './organico/routes.js';
+import { iniciar as iniciarOrganico } from './organico/jobs.js';
+import { urlsMotor, paginasPublicadas } from './organico/paginas.js';
+import { ISCAS } from './organico/iscas.js';
+import { REQUISITOS, slugRequisito } from './organico/normas.js';
+import { partesSitemap, xmlUrlset, xmlIndice } from './sitemap.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -65,11 +78,22 @@ app.use(helmet({
   },
   crossOriginEmbedderPolicy: false,
 }));
+// O helmet não emite Permissions-Policy. O site não usa câmera, microfone,
+// localização, USB nem a API de tópicos: desligar fecha a porta para script de
+// terceiro que tente usar (portão de segurança, 18/11/2026).
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), usb=(), browsing-topics=()');
+  next();
+});
+// Monitor de crawlers (busca e IA) e de respostas 5xx — organico/crawlers.js.
+app.use(monitorCrawlers);
 app.use(cors({
   origin: IS_PROD ? 'https://anderstech.net' : true,
   credentials: true,
 }));
-app.use(express.json({ limit: '100kb' }));
+// O webhook do WhatsApp assina o corpo CRU (X-Hub-Signature-256): guarda os
+// bytes só nessa rota, antes de o JSON ser interpretado.
+app.use(express.json({ limit: '100kb', verify: (req, res, buf) => { if (req.originalUrl.startsWith('/api/whatsapp/')) req.rawBody = buf; } }));
 app.set('trust proxy', 1);
 
 if (IS_PROD && !process.env.SESSION_SECRET) {
@@ -128,24 +152,42 @@ app.use((req, res, next) => {
 });
 
 // ── Sitemap dinâmico (antes do static para vencer o arquivo físico, se existir) ──
-let sitemapCache = null;
-app.get('/sitemap.xml', async (req, res) => {
-  if (!sitemapCache) {
-    let casesUrls = [];
-    if (sql) {
-      try {
-        const rows = await sql`SELECT slug, atualizado_em FROM cases WHERE publicado = TRUE`;
-        casesUrls = rows.map(r => [
-          `/cases/${r.slug}`,
-          r.atualizado_em ? new Date(r.atualizado_em).toISOString().slice(0, 10) : '2026-08-27',
-          'monthly',
-          '0.7',
-        ]);
-      } catch {}
-    }
-    sitemapCache = buildSitemap(casesUrls, urlsIndexaveisPbqph());
+// Sitemap em índice por tipo de página, com lastmod real em cada parte. As
+// partes do motor orgânico mudam a cada onda: cache curto (10 min).
+let sitemapCache = { em: 0, partes: null };
+async function partesAtuais() {
+  if (sitemapCache.partes && Date.now() - sitemapCache.em < 10 * 60_000) return sitemapCache.partes;
+  let casesUrls = [];
+  if (sql) {
+    try {
+      const rows = await sql`SELECT slug, atualizado_em FROM cases WHERE publicado = TRUE`;
+      casesUrls = rows.map(r => [`/cases/${r.slug}`, r.atualizado_em ? new Date(r.atualizado_em).toISOString().slice(0, 10) : '2026-08-27', 'monthly', '0.7']);
+    } catch {}
   }
-  res.type('application/xml').send(sitemapCache);
+  const hubs = [['/norma-iso-9001', '2026-11-18', 'weekly', '0.9'], ['/guias', '2026-11-18', 'weekly', '0.8'], ['/iscas', '2026-11-18', 'monthly', '0.8'],
+    ['/dados/pbqp-h', String(new Date().toISOString()).slice(0, 10), 'monthly', '0.9'], ['/dados/pbqp-h/metodologia', '2026-11-18', 'yearly', '0.5'],
+    ['/autor/daniel-anders', '2026-11-18', 'yearly', '0.5'], ['/sobre', '2026-11-18', 'yearly', '0.5'], ['/politica-editorial', '2026-11-18', 'yearly', '0.4'],
+    ...Object.keys(ISCAS).filter(id => !ISCAS[id].url).map(id => [`/iscas/${id}`, '2026-11-18', 'monthly', '0.7'])];
+  sitemapCache = { em: Date.now(), partes: partesSitemap(casesUrls, urlsIndexaveisPbqph(), [...hubs, ...urlsMotor()]) };
+  return sitemapCache.partes;
+}
+app.get('/sitemap.xml', async (req, res) => {
+  res.type('application/xml').send(xmlIndice(await partesAtuais()));
+});
+app.get('/sitemaps/:parte.xml', async (req, res, next) => {
+  const p = (await partesAtuais())[req.params.parte];
+  if (!p) return next();
+  res.type('application/xml').send(xmlUrlset(p));
+});
+
+// llms.txt gerado: o arquivo base + as páginas de referência do motor orgânico.
+app.get('/llms.txt', (req, res) => {
+  let base = '';
+  try { base = readFileSync(join(__dirname, 'llms.txt'), 'utf8'); } catch {}
+  const pubs = new Set(paginasPublicadas().map(p => p.slug));
+  const req9001 = REQUISITOS.filter(r => pubs.has('norma-iso-9001/' + slugRequisito(r.n)));
+  const extra = `\n## ISO 9001 requirements explained (Portuguese)\n- Index: https://anderstech.net/norma-iso-9001\n${req9001.map(r => `- ${r.n} ${r.titulo}: https://anderstech.net/norma-iso-9001/${slugRequisito(r.n)}`).join('\n')}\n\n## Data\n- PBQP-H certified companies in Brazil, by state, level and expiry (monthly, SiAC): https://anderstech.net/dados/pbqp-h\n- JSON: https://anderstech.net/dados/pbqp-h.json\n\n## Free tools and templates\n${Object.entries(ISCAS).map(([id, i]) => `- ${i.titulo}: https://anderstech.net${i.url || '/iscas/' + id}`).join('\n')}\n\n## Guides\n- https://anderstech.net/guias\n- Author: https://anderstech.net/autor/daniel-anders · Editorial policy: https://anderstech.net/politica-editorial\n`;
+  res.type('text/plain; charset=utf-8').send(base.trimEnd() + '\n' + extra);
 });
 
 // ── Healthcheck (#74) — usado pelo Railway e por monitor externo ──
@@ -286,14 +328,38 @@ app.post('/api/contact', async (req, res) => {
   const d = v.dados;
 
   let leadId = null;
+  // Atribuição completa (cookie at_attr) + canal + score: é o que ordena a
+  // fila do Anders e o que permite devolver o lead ao anúncio que o trouxe.
+  const origem = origemDoLead(req, d);
+  const paginas = await paginasDaSessao(sql, origem.session_id);
+  const { score, motivos } = scoreLead({ prazo: d.prazo, cargo: d.cargo, canal: origem.canal, source: d.source, paginas });
   try {
     if (sql) {
       const result = await sql`
-        INSERT INTO leads (nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term)
-        VALUES (${d.nome}, ${d.empresa}, ${d.email}, ${d.telefone}, ${d.cargo}, ${d.prazo}, ${d.interesse}, ${d.mensagem}, ${d.source}, ${d.landing_page}, ${d.utm_source}, ${d.utm_medium}, ${d.utm_campaign}, ${d.utm_content}, ${d.utm_term})
+        INSERT INTO leads (nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+                           atribuicao, canal, consent_marketing, parceiro_codigo, score, score_motivos, session_id)
+        VALUES (${d.nome}, ${d.empresa}, ${d.email}, ${d.telefone}, ${d.cargo}, ${d.prazo}, ${d.interesse}, ${d.mensagem}, ${d.source}, ${d.landing_page}, ${d.utm_source}, ${d.utm_medium}, ${d.utm_campaign}, ${d.utm_content}, ${d.utm_term},
+                ${origem.atribuicao ? JSON.stringify(origem.atribuicao) : null}::jsonb, ${origem.canal}, ${origem.consent_marketing}, ${origem.parceiro_codigo},
+                ${score}, ${JSON.stringify(motivos)}::jsonb, ${origem.session_id})
         RETURNING id
       `;
       leadId = result[0]?.id;
+      if (leadId) {
+        await registrarConversao(sql, { evento: 'lead_captured', refTipo: 'lead', refId: leadId, origem });
+        if (origem.parceiro_codigo) await registrarConversao(sql, { evento: 'partner_referred', refTipo: 'lead', refId: leadId, origem });
+        // Régua da isca (só agenda com REGUA_ATIVA=true; growth/mensageria.js).
+        // Opt-in de marketing: caixa separada e desmarcada na tela. Sem ele, a
+        // pessoa recebe só o material que pediu — nenhuma sequência.
+        const optin = req.body?.optin_marketing === true;
+        const isca = typeof req.body?.isca_id === 'string' ? req.body.isca_id.slice(0, 60) : null;
+        const consulta = typeof req.body?.consulta_alvo === 'string' ? req.body.consulta_alvo.slice(0, 200) : null;
+        await sql`UPDATE leads SET optin_marketing = ${optin}, isca = ${isca}, consulta = ${consulta} WHERE id = ${leadId}`;
+        if (d.source === 'isca_transicao_2026') {
+          await aoLeadIsca(sql, { leadId, email: d.email, nome: primeiroNome(d.nome), url: req.body?.diagnostico?.url, optin }).catch(e => console.error('[regua] isca:', e.message));
+        }
+        // Iscas do motor orgânico (organico/iscas.js): régua do cluster.
+        await aoLeadIscaOrganica(sql, { leadId, source: d.source, email: d.email, nome: primeiroNome(d.nome), optin }).catch(e => console.error('[regua] isca orgânica:', e.message));
+      }
       if (leadId) {
         const eventPayload = roiData
           ? { source: d.source, interesse: d.interesse, landing_page: d.landing_page, roiData }
@@ -316,11 +382,27 @@ app.post('/api/contact', async (req, res) => {
         to: process.env.NOTIFY_EMAIL || 'danielanders76@gmail.com',
         // Assunto que já diz quem é e qual a urgência: é por ele que o Anders
         // decide o que abrir primeiro, sem entrar no painel.
-        subject: `[Anders Tech] Novo lead: ${identificacao(d)}${d.empresa ? ` — ${d.empresa}` : ''}${d.prazo ? ` · ${ROTULO_PRAZO[d.prazo] || d.prazo}` : ''}`,
-        html: notifyNewLead({ ...d, mensagem: d.mensagem, leadId, roiData }),
+        subject: `[Anders Tech] Novo lead (${score}): ${identificacao(d)}${d.empresa ? ` — ${d.empresa}` : ''}${d.prazo ? ` · ${ROTULO_PRAZO[d.prazo] || d.prazo}` : ''} · ${origem.canal}`,
+        html: notifyNewLead({ ...d, mensagem: d.mensagem, leadId, roiData, canal: origem.canal, score, motivos, paginas, parceiro_codigo: origem.parceiro_codigo }),
       });
 
-      if (d.email) {
+      // Isca da transição ISO 9001:2026: a pessoa pediu o resultado por e-mail.
+      // O link é reconstruído no servidor a partir do código das respostas — o
+      // endereço que vem do navegador nunca vai para o e-mail.
+      const codDiag = String(req.body?.diagnostico?.url || '').match(/\/transicao-iso-9001-2026\?r=([SPN]{10}[0-5])$/);
+      if (d.email && d.source === 'isca_transicao_2026' && codDiag) {
+        const tratamento = primeiroNome(d.nome);
+        await resend.emails.send({
+          from: 'Daniel Anders · Anders Tech <noreply@anderstech.net>',
+          to: d.email,
+          subject: `${tratamento ? tratamento + ', seu' : 'Seu'} diagnóstico de transição ISO 9001:2026`,
+          html: diagnosticoTransicaoDelivery({
+            nome: tratamento, url: `https://anderstech.net/transicao-iso-9001-2026?r=${codDiag[1]}`,
+            pct: Math.max(0, Math.min(100, parseInt(req.body.diagnostico.pct, 10) || 0)),
+            lacunas: Math.max(0, Math.min(10, parseInt(req.body.diagnostico.lacunas, 10) || 0)),
+          }),
+        });
+      } else if (d.email) {
         const isChecklist = d.source === 'lead_magnet_checklist';
         const tratamento = primeiroNome(d.nome);
         await resend.emails.send({
@@ -562,7 +644,11 @@ app.patch('/api/admin/leads/:id', adminAuth, async (req, res) => {
     await sql.transaction((txn) => {
       const queries = [];
       if (status !== undefined) {
-        queries.push(txn`UPDATE leads SET status = ${status}, updated_at = NOW() WHERE id = ${id}`);
+        // Primeira saída de "novo" = primeira resposta do Anders. É o que mede
+        // lead_received → first_response no painel; só grava a primeira vez.
+        queries.push(txn`UPDATE leads SET status = ${status}, updated_at = NOW(),
+                           primeira_resposta_em = COALESCE(primeira_resposta_em, CASE WHEN ${status} <> 'novo' THEN NOW() END)
+                         WHERE id = ${id}`);
         queries.push(txn`INSERT INTO lead_events (lead_id, event_type, payload) VALUES (${id}, 'status_change', ${JSON.stringify({ status })}::jsonb)`);
       }
       if (notes !== undefined) {
@@ -738,7 +824,7 @@ app.post('/api/admin/cases', adminAuth, async (req, res) => {
         ${depoimento_cargo || null}, ${depoimento_fonte || null},
         ${JSON.stringify(metricas || [])}, ${codigo})`;
 
-    sitemapCache = null;
+    sitemapCache = { em: 0, partes: null };
 
     res.status(201).json({
       slug,
@@ -896,6 +982,13 @@ app.get('/cases/:slug', async (req, res) => {
 app.use(portalRouter);
 app.use(eadRouter);
 app.use(consultoriaRouter);
+// Parceiros (/p/<codigo>, /seja-parceiro), feed de conversões para as
+// plataformas de anúncio e painel de canais/custos (growth/routes.js).
+app.use(growthRouter({ adminAuth, sendPage: (arquivo, res, rota) => sendPage(arquivo, res, rota), send404 }));
+iniciarDespachoConversoes(sql);
+// Motor orgânico: requisitos, hubs, iscas, dados, autor, painel e rotinas.
+app.use(organicoRouter({ adminAuth, send404 }));
+iniciarOrganico(sql, { resend });
 
 // ── Glossário da Qualidade (SSR com cache em memória — conteúdo estático) ──
 const glossarioCache = new Map();

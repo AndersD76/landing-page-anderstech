@@ -28,6 +28,9 @@ Rua Uruguai, 679 — Sala 201, Passo Fundo, RS 99010-112, Brazil
 - CNPJ: 42.073.716/0001-80
 
 ## Content
+- ISO 9001:2026 — what changed and the official transition timeline (published 16 Sep 2026; ISO 9001:2015 certificates expire 30 Sep 2029): https://anderstech.net/iso-9001-2026
+- Free ISO 9001:2026 transition gap assessment (10 questions, instant result): https://anderstech.net/transicao-iso-9001-2026
+- Consulting price calculator and online contracting (R$ 180/hour; RS, up to 300 km from Passo Fundo): https://anderstech.net/contratar
 - Blog: https://anderstech.net/blog
 - Quality Glossary (83 ISO terms): https://anderstech.net/glossario
 - ISO 9001 certification cost guide (with calculator): https://anderstech.net/quanto-custa-certificacao-iso

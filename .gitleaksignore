@@ -1,0 +1,5 @@
+# Chave do IndexNow: pública por definição do protocolo (o arquivo <chave>.txt
+# fica na raiz do site). Não é segredo — gitleaks a confunde com chave de API.
+1e4c52f57d0900e9a8d953e463b9cb7c1640b237:.github/workflows/ci.yml:generic-api-key:78
+abe9ba0c3315370bff10ab0be650670116dcf81a:HANDOFF.md:generic-api-key:50
+abe9ba0c3315370bff10ab0be650670116dcf81a:.github/workflows/ci.yml:generic-api-key:76

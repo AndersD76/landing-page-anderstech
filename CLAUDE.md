@@ -127,7 +127,12 @@ npm run seed
    **Só o PBQP-H sustenta esse eixo** — o Certifiq (ISO 9001) não devolve município.
 5. **Performance**: alvo < 3s em 4G; LCP < 2s na landing; Lighthouse ≥ 95.
 6. **Eventos de telemetria** (nomes literais, sem variação):
-   `page_view` · `cta_view` · `cta_whatsapp_click` · `form_submit` · `case_view` · `artifact_scan`.
+   `page_view` · `cta_view` · `cta_whatsapp_click` · `form_submit` · `case_view` · `artifact_scan`
+   · e, desde 18/11/2026 (pedido do Anders, motor orgânico): `isca_vista` · `isca_iniciada` ·
+   `isca_concluida` · `lead_capturado` · `cta_produto_clicado`, sempre com `page_type`,
+   `cluster`, `consulta_alvo` e `isca_id` (organico/taxonomia.js).
+   Conversões de negócio (lead, checkout, pagamento, indicação) NÃO são telemetria: ficam na
+   tabela `conversoes` (growth/conversoes.js), gravadas no servidor; pagamento só pelo webhook.
    `cta_view` é a impressão do CTA (metade do botão na tela), um disparo por CTA
    por sessão — sem ele não existe denominador e o CTR é incalculável.
    Todo evento carrega `session_id`, que fecha por 30 min de inatividade: o
@@ -177,6 +182,15 @@ glossario/          glossário SSR (terms.js + render.js)
 ead/                cursos, checkout Asaas, cupons (regra em ead/cupons.js, painel em /admin/cupons), certificados
 consultoria/        venda de consultoria no site: preco.js (regra), contrato.js (texto + PDF), routes.js
 data/distancias-passo-fundo.json  km por estrada até 504 municípios (scripts/distancias-passo-fundo.mjs)
+growth/             atribuição (cookie at_attr), livro de conversões e envio às plataformas, caixa
+                    única de leads + score, parceiros (/p/<código>), regras de corte de mídia,
+                    mensageria (outbound e régua: DESLIGADOS por padrão), WhatsApp de entrada,
+                    campanhas do Google Ads (midia.js). Painéis /admin/crescimento e /admin/operacao
+organico/           motor orgânico: mapa de buscas, páginas no banco (seo_paginas) com portão de
+                    qualidade e motor de links, requisitos da ISO 9001, 12 iscas, dados do PBQP-H,
+                    Search Console/Bing/GA4, crawlers, produção com LLM (desligada sem chave),
+                    ondas semanais, alertas e resumo semanal. Painel /admin/organico
+                    Sem .md de planejamento: dado operacional vive no banco e aparece no painel.
 portal/             área logada de cliente/admin
 specs/              réguas de e-mail como YAML (não executam neste repo)
 migrations/         SQL versionado, aplicado no boot

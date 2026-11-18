@@ -5,6 +5,8 @@ import { PROMO, promoAtiva } from './promo.js';
 import { EMPRESA } from './config/empresa.js';
 import { TERMOS_BY_SLUG } from './glossario/terms.js';
 import { casesPublicados, depoimentosPublicados, readoutPublicado } from './config/prova.js';
+import { classificarRota, iscaDoCluster } from './organico/taxonomia.js';
+import { blocoIsca, barraIscaCelular } from './organico/iscas.js';
 
 // ── Google Analytics 4 (gtag.js) ──
 const GTAG_HTML = '<script async src=`https://www.googletagmanager.com/gtag/js?id=${EMPRESA.ga4}`></script>'
@@ -52,7 +54,7 @@ const FOOTER_HTML = '<footer class="footer"><div class="wrap footer-big">'
   + '<div class="footer-col"><h3>Navegação</h3><ul>'
   + '<li><a href="/#servicos">Serviços</a></li><li><a href="/#diferencial">Diferencial</a></li><li><a href="/#sobre">Sobre</a></li>'
   + '<li><a href="/blog">Conteúdo</a></li><li><a href="/#contato">Contato</a></li>'
-  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
+  + '<li><a href="/ead/cursos">Cursos EAD</a></li><li><a href="/glossario">Glossário da Qualidade</a></li><li><a href="/iso-9001-2026">ISO 9001:2026: o que muda</a></li><li><a href="/transicao-iso-9001-2026">Diagnóstico de transição 2026</a></li><li><a href="/calculadora-roi-certificacao">Calculadora ROI</a></li><li><a href="/checklist-iso-9001">Checklist ISO 9001</a></li><li><a href="/quanto-custa-certificacao-iso">Quanto custa a ISO 9001</a></li></ul></div>'
   // As 161 paginas de PBQP-H penduravam num unico link, em pages/pbqp-h.html:
   // profundidade 4 a partir de um site que o Google mal visita. No rodape elas
   // ficam a um clique de QUALQUER pagina, inclusive da home.
@@ -128,6 +130,10 @@ const BREADCRUMB_LABELS = {
   'quanto-custa-auditoria-interna': 'Quanto custa a auditoria interna?',
   'contratar': 'Contratar consultoria',
   'contrato-consultoria': 'Contrato de consultoria',
+  'seja-parceiro': 'Seja parceiro',
+  'iso-9001-2026': 'ISO 9001:2026',
+  'transicao-iso-9001-2026': 'Diagnóstico de transição ISO 9001:2026',
+  'parceiro': 'Painel do parceiro',
   'quanto-custa-pbqp-h': 'Quanto custa o PBQP-H?',
   'iso-9001': 'ISO 9001',
   'pbqp-h': 'PBQP-H',
@@ -169,14 +175,24 @@ const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENV
 // Agora sao duas pecas: o CONSENTIMENTO vai sempre; o GA4 so em producao.
 // Ambos leem a mesma chave, e o banner avisa quem estiver ouvindo via evento
 // "at:consent" — e assim que telemetry-client.js despeja a fila que segurou.
-const CONSENT_JS = '<script>(function(){var K="at_cookie_consent";'
-  + 'function aviso(v){try{dispatchEvent(new CustomEvent("at:consent",{detail:v}))}catch(e){}}'
-  + 'window.atConsent={ler:function(){try{return localStorage.getItem(K)}catch(e){return null}},'
-  + 'gravar:function(v){try{localStorage.setItem(K,v)}catch(e){}'
-  + 'if(typeof gtag==="function")gtag("consent","update",{analytics_storage:v==="1"?"granted":"denied"});'
-  + 'aviso(v==="1"?"sim":"nao")}};'
-  + 'var atual=window.atConsent.ler();'
-  + 'if(atual==="1"&&typeof gtag==="function")gtag("consent","update",{analytics_storage:"granted"});'
+// 18/11/2026: consentimento GRANULAR. Antes era um sim/não só de análise; para
+// devolver venda ao Google/Microsoft/Meta é preciso um segundo consentimento,
+// de marketing, separado e nunca pré-marcado. Duas chaves:
+//   at_cookie_consent — análise (GA4 + telemetria própria), igual a antes
+//   at_consent_mkt    — marketing (identificador de clique de anúncio no
+//                        cookie at_attr e envio de conversão às plataformas)
+const CONSENT_JS = '<script>(function(){var K="at_cookie_consent",M="at_consent_mkt";'
+  + 'function aviso(n,v){try{dispatchEvent(new CustomEvent(n,{detail:v}))}catch(e){}}'
+  + 'function le(k){try{return localStorage.getItem(k)}catch(e){return null}}'
+  + 'function g(a,m){if(typeof gtag!=="function")return;var u={};'
+  + 'if(a!==null)u.analytics_storage=a==="1"?"granted":"denied";'
+  + 'if(m!==null){var x=m==="1"?"granted":"denied";u.ad_storage=x;u.ad_user_data=x;u.ad_personalization=x}'
+  + 'gtag("consent","update",u)}'
+  + 'window.atConsent={ler:function(){return le(K)},lerMkt:function(){return le(M)},'
+  + 'gravar:function(v,m){try{localStorage.setItem(K,v);if(m!==undefined)localStorage.setItem(M,m)}catch(e){}'
+  + 'g(v,m===undefined?null:m);aviso("at:consent",v==="1"?"sim":"nao");'
+  + 'if(m!==undefined)aviso("at:consent-mkt",m==="1"?"sim":"nao")}};'
+  + 'var a=le(K),m=le(M);if(a==="1"||m==="1")g(a,m);'
   + '})()</' + 'script>';
 
 const GA4_JS = '<script>'
@@ -187,17 +203,31 @@ const GA4_JS = '<script>'
   + 'var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id='+EMPRESA.ga4+'";document.head.appendChild(s);'
   + '</'+'script>';
 
-const COOKIE_BANNER = '<div id="ckBanner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
-  + '<div style="max-width:1080px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap">'
-  + '<span style="flex:1;min-width:260px">Usamos cookies de análise para entender como o site é usado. '
+// Três saídas com o mesmo peso visual entre "Recusar" e "Aceitar todos" (sem
+// dark pattern), e "Escolher" abre as duas finalidades DESMARCADAS. Quem só
+// respondeu o banner antigo (só análise) vê de novo uma vez, porque a pergunta
+// de marketing é nova.
+const BTN_CK = 'border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 16px;cursor:pointer;font-size:14px;background:none';
+const COOKIE_BANNER = '<div id="ckBanner" role="region" aria-label="Preferências de cookies" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0b1730;color:#fff;padding:16px 20px;font-size:14px;line-height:1.5;box-shadow:0 -8px 28px rgba(11,23,48,.35)">'
+  + '<div style="max-width:1080px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap">'
+  + '<span style="flex:1;min-width:260px">Usamos cookies de <b>análise</b> para entender como o site é usado e, se você permitir, de <b>marketing</b> para saber quais anúncios trouxeram contato. '
   + '<a href="/politica-de-privacidade" style="color:#fff;text-decoration:underline">Política de Privacidade</a>.</span>'
-  + '<button id="ckNo" style="background:none;border:1px solid rgba(255,255,255,.4);color:#fff;padding:9px 16px;cursor:pointer;font-size:14px">Recusar</button>'
-  + '<button id="ckYes" style="background:#c5383c;border:none;color:#fff;padding:10px 20px;cursor:pointer;font-weight:600;font-size:14px">Aceitar</button>'
+  + '<button id="ckNo" style="' + BTN_CK + '">Recusar</button>'
+  + '<button id="ckPick" style="' + BTN_CK + '">Escolher</button>'
+  + '<button id="ckYes" style="background:#c5383c;border:none;color:#fff;padding:10px 20px;cursor:pointer;font-weight:600;font-size:14px">Aceitar todos</button>'
+  + '</div>'
+  + '<div id="ckOpts" style="max-width:1080px;margin:12px auto 0;display:none;gap:18px;align-items:center;flex-wrap:wrap">'
+  + '<label style="cursor:pointer"><input type="checkbox" id="ckA"> Análise: estatísticas de uso do site</label>'
+  + '<label style="cursor:pointer"><input type="checkbox" id="ckM"> Marketing: medir resultado de anúncios (Google, Microsoft, Meta)</label>'
+  + '<button id="ckSave" style="' + BTN_CK + '">Salvar escolha</button>'
   + '</div></div>'
-  + '<script>!function(){if(window.atConsent&&window.atConsent.ler())return;'
-  + 'var b=document.getElementById("ckBanner");if(!b)return;b.style.display="block";'
-  + 'document.getElementById("ckYes").onclick=function(){b.style.display="none";window.atConsent.gravar("1")};'
-  + 'document.getElementById("ckNo").onclick=function(){b.style.display="none";window.atConsent.gravar("0")}}()</'
+  + '<script>!function(){var c=window.atConsent;if(c&&c.ler()&&c.lerMkt())return;'
+  + 'var b=document.getElementById("ckBanner");if(!b||!c)return;b.style.display="block";'
+  + 'function fim(a,m){b.style.display="none";c.gravar(a,m)}'
+  + 'document.getElementById("ckYes").onclick=function(){fim("1","1")};'
+  + 'document.getElementById("ckNo").onclick=function(){fim("0","0")};'
+  + 'document.getElementById("ckPick").onclick=function(){document.getElementById("ckOpts").style.display="flex"};'
+  + 'document.getElementById("ckSave").onclick=function(){fim(document.getElementById("ckA").checked?"1":"0",document.getElementById("ckM").checked?"1":"0")}}()</'
   + 'script>';
 
 // FASE 1: telemetria. Vai no <head> com defer, ANTES do app.js (que fica no fim
@@ -218,11 +248,27 @@ function origemDe(urlPath) {
   return BREADCRUMB_LABELS[chave] || chave.replace(/-/g, ' ');
 }
 
-function metasTelemetria(urlPath) {
+function metasTelemetria(urlPath, html) {
   const rota = urlPath || '/';
   const origem = origemDe(rota).replace(/"/g, '&quot;');
+  // Página do motor orgânico já traz as próprias metas at-* (cluster e consulta
+  // da célula); as estáticas recebem a classificação da taxonomia.
+  const temPropria = /<meta name="at-cluster"/.test(html || '');
+  const c = classificarRota(rota);
   return '<meta name="at-rota" content="' + rota + '">'
-    + '<meta name="at-origem" content="' + origem + '">';
+    + '<meta name="at-origem" content="' + origem + '">'
+    + (temPropria ? '' : '<meta name="at-page-type" content="' + c.tipo + '"><meta name="at-cluster" content="' + c.cluster + '"><meta name="at-consulta" content="' + c.consulta.replace(/"/g, '&quot;') + '">');
+}
+
+// Isca do cluster em toda página: bloco no fim do conteúdo e barra discreta no
+// celular (sem pop-up que bloqueie a leitura). Páginas que já são isca, de
+// checkout, legais ou internas ficam de fora; páginas do motor orgânico põem as
+// próprias (meio e fim) e marcam data-isca no HTML.
+const SEM_ISCA = /^\/(contratar|transicao-iso-9001-2026|seja-parceiro|politica-de-privacidade|termos-de-uso|politica-editorial|iscas(\/.*)?|parceiro(\/.*)?|sair(\/.*)?|ead\/(checkout|player|meus-cursos|login|registro).*|embed\/.*)?$/;
+function iscaDaPagina(urlPath, html) {
+  if (!urlPath || urlPath === '/' || SEM_ISCA.test(urlPath) || /data-isca=/.test(html || '')) return { fim: '', barra: '' };
+  const id = iscaDoCluster(classificarRota(urlPath).cluster);
+  return { fim: '<div style="max-width:880px;margin:0 auto;padding:0 16px">' + blocoIsca(id, 'fim') + '</div>', barra: barraIscaCelular(id) };
 }
 
 // ── Prova social (FASE 2) ────────────────────────────────────────────────────
@@ -329,6 +375,19 @@ function fontesLocais(html) {
   return semGoogle.replace('</head>', PRELOAD_FONTES + faces + '</head>');
 }
 
+// ── Onda ISO 9001:2026 ───────────────────────────────────────────────────────
+// A norma nova foi publicada em 16/09/2026 e as páginas de ISO 9001 falavam só
+// da 2015. Uma faixa só, injetada aqui, liga todas elas ao pilar e à isca:
+// linkagem interna sem editar 15 arquivos, e nenhuma página nova fica órfã.
+const ROTAS_ISO = /^\/(iso-9001(?!-2026)[a-z0-9-]*|consultoria-iso-9001-[a-z-]+|quanto-custa-certificacao-iso|quanto-tempo-implantar-iso-9001|checklist-iso-9001|calculadora-roi-certificacao|diferenca-iso-9001-vs-bpm|servicos|contratar|blog\/(o-que-e-iso-9001|como-conseguir-certificacao-iso-9001|iso-9001-[a-z-]+|erros-certificacao-iso-9001|quanto-custa-certificacao-iso-9001)|glossario\/[a-z0-9-]+)$/;
+export function faixaIso2026(urlPath) {
+  if (!urlPath || !ROTAS_ISO.test(urlPath)) return '';
+  return '<div role="note" style="background:#FE0000;color:#fff;text-align:center;padding:9px 16px;font-size:14px;line-height:1.45">'
+    + '<b>ISO 9001:2026 publicada em 16/09/2026.</b> Certificados pela versão 2015 valem até 30/09/2029. '
+    + '<a href="/iso-9001-2026" data-cta="faixa-2026" style="color:#fff;font-weight:700;text-decoration:underline">O que muda</a> · '
+    + '<a href="/transicao-iso-9001-2026" data-cta="faixa-2026-isca" style="color:#fff;font-weight:700;text-decoration:underline">Diagnóstico grátis</a></div>';
+}
+
 export function injectShared(html, urlPath) {
   // Idempotencia de schema: pagina que ja traz o proprio BreadcrumbList (as do
   // PBQP-H por municipio tem cinco niveis) nao recebe o generico de dois niveis
@@ -344,14 +403,16 @@ export function injectShared(html, urlPath) {
   // nao precisa ver a cozinha.
   const limpo = IS_PROD ? html.replace(/<!--\s*(?:REVISAR|NOTA):[\s\S]*?-->\s*/g, '') : html;
   const base = fontesLocais(limpo);
+  const isca = iscaDaPagina(urlPath, html);
   return base
+    .replace('<div id="shared-footer"></div>', isca.fim + '<div id="shared-footer"></div>' + isca.barra)
     .replace('</head>', '<link rel="apple-touch-icon" href="/assets/favicon.png">'
-      + metasTelemetria(urlPath) + breadcrumb
+      + metasTelemetria(urlPath, html) + breadcrumb
       // GA4 primeiro: define gtag() e o consent default antes de qualquer hit.
       // CONSENT_JS depois, porque conversa com gtag quando ele existe.
       + (IS_PROD ? GA4_JS + WA_TRACK_HTML : '') + CONSENT_JS + TELEMETRIA_JS + '</head>')
     .replace('<body>', '<body>' + SKIP_LINK)
-    .replace('<div id="shared-nav"></div>', NAV_HTML)
+    .replace('<div id="shared-nav"></div>', NAV_HTML + faixaIso2026(urlPath))
     .replace('<div id="shared-footer"></div>', FOOTER_HTML + WA_FAB + STICKY_CTA)
     .replace('<div id="shared-prova"></div>', renderProva())
     .replace('<div id="shared-readout"></div>', renderReadout())

@@ -1,30 +1,49 @@
+# robots.txt — Anders Tech (revisado em 18/11/2026)
+#
+# Um grupo só, com todos os robôs citados por nome. Antes havia um grupo por robô
+# de IA com "Allow: /" — e, pela especificação, o grupo específico substitui o
+# grupo "*" inteiro: GPTBot, ClaudeBot e os demais ignoravam os Disallow de
+# /admin/, /portal/ e /api/.
+#
+# Busca (trazem visita):         Googlebot, Bingbot, OAI-SearchBot, ChatGPT-User,
+#                                Claude-SearchBot, Claude-User, PerplexityBot,
+#                                Perplexity-User, Applebot, DuckDuckBot
+# Só treino de modelo (DECISÃO DO ANDERS — hoje liberados, como já estavam):
+#                                GPTBot, ClaudeBot, Google-Extended,
+#                                Applebot-Extended, Amazonbot
+# Para bloquear o treino, mova os cinco para um grupo próprio com "Disallow: /".
+
 User-agent: *
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Amazonbot
 Allow: /
 Disallow: /portal/
 Disallow: /admin/
 Disallow: /uploads/
 Disallow: /api/
-
-# AI crawlers — allow indexing for GEO/AEO visibility
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
+Disallow: /ead/api/
+Disallow: /ead/meus-cursos
+Disallow: /ead/player/
+Disallow: /ead/checkout/
+Disallow: /parceiro/
+Disallow: /p/
+Disallow: /conversoes/
+Disallow: /contrato-consultoria/
+Disallow: /transicao-iso-9001-2026?r=
+Disallow: /sair/
+Disallow: /m/
 
 Sitemap: https://anderstech.net/sitemap.xml

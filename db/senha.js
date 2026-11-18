@@ -43,6 +43,13 @@ export async function consumirToken(sql, escopo, token, novaSenha, tabela) {
     upd,
     sql`UPDATE password_resets SET usado_em = NOW() WHERE id = ${linhas[0].id}`,
   ]);
+  // SEG-11: quem roubou a sessão não pode continuar logado depois que o dono
+  // troca a senha. As sessões vivem na tabela `session` (connect-pg-simple);
+  // derruba todas as do usuário. Sem a tabela (dev com MemoryStore), segue.
+  const chave = tabela === 'portal_users' ? 'portalUser' : 'eadUser';
+  try {
+    await sql`DELETE FROM session WHERE sess -> ${chave} ->> 'id' = ${String(linhas[0].user_id)}`;
+  } catch { /* sem tabela de sessão: nada a derrubar */ }
   return { ok: true };
 }
 

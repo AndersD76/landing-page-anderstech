@@ -1,0 +1,34 @@
+name: Segurança semanal
+
+# ZAP (varredura passiva) e k6 de fumaça contra o servidor LOCAL do runner, sem
+# banco e com dados sintéticos — nunca contra produção. Schemathesis fica de
+# fora até existir uma especificação OpenAPI (não há; ver aquisicao/LANCAMENTO.md).
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  zap-k6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Subir o servidor local
+        run: |
+          PORT=3001 NODE_ENV=production SESSION_SECRET=ci-sintetico ADMIN_KEY=ci-sintetico npm start &
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:3001/robots.txt >/dev/null && break; sleep 1; done
+      - name: ZAP baseline
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: 'http://127.0.0.1:3001'
+          allow_issue_writing: false
+          fail_action: false
+          cmd_options: '-a'
+      - uses: grafana/setup-k6-action@v1
+      - name: k6 de fumaça
+        run: k6 run k6/fumaca.js

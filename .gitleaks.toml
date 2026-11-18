@@ -1,0 +1,9 @@
+# Gitleaks: regras padrão + exceção para a chave do IndexNow, que é pública por
+# definição do protocolo (servida em https://anderstech.net/<chave>.txt).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "chave publica do IndexNow"
+regexes = ['f6ba6a9696c4426b9a20bd3baa58e3ec']
+paths = ['node_modules']

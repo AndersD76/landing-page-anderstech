@@ -8,12 +8,13 @@
     "start": "node server.js",
     "dev": "node --watch server.js",
     "seed": "node ead/seed.js",
-    "test": "node --test test/asaas.test.js test/cupom.test.js test/consultoria.test.js test/migrate.test.js test/telemetry.test.js test/prova.test.js test/contato.test.js test/pbqph.test.js test/urls.test.js",
+    "test": "node --test test/asaas.test.js test/cupom.test.js test/consultoria.test.js test/migrate.test.js test/telemetry.test.js test/prova.test.js test/contato.test.js test/pbqph.test.js test/urls.test.js test/crescimento.test.js test/seguranca.test.js",
     "optimize:images": "node scripts/optimize-images.mjs",
     "migrate": "node -e \"import('./db/migrate.js').then(async m=>{const {neon}=await import('@neondatabase/serverless');await m.runMigrations(process.env.DATABASE_URL?neon(process.env.DATABASE_URL):null)})\"",
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.10.0",
     "@neondatabase/serverless": "^1.1.0",
     "@sentry/node": "^10.56.0",
     "bcryptjs": "^3.0.3",

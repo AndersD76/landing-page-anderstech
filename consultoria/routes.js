@@ -25,6 +25,10 @@ import { CONTRATO_VERSAO, contratoHTML, contratoPDF, contratadaCompleta } from '
 import { injectShared } from '../inject.js';
 import { EMPRESA } from '../config/empresa.js';
 import { consultoriaNovoPedido, consultoriaPagoAnders, consultoriaPagoCliente, consultoriaStatus } from '../emails.js';
+import { registrarConversao } from '../growth/conversoes.js';
+import { origemDoLead, registrarLeadDeOrigem, marcarLeadGanho } from '../growth/leads.js';
+import { pagamentoConfere } from '../growth/pagamento.js';
+import { aoCheckout, aoCobrancaVencida, aoConsultoriaPaga } from '../growth/mensageria.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_URL = process.env.APP_URL || 'https://anderstech.net';
@@ -141,21 +145,31 @@ router.post('/api/consultoria/pedido', limite(10), async (req, res) => {
 
   try {
     const token = crypto.randomBytes(24).toString('hex');
+    const origem = origemDoLead(req, {});
     const [pedido] = await sql`
       INSERT INTO consultoria_pedidos (
         token, servico, servico_nome, tipo, horas, horas_totais, meses, funcionarios, cidade_ibge, km, tem_projeto,
         base, acrescimos, pct_total, total, metodo, parcelas, valor_parcela, total_pago,
         razao_social, cnpj, endereco, cidade, uf, cep, representante, cargo, cpf, email, telefone,
-        contrato_versao, aceite_em, aceite_ip
+        contrato_versao, aceite_em, aceite_ip,
+        atribuicao, canal, consent_marketing, parceiro_codigo
       ) VALUES (
         ${token}, ${preco.servico}, ${preco.nome}, ${preco.tipo}, ${preco.horas}, ${preco.horasTotais}, ${preco.meses}, ${preco.funcionarios},
         ${preco.cidade.ibge}, ${preco.km}, ${preco.temProjeto}, ${preco.base}, ${JSON.stringify(preco.acrescimos)}, ${preco.pctTotal}, ${preco.total},
         ${opcao.metodo}, ${opcao.parcelas}, ${opcao.valorParcela}, ${opcao.total},
         ${c.razaoSocial}, ${fmtCnpj(c.cnpj)}, ${c.endereco}, ${preco.cidade.nome}, ${preco.cidade.uf}, ${fmtCep(c.cep)},
         ${c.representante}, ${c.cargo}, ${fmtCpf(c.cpf)}, ${c.email}, ${fmtTel(c.telefone)},
-        ${CONTRATO_VERSAO}, NOW(), ${req.ip || null}
+        ${CONTRATO_VERSAO}, NOW(), ${req.ip || null},
+        ${origem.atribuicao ? JSON.stringify(origem.atribuicao) : null}::jsonb, ${origem.canal}, ${origem.consent_marketing}, ${origem.parceiro_codigo}
       ) RETURNING *
     `;
+    // Pedido também é lead (caixa única) e início de checkout (livro de conversões).
+    await registrarConversao(sql, { evento: 'checkout_started', refTipo: 'consultoria_pedido', refId: pedido.id, valor: opcao.total, origem });
+    await registrarLeadDeOrigem(sql, {
+      origem, source: 'contratar_pedido', nome: c.representante, empresa: c.razaoSocial, email: c.email, telefone: c.telefone,
+      cargo: c.cargo, interesse: `Consultoria: ${preco.nome}`, mensagem: `Pedido nº ${pedido.id} · ${opcao.metodo} ${opcao.parcelas}x · R$ ${opcao.total}`,
+      refTipo: 'consultoria_pedido', refId: pedido.id, funcionarios: preco.funcionarios, valor: opcao.total,
+    });
 
     let cobranca, qr = null;
     try {
@@ -184,6 +198,8 @@ router.post('/api/consultoria/pedido', limite(10), async (req, res) => {
     }
 
     avisaAnders(`Novo pedido de consultoria nº ${pedido.id} — ${preco.nome} (aguardando pagamento)`, consultoriaNovoPedido(pedido));
+    await aoCheckout(sql, { refTipo: 'consultoria_pedido', refId: pedido.id, email: c.email, produto: 'Consultoria ' + preco.nome,
+      fatura: cobranca.invoiceUrl || null, voltar: '/contratar' }).catch(e => console.error('[regua] checkout consultoria:', e.message));
 
     if (opcao.metodo === 'pix') {
       return res.json({ ok: true, status: 'pix_pending', pedidoId: pedido.id, token, qr_code: qr?.payload, qr_code_base64: qr?.encodedImage });
@@ -339,11 +355,29 @@ export async function tratarWebhookConsultoria(event, payment) {
   if (libera) {
     // Parcelas seguintes também chegam como pagas: o pedido já está aprovado.
     if (p.status === 'aprovado') return true;
+    // Confere na API do Asaas antes de aprovar (growth/pagamento.js).
+    const conf = await pagamentoConfere(payment, {
+      referencia: `cons-pedido-${p.id}`,
+      installment: p.asaas_installment_id,
+      valorMinimo: Number(p.parcelas) > 1 ? p.valor_parcela : p.total_pago,
+    }, asaas.obterCobranca);
+    if (!conf.ok) {
+      console.error(`[consultoria] webhook NÃO conferiu, pedido ${p.id}: ${conf.motivo}`);
+      await avisaAnders(`ATENÇÃO: pagamento do pedido nº ${p.id} não conferiu`, `<p>O webhook do Asaas avisou pagamento do pedido nº ${p.id}, mas a consulta à API não confirmou: ${conf.motivo}. Nada foi liberado. Confira no painel do Asaas.</p>`);
+      return true;
+    }
     const [atual] = await sql`
       UPDATE consultoria_pedidos SET status = 'aprovado', pago_em = NOW()
       WHERE id = ${p.id} AND status <> 'aprovado' RETURNING *
     `;
     if (!atual) return true; // outra entrega do mesmo evento chegou antes
+    // Venda = webhook conferido. Valor = total contratado (não só a 1ª parcela).
+    await registrarConversao(sql, {
+      evento: 'payment_succeeded', refTipo: 'consultoria_pedido', refId: p.id, valor: p.total_pago,
+      origem: { canal: p.canal, atribuicao: p.atribuicao, parceiro_codigo: p.parceiro_codigo, consent_marketing: p.consent_marketing },
+    });
+    await marcarLeadGanho(sql, 'consultoria_pedido', p.id);
+    await aoConsultoriaPaga(sql, { refId: p.id, email: p.email }).catch(e => console.error('[regua] indicação:', e.message));
     try {
       await enviaContrato(atual);
       await sql`UPDATE consultoria_pedidos SET contrato_enviado_em = NOW() WHERE id = ${p.id}`;
@@ -360,6 +394,12 @@ export async function tratarWebhookConsultoria(event, payment) {
   }
 
   // Vencido/estorno em andamento etc.: só muda o status de quem ainda não pagou.
-  if (p.status === 'pendente') await sql`UPDATE consultoria_pedidos SET status = ${status} WHERE id = ${p.id}`;
+  if (p.status === 'pendente') {
+    await sql`UPDATE consultoria_pedidos SET status = ${status} WHERE id = ${p.id}`;
+    if (status === 'vencido') {
+      await aoCobrancaVencida(sql, { refTipo: 'consultoria_pedido', refId: p.id, email: p.email, produto: 'Consultoria ' + p.servico_nome, fatura: p.asaas_invoice_url })
+        .catch(e => console.error('[regua] vencida consultoria:', e.message));
+    }
+  }
   return true;
 }

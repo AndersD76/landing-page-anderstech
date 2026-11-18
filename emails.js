@@ -1,11 +1,11 @@
 const BRAND = { navy: '#203864', red: '#FE0000', paper: '#F4F6FA', white: '#FFFFFF' };
 
-function esc(str) {
+export function esc(str) {
   if (!str) return '';
   return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-function layout(content) {
+export function layout(content) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>
 body{margin:0;padding:0;background:${BRAND.paper};font-family:'Helvetica Neue',Arial,sans-serif;color:#16233f}
 .wrap{max-width:600px;margin:0 auto;padding:20px}
@@ -31,10 +31,17 @@ Passo Fundo · RS · (54) 99964-8368<br>
 </div></div></body></html>`;
 }
 
-export function notifyNewLead({ nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_medium, utm_campaign, leadId, roiData }) {
+export function notifyNewLead({ nome, empresa, email, telefone, cargo, prazo, interesse, mensagem, source, landing_page, utm_medium, utm_campaign, leadId, roiData, canal, score, motivos, paginas, parceiro_codigo }) {
   // Nome agora é opcional (lead da calculadora e do pop-up chega só com
   // e-mail), então nenhuma linha pode assumir que ele existe.
+  // 18/11/2026: o aviso passou a dizer DE ONDE veio (canal calculado a partir
+  // do clique de anúncio, UTM, parceiro ou referrer), o score que ordena a fila
+  // e o que a pessoa viu no site antes de chamar.
   const rows = [
+    ['Score', score != null ? `<b>${esc(score)}</b>/100${motivos && motivos.length ? ` · ${esc(motivos.join(', '))}` : ''}` : '—'],
+    ['Canal', esc(canal) || '—'],
+    ...(parceiro_codigo ? [['Parceiro', esc(parceiro_codigo)]] : []),
+    ...(paginas && paginas.length ? [['Viu no site', paginas.slice(0, 12).map(esc).join('<br>')]] : []),
     ['Nome', esc(nome) || '—'],
     ['Empresa', esc(empresa) || '—'],
     ['Cargo', esc(cargo) || '—'],
@@ -123,6 +130,25 @@ export function checklistDelivery({ nome }) {
 <p>→ <a href="https://anderstech.net/blog/quanto-custa-certificacao-iso-9001">Quanto custa a certificação ISO 9001?</a></p>
 <p>→ <a href="https://anderstech.net/iso-9001-vale-a-pena">ISO 9001 vale a pena para minha empresa?</a></p>
 <p>→ <a href="https://anderstech.net/calculadora-roi-certificacao">Calculadora ROI da certificação</a></p>
+</div>`);
+}
+
+// Entrega do diagnóstico de transição ISO 9001:2026 (isca). É o material que a
+// pessoa pediu na tela ("receber por e-mail"), não régua: um envio, uma vez.
+// UTM obrigatória nos links (regra 1 do CLAUDE.md).
+export function diagnosticoTransicaoDelivery({ nome, url, pct, lacunas }) {
+  const utm = 'utm_source=anderstech&utm_medium=email&utm_campaign=isca-transicao-2026';
+  const link = `${url}${url.includes('?') ? '&' : '?'}${utm}`;
+  const wa = 'https://wa.me/5554999648368?text=' + encodeURIComponent('Olá! Vim pelo e-mail do Diagnóstico de transição ISO 9001:2026 e quero planejar a transição.');
+  return layout(`<div class="body">
+<h2>${nome ? esc(String(nome).split(' ')[0]) + ', aqui' : 'Aqui'} está o seu diagnóstico de transição</h2>
+<p>Resultado: <b>${esc(pct)}% pronto</b> para a ISO 9001:2026${Number(lacunas) ? `, com <b>${esc(lacunas)} ponto(s)</b> para ajustar` : ''}.</p>
+<p>O link abaixo reabre as suas respostas e o que fazer em cada ponto:</p>
+<a href="${esc(link)}" class="cta">Abrir meu diagnóstico</a>
+<div class="meta">Prazo final da transição: <b>30/09/2029</b>. Depois dessa data, certificados pela versão 2015 perdem a validade.</div>
+<p>O Daniel vai entrar em contato para ajudar a planejar a transição. Se preferir adiantar, chame no <a href="${esc(wa)}">WhatsApp</a>.</p>
+<hr class="divider">
+<p>→ <a href="https://anderstech.net/iso-9001-2026?${utm}">ISO 9001:2026: o que muda e o cronograma oficial</a></p>
 </div>`);
 }
 

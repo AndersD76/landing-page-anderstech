@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Orgânico — Anders Tech</title>
+<style>
+:root{--navy:#0b1730;--red:#FE0000;--paper:#F4F6FA;--ink:#16233f;--mute:#8190ac;--line:rgba(32,56,100,.14)}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);line-height:1.45;font-size:14px}
+header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+header a{color:#b9c8e4;text-decoration:none;font-size:.82rem}
+header .tabs button{background:none;border:0;color:#b9c8e4;font:inherit;padding:6px 10px;cursor:pointer;border-bottom:2px solid transparent}
+header .tabs button.on{color:#fff;border-bottom-color:var(--red)}
+main{max-width:1240px;margin:0 auto;padding:18px 24px 60px}
+#auth{max-width:340px;margin:80px auto;background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}
+#auth input{width:100%;padding:10px;margin:10px 0;border:1px solid var(--line);border-radius:4px}
+#auth button{width:100%;background:var(--red);color:#fff;border:0;padding:11px;font-weight:700;border-radius:4px;cursor:pointer}
+section{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px;overflow-x:auto}
+h2{font-size:.95rem;color:var(--navy);margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:5px 8px 5px 0;border-bottom:1px solid var(--line)}
+td{padding:5px 8px 5px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.card b{display:block;font-size:1.4rem;color:var(--navy)}
+.card span{font-size:.7rem;color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.tag{display:inline-block;padding:1px 7px;border-radius:9px;font-size:.7rem;background:var(--paper);border:1px solid var(--line)}
+.on-tag{background:#dcfce7;border-color:#86efac}
+pre{white-space:pre-wrap;background:var(--paper);padding:8px;border-radius:4px;font-size:.78rem;max-height:220px;overflow:auto}
+button.p{font:inherit;font-size:.75rem;padding:3px 8px;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer}
+input.f{padding:6px;border:1px solid var(--line);border-radius:4px;font:inherit}
+.vazio{color:var(--mute)}
+</style>
+</head>
+<body>
+<div id="auth"><b>Orgânico — Anders Tech</b><input type="password" id="chave" placeholder="Chave de acesso"><button id="entrar">Entrar</button><div id="erro" style="color:var(--red);display:none">Chave inválida.</div></div>
+<div id="app" style="display:none">
+<header><b>Orgânico</b><a href="/admin">Leads</a><a href="/admin/crescimento">Crescimento</a><a href="/admin/operacao">Operação</a>
+<div class="tabs" id="tabs"><button data-t="seo" class="on">SEO</button><button data-t="geo">GEO</button><button data-t="conv">Conversão</button><button data-t="filas">Filas</button><button data-t="mapa">Mapa de buscas</button><button data-t="paginas">Páginas e qualidade</button><button data-t="links">Alvos de link</button><button data-t="dist">Distribuição</button><button data-t="tempo">Linha do tempo</button></div></header>
+<main id="m"><p class="vazio">Carregando…</p></main>
+</div>
+<script>
+let chave = sessionStorage.getItem('adminKey') || '', dados = null, aba = 'seo';
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const api = async (p, o = {}) => { const r = await fetch(p, { ...o, headers: { Authorization: 'Bearer ' + chave, 'Content-Type': 'application/json', ...(o.headers || {}) } }); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); };
+const tab = (cab, linhas, vazio = 'Sem dados ainda.') => linhas.length ? `<table><thead><tr>${cab.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${linhas.map(l => `<tr>${l.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>` : `<p class="vazio">${vazio}</p>`;
+const n = (x, d = 0) => x == null ? '—' : Number(x).toLocaleString('pt-BR', { maximumFractionDigits: d });
+
+const ABAS = {
+  async seo() {
+    const d = dados, b = Object.fromEntries(d.base.map(x => [x.metrica, x.valor]));
+    const i = d.integracoes;
+    return `<div class="cards">${[['Consultas no mapa', b.consultas_no_mapa], ['Páginas do motor publicadas', b.paginas_publicadas_motor], ['Indexadas (inspeção)', b.paginas_indexadas], ['Impressões 7d', b.impressoes_7d], ['Cliques 7d', b.cliques_7d], ['CTR 7d', b.ctr_7d != null ? (b.ctr_7d * 100).toFixed(1) + '%' : '—'], ['Posição média', n(b.posicao_media_7d, 1)], ['Visitas orgânicas 7d', b.visitas_organicas_7d], ['Leads orgânicos 30d', b.leads_organicos_30d], ['Vendas orgânicas 30d', b.vendas_organicas_30d]].map(([r, v]) => `<div class="card"><span>${r}</span><b>${v == null ? '—' : esc(v)}</b></div>`).join('')}</div>
+<p style="margin-bottom:12px">Integrações: ${Object.entries(i).map(([k, v]) => `<span class="tag ${v ? 'on-tag' : ''}">${k} ${v ? 'ligado' : 'desligado'}</span>`).join(' ')}</p>
+<section><h2>Publicadas × indexadas por tipo</h2>${tab(['Tipo', 'Páginas', 'Publicadas', 'Em revisão', 'Indexadas'], d.porTipo.map(x => [esc(x.tipo), x.paginas, x.publicadas, x.revisao, x.indexadas]))}</section>
+<section><h2>Páginas no Search Console (28 dias)</h2>${tab(['Página', 'Impressões', 'Cliques', 'CTR', 'Posição'], d.gscPaginas.map(x => [esc(x.pagina), n(x.imp), n(x.cli), x.imp ? (100 * x.cli / x.imp).toFixed(1) + '%' : '—', n(x.pos, 1)]), 'Search Console ainda não ligado (GSC_ATIVO + OAuth).')}</section>
+<section><h2>Sem impressão após 30 dias</h2>${tab(['Página'], d.semImpressao.map(x => [esc(x.slug)]))}</section>
+<section><h2>Ondas de publicação</h2>${tab(['Onda', 'Tipo', 'Páginas', 'Indexadas', 'Status', 'Publicada'], d.ondas.map(o => [o.id, esc(o.tipo), o.paginas, o.indexadas ?? '—', esc(o.status), new Date(o.publicada_em).toLocaleDateString('pt-BR')]))}</section>`;
+  },
+  async geo() {
+    const d = dados;
+    return `<section><h2>Crawlers (30 dias)</h2>${tab(['Robô', 'IP validado', 'Acessos', 'Páginas'], d.crawlers.map(c => [esc(c.bot), c.validado ? 'sim' : 'não', n(c.hits), c.paginas]))}</section>
+<section><h2>Leads vindos de assistentes de IA</h2>${tab(['Página de entrada', 'Leads'], d.leadsIA.map(x => [esc(x.pagina), x.leads]))}</section>
+<section><h2>SERP e AI Overview (50 consultas prioritárias)</h2>${tab(['Consulta', 'Nossa posição', 'AI Overview', 'Citados'], d.serp.map(s => [esc(s.consulta), s.posicao_nossa ?? '—', s.ai_overview ? 'sim' : 'não', esc((s.citados || []).slice(0, 3).join(' · '))]), 'Checagem de SERP desligada (SERPAPI_KEY).')}</section>`;
+  },
+  async conv() {
+    const d = dados, f = {};
+    for (const x of d.funilIscas) { f[x.isca || '—'] = f[x.isca || '—'] || {}; f[x.isca || '—'][x.event] = x.n; }
+    return `<section><h2>Funil por isca (30 dias)</h2>${tab(['Isca', 'Vista', 'Iniciada', 'Concluída', 'Lead', 'CTA produto'], Object.entries(f).map(([k, v]) => [esc(k), v.isca_vista || 0, v.isca_iniciada || 0, v.isca_concluida || 0, v.lead_capturado || 0, v.cta_produto_clicado || 0]))}</section>
+<section><h2>Top 20 páginas por lead (90 dias)</h2>${tab(['Página', 'Leads'], d.topLeads.map(x => [esc(x.pagina || '—'), x.leads]))}</section>
+<section><h2>Top 20 páginas por receita (first-touch)</h2>${tab(['Página', 'Vendas', 'Receita'], d.topReceita.map(x => [esc(x.pagina), x.vendas, 'R$ ' + n(x.receita, 2)]))}</section>`;
+  },
+  async filas() {
+    return `<section><h2>Oportunidades, frescor e revisão</h2>${tab(['Tipo', 'Alvo', 'Motivo', ''], dados.oportunidades.map(o => [esc(o.tipo), esc(o.alvo), esc(o.motivo), `<button class="p" data-fechar="${o.id}">Feito</button>`]))}</section>`;
+  },
+  async mapa() {
+    const c = dados.consultas, tot = c.reduce((s, x) => s + x.n, 0);
+    const lista = await api('/api/admin/organico/consultas');
+    return `<section><h2>Mapa de buscas: ${n(tot)} consultas</h2>${tab(['Cluster', 'Tipo', 'Status', 'Consultas'], c.sort((a, b) => b.n - a.n).map(x => [esc(x.cluster), esc(x.tipo_pagina), esc(x.status), n(x.n)]))}</section>
+<section><h2>Prioritárias</h2>${tab(['Consulta', 'Intenção', 'Cluster', 'Tipo', 'Isca', 'Prioridade', 'Volume', 'Fonte', 'Página'], lista.slice(0, 200).map(q => [esc(q.consulta), esc(q.intencao), esc(q.cluster), esc(q.tipo_pagina), esc(q.isca), q.prioridade, q.volume_est ?? `<span class="tag">${esc(q.volume_fonte)}</span>`, esc(q.fonte), q.pagina_slug ? `<a href="/${esc(q.pagina_slug)}" target="_blank">abrir</a>` : '']))}</section>`;
+  },
+  async paginas() {
+    const l = await api('/api/admin/organico/paginas');
+    return `<section><h2>Páginas e portão de qualidade</h2>${tab(['Página', 'Tipo', 'Status', 'Origem', 'Portão', ''], l.map(p => {
+      const falhas = ((p.qualidade || {}).checks || []).filter(c => !c.ok).map(c => c.nome + ' (' + c.detalhe + ')');
+      return [`<a href="/${esc(p.slug)}" target="_blank">${esc(p.titulo)}</a>`, esc(p.tipo), esc(p.status), esc(p.origem), falhas.length ? `<span style="color:#b91c1c">${esc(falhas.join('; '))}</span>` : '<span class="tag on-tag">passou</span>',
+        `<button class="p" data-pag="${p.id}" data-acao="aprovar">Aprovar</button> <button class="p" data-pag="${p.id}" data-acao="arquivar">Arquivar</button>`];
+    }))}</section>`;
+  },
+  async links() {
+    const l = await api('/api/admin/organico/alvos');
+    return `<section><h2>Alvos de link (${l.length})</h2>${tab(['Organização', 'Tipo', 'Onde o link cabe', 'Ativo', 'Mensagem', 'Status'], l.map(a => [`<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nome)}</a><br><small>${esc(a.cidade)}/${esc(a.uf)}</small>`, esc(a.tipo), esc(a.onde_link), esc(a.ativo),
+      `<b>${esc(a.assunto)}</b><pre>${esc(a.mensagem)}</pre><button class="p" data-copiar="${a.id}">Copiar</button>`,
+      `<select class="f" data-alvo="${a.id}">${['novo', 'contatado', 'respondeu', 'link_obtido', 'sem_interesse'].map(s => `<option ${s === a.status ? 'selected' : ''}>${s}</option>`).join('')}</select>`]))}</section>
+<section><h2>Artigos de convidado (prontos para enviar)</h2>${(await api('/api/admin/organico/artigos')).map(a => `<p><b>${esc(a.titulo)}</b> — <small>${esc(a.veiculo_alvo)}</small></p><pre>${esc(a.corpo)}</pre>`).join('')}</section>`;
+  },
+  async dist() {
+    const l = await api('/api/admin/organico/distribuicao');
+    return `<section><h2>Fila de distribuição (1 post e 1 roteiro por página publicada)</h2>${tab(['Página', 'Canal', 'Texto', 'Link', 'Status'], l.map(x => [esc(x.pagina_slug), esc(x.canal), `<pre>${esc(x.texto)}</pre>`, `<small>${esc(x.link)}</small>`,
+      `<select class="f" data-dist="${x.id}">${['pendente', 'aprovado', 'publicado', 'descartado'].map(s => `<option ${s === x.status ? 'selected' : ''}>${s}</option>`).join('')}</select>`]), 'A fila enche quando as ondas de páginas forem publicadas.')}</section>`;
+  },
+  async tempo() {
+    return `<section><h2>Linha do tempo (deploys, ondas, pausas)</h2>${tab(['Quando', 'Tipo', 'O quê'], dados.anotacoes.map(a => [new Date(a.ts).toLocaleString('pt-BR'), esc(a.tipo), esc(a.texto)]))}</section>`;
+  },
+};
+
+async function pintar() {
+  $('m').innerHTML = '<p class="vazio">Carregando…</p>';
+  try { if (!dados) dados = await api('/api/admin/organico/visao'); $('m').innerHTML = await ABAS[aba](); }
+  catch (e) { $('m').innerHTML = `<p style="color:var(--red)">Erro: ${esc(e.message)}</p>`; }
+}
+async function entrar(v) {
+  chave = (v !== undefined ? v : $('chave').value).trim();
+  try { dados = await api('/api/admin/organico/visao'); sessionStorage.setItem('adminKey', chave); $('auth').style.display = 'none'; $('app').style.display = 'block'; pintar(); }
+  catch { $('erro').style.display = 'block'; }
+}
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.t) { aba = b.dataset.t; document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b)); pintar(); }
+  else if (b.dataset.fechar) { await api('/api/admin/organico/fila/' + b.dataset.fechar + '/fechar', { method: 'POST' }); dados = null; pintar(); }
+  else if (b.dataset.pag) { await api('/api/admin/organico/paginas/' + b.dataset.pag + '/' + b.dataset.acao, { method: 'POST' }); pintar(); }
+  else if (b.dataset.copiar) { const pre = b.previousElementSibling; await navigator.clipboard.writeText(pre.textContent); b.textContent = 'Copiado'; }
+});
+document.addEventListener('change', async (e) => {
+  const s = e.target;
+  if (s.dataset.alvo) await api('/api/admin/organico/alvos/' + s.dataset.alvo, { method: 'PATCH', body: JSON.stringify({ status: s.value }) });
+  if (s.dataset.dist) await api('/api/admin/organico/distribuicao/' + s.dataset.dist, { method: 'PATCH', body: JSON.stringify({ status: s.value }) });
+});
+$('entrar').addEventListener('click', () => entrar());
+$('chave').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(); });
+if (chave) entrar(chave);
+</script>
+</body>
+</html>

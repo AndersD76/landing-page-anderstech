@@ -53,6 +53,17 @@ const PAYLOADS = {
     cargo: 'Gerente da Qualidade', source: 'lead_magnet_checklist', interesse: 'ISO 9001',
     landing_page: '/checklist-iso-9001', utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '',
   },
+
+  // pages/transicao-iso-9001-2026.html — isca da onda ISO 9001:2026. Nome,
+  // empresa e prazo opcionais; `diagnostico` não é campo de lead (o servidor só
+  // usa o código das respostas para montar o link do e-mail).
+  transicao_2026: {
+    nome: '', empresa: '', email: 'qualidade@metalurgica.com.br', telefone: '', cargo: '', prazo: '',
+    website: '', source: 'isca_transicao_2026', interesse: 'Transição ISO 9001:2026',
+    mensagem: 'Diagnóstico de transição ISO 9001:2026: 35% pronto, 7 lacuna(s). Próxima auditoria: Entre 6 e 12 meses. https://anderstech.net/transicao-iso-9001-2026?r=SPNNPNSNNP2',
+    diagnostico: { pct: 35, lacunas: 7, url: 'https://anderstech.net/transicao-iso-9001-2026?r=SPNNPNSNNP2' },
+    landing_page: '/iso-9001-2026', utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '',
+  },
 };
 
 test('todo formulário do site é aceito com o payload que a tela manda', () => {

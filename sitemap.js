@@ -18,7 +18,7 @@ const CORE_URLS = [
   ['/blog/pbqp-h-o-que-e-para-que-serve', '2026-06-06', 'monthly', '0.8'],
   ['/blog/iso-9001-vale-a-pena-para-metalurgica', '2026-06-06', 'monthly', '0.8'],
   ['/blog/como-reduzir-retrabalho-na-producao', '2026-06-06', 'monthly', '0.8'],
-  ['/blog/o-que-e-iso-9001', '2026-06-08', 'monthly', '0.9'],
+  ['/blog/o-que-e-iso-9001', '2026-11-18', 'monthly', '0.9'],
   ['/blog/como-conseguir-certificacao-iso-9001', '2026-06-08', 'monthly', '0.9'],
   ['/blog/iso-9001-para-industrias', '2026-06-08', 'monthly', '0.8'],
   ['/blog/erros-certificacao-iso-9001', '2026-06-08', 'monthly', '0.8'],
@@ -32,8 +32,12 @@ const CORE_URLS = [
   ['/consultoria-iso-9001-carazinho', '2026-07-12', 'monthly', '0.9'],
   ['/consultoria-iso-9001-marau', '2026-07-12', 'monthly', '0.9'],
 
+  // Onda ISO 9001:2026 (publicada em 16/09/2026): pilar + isca
+  ['/iso-9001-2026', '2026-11-18', 'weekly', '1.0'],
+  ['/transicao-iso-9001-2026', '2026-11-18', 'monthly', '0.9'],
+
   // Serviços
-  ['/iso-9001', '2026-08-25', 'monthly', '0.9'],
+  ['/iso-9001', '2026-11-18', 'monthly', '0.9'],
   ['/pbqp-h', '2026-08-25', 'monthly', '0.9'],
   ['/servicos', '2026-08-29', 'monthly', '0.9'],
   // /sebraetec virou /unio: o Sebraetec deixou de existir com esse nome, a
@@ -92,6 +96,38 @@ export function buildSitemap(casesUrls, pbqphUrls) {
       `  <url><loc>${SITE}${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`)
     .join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+// ── Sitemap em índice, uma parte por tipo de página ──
+// /sitemap.xml lista as partes com o lastmod mais recente de cada uma; cada
+// parte é um urlset. `motorUrls` traz [path, lastmod, freq, prio, tipo].
+export function partesSitemap(casesUrls, pbqphUrls, motorUrls = []) {
+  const partes = {
+    principal: CORE_URLS,
+    glossario: [['/glossario', GLOSSARIO_LASTMOD, 'weekly', '0.8'], ...TERMOS.map(t => [`/glossario/${t.slug}`, GLOSSARIO_LASTMOD, 'monthly', '0.6'])],
+    pbqph: pbqphUrls || [],
+    cases: casesUrls || [],
+  };
+  for (const u of motorUrls) {
+    const tipo = u[4] ? 'motor-' + u[4] : 'motor-hubs';
+    (partes[tipo] = partes[tipo] || []).push(u.slice(0, 4));
+  }
+  for (const k of Object.keys(partes)) if (!partes[k].length) delete partes[k];
+  return partes;
+}
+
+export function xmlUrlset(urls) {
+  const body = urls.map(([loc, lastmod, changefreq, priority]) =>
+    `  <url><loc>${SITE}${loc}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+export function xmlIndice(partes) {
+  const itens = Object.entries(partes).map(([nome, urls]) => {
+    const lastmod = urls.map(u => u[1]).sort().pop();
+    return `  <sitemap><loc>${SITE}/sitemaps/${nome}.xml</loc><lastmod>${lastmod}</lastmod></sitemap>`;
+  }).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${itens}\n</sitemapindex>\n`;
 }
 
 export function sitemapUrlCount() {

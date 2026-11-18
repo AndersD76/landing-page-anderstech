@@ -124,6 +124,76 @@
     ls(K_LANDING, ROTA);
   })();
 
+  /* ---------- atribuicao completa (cookie first-party at_attr) ----------
+     O servidor le este cookie ao gravar lead e pedido (growth/atribuicao.js).
+     Primeiro toque nunca muda; ultimo toque muda a cada CHEGADA (URL com UTM
+     ou identificador de clique, ou vinda de outro site) — navegar dentro do
+     site nao e chegada. Regras de consentimento:
+       - sem consentimento de analise: nada e gravado (so memoria);
+       - identificador de clique (gclid, msclkid...) so com consentimento de
+         marketing — e o que permite devolver a venda ao anuncio. */
+  var CLIDS = ["gclid", "gbraid", "wbraid", "msclkid", "fbclid", "li_fat_id"];
+  var K_MKT = "at_consent_mkt";
+  function consentMkt() { return ls(K_MKT) === "1"; }
+
+  var toque = null;   // chegada desta pagina, se for chegada
+  (function capturarToque() {
+    var q;
+    try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    var t = { ts: new Date().toISOString(), landing: ROTA }, chegou = false;
+    var ref = String(document.referrer || "");
+    var externo = ref && ref.indexOf(location.origin) !== 0;
+    if (externo) { t.referrer = ref.slice(0, 300); chegou = true; }
+    for (var i = 0; i < CAMPOS_UTM.length; i++) {
+      var u = q.get(CAMPOS_UTM[i]);
+      if (u) { t[CAMPOS_UTM[i]] = u.slice(0, 120); chegou = true; }
+    }
+    var term = q.get("utm_term");
+    if (term) { t.utm_term = term.slice(0, 120); chegou = true; }
+    for (var j = 0; j < CLIDS.length; j++) {
+      var c = q.get(CLIDS[j]);
+      if (c && /^[A-Za-z0-9_.\-~]{4,300}$/.test(c)) { t[CLIDS[j]] = c; chegou = true; }
+    }
+    if (chegou) toque = t;
+  })();
+
+  function lerAttr() {
+    try {
+      var m = document.cookie.match(/(?:^|;\s*)at_attr=([^;]*)/);
+      return m ? JSON.parse(decodeURIComponent(m[1])) : null;
+    } catch (e) { return null; }
+  }
+  function semClids(t) {
+    if (!t) return t;
+    var o = {};
+    for (var k in t) if (CLIDS.indexOf(k) === -1) o[k] = t[k];
+    return o;
+  }
+  function gravarAttr() {
+    if (consentimento() !== "sim") {
+      // Recusou analise: apaga o que houver.
+      if (consentimento() === "nao") document.cookie = "at_attr=; path=/; max-age=0; SameSite=Lax";
+      return;
+    }
+    var atual = lerAttr() || {};
+    var mkt = consentMkt();
+    var ft = atual.ft || toque || { ts: new Date().toISOString(), landing: LANDING };
+    var lt = toque || atual.lt || ft;
+    var valor = { ft: mkt ? ft : semClids(ft), lt: mkt ? lt : semClids(lt), mkt: mkt ? 1 : 0, sid: sessaoMemoria || sessaoId() };
+    var s = encodeURIComponent(JSON.stringify(valor));
+    if (s.length > 3800) { valor.ft = semClids(valor.ft); s = encodeURIComponent(JSON.stringify(valor)); }
+    document.cookie = "at_attr=" + s + "; path=/; max-age=" + (90 * 86400) + "; SameSite=Lax" +
+      (location.protocol === "https:" ? "; Secure" : "");
+  }
+  // Para formularios sem cookie (consentimento pendente): o toque desta pagina,
+  // sem identificador de clique. O servidor da preferencia ao cookie.
+  function atribAtual() {
+    var c = lerAttr();
+    if (c) return c;
+    var t = semClids(toque || { ts: new Date().toISOString(), landing: LANDING });
+    return { ft: t, lt: t, mkt: 0 };
+  }
+
   /* ---------- fila + envio ---------- */
   var fila = [];
   var jaEnviado = {};
@@ -215,6 +285,7 @@
   }, true);
 
   function iniciar() {
+    gravarAttr();
     enriquecerTodos();
     enfileirar("page_view", { path: ROTA, origem: ORIGEM, referrer: String(document.referrer || "").slice(0, 200) });
     if (ROTA.indexOf("/cases/") === 0) {
@@ -237,10 +308,14 @@
       // Aceitou depois de navegar: grava a pagina de entrada agora, senao a
       // atribuicao se perde na proxima navegacao.
       if (!ls(K_LANDING)) ls(K_LANDING, LANDING);
+      gravarAttr();
       despachar();
     }
-    else { fila.length = 0; }
+    else { fila.length = 0; gravarAttr(); }
   });
+  // Marketing respondido (aceite ou recusa): regrava com ou sem os
+  // identificadores de clique.
+  addEventListener("at:consent-mkt", function () { gravarAttr(); });
 
   /* ---------- API publica ---------- */
   /* ---------- CTA visto ----------
@@ -276,6 +351,46 @@
     observarCtas();
   }
 
+  /* ---------- iscas e CTA do produto ----------
+     Propriedades obrigatorias em todo evento de isca (organico/taxonomia.js):
+     page_type, cluster, consulta_alvo, isca_id. As tres primeiras vem das metas
+     at-* que o servidor poe em toda pagina. */
+  var PAGINA = { page_type: meta("at-page-type") || "outra", cluster: meta("at-cluster") || "", consulta_alvo: meta("at-consulta") || "" };
+  function propsIsca(id, extra) {
+    var p = { path: ROTA, page_type: PAGINA.page_type, cluster: PAGINA.cluster, consulta_alvo: PAGINA.consulta_alvo, isca_id: id || "" };
+    for (var k in (extra || {})) p[k] = extra[k];
+    return p;
+  }
+  var iscaJa = {};
+  function iscaEvento(evento, id, extra) {
+    var chave = evento + "|" + id;
+    if ((evento === "isca_vista" || evento === "isca_iniciada") && iscaJa[chave]) return;
+    iscaJa[chave] = 1;
+    enfileirar(evento, propsIsca(id, extra), { imediato: evento !== "isca_vista" });
+  }
+  function observarIscas() {
+    var alvos = document.querySelectorAll("[data-isca]");
+    if (!alvos.length || !window.IntersectionObserver) return;
+    var obs = new IntersectionObserver(function (es) {
+      for (var i = 0; i < es.length; i++) {
+        if (!es[i].isIntersecting) continue;
+        iscaEvento("isca_vista", es[i].target.getAttribute("data-isca"), { posicao: es[i].target.getAttribute("data-isca-pos") || "" });
+        obs.unobserve(es[i].target);
+      }
+    }, { threshold: 0.5 });
+    for (var j = 0; j < alvos.length; j++) obs.observe(alvos[j]);
+  }
+  // Primeira interacao com a isca (foco num campo, clique numa opcao ou no CTA).
+  function iniciou(ev) {
+    var el = ev.target && ev.target.closest ? ev.target.closest("[data-isca]") : null;
+    if (el) iscaEvento("isca_iniciada", el.getAttribute("data-isca"));
+    var prod = ev.target && ev.target.closest ? ev.target.closest('[data-cta-produto], a[href^="/contratar"], a[href*="anderstech.net/contratar"]') : null;
+    if (prod && ev.type === "click") enfileirar("cta_produto_clicado", propsIsca(prod.getAttribute("data-cta-produto") || "", { destino: (prod.getAttribute("href") || "").slice(0, 120) }), { imediato: true });
+  }
+  document.addEventListener("click", iniciou, true);
+  document.addEventListener("focusin", iniciou, true);
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", observarIscas); else observarIscas();
+
   window.anders = {
     track: function (evento, props) { enfileirar(evento, props); },
     identify: function (traits) {
@@ -293,6 +408,12 @@
       return enriquecerWa(a).href;
     },
     utm: function () { return JSON.parse(JSON.stringify(utm)); },
+    // Atribuicao completa (primeiro e ultimo toque) para formularios e
+    // checkouts que querem mandar no corpo — o servidor prefere o cookie.
+    atrib: function () { return atribAtual(); },
+    // Para as paginas de isca: isca("isca_concluida", "id") e isca("lead_capturado", "id").
+    isca: function (evento, id, extra) { iscaEvento(evento, id, extra); },
+    pagina: function () { return JSON.parse(JSON.stringify(PAGINA)); },
     landing: function () { return LANDING; },
     sessao: function () { return sessaoMemoria || sessaoId(); },
     // Ponto unico de atribuicao para POST /api/contact. Todo formulario do site
