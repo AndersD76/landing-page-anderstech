@@ -97,19 +97,27 @@ function vencimentoPadrao(diasFrente = 3) {
   return d.toISOString().slice(0, 10);
 }
 
-export async function criarCobranca({ customerId, valor, descricao, orderId, billingType }) {
-  return call('/payments', {
-    method: 'POST',
-    idempotencyKey: `ead-order-${orderId}`,
-    body: {
-      customer: customerId,
-      billingType,                       // 'PIX' | 'CREDIT_CARD' | 'BOLETO'
-      value: Number(valor),
-      dueDate: vencimentoPadrao(),
-      description: descricao,
-      externalReference: `ead-order-${orderId}`,
-    },
-  });
+// `referencia` identifica o pedido no webhook: 'ead-order-N' (cursos) ou
+// 'cons-pedido-N' (consultoria). Com `parcelas` > 1 vira cobrança parcelada:
+// o Asaas cria uma cobrança por parcela, mensais, todas com a mesma referência,
+// e devolve a PRIMEIRA (com o id do parcelamento em `installment`).
+export async function criarCobranca({ customerId, valor, descricao, orderId, billingType, referencia, parcelas = 1, valorParcela }) {
+  const ref = referencia || `ead-order-${orderId}`;
+  const body = {
+    customer: customerId,
+    billingType,                       // 'PIX' | 'CREDIT_CARD' | 'BOLETO'
+    dueDate: vencimentoPadrao(),
+    description: descricao,
+    externalReference: ref,
+  };
+  if (parcelas > 1) {
+    // Parcelado: em vez de `value`, o Asaas pede quantidade e valor da parcela.
+    body.installmentCount = parcelas;
+    body.installmentValue = Number(valorParcela);
+  } else {
+    body.value = Number(valor);
+  }
+  return call('/payments', { method: 'POST', idempotencyKey: ref, body });
 }
 
 export async function obterQrCodePix(paymentId) {

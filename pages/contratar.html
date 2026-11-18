@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contratar Consultoria Online: Preço na Hora — Anders Tech</title>
+<meta name="description" content="Calcule o preço da consultoria da Anders Tech pelo porte e pela cidade da sua empresa, aceite o contrato e pague por Pix, cartão ou boleto em até 12x." />
+<meta name="author" content="Anders Tech" />
+<!-- NOTA: indexada e linkada das páginas de serviço desde 18/11/2026 ("pode ligar tudo").
+     O pagamento só liga com os dados da CONTRATADA em config/empresa.js; até lá a
+     calculadora funciona e o botão vira WhatsApp com o preço calculado. -->
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://anderstech.net/contratar" />
+<meta property="og:title" content="Contratar consultoria online — Anders Tech" />
+<meta property="og:description" content="Preço na hora pelo porte e pela cidade da empresa. Pix, cartão ou boleto em até 12x." />
+<meta property="og:url" content="https://anderstech.net/contratar" />
+<meta property="og:image" content="https://anderstech.net/assets/og-image.png" />
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/assets/favicon.png" type="image/png" />
+<style>
+.ct-hero{background:#0b1730;color:#fff;padding:clamp(40px,7vw,72px) 16px clamp(32px,5vw,52px)}
+.ct-hero .wrap,.ct-main{max-width:980px;margin:0 auto}
+.ct-hero .tag{font-family:var(--ff-mono,monospace);font-size:.74rem;font-weight:700;color:#FE0000;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.ct-hero h1{font-family:var(--ff-display,system-ui);font-size:clamp(1.7rem,4.4vw,2.5rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:12px;color:#fff}
+.ct-hero p{color:#b9c8e4;font-size:1.05rem;max-width:660px;line-height:1.6}
+.ct-main{padding:28px 16px 72px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.ct-aviso{grid-column:1/-1;background:#fff7d6;border-left:4px solid #e0a800;padding:14px 18px;font-size:.95rem;color:#5c4a00;line-height:1.55}
+.ct-aviso a{color:#203864;font-weight:600;text-decoration:underline}
+.ct-card{background:#fff;border:1px solid rgba(32,56,100,.14);border-radius:8px;padding:22px clamp(16px,3vw,26px);margin-bottom:18px}
+.ct-card h2{font-family:var(--ff-display,system-ui);font-size:1.1rem;color:#203864;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.ct-card h2 .n{display:inline-flex;width:24px;height:24px;border-radius:50%;background:#203864;color:#fff;font-size:.8rem;align-items:center;justify-content:center;flex:none}
+.ct-card .ajuda{font-size:.86rem;color:#8190ac;margin-bottom:14px}
+.ct-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 16px}
+.ct-campo label{display:block;font-size:.78rem;font-weight:600;color:#46577a;margin-bottom:4px}
+.ct-campo input,.ct-campo select{width:100%;padding:10px 12px;border:1px solid #c9d2e0;border-radius:6px;font:inherit;font-size:.95rem;background:#fff;color:#16233f}
+.ct-campo input:focus,.ct-campo select:focus{outline:none;border-color:#203864;box-shadow:0 0 0 3px rgba(32,56,100,.12)}
+.ct-campo .dica{font-size:.76rem;color:#8190ac;margin-top:3px}
+.ct-opcoes{display:flex;gap:8px;flex-wrap:wrap}
+.ct-opcoes label{display:flex;align-items:center;gap:6px;border:1px solid #c9d2e0;border-radius:6px;padding:9px 14px;cursor:pointer;font-size:.93rem;color:#16233f}
+.ct-opcoes input{accent-color:#203864}
+.ct-opcoes label:has(input:checked){border-color:#203864;background:#eef2f9}
+.ct-erro{color:#c81e1e;font-size:.9rem;margin-top:10px;display:none}
+.ct-erro a{color:#203864;font-weight:600}
+.ct-resumo{position:sticky;top:90px}
+.ct-resumo .total{font-family:var(--ff-display,system-ui);font-size:2rem;font-weight:700;color:#0b1730;line-height:1.1;margin:6px 0 2px}
+.ct-resumo .sub{font-size:.85rem;color:#8190ac}
+.ct-linhas{list-style:none;padding:0;margin:14px 0 0;font-size:.88rem}
+.ct-linhas li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid rgba(32,56,100,.1);color:#46577a}
+.ct-linhas li b{color:#16233f;white-space:nowrap}
+.ct-inclui{font-size:.82rem;color:#46577a;margin-top:12px;line-height:1.5}
+.ct-metodos{display:flex;border:1px solid #c9d2e0;border-radius:6px;overflow:hidden;margin-bottom:12px}
+.ct-metodos button{flex:1;padding:11px 8px;border:0;background:#F4F6FA;font:inherit;font-weight:600;color:#46577a;cursor:pointer;border-right:1px solid #c9d2e0}
+.ct-metodos button:last-child{border-right:0}
+.ct-metodos button[aria-pressed="true"]{background:#203864;color:#fff}
+.ct-pagto{font-size:.95rem;color:#16233f;margin-top:8px}
+.ct-aceite{display:flex;gap:10px;align-items:flex-start;font-size:.93rem;color:#16233f;line-height:1.5;margin-top:4px}
+.ct-aceite input{margin-top:4px;width:18px;height:18px;accent-color:#203864;flex:none}
+.ct-aceite a{color:#203864;font-weight:600;text-decoration:underline}
+.ct-btn{display:block;width:100%;margin-top:16px;padding:15px;border:0;border-radius:6px;background:#FE0000;color:#fff;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none}
+.ct-btn:hover{background:#d80a0a}
+.ct-btn:disabled{opacity:.55;cursor:not-allowed}
+.ct-btn.wa{background:#1f9d55}
+.ct-pix{text-align:center}
+.ct-pix img{max-width:220px;width:100%;margin:10px auto;display:block}
+.ct-pix code{display:block;font-size:.72rem;background:#F4F6FA;padding:10px;word-break:break-all;cursor:pointer;margin:8px 0;text-align:left}
+.ct-ok{color:#15803d;font-weight:600}
+.ct-oculto{display:none}
+.ct-opcoes label{white-space:nowrap}
+/* Celular: o preço vem logo depois de serviço e empresa, não no fim do formulário. */
+@media(max-width:860px){
+  .ct-main{display:flex;flex-direction:column;gap:0}
+  .ct-col,.ct-resumo{display:contents}
+  .ct-aviso{order:0;margin-bottom:18px}
+  #cardServico{order:1}#cardEmpresa{order:2}#cardResumo{order:3}#cardDados{order:4}#cardPagamento{order:5}
+}
+</style>
+</head>
+<body>
+<div id="shared-nav"></div>
+
+<section class="ct-hero">
+  <div class="wrap">
+    <div class="tag">Contratação online</div>
+    <h1>Contrate a consultoria com o preço na hora</h1>
+    <p>Escolha o serviço, informe o porte e a cidade da empresa e veja o valor. Aceite o contrato e pague por Pix, cartão ou boleto. A Anders Tech entra em contato em até 2 dias úteis depois do pagamento.</p>
+  </div>
+</section>
+
+<main class="ct-main">
+  <div class="ct-aviso ct-oculto" id="avisoInativo">
+    A contratação com pagamento pelo site está em fase final de liberação. Você já pode calcular o preço; para contratar agora,
+    <a href="#" id="waAviso" target="_blank" rel="noopener">fale com a gente no WhatsApp</a>.
+  </div>
+
+  <div class="ct-col">
+    <section class="ct-card" id="cardServico">
+      <h2><span class="n">1</span> Serviço</h2>
+      <p class="ajuda">O preço é a carga horária × R$ 180 por hora, mais os acréscimos de porte, distância e projeto.</p>
+      <div class="ct-campo">
+        <label for="servico">Qual serviço?</label>
+        <select id="servico"><option value="">Carregando...</option></select>
+      </div>
+      <div class="ct-campo ct-oculto" id="campoMeses" style="margin-top:12px">
+        <label>Prazo do contrato</label>
+        <div class="ct-opcoes" id="meses"></div>
+        <div class="dica">Pago em parcelas mensais iguais, sem juros.</div>
+      </div>
+    </section>
+
+    <section class="ct-card" id="cardEmpresa">
+      <h2><span class="n">2</span> Sua empresa</h2>
+      <p class="ajuda">Atendemos empresas a até 300 km de Passo Fundo pela estrada. O deslocamento já está no preço.</p>
+      <div class="ct-grid">
+        <div class="ct-campo">
+          <label for="cidade">Cidade da sede</label>
+          <input id="cidade" list="listaCidades" autocomplete="off" placeholder="Digite a cidade">
+          <datalist id="listaCidades"></datalist>
+        </div>
+        <div class="ct-campo">
+          <label for="funcionarios">Número de funcionários</label>
+          <input id="funcionarios" type="number" min="1" step="1" inputmode="numeric" placeholder="Ex.: 35">
+        </div>
+      </div>
+      <div class="ct-campo ct-oculto" id="campoProjeto" style="margin-top:14px">
+        <label>A empresa projeta e desenvolve os produtos que vende?</label>
+        <div class="ct-opcoes">
+          <label><input type="radio" name="projeto" value="nao" checked> Não</label>
+          <label><input type="radio" name="projeto" value="sim"> Sim</label>
+        </div>
+        <div class="dica">Quem projeta o próprio produto tem mais requisitos a implantar (+20%).</div>
+      </div>
+      <p class="ct-erro" id="erroSimulacao"></p>
+    </section>
+
+    <section class="ct-card" id="cardDados">
+      <h2><span class="n">3</span> Dados para o contrato</h2>
+      <p class="ajuda">O contrato é gerado com estes dados e enviado por e-mail depois do pagamento.</p>
+      <div class="ct-grid">
+        <div class="ct-campo"><label for="razao">Razão social</label><input id="razao" autocomplete="organization"></div>
+        <div class="ct-campo"><label for="cnpj">CNPJ</label><input id="cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
+        <div class="ct-campo"><label for="endereco">Endereço (rua, número e bairro)</label><input id="endereco" autocomplete="street-address"></div>
+        <div class="ct-campo"><label for="cep">CEP</label><input id="cep" inputmode="numeric" placeholder="00000-000" autocomplete="postal-code"></div>
+        <div class="ct-campo"><label for="repNome">Quem assina: nome completo</label><input id="repNome" autocomplete="name"></div>
+        <div class="ct-campo"><label for="repCargo">Cargo</label><input id="repCargo" placeholder="Ex.: Sócio-diretor"></div>
+        <div class="ct-campo"><label for="repCpf">CPF de quem assina</label><input id="repCpf" inputmode="numeric" placeholder="000.000.000-00"></div>
+        <div class="ct-campo"><label for="email">E-mail</label><input id="email" type="email" autocomplete="email"></div>
+        <div class="ct-campo"><label for="telefone">Telefone com DDD</label><input id="telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(54) 99999-9999"></div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="ct-resumo">
+    <section class="ct-card" id="cardResumo">
+      <h2>Preço</h2>
+      <div id="resumoVazio" class="sub">Escolha o serviço, a cidade e o número de funcionários.</div>
+      <div id="resumo" class="ct-oculto">
+        <div class="total" id="total"></div>
+        <div class="sub" id="totalSub"></div>
+        <ul class="ct-linhas" id="linhas"></ul>
+        <p class="ct-inclui">Inclui deslocamento, hospedagem e alimentação nas visitas. Não inclui as taxas do organismo certificador.</p>
+      </div>
+    </section>
+
+    <section class="ct-card ct-oculto" id="cardPagamento">
+      <h2>Pagamento</h2>
+      <div class="ct-metodos" role="group" aria-label="Forma de pagamento">
+        <button type="button" data-metodo="pix" aria-pressed="true">Pix</button>
+        <button type="button" data-metodo="cartao" aria-pressed="false">Cartão</button>
+        <button type="button" data-metodo="boleto" aria-pressed="false">Boleto</button>
+      </div>
+      <div class="ct-campo" id="campoParcelas">
+        <label for="parcelas">Parcelas</label>
+        <select id="parcelas"></select>
+      </div>
+      <p class="ct-pagto" id="pagtoTexto"></p>
+
+      <label class="ct-aceite" style="margin-top:14px">
+        <input type="checkbox" id="aceite">
+        <span>Li e aceito o <a href="/contrato-consultoria" target="_blank" rel="noopener">Contrato de Prestação de Serviços de Consultoria</a> (versão <span id="versao"></span>).</span>
+      </label>
+
+      <button class="ct-btn" id="btnContratar" disabled>Contratar e pagar</button>
+      <a class="ct-btn wa ct-oculto" id="btnWa" href="#" target="_blank" rel="noopener">Contratar pelo WhatsApp</a>
+      <p class="ct-erro" id="erroPedido"></p>
+      <div id="resultado"></div>
+    </section>
+  </aside>
+</main>
+
+<div id="shared-footer"></div>
+
+<script>
+(function () {
+  var API = '/api/consultoria';
+  var $ = function (id) { return document.getElementById(id); };
+  var cat = null, simulacao = null, metodo = 'pix', timer = null;
+
+  function moeda(v) { return 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function waLink(texto) { return 'https://wa.me/' + cat.whatsapp + '?text=' + encodeURIComponent(texto); }
+  function servicoAtual() { return cat && cat.servicos.filter(function (s) { return s.slug === $('servico').value; })[0]; }
+  function semAcento(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim(); }
+
+  // "Cruz Alta/RS" (da lista) ou "cruz alta" (digitado) → código IBGE, se houver uma só.
+  function cidadeIbge() {
+    var v = $('cidade').value.trim();
+    if (!v) return '';
+    var exata = cat.cidades.filter(function (c) { return c.nome + '/' + c.uf === v; })[0];
+    if (exata) return exata.ibge;
+    var nome = semAcento(v.split('/')[0]);
+    var achadas = cat.cidades.filter(function (c) { return semAcento(c.nome) === nome; });
+    return achadas.length === 1 ? achadas[0].ibge : (v.length > 2 ? 'fora' : '');
+  }
+
+  function mensagemWa() {
+    var s = servicoAtual();
+    var t = 'Olá! Vim pela página Contratar.';
+    if (s) t += ' Quero contratar: ' + s.nome + '.';
+    if ($('cidade').value) t += ' Cidade: ' + $('cidade').value + '.';
+    if ($('funcionarios').value) t += ' Funcionários: ' + $('funcionarios').value + '.';
+    if (simulacao) t += ' Preço calculado no site: ' + moeda(simulacao.preco.total) + '.';
+    return t;
+  }
+
+  function erro(el, msg, comWa) {
+    el.textContent = msg || '';
+    if (msg && comWa) {
+      el.appendChild(document.createTextNode(' '));
+      var a = document.createElement('a');
+      a.href = waLink(mensagemWa()); a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Falar no WhatsApp';
+      el.appendChild(a);
+    }
+    el.style.display = msg ? 'block' : 'none';
+  }
+
+  function corpoSimulacao() {
+    var s = servicoAtual();
+    var m = document.querySelector('input[name="meses"]:checked');
+    return {
+      servico: s ? s.slug : '',
+      cidade: cidadeIbge(),
+      funcionarios: parseInt($('funcionarios').value, 10),
+      temProjeto: !!(s && s.perguntaProjeto && document.querySelector('input[name="projeto"]:checked').value === 'sim'),
+      meses: m ? parseInt(m.value, 10) : null,
+    };
+  }
+
+  function simular() {
+    var b = corpoSimulacao();
+    erro($('erroSimulacao'), '');
+    if (!b.servico || !b.cidade || !(b.funcionarios > 0)) { simulacao = null; pintar(); return; }
+    if (b.cidade === 'fora') {
+      simulacao = null; pintar();
+      // Durante a digitação "Cru" ainda não é "Cruz Alta": só avisa ao sair do campo.
+      if (digitandoCidade) return;
+      return erro($('erroSimulacao'), 'Não encontramos essa cidade entre as atendidas, a até ' + cat.distanciaMaxima + ' km de Passo Fundo pela estrada. Escolha uma cidade da lista ou', true);
+    }
+    fetch(API + '/simular', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (r) {
+        if (!r.ok) { simulacao = null; pintar(); return erro($('erroSimulacao'), r.d.error, r.d.foraDaArea); }
+        simulacao = r.d; pintar();
+      })
+      .catch(function () { erro($('erroSimulacao'), 'Erro de conexão. Tente de novo.'); });
+  }
+  var digitandoCidade = false;
+  function agendar(e) {
+    digitandoCidade = !!(e && e.type === 'input' && e.target.id === 'cidade');
+    clearTimeout(timer); timer = setTimeout(simular, 250);
+  }
+
+  function opcoesDoMetodo() { return simulacao ? simulacao.opcoes.filter(function (o) { return o.metodo === metodo; }) : []; }
+  function opcaoAtual() {
+    var n = parseInt($('parcelas').value, 10);
+    return opcoesDoMetodo().filter(function (o) { return o.parcelas === n; })[0] || opcoesDoMetodo()[0];
+  }
+
+  function pintar() {
+    var s = servicoAtual();
+    $('campoProjeto').classList.toggle('ct-oculto', !(s && s.perguntaProjeto));
+    $('campoMeses').classList.toggle('ct-oculto', !(s && s.tipo === 'mensal'));
+    $('resumo').classList.toggle('ct-oculto', !simulacao);
+    $('resumoVazio').classList.toggle('ct-oculto', !!simulacao);
+    $('cardPagamento').classList.toggle('ct-oculto', !simulacao);
+    if (!simulacao) return validar();
+
+    var p = simulacao.preco;
+    $('total').textContent = moeda(p.total);
+    $('totalSub').textContent = p.nome + ' · ' + p.horasTotais + ' horas' + (p.meses ? ' em ' + p.meses + ' meses' : '') + ' · ' + p.km + ' km de Passo Fundo';
+    var linhas = ['<li><span>' + p.horasTotais + ' h × ' + moeda(p.valorHora) + '</span><b>' + moeda(p.base) + '</b></li>'];
+    p.acrescimos.forEach(function (a) {
+      linhas.push('<li><span>+' + a.pct + '% ' + a.motivo + '</span><b>' + moeda(Math.round(p.base * a.pct) / 100) + '</b></li>');
+    });
+    $('linhas').innerHTML = linhas.join('');
+
+    // Parcelas do método escolhido; mantém a escolha quando dá.
+    var atual = parseInt($('parcelas').value, 10);
+    var ops = opcoesDoMetodo();
+    $('parcelas').innerHTML = ops.map(function (o) {
+      var rot = o.parcelas === 1 ? 'À vista: ' + moeda(o.total)
+        : o.parcelas + 'x de ' + moeda(o.valorParcela) + (o.juros ? ' (total ' + moeda(o.total) + ')' : ' sem juros');
+      return '<option value="' + o.parcelas + '"' + (o.parcelas === atual ? ' selected' : '') + '>' + rot + '</option>';
+    }).join('');
+    $('campoParcelas').classList.toggle('ct-oculto', ops.length < 2);
+    var o = opcaoAtual();
+    $('pagtoTexto').textContent = o.parcelas === 1
+      ? (metodo === 'pix' ? 'Pix à vista: ' : 'À vista: ') + moeda(o.total) + '.'
+      : o.parcelas + 'x de ' + moeda(o.valorParcela) + ', total ' + moeda(o.total) + (o.juros ? ', com juros de 2% ao mês.' : ', sem juros.');
+    $('btnWa').href = waLink(mensagemWa());
+    $('waAviso').href = waLink(mensagemWa());
+    validar();
+  }
+
+  function validar() {
+    var pronto = !!simulacao && cat && cat.ativa && $('aceite').checked;
+    $('btnContratar').disabled = !pronto;
+    var o = simulacao && opcaoAtual();
+    $('btnContratar').textContent = o ? 'Contratar e pagar ' + (o.parcelas > 1 ? o.parcelas + 'x de ' + moeda(o.valorParcela) : moeda(o.total)) : 'Contratar e pagar';
+  }
+
+  function contratar() {
+    var b = corpoSimulacao(), o = opcaoAtual();
+    b.metodo = metodo; b.parcelas = o.parcelas;
+    b.empresa = { razaoSocial: $('razao').value, cnpj: $('cnpj').value, endereco: $('endereco').value, cep: $('cep').value };
+    b.representante = { nome: $('repNome').value, cargo: $('repCargo').value, cpf: $('repCpf').value };
+    b.email = $('email').value; b.telefone = $('telefone').value;
+    b.aceite = $('aceite').checked; b.contratoVersao = cat.contratoVersao;
+    var btn = $('btnContratar');
+    btn.disabled = true; btn.textContent = 'Gerando a cobrança...';
+    erro($('erroPedido'), '');
+    fetch(API + '/pedido', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (r) {
+        if (!r.ok) { validar(); return erro($('erroPedido'), r.d.error || 'Não foi possível contratar.', true); }
+        if (r.d.status === 'redirect' && r.d.url) {
+          $('resultado').innerHTML = '<p class="ct-pagto">Abrindo a página segura de pagamento do Asaas...</p>';
+          window.location.href = r.d.url; return;
+        }
+        mostrarPix(r.d);
+      })
+      .catch(function () { validar(); erro($('erroPedido'), 'Erro de conexão. Tente de novo.'); });
+  }
+
+  function mostrarPix(d) {
+    btnContratarOcultar();
+    var html = '<div class="ct-pix"><p class="ct-pagto">Escaneie o QR Code ou copie o código Pix:</p>';
+    if (d.qr_code_base64) html += '<img alt="QR Code Pix" src="data:image/png;base64,' + d.qr_code_base64 + '">';
+    if (d.qr_code) html += '<code id="pixCopia" title="Clique para copiar"></code>';
+    html += '<p class="ct-pagto" id="pixStatus">Aguardando o pagamento...</p></div>';
+    $('resultado').innerHTML = html;
+    if (d.qr_code) {
+      $('pixCopia').textContent = d.qr_code;
+      $('pixCopia').addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText(d.qr_code); });
+    }
+    var n = 0, poll = setInterval(function () {
+      if (++n > 360) { clearInterval(poll); $('pixStatus').textContent = 'O código Pix expirou. Recarregue a página para gerar outro.'; return; }
+      fetch(API + '/pedido/' + d.pedidoId + '?t=' + encodeURIComponent(d.token)).then(function (r) { return r.json(); }).then(function (s) {
+        if (s.status === 'aprovado') {
+          clearInterval(poll);
+          $('resultado').innerHTML = '<p class="ct-ok">Pagamento confirmado!</p><p class="ct-pagto">O contrato preenchido foi enviado para o seu e-mail. A Anders Tech entra em contato em até 2 dias úteis para agendar o início.</p>';
+        }
+      }).catch(function () {});
+    }, 5000);
+  }
+  function btnContratarOcultar() { $('btnContratar').classList.add('ct-oculto'); $('aceite').disabled = true; }
+
+  fetch(API + '/catalogo').then(function (r) { return r.json(); }).then(function (d) {
+    cat = d;
+    $('versao').textContent = d.contratoVersao;
+    $('servico').innerHTML = '<option value="">Escolha o serviço</option>' + d.servicos.map(function (s) {
+      return '<option value="' + s.slug + '">' + s.nome + ' (' + s.horas + ' h' + (s.tipo === 'mensal' ? ' por mês' : '') + ')</option>';
+    }).join('');
+    $('listaCidades').innerHTML = d.cidades.map(function (c) { return '<option value="' + c.nome + '/' + c.uf + '">'; }).join('');
+    var mensal = d.servicos.filter(function (s) { return s.tipo === 'mensal'; })[0];
+    if (mensal) $('meses').innerHTML = mensal.prazos.map(function (m, i) {
+      return '<label><input type="radio" name="meses" value="' + m + '"' + (i === 0 ? ' checked' : '') + '> ' + m + ' meses</label>';
+    }).join('');
+    if (!d.ativa) {
+      $('avisoInativo').classList.remove('ct-oculto');
+      $('btnContratar').classList.add('ct-oculto');
+      $('btnWa').classList.remove('ct-oculto');
+    }
+    // ?servico=iso-9001 vindo das páginas de serviço
+    var pre = new URLSearchParams(location.search).get('servico');
+    if (pre) $('servico').value = pre;
+    $('waAviso').href = waLink(mensagemWa());
+    $('btnWa').href = waLink(mensagemWa());
+    pintar();
+  }).catch(function () { erro($('erroSimulacao'), 'Não foi possível carregar os serviços. Recarregue a página.'); });
+
+  ['servico', 'cidade', 'funcionarios'].forEach(function (id) {
+    $(id).addEventListener('input', agendar);
+    $(id).addEventListener('change', agendar);
+  });
+  document.addEventListener('change', function (e) {
+    if (e.target.name === 'projeto' || e.target.name === 'meses') agendar();
+  });
+  document.querySelectorAll('.ct-metodos button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      metodo = b.getAttribute('data-metodo');
+      document.querySelectorAll('.ct-metodos button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      pintar();
+    });
+  });
+  $('parcelas').addEventListener('change', pintar);
+  $('aceite').addEventListener('change', validar);
+  $('btnContratar').addEventListener('click', contratar);
+})();
+</script>
+</body>
+</html>

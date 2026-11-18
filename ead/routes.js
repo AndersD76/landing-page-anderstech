@@ -11,6 +11,7 @@ import { injectShared } from '../inject.js';
 import { eadBoasVindas, eadMatriculaConfirmada } from '../emails.js';
 import * as asaas from './asaas.js';
 import { normalizaCodigo, aplicaDesconto, avaliaCupom, VALOR_MINIMO_COBRANCA } from './cupons.js';
+import { tratarWebhookConsultoria } from '../consultoria/routes.js';
 import { criarToken, consumirToken, emailReset } from '../db/senha.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -920,7 +921,8 @@ router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res
       await sql`UPDATE ead_users SET cpf_cnpj = ${doc} WHERE id = ${userId}`;
     }
 
-    const metodoInterno = metodo === 'pix' ? 'pix' : 'cartao';
+    // Boleto voltou em 18/11/2026 (Anders). Matrícula sai na compensação, pelo webhook.
+    const metodoInterno = metodo === 'pix' ? 'pix' : metodo === 'boleto' ? 'boleto' : 'cartao';
 
     // Reaproveita cobrança pendente em vez de criar outra a cada tentativa —
     // mas só a do MESMO valor e cupom: quem gerou um Pix cheio e depois aplicou
@@ -938,7 +940,7 @@ router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res
       if (o.metodo === 'pix' && o.pix_qr_code) {
         return res.json({ ok: true, status: 'pix_pending', orderId: o.id, qr_code: o.pix_qr_code, qr_code_base64: o.pix_qr_code_base64 });
       }
-      if (o.metodo === 'cartao' && o.asaas_invoice_url) {
+      if ((o.metodo === 'cartao' || o.metodo === 'boleto') && o.asaas_invoice_url) {
         return res.json({ ok: true, status: 'redirect', init_point: o.asaas_invoice_url, orderId: o.id });
       }
     }
@@ -958,7 +960,7 @@ router.post('/ead/api/checkout', requireEadAuth, cupomRateLimit, async (req, res
         ? `Curso: ${course.titulo} (cupom ${cupom.codigo}, ${cupom.percentual}% de desconto)`
         : `Curso: ${course.titulo}`,
       orderId,
-      billingType: metodo === 'pix' ? 'PIX' : 'CREDIT_CARD',
+      billingType: { pix: 'PIX', boleto: 'BOLETO', cartao: 'CREDIT_CARD' }[metodoInterno],
     });
 
     if (metodoInterno === 'pix') {
@@ -1007,6 +1009,8 @@ router.post('/ead/api/webhook/asaas', async (req, res) => {
   try {
     const { event, payment } = req.body || {};
     const ref = payment?.externalReference;
+    // O Asaas tem um webhook só: pagamentos de consultoria passam por aqui também.
+    if (event && payment && await tratarWebhookConsultoria(event, payment)) return res.sendStatus(200);
     if (!event || !ref || !ref.startsWith('ead-order-')) return res.sendStatus(200);
 
     const orderId = parseInt(ref.replace('ead-order-', ''), 10);

@@ -166,13 +166,17 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
       +'<div id="pagarBloco">'
       +'<div class="method-tabs">'
       +'<div class="method-tab active" data-method="pix">PIX</div>'
-      +'<div class="method-tab" data-method="card">Cartão</div></div>'
+      +'<div class="method-tab" data-method="card">Cartão</div>'
+      +'<div class="method-tab" data-method="boleto">Boleto</div></div>'
       +'<div class="method-content active" id="methodPix">'
       +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pagamento instantâneo via PIX. Acesso liberado imediatamente após confirmação.</p>'
       +'<button class="btn-pay green" id="btnPix">Gerar PIX</button></div>'
       +'<div class="method-content" id="methodCard">'
       +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">Pague com cartão de crédito na página segura do Asaas.</p>'
       +'<button class="btn-pay" id="btnCard">Pagar com cartão</button></div>'
+      +'<div class="method-content" id="methodBoleto">'
+      +'<p style="font-size:14px;color:var(--mute);margin-bottom:16px">O boleto abre na página segura do Asaas. O acesso ao curso é liberado quando o banco confirma o pagamento, em até 3 dias úteis.</p>'
+      +'<button class="btn-pay" id="btnBoleto">Gerar boleto</button></div>'
       +'<div id="pixResult"></div></div>'
       +'<div class="security">Pagamento processado pelo Asaas. Seus dados estão protegidos.</div></div>';
 
@@ -376,6 +380,22 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 
         document.getElementById('payError').textContent=r.data.error||'Erro no checkout';
         document.getElementById('payError').style.display='block';
         btn.disabled=false;btn.textContent='Pagar com cartao';
+      });
+    });
+
+    // Boleto: abre na pagina do Asaas; a matricula sai pelo webhook na compensacao.
+    document.getElementById('btnBoleto').addEventListener('click',function(){
+      var btn=this;btn.disabled=true;btn.textContent='Gerando boleto...';
+      document.getElementById('payError').style.display='none';
+      comDocumento('boleto',btn,'Gerar boleto',function(r){
+        if(r.data.status==='aprovado'){window.location.href='/ead/player/'+slug;return}
+        if(r.data.init_point){
+          if(typeof gtag==="function")gtag("event","begin_checkout",{payment_type:"boleto",value:valorAtual(),event_category:"ead"});
+          window.location.href=r.data.init_point;return;
+        }
+        document.getElementById('payError').textContent=r.data.error||'Erro ao gerar o boleto';
+        document.getElementById('payError').style.display='block';
+        btn.disabled=false;btn.textContent='Gerar boleto';
       });
     });
 

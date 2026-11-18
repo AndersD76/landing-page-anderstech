@@ -51,6 +51,7 @@ const CORE_URLS = [
   // Decisão / custo (BOFU)
   ['/iso-9001-vale-a-pena', '2026-06-06', 'monthly', '0.7'],
   ['/quanto-custa-certificacao-iso', '2026-07-12', 'monthly', '0.9'],
+  ['/contratar', '2026-11-18', 'monthly', '0.9'],
   ['/quanto-custa-auditoria-interna', '2026-07-12', 'monthly', '0.8'],
   ['/quanto-custa-pbqp-h', '2026-07-12', 'monthly', '0.8'],
   ['/quanto-tempo-implantar-iso-9001', '2026-06-06', 'monthly', '0.7'],

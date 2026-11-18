@@ -14,6 +14,7 @@ import crypto from 'crypto';
 import { notifyNewLead, autoReplyContact, checklistDelivery } from './emails.js';
 import { router as portalRouter } from './portal/routes.js';
 import { eadRouter } from './ead/routes.js';
+import { router as consultoriaRouter } from './consultoria/routes.js';
 import { renderTermo, renderIndex as renderGlossarioIndex } from './glossario/render.js';
 import { buildSitemap } from './sitemap.js';
 import { runMigrations } from './db/migrate.js';
@@ -894,6 +895,7 @@ app.get('/cases/:slug', async (req, res) => {
 
 app.use(portalRouter);
 app.use(eadRouter);
+app.use(consultoriaRouter);
 
 // ── Glossário da Qualidade (SSR com cache em memória — conteúdo estático) ──
 const glossarioCache = new Map();

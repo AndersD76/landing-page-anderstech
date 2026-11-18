@@ -153,3 +153,64 @@ Acesso vitalício · Templates para download · Certificado de conclusão ao fin
 <p>O comprovante do pagamento fica disponível no seu histórico de pedidos.</p>
 </div>`);
 }
+
+// ── Consultoria contratada pelo site (consultoria/routes.js) ──────────────────
+const moedaBR = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const METODO_EMAIL = { pix: 'Pix', cartao: 'Cartão de crédito', boleto: 'Boleto' };
+
+function resumoPedido(p) {
+  const pag = `${METODO_EMAIL[p.metodo]} · ${p.parcelas === 1 ? 'à vista' : `${p.parcelas}x de ${moedaBR(p.valor_parcela)}`} · total ${moedaBR(p.total_pago)}`;
+  return `<div class="meta">
+<b>Pedido nº ${p.id}</b> — ${esc(p.servico_nome)}${p.meses ? ` (${p.meses} meses)` : ''}<br>
+${p.horas_totais} horas · preço ${moedaBR(p.total)} · ${esc(pag)}<br>
+${esc(p.razao_social)} · CNPJ ${esc(p.cnpj)}<br>
+${esc(p.endereco)}, ${esc(p.cidade)}/${esc(p.uf)} · CEP ${esc(p.cep)} · ${p.km} km<br>
+${esc(p.representante)} (${esc(p.cargo)}) · CPF ${esc(p.cpf)}<br>
+${esc(p.email)} · ${esc(p.telefone)} · ${p.funcionarios} funcionários${p.tem_projeto ? ' · projeta o produto' : ''}
+</div>`;
+}
+
+// Para o Anders: pedido criado, pagamento ainda não confirmado. É o lead mais
+// quente que o site produz — chega antes do dinheiro, para ele poder agir.
+export function consultoriaNovoPedido(p) {
+  return layout(`<div class="body">
+<h2>Novo pedido de consultoria (aguardando pagamento)</h2>
+<p>Um cliente aceitou o contrato e escolheu a forma de pagamento. Ainda não pagou.</p>
+${resumoPedido(p)}
+<a href="https://wa.me/55${esc(String(p.telefone).replace(/\D/g, ''))}" class="cta">Chamar no WhatsApp</a>
+</div>`);
+}
+
+// Para o Anders: primeiro pagamento confirmado. Dados para a nota fiscal e o
+// prazo de 2 dias úteis que o cliente recebeu.
+export function consultoriaPagoAnders(p) {
+  return layout(`<div class="body">
+<h2>Consultoria paga: pedido nº ${p.id}</h2>
+<p>O primeiro pagamento foi confirmado pelo Asaas. O cliente foi avisado de que você entra em contato em <b>até 2 dias úteis</b>.</p>
+${resumoPedido(p)}
+<p><b>Nota fiscal:</b> emitir para ${esc(p.razao_social)}, CNPJ ${esc(p.cnpj)}. O contrato preenchido vai em anexo.</p>
+</div>`);
+}
+
+// Para o Anders: estorno, chargeback ou cancelamento de pedido já pago.
+export function consultoriaStatus(p, status) {
+  return layout(`<div class="body">
+<h2>Pedido de consultoria nº ${p.id}: ${esc(status)}</h2>
+<p>O Asaas informou uma mudança no pagamento deste pedido. Confira no painel do Asaas antes de agendar ou continuar o trabalho.</p>
+${resumoPedido(p)}
+</div>`);
+}
+
+export function consultoriaPagoCliente(p, linkContrato) {
+  return layout(`<div class="body">
+<h2>Pagamento confirmado, ${esc(String(p.representante).split(' ')[0])}!</h2>
+<p>Recebemos o pagamento do pedido nº ${p.id}: <b>${esc(p.servico_nome)}</b> para ${esc(p.razao_social)}.</p>
+<p>A Anders Tech entra em contato em <b>até 2 dias úteis</b> para agendar a reunião de início e montar o cronograma.</p>
+${resumoPedido(p)}
+<p>O contrato preenchido, com o registro do seu aceite, vai em anexo. Ele também fica disponível neste link:</p>
+<a href="${esc(linkContrato)}" class="cta">Baixar o contrato</a>
+<hr class="divider">
+<p>Dúvidas? Fale com a gente no WhatsApp:</p>
+<a href="https://wa.me/5554999648368" style="color:${BRAND.navy};font-size:14px;font-weight:600;text-decoration:none">(54) 99964-8368 →</a>
+</div>`);
+}

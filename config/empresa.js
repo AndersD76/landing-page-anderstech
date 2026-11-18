@@ -12,6 +12,13 @@ export const EMPRESA = {
   email: 'danielanders76@gmail.com',
   emailRemetente: 'noreply@anderstech.net',
   cnpj: '42.073.716/0001-80',
+  // Dados da CONTRATADA no contrato de consultoria (consultoria/contrato.js).
+  // Enquanto algum estiver vazio, a contratação pelo site fica desligada: um
+  // contrato com [PREENCHER] não pode ser gerado para cliente que pagou.
+  razaoSocial: '',
+  endereco: '',        // logradouro, número, bairro, CEP — cidade é Passo Fundo/RS
+  representante: '',   // quem assina pela Anders Tech
+  cpfRepresentante: '',
   cidades: 'Passo Fundo · Erechim · RS',
   ga4: process.env.GA4_MEASUREMENT_ID || 'G-7XL5XVE6QZ',
 };

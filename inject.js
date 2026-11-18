@@ -126,6 +126,8 @@ const BREADCRUMB_LABELS = {
   'ead': 'Cursos EAD',
   'glossario': 'Glossário da Qualidade',
   'quanto-custa-auditoria-interna': 'Quanto custa a auditoria interna?',
+  'contratar': 'Contratar consultoria',
+  'contrato-consultoria': 'Contrato de consultoria',
   'quanto-custa-pbqp-h': 'Quanto custa o PBQP-H?',
   'iso-9001': 'ISO 9001',
   'pbqp-h': 'PBQP-H',

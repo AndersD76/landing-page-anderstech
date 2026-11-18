@@ -423,6 +423,41 @@ SELECT COUNT(*) FROM cases;
 
 ---
 
+## 11.7 Consultoria contratada e paga pelo site (18/11/2026)
+
+`/contratar` calcula o preço (R$ 180/h + acréscimos somados de porte, distância
+por estrada e projeto), coleta os dados do contrato, registra o aceite e cobra
+pelo Asaas (Pix à vista; cartão e boleto até 12x com 2% a.m.; manutenção do SGQ
+em 6/12x sem juros). Depois do 1º pagamento, o webhook gera o **contrato em PDF**
+e manda para o cliente e para você, com os dados para a nota fiscal.
+
+**Está desligada até você fazer isto:**
+
+1. **Mandar os dados da CONTRATADA** para `config/empresa.js`: razão social,
+   endereço (rua, número, bairro, CEP), nome e CPF de quem assina. Sem eles a
+   venda não liga (`vendaAtiva()` em `consultoria/routes.js`): um contrato com
+   `[PREENCHER]` não pode ir para cliente que pagou.
+2. **Asaas:** confirmar que a conta aceita **boleto e cartão parcelados** e Pix
+   parcelado (usado na manutenção do SGQ). O webhook é o mesmo do item 2 —
+   nada novo a configurar.
+3. **Resend:** o contrato vai como anexo PDF; o domínio `anderstech.net` já envia.
+4. Já feito em 18/11/2026: `/contratar` indexada, no sitemap e linkada de
+   `/servicos`, `/iso-9001` e `/pbqp-h`. Enquanto o pagamento estiver desligado,
+   a calculadora funciona e o botão leva ao WhatsApp com o preço calculado.
+
+Para desligar sem deploy: `CONSULTORIA_VENDA_ATIVA=false` no Railway.
+
+**Contrato:** texto em `consultoria/contrato.js` (fonte única da página
+`/contrato-consultoria` e do PDF). Mudou o texto → troque `CONTRATO_VERSAO`; o
+pedido guarda a versão aceita. Cópia de revisão: doc "Contrato de Consultoria —
+Anders Tech (rascunho)" no claude.ai.
+
+**Distâncias:** `data/distancias-passo-fundo.json` (504 municípios a até 300 km
+pela estrada, OSRM/OpenStreetMap). Regerar só se mudar a regra:
+`node scripts/distancias-passo-fundo.mjs <municipios.csv>` (instruções no script).
+
+---
+
 ## 11.6 Sebraetec → Unio — o que mudou e o que você precisa fazer
 
 **A correção**: o site chamava a plataforma do Sebrae de "Sebraetec" e a descrevia

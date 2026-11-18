@@ -2,7 +2,38 @@
 // evento de pagamento. Runner nativo (node --test), sem dependência nova.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { docValido, normalizaDoc, traduzEvento } from '../ead/asaas.js';
+import { docValido, normalizaDoc, traduzEvento, criarCobranca } from '../ead/asaas.js';
+
+// Captura o que seria enviado ao Asaas, sem rede.
+async function corpoEnviado(args) {
+  const original = globalThis.fetch;
+  const antes = process.env.ASAAS_API_KEY;
+  process.env.ASAAS_API_KEY = 'chave-de-teste';
+  let req;
+  globalThis.fetch = async (url, opts) => { req = { url, opts, body: JSON.parse(opts.body) }; return { ok: true, json: async () => ({ id: 'pay_1' }) }; };
+  try { await criarCobranca(args); } finally {
+    globalThis.fetch = original;
+    if (antes === undefined) delete process.env.ASAAS_API_KEY; else process.env.ASAAS_API_KEY = antes;
+  }
+  return req;
+}
+
+test('cobrança à vista manda value; referência padrão do EAD continua igual', async () => {
+  const r = await corpoEnviado({ customerId: 'cus_1', valor: 197, descricao: 'Curso', orderId: 9, billingType: 'BOLETO' });
+  assert.equal(r.body.value, 197);
+  assert.equal(r.body.installmentCount, undefined);
+  assert.equal(r.body.externalReference, 'ead-order-9');
+  assert.equal(r.opts.headers['access-token-idempotency'], 'ead-order-9');
+});
+
+test('cobrança parcelada manda quantidade e valor da parcela, sem value', async () => {
+  const r = await corpoEnviado({ customerId: 'cus_1', valor: 35539.32, parcelas: 12, valorParcela: 2961.61, descricao: 'Consultoria', billingType: 'CREDIT_CARD', referencia: 'cons-pedido-5' });
+  assert.equal(r.body.installmentCount, 12);
+  assert.equal(r.body.installmentValue, 2961.61);
+  assert.equal(r.body.value, undefined);
+  assert.equal(r.body.externalReference, 'cons-pedido-5');
+  assert.equal(r.opts.headers['access-token-idempotency'], 'cons-pedido-5');
+});
 
 test('CPF: aceita válido, rejeita inválido e repetido', () => {
   assert.equal(docValido('52998224725'), true);

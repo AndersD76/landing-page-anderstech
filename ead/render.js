@@ -55,8 +55,8 @@ export function renderDetalhe(c, modulos = [], promo = false) {
     : `${c.preco_original ? `<span class="price-old">${moeda(c.preco_original)}</span>` : ''}<span class="price">${moeda(c.preco)}</span><a href="/ead/checkout/${esc(c.slug)}" class="btn-buy">Comprar agora</a>`;
 
   // "Pagamento seguro via Mercado Pago" era texto morto: o Mercado Pago saiu do
-  // projeto e o checkout é Asaas. Só Pix e cartão: o checkout não tem aba de
-  // boleto, e prometer boleto aqui era texto sem fluxo por trás.
+  // projeto e o checkout é Asaas, com Pix, cartão e boleto (a aba de boleto
+  // voltou em 18/11/2026 — antes disso o texto prometia boleto sem fluxo).
   const ctaRodape = promo
     ? `<div class="cta-card"><div class="cta-card-badge">Lançamento — acesso gratuito</div>
 <div class="cta-card-prices"><span class="price-was-dark">${moeda(c.preco)}</span><span class="price-free-lg">Grátis</span></div>
@@ -65,7 +65,7 @@ export function renderDetalhe(c, modulos = [], promo = false) {
     : `<div class="cta-card cta-card-paid">${c.preco_original ? `<div class="price-was-dark">${moeda(c.preco_original)}</div>` : ''}
 <div class="price-lg">${moeda(c.preco)}</div>
 <a href="/ead/checkout/${esc(c.slug)}" class="btn-buy btn-buy-lg">Comprar agora</a>
-<p class="cta-card-sub">Pagamento via Pix ou cartão. Certificado incluso.</p></div>`;
+<p class="cta-card-sub">Pagamento via Pix, cartão ou boleto. Certificado incluso.</p></div>`;
 
   const ementa = modulos.map((m, i) => {
     const aulas = (m.aulas || []).map((l) =>

@@ -16,8 +16,18 @@ finanças, estratégia, inovação, marketing). Venda **direta** ou pela platafo
 > Sebrae, que paga integral e cobra o cliente. **Não existe "70% de subsídio"** — esse
 > número era invenção do site antigo e foi removido. `/sebraetec` responde 301 → `/unio`.
 
-**Arquétipo: venda por relacionamento.** O site não fecha negócio — ele gera **contato
-qualificado no WhatsApp** e sustenta credibilidade. O fechamento é humano, por conversa.
+**Fora do portfólio (18/11/2026):** ISO 14001, ISO 45001, BPF e HACCP/APPCC — o Anders
+não presta. Não oferecer em texto novo. `/quanto-custa-iso-14001` e
+`/iso-9001-industria-alimenticia` respondem 301.
+
+**Arquétipo: venda por relacionamento.** O site gera **contato qualificado no WhatsApp**
+e sustenta credibilidade; o fechamento é humano, por conversa.
+
+> **Exceção desde 18/11/2026 — consultoria paga no site.** `/contratar` calcula o preço
+> (R$ 180/h + acréscimos somados), registra o aceite do contrato e cobra pelo Asaas; o
+> contrato em PDF sai depois do pagamento. Regras em `consultoria/preco.js`, texto em
+> `consultoria/contrato.js`. Fica desligada até os dados da CONTRATADA estarem em
+> `config/empresa.js` (HANDOFF 11.7). O WhatsApp continua sendo o CTA dominante.
 
 **Definição de conversão:** clique no WhatsApp com origem rastreada.
 Tudo que não empurra para isso é secundário.
@@ -38,7 +48,7 @@ Consequências práticas:
 | Front | `app.js` (IIFE, ES5, sem dependências) + `styles.css` — arquivo único |
 | Banco | Neon Postgres via `@neondatabase/serverless`; SQL versionado em `migrations/*.sql`, aplicado no boot por `db/migrate.js` |
 | E-mail | Resend (`emails.js`) |
-| Pagamento | Asaas (só EAD — `ead/asaas.js`) |
+| Pagamento | Asaas (`ead/asaas.js`) — EAD e consultoria; um webhook só, em `/ead/api/webhook/asaas` |
 | PDF | `pdfkit` — atas (`portal/routes.js`) e certificados EAD (`ead/routes.js`) |
 | Segurança | `helmet` com CSP explícita, `express-session` + `connect-pg-simple`, rate limit em memória, `ADMIN_KEY` com comparação timing-safe |
 | Analytics | GA4 `G-7XL5XVE6QZ` com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**) |
@@ -53,7 +63,7 @@ Consequências práticas:
 ```bash
 npm start      # produção (node server.js)
 npm run dev    # node --watch server.js  → http://localhost:3001
-npm test       # 8 arquivos em test/ — lista completa no package.json
+npm test       # 9 arquivos em test/ — lista completa no package.json
 npm run migrate
 npm run seed
 ```
@@ -165,6 +175,8 @@ blog/               posts → /blog/<slug>
 cases/              gerador de case (validate.js, pdf.js, render.js) → /cases/<slug>
 glossario/          glossário SSR (terms.js + render.js)
 ead/                cursos, checkout Asaas, cupons (regra em ead/cupons.js, painel em /admin/cupons), certificados
+consultoria/        venda de consultoria no site: preco.js (regra), contrato.js (texto + PDF), routes.js
+data/distancias-passo-fundo.json  km por estrada até 504 municípios (scripts/distancias-passo-fundo.mjs)
 portal/             área logada de cliente/admin
 specs/              réguas de e-mail como YAML (não executam neste repo)
 migrations/         SQL versionado, aplicado no boot
