@@ -367,6 +367,9 @@
     if ((evento === "isca_vista" || evento === "isca_iniciada") && iscaJa[chave]) return;
     iscaJa[chave] = 1;
     enfileirar(evento, propsIsca(id, extra), { imediato: evento !== "isca_vista" });
+    // Destino adicional: GA4 (só existe em producao e respeita o Consent Mode).
+    // Marcar isca_concluida e lead_capturado como eventos-chave no GA4.
+    try { if (typeof gtag === "function") gtag("event", evento, { isca_id: id || "", page_type: PAGINA.page_type, cluster: PAGINA.cluster }); } catch (e) {}
   }
   function observarIscas() {
     var alvos = document.querySelectorAll("[data-isca]");
@@ -385,7 +388,10 @@
     var el = ev.target && ev.target.closest ? ev.target.closest("[data-isca]") : null;
     if (el) iscaEvento("isca_iniciada", el.getAttribute("data-isca"));
     var prod = ev.target && ev.target.closest ? ev.target.closest('[data-cta-produto], a[href^="/contratar"], a[href*="anderstech.net/contratar"]') : null;
-    if (prod && ev.type === "click") enfileirar("cta_produto_clicado", propsIsca(prod.getAttribute("data-cta-produto") || "", { destino: (prod.getAttribute("href") || "").slice(0, 120) }), { imediato: true });
+    if (prod && ev.type === "click") {
+      enfileirar("cta_produto_clicado", propsIsca(prod.getAttribute("data-cta-produto") || "", { destino: (prod.getAttribute("href") || "").slice(0, 120) }), { imediato: true });
+      try { if (typeof gtag === "function") gtag("event", "cta_produto_clicado", { page_type: PAGINA.page_type, cluster: PAGINA.cluster }); } catch (e) {}
+    }
   }
   document.addEventListener("click", iniciou, true);
   document.addEventListener("focusin", iniciou, true);
