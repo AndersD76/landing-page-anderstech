@@ -23,7 +23,7 @@ jobs:
           PORT=3001 NODE_ENV=production SESSION_SECRET=ci-sintetico ADMIN_KEY=ci-sintetico npm start &
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:3001/robots.txt >/dev/null && break; sleep 1; done
       - name: ZAP baseline
-        uses: zaproxy/action-baseline@v0.14.0
+        uses: zaproxy/action-baseline@v0.15.0
         with:
           target: 'http://127.0.0.1:3001'
           allow_issue_writing: false
