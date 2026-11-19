@@ -77,8 +77,8 @@ jobs:
           echo "Notificando IndexNow: $COUNT URLs"
           curl -s -X POST "https://api.indexnow.org/indexnow"             -H "Content-Type: application/json"             -d "$(jq -n --argjson u "$URLS" '{
                   host: "anderstech.net",
-                  key: "f6ba6a9696c4426b9a20bd3baa58e3ec",
-                  keyLocation: "https://anderstech.net/f6ba6a9696c4426b9a20bd3baa58e3ec.txt",
+                  key: "c310f106aad0297668046237775e3dc3",
+                  keyLocation: "https://anderstech.net/c310f106aad0297668046237775e3dc3.txt",
                   urlList: $u }')" || echo "IndexNow ping falhou (nao bloqueante)"
 
   # ── Portão de segurança e qualidade (18/11/2026) ─────────────────────────────

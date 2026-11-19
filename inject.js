@@ -190,17 +190,30 @@ const CONSENT_JS = '<script>(function(){var K="at_cookie_consent",M="at_consent_
   + 'gtag("consent","update",u)}'
   + 'window.atConsent={ler:function(){return le(K)},lerMkt:function(){return le(M)},'
   + 'gravar:function(v,m){try{localStorage.setItem(K,v);if(m!==undefined)localStorage.setItem(M,m)}catch(e){}'
-  + 'g(v,m===undefined?null:m);aviso("at:consent",v==="1"?"sim":"nao");'
+  + 'g(v,m===undefined?null:m);if(v==="1"&&window.atCarregaGa)atCarregaGa();aviso("at:consent",v==="1"?"sim":"nao");'
   + 'if(m!==undefined)aviso("at:consent-mkt",m==="1"?"sim":"nao")}};'
   + 'var a=le(K),m=le(M);if(a==="1"||m==="1")g(a,m);'
   + '})()</' + 'script>';
 
+// 19/11/2026: o gtag.js só carrega depois do "sim" para análise (modo básico
+// do Consent Mode). Medido com navegador em produção, o modo avançado de antes
+// fazia três coisas erradas: mandava page_view sem cookie (gcs=G100) antes da
+// escolha, contra a regra 7 do CLAUDE.md; não reenviava nada ao aceitar, então
+// a página de entrada (a que traz a origem "google / organic") se perdia; e a
+// sessão nascia na 2ª página, com o próprio site de referência, contada como
+// Direct. Resultado: 4 usuários no GA4 contra 19 cliques no Search Console em
+// 28 dias. Agora o config roda no aceite, na página atual, com o referrer
+// original, e a atualização de marketing entra ANTES do config (a 2ª página
+// saía com anúncio negado, gcs=G101, mesmo com "Aceitar todos").
 const GA4_JS = '<script>'
   + 'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}'
-  + 'gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",wait_for_update:500});'
+  + 'gtag("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});'
+  + 'window.atCarregaGa=function(){if(window.atGaOn)return;window.atGaOn=1;'
   + 'gtag("js",new Date());gtag("config","'+EMPRESA.ga4+'");'
-  + 'try{if(localStorage.getItem("at_cookie_consent")==="1")gtag("consent","update",{analytics_storage:"granted"})}catch(e){}'
-  + 'var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id='+EMPRESA.ga4+'";document.head.appendChild(s);'
+  + 'var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id='+EMPRESA.ga4+'";document.head.appendChild(s)};'
+  + 'try{if(localStorage.getItem("at_cookie_consent")==="1"){var u={analytics_storage:"granted"};'
+  + 'if(localStorage.getItem("at_consent_mkt")==="1"){u.ad_storage="granted";u.ad_user_data="granted";u.ad_personalization="granted"}'
+  + 'gtag("consent","update",u);atCarregaGa()}}catch(e){}'
   + '</'+'script>';
 
 // Três saídas com o mesmo peso visual entre "Recusar" e "Aceitar todos" (sem

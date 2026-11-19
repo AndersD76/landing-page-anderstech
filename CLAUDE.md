@@ -51,7 +51,7 @@ Consequências práticas:
 | Pagamento | Asaas (`ead/asaas.js`) — EAD e consultoria; um webhook só, em `/ead/api/webhook/asaas` |
 | PDF | `pdfkit` — atas (`portal/routes.js`) e certificados EAD (`ead/routes.js`) |
 | Segurança | `helmet` com CSP explícita, `express-session` + `connect-pg-simple`, rate limit em memória, `ADMIN_KEY` com comparação timing-safe |
-| Analytics | GA4 `G-7XL5XVE6QZ` (propriedade 540470926) com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**). Search Console e GA4 entram no painel por conta de serviço (`GOOGLE_SERVICE_ACCOUNT_JSON`), não por OAuth |
+| Analytics | GA4 `G-7XL5XVE6QZ` (propriedade 540470926) com **Consent Mode v2 básico** (injetado **só em produção**; o gtag.js só carrega depois do "sim" para análise) + Plausible (**hoje só na home**). IDs e credenciais: seção "Métricas e buscadores" abaixo |
 | Telemetria | `telemetry.js` (adaptador server-side) + `telemetry-client.js` (cliente) + `POST /api/telemetry` → tabela `telemetry_events`. Roda em dev **e** produção, por flag própria |
 | SEO | `sitemap.js` gera `/sitemap.xml` dinâmico; `robots.txt`, `llms.txt`, glossário SSR |
 | SEO programático | `pbqph/` — páginas de PBQP-H por município e por certificadora, SSR com cache, a partir de `data/pbqph-siac.json` (carga mensal por `.github/workflows/carga-pbqph.yml`) |
@@ -78,8 +78,13 @@ npm run seed
 - `npm run test:integracao` sobe o servidor inteiro sobre Postgres em memória (PGlite) e
   passa por todos os fluxos (leads, conversões, parceiros, iscas, WhatsApp, outbound,
   régua, rotinas). Roda no CI. Use ao mexer em SQL.
-- GA4 e banner de cookie **só existem quando `NODE_ENV=production`** ou
-  `RAILWAY_ENVIRONMENT=production`. Em dev, nenhum evento sai — não é bug.
+- GA4 **só existe quando `NODE_ENV=production`** ou `RAILWAY_ENVIRONMENT=production`.
+  Em dev, nenhum evento sai — não é bug. Mesmo em produção, **nada vai ao Google antes do
+  "sim"**: o modo avançado mandava page_view sem cookie antes da escolha e perdia a página
+  de entrada de quem aceitava (GA4 com 4 usuários contra 19 cliques do Google em 28 dias,
+  medido em 19/11/2026). No aceite, `atCarregaGa()` registra a página atual com o referrer
+  original. Para testar: servidor local com `NODE_ENV=production` + Playwright
+  interceptando `/g/collect`.
 - `sendPage()` **memoriza o HTML em `Map`**: mudou HTML/`inject.js`, tem que reiniciar.
 - Arquivos na raiz só são servidos se estiverem na whitelist `ARQUIVOS_PUBLICOS` (server.js).
   Arquivo novo na raiz responde 404 até ser adicionado lá.
@@ -100,6 +105,22 @@ npm run seed
   `/r/<código>` que registra `artifact_scan` e redireciona para a landing com
   `utm_medium=artifact`. Mudança no layout da proposta é feita no repo Python — aqui só
   a spec do rodapé assinado.
+
+### Métricas e buscadores (configurado em 19/11/2026, padrão dos 9 apps)
+| O quê | Valor |
+|---|---|
+| GA4 | propriedade `540470926`, fluxo `G-7XL5XVE6QZ`, fuso da propriedade ainda em Rio Branco |
+| Search Console | `sc-domain:anderstech.net` (verificada por TXT), sitemap `https://anderstech.net/sitemap.xml` |
+| Bing Webmaster | verificado, mesmo sitemap |
+| IndexNow | chave `c310f106aad0297668046237775e3dc3` (arquivo na raiz; a antiga `f6ba…` continua servida) |
+| Credencial | conta de serviço do projeto Google Cloud compartilhado: **Leitor** no GA4, **proprietária** no Search Console. Lida por `growth/integracoes.js` (`googleTokenLeitura`) |
+
+Variáveis no Railway (serviço `landing-page-anderstech`), nomes em `.env.example`:
+`GOOGLE_SERVICE_ACCOUNT_JSON_BASE64`, `GA4_PROPERTY_ID`, `GA4_MEASUREMENT_ID`,
+`GSC_SITE_URL`, `INDEXNOW_KEY`, `BING_WEBMASTER_API_KEY`. A coleta diária
+(`organico/jobs.js`, depois das 3h) liga sozinha com a chave da conta de serviço; a
+primeira puxa 90 dias. OAuth (`GOOGLE_OAUTH_*`) fica só para Google Ads e Data Manager.
+Para perguntas de tráfego numa sessão do Claude Code, use os MCPs `gsc` e `analytics-mcp`.
 
 ## 3. Convenções
 

@@ -16,10 +16,12 @@ const env = (n) => process.env[n] || '';
 // serviço; montar um cliente OAuth com refresh token só para ler relatório era
 // a tarefa que travava o painel. Google Ads e Data Manager continuam no OAuth:
 // conta de serviço não opera conta de anúncio sem delegação de domínio.
-// GOOGLE_SERVICE_ACCOUNT_JSON aceita o JSON da chave inteiro ou em base64.
+// GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 é o nome padrão dos 9 apps (gravado no
+// Railway em 19/11/2026); GOOGLE_SERVICE_ACCOUNT_JSON fica como alternativa.
+// Os dois aceitam o JSON da chave inteiro ou em base64.
 const ESCOPOS_LEITURA = ['https://www.googleapis.com/auth/webmasters', 'https://www.googleapis.com/auth/analytics.readonly'];
 export function contaServicoGoogle() {
-  const bruto = env('GOOGLE_SERVICE_ACCOUNT_JSON').trim();
+  const bruto = (env('GOOGLE_SERVICE_ACCOUNT_JSON_BASE64') || env('GOOGLE_SERVICE_ACCOUNT_JSON')).trim();
   if (!bruto) return null;
   try {
     const j = JSON.parse(bruto.startsWith('{') ? bruto : Buffer.from(bruto, 'base64').toString('utf8'));

@@ -8,7 +8,7 @@
 //   GA4 Data API    POST analyticsdata.googleapis.com/v1beta/properties/{id}:runReport
 //                   escopo https://www.googleapis.com/auth/analytics.readonly
 //   IndexNow        POST api.indexnow.org/indexnow (até 10.000 URLs)
-// Credencial: conta de serviço (GOOGLE_SERVICE_ACCOUNT_JSON), que é o caminho
+// Credencial: conta de serviço (GOOGLE_SERVICE_ACCOUNT_JSON_BASE64), que é o caminho
 // normal; o refresh token (GOOGLE_OAUTH_*) só vale se tiver os dois escopos.
 
 import { googleTokenLeitura, contaServicoGoogle, googleOAuthConfigurado } from '../growth/integracoes.js';
@@ -153,7 +153,7 @@ export async function checarSerp(sql, consultas) {
 export async function indexNow(urls) {
   const lista = [...new Set(urls)].map(u => (u.startsWith('http') ? u : SITE + u)).slice(0, 10000);
   if (!lista.length) return { enviadas: 0 };
-  const key = env('INDEXNOW_KEY') || 'f6ba6a9696c4426b9a20bd3baa58e3ec';
+  const key = env('INDEXNOW_KEY') || 'c310f106aad0297668046237775e3dc3';
   const r = await fetch('https://api.indexnow.org/indexnow', {
     method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' },
     body: JSON.stringify({ host: 'anderstech.net', key, keyLocation: `${SITE}/${key}.txt`, urlList: lista }),

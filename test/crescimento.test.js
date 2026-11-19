@@ -215,8 +215,8 @@ test('Google: conta de serviço assina o JWT, pede os dois escopos de leitura e 
   const json = JSON.stringify({ type: 'service_account', client_email: 'leitor@projeto.iam.gserviceaccount.com', private_key: chave, token_uri: 'https://oauth2.googleapis.com/token' });
   const antes = { ...process.env };
   try {
-    for (const k of ['GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_OAUTH_REFRESH_TOKEN', 'GSC_ATIVO', 'GA4_PROPERTY_ID']) delete process.env[k];
-    process.env.GOOGLE_SERVICE_ACCOUNT_JSON = Buffer.from(json).toString('base64');
+    for (const k of ['GOOGLE_SERVICE_ACCOUNT_JSON', 'GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_OAUTH_REFRESH_TOKEN', 'GSC_ATIVO', 'GA4_PROPERTY_ID']) delete process.env[k];
+    process.env.GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 = Buffer.from(json).toString('base64');
     const { contaServicoGoogle, googleTokenLeitura } = await import('../growth/integracoes.js');
     const { gscConfigurado, ga4Configurado } = await import('../organico/fontes.js');
     assert.equal(contaServicoGoogle().email, 'leitor@projeto.iam.gserviceaccount.com');
@@ -246,7 +246,7 @@ test('Google: conta de serviço assina o JWT, pede os dois escopos de leitura e 
     const ok = crypto.createVerify('RSA-SHA256').update(`${cab}.${corpo}`).verify(publicKey, Buffer.from(sig.replace(/-/g, '+').replace(/_/g, '/'), 'base64'));
     assert.equal(ok, true, 'assinatura confere com a chave pública');
 
-    process.env.GOOGLE_SERVICE_ACCOUNT_JSON = '{ isto não é json';
+    process.env.GOOGLE_SERVICE_ACCOUNT_JSON_BASE64 = '{ isto não é json';
     assert.equal(contaServicoGoogle(), null, 'chave quebrada desliga em vez de derrubar');
     assert.equal(gscConfigurado(), false);
   } finally {
