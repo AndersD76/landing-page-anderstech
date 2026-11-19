@@ -202,3 +202,14 @@ test('motor orgânico: requisitos, hubs, iscas, dados, sitemap em índice e llms
   // Fora do embed, continua proibido emoldurar.
   assert.match((await req('/dados/pbqp-h')).headers.get('content-security-policy') || '', /frame-ancestors 'self'/);
 });
+
+test('imagem de compartilhamento: PNG por página, e só de página que existe', async () => {
+  const r = await req('/og/norma-iso-9001/6-1.png');
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get('content-type'), 'image/png');
+  const b = Buffer.from(await r.arrayBuffer());
+  assert.equal(b.subarray(1, 4).toString(), 'PNG');
+  assert.equal((await req('/og/iso-9001-2026.png')).status, 200);
+  assert.equal((await req('/og/titulo-inventado-por-alguem.png')).status, 404);
+  assert.match(await (await req('/norma-iso-9001/6-1')).text(), /og:image" content="https:\/\/anderstech\.net\/og\/norma-iso-9001\/6-1\.png"/);
+});

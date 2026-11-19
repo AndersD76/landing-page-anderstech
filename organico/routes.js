@@ -10,7 +10,8 @@ import { dirname, join } from 'node:path';
 import { neon } from '@neondatabase/serverless';
 import { Resend } from 'resend';
 import { injectShared } from '../inject.js';
-import { htmlDaPagina, paginasPublicadas, caminho, esc, recarregar } from './paginas.js';
+import { htmlDaPagina, paginasPublicadas, caminho, esc, recarregar, pagina as paginaMotor } from './paginas.js';
+import { pngOg } from './og.js';
 import { REQUISITOS, slugRequisito } from './normas.js';
 import { ISCAS, iscaInfo, previa, pdfIsca } from './iscas.js';
 import { CLUSTERS } from './taxonomia.js';
@@ -29,10 +30,26 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 const ADMIN_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'admin');
 const SITE = 'https://anderstech.net';
 
+// Imagem de compartilhamento das páginas fixas. Lista fechada de propósito:
+// aceitar título pela URL deixaria qualquer um gerar imagem com a marca.
+const OG_FIXOS = {
+  'iso-9001-2026': 'ISO 9001:2026: o que muda e o prazo de transição',
+  'transicao-iso-9001-2026': 'Diagnóstico de transição para a ISO 9001:2026',
+  'norma-iso-9001': 'Requisitos da ISO 9001 explicados, um por um',
+  'guias': 'Guias de ISO 9001 e PBQP-H por tema',
+  'iscas': 'Modelos, checklists e ferramentas grátis de ISO 9001',
+  'dados/pbqp-h': 'PBQP-H em números: empresas certificadas por estado',
+  'dados/pbqp-h/metodologia': 'Metodologia do panorama do PBQP-H',
+  'autor/daniel-anders': 'Daniel Anders, consultor de ISO 9001 e PBQP-H desde 2004',
+  'sobre': 'Anders Tech: consultoria em ISO 9001 e PBQP-H em Passo Fundo/RS',
+  'politica-editorial': 'Política editorial da Anders Tech',
+  ...Object.fromEntries(Object.entries(ISCAS).filter(([, i]) => !i.url).map(([id, i]) => ['iscas/' + id, i.titulo])),
+};
+
 function pagina({ titulo, descricao, canonical, robots = 'index, follow', corpo, rota, jsonld = [], extraHead = '' }) {
   return injectShared(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(titulo)} — Anders Tech</title><meta name="description" content="${esc(descricao)}"><meta name="robots" content="${robots}">
-<link rel="canonical" href="${SITE}${canonical}"><meta property="og:title" content="${esc(titulo)}"><meta property="og:description" content="${esc(descricao)}"><meta property="og:url" content="${SITE}${canonical}"><meta property="og:image" content="${SITE}/assets/og-image.png">
+<link rel="canonical" href="${SITE}${canonical}"><meta property="og:title" content="${esc(titulo)}"><meta property="og:description" content="${esc(descricao)}"><meta property="og:url" content="${SITE}${canonical}"><meta property="og:image" content="${SITE}${OG_FIXOS[canonical.slice(1)] ? '/og' + canonical + '.png' : '/assets/og-image.png'}"><meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/styles.css"><link rel="icon" href="/assets/favicon.png" type="image/png">${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join('')}${extraHead}
 <style>.og-h{background:#0b1730;color:#fff;padding:clamp(36px,6vw,64px) 16px 36px}.og-h .w,.og-m{max-width:880px;margin:0 auto}.og-h h1{color:#fff;font-family:var(--ff-display,system-ui);font-size:clamp(1.6rem,4vw,2.3rem);margin-bottom:10px}.og-h p{color:#b9c8e4}
 .og-m{padding:28px 16px 64px;line-height:1.7;color:#16233f}.og-m h2{color:#0b1730;font-size:1.3rem;margin:28px 0 10px}.og-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
@@ -70,6 +87,20 @@ function estatPbqph() {
 
 export function router({ adminAuth, send404 }) {
   const r = Router();
+
+  // ── Imagem de Open Graph (PNG 1200 × 630) ──
+  r.get(/^\/og\/([a-z0-9\-/]{2,120})\.png$/, (req, res) => {
+    const chave = req.params[0];
+    const p = paginaMotor(chave);
+    const titulo = p ? (p.h1 || p.titulo) : OG_FIXOS[chave];
+    if (!titulo) return send404(res);
+    try {
+      res.set('Cache-Control', 'public, max-age=86400').type('png').send(pngOg(chave, { titulo }));
+    } catch (err) {
+      console.error('[og]', err.message);
+      res.redirect(302, '/assets/og-image.png');
+    }
+  });
 
   // ── Requisitos da ISO 9001 ──
   r.get('/norma-iso-9001', (req, res) => {

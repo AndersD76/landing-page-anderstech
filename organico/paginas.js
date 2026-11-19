@@ -151,7 +151,7 @@ export function renderizar(p, { links = [], titulosPorSlug = new Map() } = {}) {
   return `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(p.titulo)} — Anders Tech</title><meta name="description" content="${esc(p.descricao)}"><meta name="author" content="${AUTOR.nome}">
 <meta name="robots" content="index, follow"><link rel="canonical" href="${url}">
-<meta property="og:title" content="${esc(p.titulo)}"><meta property="og:description" content="${esc(p.descricao)}"><meta property="og:type" content="article"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/og/${encodeURIComponent(p.slug)}.svg"><meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="${esc(p.titulo)}"><meta property="og:description" content="${esc(p.descricao)}"><meta property="og:type" content="article"><meta property="og:url" content="${url}"><meta property="og:image" content="${SITE}/og/${p.slug}.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta property="og:locale" content="pt_BR">
 <meta name="at-page-type" content="${esc(p.tipo)}"><meta name="at-cluster" content="${esc(p.cluster)}"><meta name="at-consulta" content="${esc(p.consulta)}">
 <link rel="stylesheet" href="/styles.css"><link rel="icon" href="/assets/favicon.png" type="image/png">
 ${jsonLd(p).map(j => `<script type="application/ld+json">${j}</script>`).join('')}<script type="application/ld+json">${breadcrumbLd}</script>
