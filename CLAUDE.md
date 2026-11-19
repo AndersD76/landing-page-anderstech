@@ -75,6 +75,9 @@ npm run seed
   tem start command (npm start), healthcheck (/healthz, 30 s), restart On Failure 3 e builder
   NIXPACKS, gravados via API. **Nunca** aplicar o `.railway/railway.ts` gerado por `railway config migrate`: o plan dele
   apaga as 11 variáveis de produção e desconecta o GitHub.
+- **A versão do Node em produção vem de `engines` no `package.json` (22.x).** Sem o campo,
+  o Nixpacks usa Node 18: foi assim até 19/11/2026, com o CI testando em 22. Confira a linha
+  `setup │ nodejs_22` no log de build (`railway logs --build <id>`) ao mexer em deploy.
 - `npm run test:integracao` sobe o servidor inteiro sobre Postgres em memória (PGlite) e
   passa por todos os fluxos (leads, conversões, parceiros, iscas, WhatsApp, outbound,
   régua, rotinas). Roda no CI. Use ao mexer em SQL.
