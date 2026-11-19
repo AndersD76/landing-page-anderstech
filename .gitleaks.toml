@@ -5,5 +5,5 @@ useDefault = true
 
 [allowlist]
 description = "chave publica do IndexNow"
-regexes = ['f6ba6a9696c4426b9a20bd3baa58e3ec']
+regexes = ['f6ba6a9696c4426b9a20bd3baa58e3ec', 'c310f106aad0297668046237775e3dc3']
 paths = ['node_modules']
