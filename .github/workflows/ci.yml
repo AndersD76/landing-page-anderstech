@@ -106,6 +106,20 @@ jobs:
       - name: Semgrep (bloqueia só severidade ERROR)
         run: semgrep scan --config p/javascript --config p/expressjs --config p/secrets --metrics=off --severity ERROR --error --exclude node_modules --exclude 'ead/seed*.js'
 
+  integracao:
+    # Servidor inteiro sobre Postgres real em memória (PGlite): migrações,
+    # semeadura, painéis, leads, conversões, parceiros, iscas, WhatsApp,
+    # outbound, régua e rotinas. Pegou 3 bugs que os testes de unidade não viam.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:integracao
+
   e2e:
     runs-on: ubuntu-latest
     steps:

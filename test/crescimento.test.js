@@ -182,3 +182,28 @@ test('anúncios: limites do Google Ads e só URL do próprio site', async () => 
   for (const s of SITELINKS) { assert.ok(n(s.texto) <= LIMITES.sitelink); assert.ok(n(s.d1) <= LIMITES.sitelinkDesc); assert.ok(n(s.d2) <= LIMITES.sitelinkDesc); }
   for (const c of CALLOUTS) assert.ok(n(c) <= LIMITES.callout, c);
 });
+
+test('WhatsApp: origem e rota saem da mensagem pré-preenchida', async () => {
+  const { origemDaMensagem, assinaturaValida, mensagensDoPayload } = await import('../growth/whatsapp.js');
+  assert.deepEqual(origemDaMensagem('Olá! Vim pela página ISO 9001:2026 (/iso-9001-2026) e quero planejar a transição.'), { origem: 'ISO 9001:2026', rota: '/iso-9001-2026' });
+  assert.deepEqual(origemDaMensagem('Olá! Vim pela página Contratar. Quero ISO 9001'), { origem: 'Contratar', rota: null });
+  assert.deepEqual(origemDaMensagem('oi, tudo bem?'), { origem: null, rota: null });
+  const corpo = '{"a":1}';
+  const crypto = await import('node:crypto');
+  const sig = 'sha256=' + crypto.createHmac('sha256', 's3gr3d0').update(corpo).digest('hex');
+  assert.equal(assinaturaValida(Buffer.from(corpo), sig, 's3gr3d0'), true);
+  assert.equal(assinaturaValida(Buffer.from(corpo), 'sha256=00', 's3gr3d0'), false);
+  const msgs = mensagensDoPayload({ entry: [{ changes: [{ value: { contacts: [{ wa_id: '55', profile: { name: 'Ana' } }], messages: [{ from: '55', id: 'x', type: 'text', text: { body: 'oi' }, timestamp: '1763500000' }] } }] }] });
+  assert.equal(msgs[0].nome, 'Ana');
+  assert.equal(msgs[0].texto, 'oi');
+});
+
+test('régua: lead da isca de transição não entra também na régua genérica', async () => {
+  const { aoLeadIscaOrganica } = await import('../organico/iscas.js');
+  let chamadas = 0;
+  const sqlFalso = () => { chamadas++; return Promise.resolve([]); };
+  process.env.REGUA_ATIVA = 'true';
+  await aoLeadIscaOrganica(sqlFalso, { leadId: 1, source: 'isca_transicao_2026', email: 'a@b.com', optin: true });
+  delete process.env.REGUA_ATIVA;
+  assert.equal(chamadas, 0);
+});

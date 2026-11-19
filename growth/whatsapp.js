@@ -23,8 +23,12 @@ export function assinaturaValida(rawBody, cabecalho, segredo = process.env.WHATS
 // "Olá! Vim pela página ISO 9001:2026 (/iso-9001-2026)" → origem legível e rota.
 export function origemDaMensagem(texto) {
   const t = String(texto || '');
-  const m = t.match(/vim pel[ao] (?:p[áa]gina|e-?mail)\s+(.+?)(?:\s*\((\/[a-z0-9\-/]*)\))?[.!]?(?:\s|$)/i);
-  return { origem: m ? m[1].trim().slice(0, 120) : null, rota: m && m[2] ? m[2] : null };
+  // A rota vem entre parênteses; o nome da página vai de "Vim pela página" até
+  // o parêntese ou o fim da frase. (Uma regex só, preguiçosa, parava na
+  // primeira palavra — achado no teste de integração, 18/11/2026.)
+  const rota = (t.match(/\((\/[a-z0-9\-/]*)\)/i) || [])[1] || null;
+  const m = t.match(/vim pel[ao] (?:p[áa]gina|e-?mail(?: d[oa])?)\s+([^(\n]+?)\s*(?:\(|[.!?](?:\s|$)|$)/i);
+  return { origem: m ? m[1].trim().slice(0, 120) : null, rota };
 }
 
 export function mensagensDoPayload(body) {

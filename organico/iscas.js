@@ -147,6 +147,10 @@ export async function aoLeadIscaOrganica(sql, { leadId, source, email, nome, opt
   if (!reguaAtiva()) return;
   const id = String(source).slice(5);
   const isca = ISCAS[id];
+  // Só iscas deste registro. A do diagnóstico de transição (source
+  // isca_transicao_2026) tem régua própria — sem isto a pessoa entrava nas duas
+  // e recebia 9 e-mails (achado no teste de integração, 18/11/2026).
+  if (!isca) return;
   const cluster = CLUSTERS[(isca && isca.cluster) || 'iso-9001'];
   for (const [chave, dias] of REGUA_CLUSTER) {
     await agendar(sql, { tipo: 'regua', chave, refTipo: 'lead', refId: leadId, email, params: { nome, isca: id, cluster: (isca && isca.cluster) || 'iso-9001', pilar: cluster.pilar, comercial: cluster.comercial }, quando: Date.now() + dias * 86400_000 });

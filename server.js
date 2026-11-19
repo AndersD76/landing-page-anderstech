@@ -271,15 +271,19 @@ const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KE
 
 // Migrações versionadas (#16). Falha em produção derruba o processo (#74b): é
 // melhor o deploy falhar visivelmente do que subir com o schema errado.
-runMigrations(sql).catch(err => {
+// As rotinas em segundo plano (semeadura do motor orgânico, filas) só começam
+// depois disto: num banco novo elas rodavam antes de a tabela existir e a
+// semeadura se perdia (achado no teste de integração sobre PGlite, 18/11/2026).
+const migracoesProntas = runMigrations(sql).then(() => true, err => {
   console.error('FATAL: falha ao aplicar migrações:', err);
   if (IS_PROD) process.exit(1);
+  return false;
 });
 
 // Carrega o PBQP-H na memória no boot. Cai no snapshot versionado se o banco
 // não responder: centenas de páginas indexadas não podem virar 500 porque o
 // Neon hibernou.
-inicializarPbqph(sql).catch(err => console.error('[pbqph] falha ao inicializar:', err));
+migracoesProntas.then(() => inicializarPbqph(sql)).catch(err => console.error('[pbqph] falha ao inicializar:', err));
 
 // STATUS_LEAD e ROTULO_PRAZO vêm de config/contato.js — fonte única, compartilhada
 // com o painel /admin e com os testes.
@@ -985,10 +989,11 @@ app.use(consultoriaRouter);
 // Parceiros (/p/<codigo>, /seja-parceiro), feed de conversões para as
 // plataformas de anúncio e painel de canais/custos (growth/routes.js).
 app.use(growthRouter({ adminAuth, sendPage: (arquivo, res, rota) => sendPage(arquivo, res, rota), send404 }));
-iniciarDespachoConversoes(sql);
 // Motor orgânico: requisitos, hubs, iscas, dados, autor, painel e rotinas.
 app.use(organicoRouter({ adminAuth, send404 }));
-iniciarOrganico(sql, { resend });
+migracoesProntas.then((ok) => {
+  if (!sql || ok) { iniciarDespachoConversoes(sql); iniciarOrganico(sql, { resend }); }
+});
 
 // ── Glossário da Qualidade (SSR com cache em memória — conteúdo estático) ──
 const glossarioCache = new Map();
