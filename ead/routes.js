@@ -523,87 +523,14 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
       .replace(/^template:\s*/i, '')
       .trim() || 'Template';
 
-    const doc = new PDFDocument({ size: 'A4', margin: 50 });
+    const doc = new PDFDocument({ size: 'A4', margin: 50, bufferPages: true });
     const safeFilename = cleanTitle.normalize('NFD').replace(/[̀-ͯ]/g, '')
       .replace(/[^a-zA-Z0-9 -]/g, '').replace(/\s+/g, '-').substring(0, 60) || 'template';
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="template-${safeFilename}.pdf"`);
     doc.pipe(res);
 
-    const NAVY = '#0b1730';
-    const RED = '#c5383c';
-    const GRAY = '#666666';
-    const LIGHT = '#f4f5f7';
-    const pw = doc.page.width - 100;
-
-    doc.rect(0, 0, doc.page.width, 80).fill(NAVY);
-    doc.fontSize(16).font('Helvetica-Bold').fillColor('#ffffff').text('ANDERS TECH', 50, 25);
-    doc.fontSize(9).font('Helvetica').fillColor('rgba(255,255,255,0.6)').text('Gestão com Tecnologia', 50, 45);
-    doc.fillColor(RED).rect(50, 65, 60, 3).fill(RED);
-
-    doc.moveDown(4);
-    doc.fontSize(18).font('Helvetica-Bold').fillColor(NAVY).text(cleanTitle, 50, 100, { width: pw });
-    doc.moveDown(0.5);
-    doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(`Curso: ${row.course_titulo}  |  Módulo: ${row.module_titulo}  |  Aula: ${row.lesson_titulo}`, 50, doc.y, { width: pw });
-    doc.moveDown(0.3);
-    doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.5).stroke('#e5e7eb');
-    doc.moveDown(1);
-
-    // matching sem acentos: titulos vem acentuados do conteudo ("Comparação", "Padronização")
-    const t = cleanTitle.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-    const startY = doc.y;
-
-    if (t.includes('checklist') || t.includes('check-list')) {
-      const items = extractListItems(row.conteudo, cleanTitle);
-      doc.fontSize(11).font('Helvetica').fillColor('#333');
-      items.forEach((item, i) => {
-        if (doc.y > 720) { doc.addPage(); }
-        const y = doc.y;
-        doc.rect(50, y, 14, 14).lineWidth(1).stroke(NAVY);
-        doc.text(item, 72, y + 1, { width: pw - 22 });
-        doc.moveDown(0.6);
-      });
-    } else if (t.includes('tabela comparativa') || t.includes('comparativo') || t.includes('comparacao')) {
-      const cols = ['Aspecto', 'Antes / Versao anterior', 'Depois / Versao atual', 'Impacto'];
-      drawTable(doc, cols, 8, pw, NAVY);
-    } else if (t.includes('matriz') || t.includes('planilha')) {
-      const cols = detectColumns(cleanTitle);
-      drawTable(doc, cols, 10, pw, NAVY);
-    } else if (t.includes('mapa') || t.includes('quadro')) {
-      const items = extractListItems(row.conteudo, cleanTitle);
-      doc.fontSize(11).font('Helvetica').fillColor('#333');
-      items.forEach((item, i) => {
-        if (doc.y > 720) { doc.addPage(); }
-        doc.font('Helvetica-Bold').fillColor(NAVY).text(`${i + 1}. ${item}`, 50, doc.y, { width: pw });
-        doc.moveDown(0.2);
-        doc.font('Helvetica').fillColor(GRAY).text('Observações: ________________________________________________________', 66, doc.y, { width: pw - 16 });
-        doc.moveDown(0.8);
-      });
-    } else if (t.includes('modelo') || t.includes('template') || t.includes('ficha')) {
-      const fields = detectFields(cleanTitle);
-      doc.fontSize(11).font('Helvetica');
-      fields.forEach(f => {
-        if (doc.y > 700) { doc.addPage(); }
-        doc.font('Helvetica-Bold').fillColor(NAVY).text(f, 50, doc.y, { width: pw });
-        doc.moveDown(0.3);
-        doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
-        doc.moveDown(0.2);
-        doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
-        doc.moveDown(0.8);
-      });
-    } else {
-      const cols = detectColumns(cleanTitle);
-      drawTable(doc, cols, 10, pw, NAVY);
-    }
-
-    const pageCount = doc.bufferedPageRange().count;
-    for (let i = 0; i < pageCount; i++) {
-      doc.switchToPage(i);
-      doc.fontSize(8).fillColor('#999').text(
-        `Anders Tech  ·  ${cleanTitle}  ·  Página ${i + 1}/${pageCount}`,
-        50, doc.page.height - 35, { width: pw, align: 'center' }
-      );
-    }
+    desenharTemplate(doc, cleanTitle, row);
 
     doc.end();
   } catch (err) {
@@ -612,6 +539,94 @@ router.get('/ead/api/template/:lessonId', requireEadAuth, async (req, res) => {
   }
 });
 
+// Template de aula em PDF. Revisão do PR #4 (19/11/2026) achou dois defeitos
+// antigos: sem bufferPages no documento, switchToPage(0) estourava quando o
+// conteúdo passava de uma página e o aluno recebia o PDF cortado; e o rodapé
+// em height - 35 caía dentro da margem de 50, então o pdfkit abria uma página
+// só para ele (todo template saía com uma 2ª página vazia de rodapé).
+export function desenharTemplate(doc, cleanTitle, row) {
+  const NAVY = '#0b1730';
+  const RED = '#c5383c';
+  const GRAY = '#666666';
+  const LIGHT = '#f4f5f7';
+  const pw = doc.page.width - 100;
+
+  doc.rect(0, 0, doc.page.width, 80).fill(NAVY);
+  doc.fontSize(16).font('Helvetica-Bold').fillColor('#ffffff').text('ANDERS TECH', 50, 25);
+  // pdfkit ignora rgba() (só hex e nome de cor). #b9c8e4 é o texto
+  // secundário sobre navy da identidade (CLAUDE.md §5).
+  doc.fontSize(9).font('Helvetica').fillColor('#b9c8e4').text('Gestão com Tecnologia', 50, 45);
+  doc.fillColor(RED).rect(50, 65, 60, 3).fill(RED);
+
+  doc.moveDown(4);
+  doc.fontSize(18).font('Helvetica-Bold').fillColor(NAVY).text(cleanTitle, 50, 100, { width: pw });
+  doc.moveDown(0.5);
+  doc.fontSize(10).font('Helvetica').fillColor(GRAY).text(`Curso: ${row.course_titulo}  |  Módulo: ${row.module_titulo}  |  Aula: ${row.lesson_titulo}`, 50, doc.y, { width: pw });
+  doc.moveDown(0.3);
+  doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.5).stroke('#e5e7eb');
+  doc.moveDown(1);
+
+  // matching sem acentos: titulos vem acentuados do conteudo ("Comparação", "Padronização")
+  const t = cleanTitle.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const startY = doc.y;
+
+  if (t.includes('checklist') || t.includes('check-list')) {
+    const items = extractListItems(row.conteudo, cleanTitle);
+    doc.fontSize(11).font('Helvetica').fillColor('#333');
+    items.forEach((item, i) => {
+      if (doc.y > 720) { doc.addPage(); }
+      const y = doc.y;
+      doc.rect(50, y, 14, 14).lineWidth(1).stroke(NAVY);
+      doc.text(item, 72, y + 1, { width: pw - 22 });
+      doc.moveDown(0.6);
+    });
+  } else if (t.includes('tabela comparativa') || t.includes('comparativo') || t.includes('comparacao')) {
+    const cols = ['Aspecto', 'Antes / Versao anterior', 'Depois / Versao atual', 'Impacto'];
+    drawTable(doc, cols, 8, pw, NAVY);
+  } else if (t.includes('matriz') || t.includes('planilha')) {
+    const cols = detectColumns(cleanTitle);
+    drawTable(doc, cols, 10, pw, NAVY);
+  } else if (t.includes('mapa') || t.includes('quadro')) {
+    const items = extractListItems(row.conteudo, cleanTitle);
+    doc.fontSize(11).font('Helvetica').fillColor('#333');
+    items.forEach((item, i) => {
+      if (doc.y > 720) { doc.addPage(); }
+      doc.font('Helvetica-Bold').fillColor(NAVY).text(`${i + 1}. ${item}`, 50, doc.y, { width: pw });
+      doc.moveDown(0.2);
+      doc.font('Helvetica').fillColor(GRAY).text('Observações: ________________________________________________________', 66, doc.y, { width: pw - 16 });
+      doc.moveDown(0.8);
+    });
+  } else if (t.includes('modelo') || t.includes('template') || t.includes('ficha')) {
+    const fields = detectFields(cleanTitle);
+    doc.fontSize(11).font('Helvetica');
+    fields.forEach(f => {
+      if (doc.y > 700) { doc.addPage(); }
+      doc.font('Helvetica-Bold').fillColor(NAVY).text(f, 50, doc.y, { width: pw });
+      doc.moveDown(0.3);
+      doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
+      doc.moveDown(0.2);
+      doc.moveTo(50, doc.y).lineTo(50 + pw, doc.y).lineWidth(0.3).stroke('#ccc');
+      doc.moveDown(0.8);
+    });
+  } else {
+    const cols = detectColumns(cleanTitle);
+    drawTable(doc, cols, 10, pw, NAVY);
+  }
+
+  // Rodapé na margem inferior: zera a margem durante a escrita para o pdfkit
+  // não abrir página nova, e devolve depois.
+  const pageCount = doc.bufferedPageRange().count;
+  for (let i = 0; i < pageCount; i++) {
+    doc.switchToPage(i);
+    const margemInferior = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
+    doc.fontSize(8).fillColor('#999').text(
+      `Anders Tech  ·  ${cleanTitle}  ·  Página ${i + 1}/${pageCount}`,
+      50, doc.page.height - 35, { width: pw, align: 'center', lineBreak: false }
+    );
+    doc.page.margins.bottom = margemInferior;
+  }
+}
 function extractListItems(conteudo, title) {
   if (!conteudo) return defaultItems();
   const items = [];

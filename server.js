@@ -46,11 +46,12 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 if (process.env.SENTRY_DSN) {
-  import('@sentry/node').then(Sentry => {
-    Sentry.init({ dsn: process.env.SENTRY_DSN, tracesSampleRate: 0.1 });
+  // Opções em config/sentry.js: sem cookie, header, corpo, query nem IP.
+  Promise.all([import('@sentry/node'), import('./config/sentry.js')]).then(([Sentry, { opcoesSentry }]) => {
+    Sentry.init(opcoesSentry(process.env.SENTRY_DSN));
     app.use(Sentry.expressErrorHandler());
     console.log('Sentry initialized');
-  }).catch(() => {});
+  }).catch((e) => console.error('[sentry] não iniciou:', e.message));
 }
 
 const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production';

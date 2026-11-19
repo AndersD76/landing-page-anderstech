@@ -213,3 +213,29 @@ test('imagem de compartilhamento: PNG por página, e só de página que existe',
   assert.equal((await req('/og/titulo-inventado-por-alguem.png')).status, 404);
   assert.match(await (await req('/norma-iso-9001/6-1')).text(), /og:image" content="https:\/\/anderstech\.net\/og\/norma-iso-9001\/6-1\.png"/);
 });
+
+test('Sentry: evento sai sem cookie, header, corpo, query, IP e token na URL', async () => {
+  const { limparEvento, opcoesSentry } = await import('../config/sentry.js');
+  const ev = limparEvento({
+    request: {
+      url: 'https://anderstech.net/contratar/contrato?t=segredo123',
+      cookies: { 'connect.sid': 's:abc' },
+      headers: { 'x-admin-key': 'k', authorization: 'Basic x', cookie: 'connect.sid=s:abc' },
+      data: '{"nome":"Fulano","telefone":"54999999999"}',
+      query_string: 't=segredo123',
+    },
+    user: { ip_address: '200.1.2.3' },
+    breadcrumbs: [{ category: 'http', data: { url: 'https://api.asaas.com/v3/payments?access_token=zzz' } }],
+    exception: { values: [{ type: 'Error', value: 'falhou' }] },
+  });
+  const txt = JSON.stringify(ev);
+  for (const proibido of ['segredo123', 'connect.sid', 'x-admin-key', 'Basic', 'Fulano', '54999999999', '200.1.2.3', 'zzz']) {
+    assert.ok(!txt.includes(proibido), `vazou ${proibido}`);
+  }
+  assert.equal(ev.request.url, 'https://anderstech.net/contratar/contrato');
+  assert.equal(ev.exception.values[0].value, 'falhou', 'o erro em si continua indo');
+  const o = opcoesSentry('https://x@o.ingest.sentry.io/1');
+  assert.equal(o.sendDefaultPii, false);
+  assert.equal(o.dataCollection.userInfo, false);
+  assert.equal(o.beforeSend, limparEvento);
+});
