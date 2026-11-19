@@ -71,6 +71,13 @@ npm run seed
 ### Fatos operacionais que mordem
 - **Railway não faz auto-deploy neste projeto**: `git push` não publica. Publicar exige
   commit vazio para disparar ou acionar o painel.
+- **`railway.json` deixa de ser lido em 01/12/2026.** O painel do serviço não tem start
+  command nem healthcheck: preencher lá (npm start, /healthz, 30 s, restart On Failure 3).
+  **Nunca** aplicar o `.railway/railway.ts` gerado por `railway config migrate`: o plan dele
+  apaga as 11 variáveis de produção e desconecta o GitHub.
+- `npm run test:integracao` sobe o servidor inteiro sobre Postgres em memória (PGlite) e
+  passa por todos os fluxos (leads, conversões, parceiros, iscas, WhatsApp, outbound,
+  régua, rotinas). Roda no CI. Use ao mexer em SQL.
 - GA4 e banner de cookie **só existem quando `NODE_ENV=production`** ou
   `RAILWAY_ENVIRONMENT=production`. Em dev, nenhum evento sai — não é bug.
 - `sendPage()` **memoriza o HTML em `Map`**: mudou HTML/`inject.js`, tem que reiniciar.
