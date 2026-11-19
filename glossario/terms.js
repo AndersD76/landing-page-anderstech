@@ -321,6 +321,10 @@ export const TERMOS = [
   {
     slug: 'housekeeping',
     termo: 'Housekeeping',
+    seo: {
+      titulo: 'Housekeeping: o que é na indústria e como manter a rotina',
+      desc: 'Housekeeping é ordem, limpeza e conservação do ambiente de trabalho, a base do 5S. Veja por que reduz acidentes e perdas e como manter a rotina sem mutirão de véspera de auditoria.',
+    },
     categoria: 'Melhoria Contínua e Lean',
     def: [
       'Housekeeping, na indústria, é o conjunto de práticas de ordem, limpeza e conservação do ambiente de trabalho — o termo inglês que o mercado brasileiro usa praticamente como sinônimo da base do programa 5S. Um bom housekeeping significa piso limpo e demarcado, ferramentas identificadas e no lugar, materiais armazenados com critério, resíduos segregados e nenhum item desnecessário ocupando a área produtiva.',
@@ -597,6 +601,10 @@ export const TERMOS = [
   {
     slug: 'conformidade',
     termo: 'Conformidade',
+    seo: {
+      titulo: 'O que é conformidade? Significado na ISO 9001 e na inspeção',
+      desc: 'Conformidade é o atendimento de um requisito, o oposto da não conformidade. Veja o significado na ISO 9001 e um teste simples para saber se o seu critério de aceitação funciona.',
+    },
     categoria: 'Fundamentos do SGQ',
     def: [
       'Conformidade é o atendimento de um requisito — o oposto exato da não conformidade. Um produto é conforme quando atende à especificação; um processo é conforme quando é executado como definido; um sistema de gestão é conforme quando cumpre os requisitos da norma de referência e os da própria organização.',
@@ -982,6 +990,10 @@ export const TERMOS = [
   {
     slug: 'recertificacao',
     termo: 'Recertificação',
+    seo: {
+      titulo: 'Recertificação ISO 9001: o que é e como funciona a auditoria',
+      desc: 'Recertificação é a auditoria completa ao fim de cada ciclo de três anos que renova o certificado ISO 9001. Veja o que o auditor avalia e por que ela precisa acontecer antes do vencimento.',
+    },
     categoria: 'Auditoria e Certificação',
     def: [
       'Recertificação é a auditoria completa realizada ao final de cada ciclo de três anos para renovar o certificado ISO 9001 por mais três. Diferente das manutenções anuais, que amostram, a recertificação reavalia o sistema inteiro: todos os processos do escopo, o desempenho ao longo do ciclo, a eficácia do conjunto de ações corretivas, o cumprimento de objetivos e a melhoria demonstrada no período.',
@@ -1006,6 +1018,10 @@ export const TERMOS = [
   {
     slug: 'oportunidade-de-melhoria',
     termo: 'Oportunidade de melhoria',
+    seo: {
+      titulo: 'Oportunidade de melhoria: o que é e como tratar na auditoria',
+      desc: 'Oportunidade de melhoria (OM) não é não conformidade: não exige ação corretiva, mas pede uma decisão registrada. Veja a diferença e como fazer a triagem de cada OM.',
+    },
     categoria: 'Melhoria Contínua e Lean',
     def: [
       'Oportunidade de melhoria (OM) é a constatação de auditoria que não aponta descumprimento de requisito — portanto não é não conformidade — mas sinaliza onde o sistema poderia ser mais eficaz, mais simples ou mais robusto: um controle que funciona mas depende demais de uma pessoa, um indicador que poderia ser mais sensível, uma prática boa de um setor que outro setor não adota.',

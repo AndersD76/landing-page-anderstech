@@ -266,9 +266,13 @@ export function iniciar(sql, { resend } = {}) {
       if (process.env.MAPA_AUTOCOMPLETE !== 'false') await expandirAutocomplete(sql, { maximo: 20 });
       if (h >= 3 && await umaVez(sql, 'job:diario:' + d, 'rotina diária')) {
         await carregarFaixas().catch(loga('faixas'));
-        await ingerirGsc(sql).catch(loga('gsc'));
+        // Primeira coleta com a tabela vazia puxa 90 dias: sem isso o painel
+        // nasce sem histórico e a linha de base compara contra nada.
+        const gscVazia = (await sql`SELECT NOT EXISTS (SELECT 1 FROM seo_gsc) AS v`)[0].v;
+        const ga4Vazia = (await sql`SELECT NOT EXISTS (SELECT 1 FROM seo_ga4) AS v`)[0].v;
+        await ingerirGsc(sql, { dias: gscVazia ? 90 : 5 }).catch(loga('gsc'));
         await ingerirBing(sql).catch(loga('bing'));
-        await ingerirGa4(sql).catch(loga('ga4'));
+        await ingerirGa4(sql, { dias: ga4Vazia ? 90 : 7 }).catch(loga('ga4'));
         if (gscConfigurado()) {
           const amostra = paginasPublicadas().map(p => SITE + caminho(p));
           const verificadas = new Set((await sql`SELECT url FROM seo_indexacao WHERE verificado_em > NOW() - INTERVAL '14 days'`).map(r => r.url));

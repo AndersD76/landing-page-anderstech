@@ -21,6 +21,8 @@ export const EMPRESA = {
   cpfRepresentante: '',
   cidades: 'Passo Fundo · Erechim · RS',
   ga4: process.env.GA4_MEASUREMENT_ID || 'G-7XL5XVE6QZ',
+  // Propriedade GA4 "AndersTech" (a do fluxo G-7XL5XVE6QZ), conferida na API em 19/11/2026.
+  ga4Propriedade: '540470926',
 };
 
 export function waLink(texto) {

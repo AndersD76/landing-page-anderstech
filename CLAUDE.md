@@ -51,7 +51,7 @@ Consequências práticas:
 | Pagamento | Asaas (`ead/asaas.js`) — EAD e consultoria; um webhook só, em `/ead/api/webhook/asaas` |
 | PDF | `pdfkit` — atas (`portal/routes.js`) e certificados EAD (`ead/routes.js`) |
 | Segurança | `helmet` com CSP explícita, `express-session` + `connect-pg-simple`, rate limit em memória, `ADMIN_KEY` com comparação timing-safe |
-| Analytics | GA4 `G-7XL5XVE6QZ` com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**) |
+| Analytics | GA4 `G-7XL5XVE6QZ` (propriedade 540470926) com **Consent Mode v2** (injetado **só em produção**) + Plausible (**hoje só na home**). Search Console e GA4 entram no painel por conta de serviço (`GOOGLE_SERVICE_ACCOUNT_JSON`), não por OAuth |
 | Telemetria | `telemetry.js` (adaptador server-side) + `telemetry-client.js` (cliente) + `POST /api/telemetry` → tabela `telemetry_events`. Roda em dev **e** produção, por flag própria |
 | SEO | `sitemap.js` gera `/sitemap.xml` dinâmico; `robots.txt`, `llms.txt`, glossário SSR |
 | SEO programático | `pbqph/` — páginas de PBQP-H por município e por certificadora, SSR com cache, a partir de `data/pbqph-siac.json` (carga mensal por `.github/workflows/carga-pbqph.yml`) |
@@ -71,9 +71,9 @@ npm run seed
 ### Fatos operacionais que mordem
 - **Railway não faz auto-deploy neste projeto**: `git push` não publica. Publicar exige
   commit vazio para disparar ou acionar o painel.
-- **`railway.json` deixa de ser lido em 01/12/2026.** O painel do serviço não tem start
-  command nem healthcheck: preencher lá (npm start, /healthz, 30 s, restart On Failure 3).
-  **Nunca** aplicar o `.railway/railway.ts` gerado por `railway config migrate`: o plan dele
+- **`railway.json` deixa de ser lido em 01/12/2026.** Desde 19/11/2026 o painel do serviço
+  tem start command (npm start), healthcheck (/healthz, 30 s), restart On Failure 3 e builder
+  NIXPACKS, gravados via API. **Nunca** aplicar o `.railway/railway.ts` gerado por `railway config migrate`: o plan dele
   apaga as 11 variáveis de produção e desconecta o GitHub.
 - `npm run test:integracao` sobe o servidor inteiro sobre Postgres em memória (PGlite) e
   passa por todos os fluxos (leads, conversões, parceiros, iscas, WhatsApp, outbound,

@@ -8,22 +8,27 @@
 //   GA4 Data API    POST analyticsdata.googleapis.com/v1beta/properties/{id}:runReport
 //                   escopo https://www.googleapis.com/auth/analytics.readonly
 //   IndexNow        POST api.indexnow.org/indexnow (até 10.000 URLs)
-// O refresh token do Google (GOOGLE_OAUTH_*) precisa ter os escopos usados.
+// Credencial: conta de serviço (GOOGLE_SERVICE_ACCOUNT_JSON), que é o caminho
+// normal; o refresh token (GOOGLE_OAUTH_*) só vale se tiver os dois escopos.
 
-import { googleToken, googleOAuthConfigurado } from '../growth/integracoes.js';
+import { googleTokenLeitura, contaServicoGoogle, googleOAuthConfigurado } from '../growth/integracoes.js';
+import { EMPRESA } from '../config/empresa.js';
 
 const env = (n) => process.env[n] || '';
 const SITE = 'https://anderstech.net';
 export const GSC_SITE = () => env('GSC_SITE_URL') || 'sc-domain:anderstech.net';
+const GA4_PROPRIEDADE = () => env('GA4_PROPERTY_ID') || EMPRESA.ga4Propriedade;
 const dia = (d) => new Date(d).toISOString().slice(0, 10);
 
-export const gscConfigurado = () => googleOAuthConfigurado() && env('GSC_ATIVO') === 'true';
-export const ga4Configurado = () => googleOAuthConfigurado() && !!env('GA4_PROPERTY_ID');
+// Com a conta de serviço, ter a chave basta: o acesso já foi concedido nas
+// duas propriedades. No OAuth, GSC_ATIVO confirma que o token tem o escopo.
+export const gscConfigurado = () => !!contaServicoGoogle() || (googleOAuthConfigurado() && env('GSC_ATIVO') === 'true');
+export const ga4Configurado = () => (!!contaServicoGoogle() || googleOAuthConfigurado()) && !!GA4_PROPRIEDADE();
 export const bingConfigurado = () => !!env('BING_WEBMASTER_API_KEY');
 export const serpConfigurado = () => !!env('SERPAPI_KEY');
 
 async function google(url, { method = 'GET', body, fetchImpl = fetch } = {}) {
-  const token = await googleToken({ fetchImpl });
+  const token = await googleTokenLeitura({ fetchImpl });
   const r = await fetchImpl(url, { method, headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined });
   const txt = await r.text();
   if (!r.ok) throw new Error(`${method} ${url.split('?')[0]}: HTTP ${r.status} ${txt.slice(0, 200)}`);
@@ -100,7 +105,7 @@ export async function ingerirBing(sql) {
 // GA4: sessões e eventos-chave por canal e página de entrada.
 export async function ingerirGa4(sql, { dias = 7 } = {}) {
   if (!ga4Configurado()) return { linhas: 0, motivo: 'desligado' };
-  const j = await google(`https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(env('GA4_PROPERTY_ID'))}:runReport`, {
+  const j = await google(`https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(GA4_PROPRIEDADE())}:runReport`, {
     method: 'POST', body: {
       dateRanges: [{ startDate: `${dias}daysAgo`, endDate: 'yesterday' }],
       dimensions: [{ name: 'date' }, { name: 'sessionDefaultChannelGroup' }, { name: 'landingPage' }],

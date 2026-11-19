@@ -6,9 +6,53 @@
 //   Google Ads API v26       customers/{id}/googleAds:searchStream (escopo adwords)
 // Sem credencial: nada sai; a conversão continua no livro local (`conversoes`).
 
+import crypto from 'node:crypto';
 import { sha256, normalizaEmail, normalizaTelefone } from './conversoes.js';
 
 const env = (n) => process.env[n] || '';
+
+// ── Conta de serviço do Google (só leitura de Search Console e GA4) ──
+// Desde 19/11/2026 o acesso ao Search Console e ao GA4 é de uma conta de
+// serviço; montar um cliente OAuth com refresh token só para ler relatório era
+// a tarefa que travava o painel. Google Ads e Data Manager continuam no OAuth:
+// conta de serviço não opera conta de anúncio sem delegação de domínio.
+// GOOGLE_SERVICE_ACCOUNT_JSON aceita o JSON da chave inteiro ou em base64.
+const ESCOPOS_LEITURA = ['https://www.googleapis.com/auth/webmasters', 'https://www.googleapis.com/auth/analytics.readonly'];
+export function contaServicoGoogle() {
+  const bruto = env('GOOGLE_SERVICE_ACCOUNT_JSON').trim();
+  if (!bruto) return null;
+  try {
+    const j = JSON.parse(bruto.startsWith('{') ? bruto : Buffer.from(bruto, 'base64').toString('utf8'));
+    if (!j.client_email || !j.private_key) return null;
+    return { email: j.client_email, chave: String(j.private_key).replace(/\\n/g, '\n'), tokenUri: j.token_uri || 'https://oauth2.googleapis.com/token' };
+  } catch {
+    return null;
+  }
+}
+const b64url = (b) => Buffer.from(b).toString('base64').replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+export function assercaoJwt(conta, escopos, agora = Math.floor(Date.now() / 1000)) {
+  const cab = b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
+  const corpo = b64url(JSON.stringify({ iss: conta.email, scope: escopos.join(' '), aud: conta.tokenUri, iat: agora, exp: agora + 3600 }));
+  const assinatura = crypto.createSign('RSA-SHA256').update(`${cab}.${corpo}`).sign(conta.chave);
+  return `${cab}.${corpo}.${b64url(assinatura)}`;
+}
+let tokenServicoCache = { valor: null, expira: 0 };
+// Token para ler Search Console e GA4: conta de serviço se houver; senão o OAuth.
+export function googleLeituraConfigurado() { return !!contaServicoGoogle() || googleOAuthConfigurado(); }
+export async function googleTokenLeitura({ fetchImpl = fetch } = {}) {
+  const conta = contaServicoGoogle();
+  if (!conta) return googleToken({ fetchImpl });
+  if (tokenServicoCache.valor && Date.now() < tokenServicoCache.expira - 60_000) return tokenServicoCache.valor;
+  const r = await fetchImpl(conta.tokenUri, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion: assercaoJwt(conta, ESCOPOS_LEITURA) }),
+  });
+  const j = await r.json();
+  if (!r.ok || !j.access_token) throw new Error('Conta de serviço Google: ' + (j.error_description || j.error || r.status));
+  tokenServicoCache = { valor: j.access_token, expira: Date.now() + (j.expires_in || 3600) * 1000 };
+  return tokenServicoCache.valor;
+}
 
 // ── OAuth do Google (um refresh token com os escopos necessários) ──
 let tokenCache = { valor: null, expira: 0 };

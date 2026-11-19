@@ -207,3 +207,50 @@ test('régua: lead da isca de transição não entra também na régua genérica
   delete process.env.REGUA_ATIVA;
   assert.equal(chamadas, 0);
 });
+
+test('Google: conta de serviço assina o JWT, pede os dois escopos de leitura e reaproveita o token', async () => {
+  const crypto = await import('node:crypto');
+  const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
+  const chave = privateKey.export({ type: 'pkcs8', format: 'pem' });
+  const json = JSON.stringify({ type: 'service_account', client_email: 'leitor@projeto.iam.gserviceaccount.com', private_key: chave, token_uri: 'https://oauth2.googleapis.com/token' });
+  const antes = { ...process.env };
+  try {
+    for (const k of ['GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_OAUTH_REFRESH_TOKEN', 'GSC_ATIVO', 'GA4_PROPERTY_ID']) delete process.env[k];
+    process.env.GOOGLE_SERVICE_ACCOUNT_JSON = Buffer.from(json).toString('base64');
+    const { contaServicoGoogle, googleTokenLeitura } = await import('../growth/integracoes.js');
+    const { gscConfigurado, ga4Configurado } = await import('../organico/fontes.js');
+    assert.equal(contaServicoGoogle().email, 'leitor@projeto.iam.gserviceaccount.com');
+    assert.equal(gscConfigurado(), true, 'com a chave o Search Console liga sem GSC_ATIVO');
+    assert.equal(ga4Configurado(), true, 'propriedade GA4 vem de config/empresa.js');
+
+    let chamadas = 0, assercao = null;
+    const fetchImpl = async (url, opt) => {
+      chamadas++;
+      const p = new URLSearchParams(opt.body);
+      assert.equal(p.get('grant_type'), 'urn:ietf:params:oauth:grant-type:jwt-bearer');
+      assercao = p.get('assertion');
+      return { ok: true, json: async () => ({ access_token: 'tok-1', expires_in: 3600 }) };
+    };
+    assert.equal(await googleTokenLeitura({ fetchImpl }), 'tok-1');
+    assert.equal(await googleTokenLeitura({ fetchImpl }), 'tok-1');
+    assert.equal(chamadas, 1, 'token em cache até perto de expirar');
+
+    const [cab, corpo, sig] = assercao.split('.');
+    const dec = (s) => JSON.parse(Buffer.from(s.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
+    assert.deepEqual(dec(cab), { alg: 'RS256', typ: 'JWT' });
+    const c = dec(corpo);
+    assert.equal(c.iss, 'leitor@projeto.iam.gserviceaccount.com');
+    assert.equal(c.aud, 'https://oauth2.googleapis.com/token');
+    assert.equal(c.exp - c.iat, 3600);
+    assert.deepEqual(c.scope.split(' ').sort(), ['https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/webmasters']);
+    const ok = crypto.createVerify('RSA-SHA256').update(`${cab}.${corpo}`).verify(publicKey, Buffer.from(sig.replace(/-/g, '+').replace(/_/g, '/'), 'base64'));
+    assert.equal(ok, true, 'assinatura confere com a chave pública');
+
+    process.env.GOOGLE_SERVICE_ACCOUNT_JSON = '{ isto não é json';
+    assert.equal(contaServicoGoogle(), null, 'chave quebrada desliga em vez de derrubar');
+    assert.equal(gscConfigurado(), false);
+  } finally {
+    for (const k of Object.keys(process.env)) if (!(k in antes)) delete process.env[k];
+    Object.assign(process.env, antes);
+  }
+});

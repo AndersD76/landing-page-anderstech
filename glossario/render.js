@@ -103,8 +103,14 @@ export function renderTermo(slug) {
   if (!t) return null;
 
   const path = `/glossario/${t.slug}`;
-  const title = `O que é ${t.termo}? Definição e aplicação prática | Anders Tech`;
-  const desc = (t.def[0].length > 152 ? t.def[0].slice(0, 152).replace(/\s+\S*$/, '') + '…' : t.def[0]);
+  // Search Console, 90 dias até 19/11/2026: os termos aparecem entre a 3ª e a
+  // 10ª posição com CTR abaixo de 2,5%. Os de mais impressão têm título e
+  // descrição próprios (t.seo), escritos a partir do que a página já diz.
+  // "O que é Housekeeping?" lia como nome próprio: a inicial desce para
+  // minúscula, salvo sigla (RNC, MSA, 8D).
+  const termoNaFrase = /^[A-ZÀ-Ú][a-zà-ú]/.test(t.termo) ? t.termo[0].toLowerCase() + t.termo.slice(1) : t.termo;
+  const title = `${(t.seo && t.seo.titulo) || `O que é ${termoNaFrase}? Definição e aplicação prática`} | Anders Tech`;
+  const desc = (t.seo && t.seo.desc) || (t.def[0].length > 152 ? t.def[0].slice(0, 152).replace(/\s+\S*$/, '') + '…' : t.def[0]);
 
   const definedTerm = {
     '@context': 'https://schema.org',
