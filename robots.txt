@@ -8,7 +8,8 @@
 # Busca (trazem visita):         Googlebot, Bingbot, OAI-SearchBot, ChatGPT-User,
 #                                Claude-SearchBot, Claude-User, PerplexityBot,
 #                                Perplexity-User, Applebot, DuckDuckBot
-# Só treino de modelo (DECISÃO DO ANDERS — hoje liberados, como já estavam):
+# Só treino de modelo (liberados por decisão do Anders em 20/11/2026: o
+# conteúdo é de divulgação e a marca ganha em ser conhecida pelos modelos):
 #                                GPTBot, ClaudeBot, Google-Extended,
 #                                Applebot-Extended, Amazonbot
 # Para bloquear o treino, mova os cinco para um grupo próprio com "Disallow: /".
