@@ -69,8 +69,10 @@ npm run seed
 ```
 
 ### Fatos operacionais que mordem
-- **Railway não faz auto-deploy neste projeto**: `git push` não publica. Publicar exige
-  commit vazio para disparar ou acionar o painel.
+- **Todo push no `master` publica** (o Railway faz auto-deploy; conferido em 20/11/2026:
+  commit só de documentação e merge de PR pelo GitHub viraram deploy sozinhos). Não precisa
+  de commit vazio. Antes de dar push, confira que o commit no ar
+  (`railway deployment list --json`) é o mesmo do `origin/master`.
 - **`railway.json` deixa de ser lido em 01/12/2026.** Desde 19/11/2026 o painel do serviço
   tem start command (npm start), healthcheck (/healthz, 30 s), restart On Failure 3 e builder
   NIXPACKS, gravados via API. **Nunca** aplicar o `.railway/railway.ts` gerado por `railway config migrate`: o plan dele
