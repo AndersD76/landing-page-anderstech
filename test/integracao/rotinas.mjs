@@ -79,6 +79,7 @@ assert.equal(mandados.length, 1);
 assert.match(mandados[0].headers['List-Unsubscribe'], /\/sair\/[a-f0-9]{36}>/);
 assert.equal(mandados[0].headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
 assert.match(decodeURIComponent(mandados[0].html), /utm_campaign=regua-isca-2026/);
+assert.ok(mandados[0].replyTo && mandados[0].replyTo.includes('@') && !/noreply/.test(mandados[0].replyTo), 'resposta da régua iria para o noreply');
 ok('fila: envia com descadastro em 1 clique e UTM; suprimido não recebe');
 
 // Integrações com APIs simuladas.

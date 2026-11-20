@@ -3,8 +3,9 @@
 // chave do modelo, e a condição é conferida no último instante: se o pedido já
 // foi pago, o lembrete de checkout não sai; se a pessoa pediu para sair, nada sai.
 //
-// DESLIGADO POR PADRÃO. O Anders decidiu (memória anders-quer-so-o-lead) não ter
-// resposta automática nem régua. O código está pronto e só envia com:
+// DESLIGADO POR PADRÃO. Em 21/09/2026 o Anders não quis resposta automática nem
+// régua; em 20/11/2026 decidiu ligar régua e outbound (o outbound só sai para a
+// empresa que ele iniciar em /admin/operacao). Envia só com:
 //   OUTBOUND_ATIVO=true + OUTBOUND_REMETENTE  (domínio secundário verificado no Resend)
 //   REGUA_ATIVA=true                          (isca, checkout abandonado, cobrança vencida, indicação)
 // Toda mensagem: 1 objetivo, 1 CTA, UTM, clique rastreado e descadastro em 1 clique
@@ -229,9 +230,12 @@ export async function processarFila(sql, resend, { agora = Date.now() } = {}) {
       const r = renderizar(m.chave, m.token, m.params || {});
       if (!r) { await sql`UPDATE mensagens SET status = 'erro', erro = 'modelo inexistente' WHERE id = ${m.id}`; continue; }
       const from = m.tipo === 'outbound' ? process.env.OUTBOUND_REMETENTE : `Daniel Anders · Anders Tech <${EMPRESA.emailRemetente}>`;
+      // 20/11/2026: os textos pedem "responda este e-mail", mas a régua saía de
+      // noreply@ sem replyTo (resposta perdida) e o outbound só tinha replyTo se a
+      // variável existisse. Agora a resposta sempre cai na caixa do Daniel.
+      const replyTo = (m.tipo === 'outbound' ? process.env.OUTBOUND_RESPONDER_PARA : process.env.REGUA_RESPONDER_PARA) || EMPRESA.email;
       await resend.emails.send({
-        from, to: m.email, subject: r.assunto, html: r.html,
-        ...(m.tipo === 'outbound' ? { replyTo: process.env.OUTBOUND_RESPONDER_PARA || undefined } : {}),
+        from, to: m.email, subject: r.assunto, html: r.html, replyTo,
         headers: { 'List-Unsubscribe': `<${SITE}/sair/${m.token}>`, 'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click' },
       });
       await sql`UPDATE mensagens SET status = 'enviada', enviada_em = NOW() WHERE id = ${m.id}`;
