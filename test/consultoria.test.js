@@ -56,6 +56,21 @@ test('CPF de quem assina pela Anders Tech: só no contrato do pedido, nunca na p
   } finally { EMPRESA.cpfRepresentante = antes; }
 });
 
+test('CPF da CONTRATADA inválido (tudo zero, dígito errado) não liga a venda nem entra no contrato', async () => {
+  const { EMPRESA } = await import('../config/empresa.js');
+  const antes = { ...EMPRESA };
+  try {
+    Object.assign(EMPRESA, { razaoSocial: 'R', endereco: 'E', representante: 'N' });
+    for (const ruim of ['000.000.000-00', '00000000000', '111.444.777-36', '123']) {
+      EMPRESA.cpfRepresentante = ruim;
+      assert.equal(contratadaCompleta(), false, `aceitou ${ruim}`);
+      assert.match(contratoHTML(null), /\[PREENCHER: CPF\]/);
+    }
+    EMPRESA.cpfRepresentante = '111.444.777-35';
+    assert.equal(contratadaCompleta(), true);
+  } finally { Object.assign(EMPRESA, antes); }
+});
+
 test('venda desligada enquanto faltar dado da CONTRATADA no contrato', () => {
   if (!contratadaCompleta()) assert.equal(vendaAtiva(), false);
 });

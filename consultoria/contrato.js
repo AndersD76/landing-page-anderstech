@@ -14,6 +14,7 @@ import PDFDocument from 'pdfkit';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { EMPRESA } from '../config/empresa.js';
+import { docValido, normalizaDoc } from '../ead/asaas.js';
 import {
   VALOR_HORA, JUROS_MES, MAX_PARCELAS, PCT_PROJETO, DISTANCIA_MAXIMA,
   FAIXAS_FUNCIONARIOS, FAIXAS_DISTANCIA,
@@ -37,9 +38,14 @@ export function dataHora(d) {
 
 const METODO_ROTULO = { pix: 'Pix', cartao: 'Cartão de crédito', boleto: 'Boleto' };
 
+// CPF de quem assina só conta se passar no dígito verificador: em 20/11/2026 a
+// dúvida foi se a variável levava o CPF real ou "tudo 0", e um contrato pago
+// com CPF 000.000.000-00 não pode sair.
+const cpfContratadaOk = () => normalizaDoc(EMPRESA.cpfRepresentante).length === 11 && docValido(EMPRESA.cpfRepresentante);
+
 // Dados da CONTRATADA completos? Sem eles o contrato não pode ser gerado.
 export function contratadaCompleta() {
-  return Boolean(EMPRESA.razaoSocial && EMPRESA.endereco && EMPRESA.representante && EMPRESA.cpfRepresentante);
+  return Boolean(EMPRESA.razaoSocial && EMPRESA.endereco && EMPRESA.representante && cpfContratadaOk());
 }
 
 const pct = (n) => `${n}%`;
@@ -56,7 +62,7 @@ export function clausulas(p = null) {
   const ped = p?.pedido;
   // 20/11/2026: o modelo genérico é página pública (/contrato-consultoria). O CPF
   // de quem assina só vai no contrato de um pedido, que chega a quem pagou.
-  const cpfContratada = !EMPRESA.cpfRepresentante ? '[PREENCHER: CPF]'
+  const cpfContratada = !cpfContratadaOk() ? '[PREENCHER: CPF]'
     : p ? EMPRESA.cpfRepresentante : 'informado no contrato enviado após o pagamento';
   const contratada = `${EMPRESA.razaoSocial || '[PREENCHER: razão social]'}, nome fantasia Anders Tech, inscrita no CNPJ ${EMPRESA.cnpj}, com sede em ${EMPRESA.endereco || '[PREENCHER: endereço]'}, Passo Fundo/RS, representada por ${EMPRESA.representante || '[PREENCHER: representante]'}, CPF ${cpfContratada}`;
   const contratante = c
