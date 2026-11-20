@@ -114,7 +114,10 @@ export async function gerarPagina({ consulta, cluster, tipo, isca, perguntas = [
 }
 
 /** Lote diário. Portão parcial (sem links, que só existem no conjunto). */
-export async function produzirLote(sql, { tamanho = parseInt(process.env.PRODUCAO_LOTE, 10) || 50, fatosLista } = {}) {
+// 20/11/2026: o Anders escolheu 5 páginas por dia ao ligar (estimativa de US$ 20 a
+// 40/mês no Opus 5.5) para conseguir revisar o que sai em seu nome. Era 50 por
+// padrão: mais de 1.000 páginas/mês, contra a regra "credibilidade > volume".
+export async function produzirLote(sql, { tamanho = parseInt(process.env.PRODUCAO_LOTE, 10) || 5, fatosLista } = {}) {
   if (!sql || !producaoAtiva()) return { geradas: 0, motivo: 'desligada' };
   const pausados = (await sql`SELECT alvo FROM seo_fila WHERE tipo = 'pausa_tipo' AND status = 'aberta'`).map(r => r.alvo);
   const fila = await sql`
