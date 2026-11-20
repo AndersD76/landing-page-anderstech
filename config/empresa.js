@@ -21,7 +21,7 @@ export const EMPRESA = {
   // Razão social e endereço como no comprovante da Receita (sem complemento).
   razaoSocial: 'ANDERS CONSULTORIA EM GESTAO EMPRESARIAL LTDA',
   endereco: 'Rua Uruguai, 679, Centro, CEP 99010-110', // a cidade (Passo Fundo/RS) o contrato acrescenta
-  representante: '',   // quem assina pela Anders Tech
+  representante: 'Daniel Anders', // quem assina pela Anders Tech (informado em 20/11/2026)
   // CPF de quem assina: variável no Railway, nunca no código (o repositório é
   // público). Só entra no contrato em PDF de quem pagou; a página pública
   // /contrato-consultoria não mostra (consultoria/contrato.js).
