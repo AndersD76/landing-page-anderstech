@@ -44,6 +44,18 @@ test('contrato preenchido traz cliente, serviço, composição do preço e regis
   assert.doesNotMatch(h, /resumo do pedido|undefined|NaN/);
 });
 
+test('CPF de quem assina pela Anders Tech: só no contrato do pedido, nunca na página pública', async () => {
+  const { EMPRESA } = await import('../config/empresa.js');
+  const antes = EMPRESA.cpfRepresentante;
+  try {
+    EMPRESA.cpfRepresentante = '111.444.777-35';
+    assert.ok(!contratoHTML(null).includes('111.444.777-35'), 'CPF apareceu no modelo público');
+    assert.match(contratoHTML(null), /CPF informado no contrato enviado após o pagamento/);
+    const p = { contratante: { razaoSocial: 'X Ltda', cnpj: '1', endereco: 'R', cidade: 'C', uf: 'RS', cep: '9', representante: 'Y', cargo: 'Z', cpf: '2', email: 'e', telefone: 't' }, pedido: { id: 1, servicoNome: 'S', tipo: 'horas', horas: 1, horasTotais: 1, base: 180, acrescimos: [], total: 180, metodo: 'pix', parcelas: 1, valorParcela: 180, totalPago: 180, versao: CONTRATO_VERSAO, aceiteEm: '2026-11-18T13:00:00Z', aceiteIp: '1.1.1.1', pagoEm: '2026-11-18T13:05:00Z' } };
+    assert.ok(clausulas(p).some((cl) => JSON.stringify(cl).includes('111.444.777-35')), 'CPF faltou no contrato do pedido');
+  } finally { EMPRESA.cpfRepresentante = antes; }
+});
+
 test('venda desligada enquanto faltar dado da CONTRATADA no contrato', () => {
   if (!contratadaCompleta()) assert.equal(vendaAtiva(), false);
 });

@@ -11,14 +11,21 @@ export const EMPRESA = {
   whatsappFormatado: '(54) 99964-8368',
   email: 'danielanders76@gmail.com',
   emailRemetente: 'noreply@anderstech.net',
-  cnpj: '42.073.716/0001-80',
+  // 20/11/2026: o site publicava este número com 716 no lugar de 416, que nem
+  // passa no dígito verificador. Este é o do comprovante de inscrição da Receita
+  // (test/empresa.test.js).
+  cnpj: '42.073.416/0001-80',
   // Dados da CONTRATADA no contrato de consultoria (consultoria/contrato.js).
   // Enquanto algum estiver vazio, a contratação pelo site fica desligada: um
   // contrato com [PREENCHER] não pode ser gerado para cliente que pagou.
-  razaoSocial: '',
-  endereco: '',        // logradouro, número, bairro, CEP — cidade é Passo Fundo/RS
+  // Razão social e endereço como no comprovante da Receita (sem complemento).
+  razaoSocial: 'ANDERS CONSULTORIA EM GESTAO EMPRESARIAL LTDA',
+  endereco: 'Rua Uruguai, 679, Centro, CEP 99010-110', // a cidade (Passo Fundo/RS) o contrato acrescenta
   representante: '',   // quem assina pela Anders Tech
-  cpfRepresentante: '',
+  // CPF de quem assina: variável no Railway, nunca no código (o repositório é
+  // público). Só entra no contrato em PDF de quem pagou; a página pública
+  // /contrato-consultoria não mostra (consultoria/contrato.js).
+  cpfRepresentante: process.env.CONTRATADA_CPF || '',
   cidades: 'Passo Fundo · Erechim · RS',
   ga4: process.env.GA4_MEASUREMENT_ID || 'G-7XL5XVE6QZ',
   // Propriedade GA4 "AndersTech" (a do fluxo G-7XL5XVE6QZ), conferida na API em 19/11/2026.

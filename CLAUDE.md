@@ -114,7 +114,7 @@ npm run seed
 ### Métricas e buscadores (configurado em 19/11/2026, padrão dos 9 apps)
 | O quê | Valor |
 |---|---|
-| GA4 | propriedade `540470926`, fluxo `G-7XL5XVE6QZ`, fuso da propriedade ainda em Rio Branco |
+| GA4 | propriedade `540470926`, fluxo `G-7XL5XVE6QZ`, fuso São Paulo (desde 20/11/2026). Eventos principais: `purchase`, `contact` (clique no WhatsApp) e `generate_lead` (formulários), os dois últimos com valor padrão de US$ 1 que a interface gravou sem pedir: **não importar valor do GA4 no Google Ads** sem antes tirar isso |
 | Search Console | `sc-domain:anderstech.net` (verificada por TXT), sitemap `https://anderstech.net/sitemap.xml` |
 | Bing Webmaster | verificado, mesmo sitemap |
 | IndexNow | chave `c310f106aad0297668046237775e3dc3` (arquivo na raiz; a antiga `f6ba…` continua servida) |

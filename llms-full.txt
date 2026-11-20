@@ -103,7 +103,7 @@ Common pitfalls: excessive bureaucracy, single-person delegation, ignoring shop 
 - WhatsApp: +55 54 99964-8368
 - Email: danielanders76@gmail.com
 - Scheduling: https://cal.com/daniel-anders-emx5kl (free diagnostic)
-- CNPJ: 42.073.716/0001-80
+- CNPJ: 42.073.416/0001-80
 
 ## Sister Company
 Anders Dev (https://andersdev.com.br) — Custom software development for industrial operations.

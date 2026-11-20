@@ -14,7 +14,7 @@
 
 ## Descrição do Negócio (750 caracteres)
 
-Consultoria em gestão da qualidade e conformidade para indústrias do Rio Grande do Sul. Implantação e manutenção de ISO 9001, PBQP-H e otimização de processos. Atendemos metalúrgicas, agroindústrias, construtoras e cooperativas com diagnóstico baseado em dados e método de engenharia. Sede em Passo Fundo, atendimento presencial em todo o planalto médio e serra gaúcha. Diagnóstico gratuito. CNPJ 42.073.716/0001-80.
+Consultoria em gestão da qualidade e conformidade para indústrias do Rio Grande do Sul. Implantação e manutenção de ISO 9001, PBQP-H e otimização de processos. Atendemos metalúrgicas, agroindústrias, construtoras e cooperativas com diagnóstico baseado em dados e método de engenharia. Sede em Passo Fundo, atendimento presencial em todo o planalto médio e serra gaúcha. Diagnóstico gratuito. CNPJ 42.073.416/0001-80.
 
 ---
 

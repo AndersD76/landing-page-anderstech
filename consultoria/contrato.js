@@ -54,7 +54,11 @@ const faixaTexto = (f, i, lista, un) => {
 export function clausulas(p = null) {
   const c = p?.contratante;
   const ped = p?.pedido;
-  const contratada = `${EMPRESA.razaoSocial || '[PREENCHER: razão social]'}, nome fantasia Anders Tech, inscrita no CNPJ ${EMPRESA.cnpj}, com sede em ${EMPRESA.endereco || '[PREENCHER: endereço]'}, Passo Fundo/RS, representada por ${EMPRESA.representante || '[PREENCHER: representante]'}, CPF ${EMPRESA.cpfRepresentante || '[PREENCHER: CPF]'}`;
+  // 20/11/2026: o modelo genérico é página pública (/contrato-consultoria). O CPF
+  // de quem assina só vai no contrato de um pedido, que chega a quem pagou.
+  const cpfContratada = !EMPRESA.cpfRepresentante ? '[PREENCHER: CPF]'
+    : p ? EMPRESA.cpfRepresentante : 'informado no contrato enviado após o pagamento';
+  const contratada = `${EMPRESA.razaoSocial || '[PREENCHER: razão social]'}, nome fantasia Anders Tech, inscrita no CNPJ ${EMPRESA.cnpj}, com sede em ${EMPRESA.endereco || '[PREENCHER: endereço]'}, Passo Fundo/RS, representada por ${EMPRESA.representante || '[PREENCHER: representante]'}, CPF ${cpfContratada}`;
   const contratante = c
     ? `${c.razaoSocial}, inscrita no CNPJ ${c.cnpj}, com sede em ${c.endereco}, ${c.cidade}/${c.uf}, CEP ${c.cep}, representada por ${c.representante}, ${c.cargo}, CPF ${c.cpf}, e-mail ${c.email}, telefone ${c.telefone}`
     : 'a empresa identificada no resumo do pedido, com os dados de razão social, CNPJ, endereço, representante, e-mail e telefone informados no momento da contratação pelo site';

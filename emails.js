@@ -25,7 +25,7 @@ body{margin:0;padding:0;background:${BRAND.paper};font-family:'Helvetica Neue',A
 <div class="header"><h1>anders<span style="color:${BRAND.red}">tech</span></h1><small>Gestão com Tecnologia</small></div>
 ${content}
 <div class="footer">
-Anders Tech — CNPJ 42.073.716/0001-80<br>
+Anders Tech — CNPJ 42.073.416/0001-80<br>
 Passo Fundo · RS · (54) 99964-8368<br>
 <a href="https://anderstech.net">anderstech.net</a> · <a href="https://andersdev.com.br">andersdev.com.br</a>
 </div></div></body></html>`;

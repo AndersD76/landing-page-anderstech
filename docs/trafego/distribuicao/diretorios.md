@@ -63,7 +63,7 @@ cadastro ser recusado, e o valor aqui é o link em si, não a medição.
 | Campo | Valor |
 |---|---|
 | Empresa | Anders Tech |
-| CNPJ | 42.073.716/0001-80 |
+| CNPJ | 42.073.416/0001-80 |
 | Site | https://anderstech.net |
 | E-mail | danielanders76@gmail.com |
 | Telefone | (54) 99964-8368 · fixo (54) 3045-6478 |
