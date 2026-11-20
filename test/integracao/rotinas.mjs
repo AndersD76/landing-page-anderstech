@@ -80,6 +80,15 @@ assert.match(mandados[0].headers['List-Unsubscribe'], /\/sair\/[a-f0-9]{36}>/);
 assert.equal(mandados[0].headers['List-Unsubscribe-Post'], 'List-Unsubscribe=One-Click');
 assert.match(decodeURIComponent(mandados[0].html), /utm_campaign=regua-isca-2026/);
 assert.ok(mandados[0].replyTo && mandados[0].replyTo.includes('@') && !/noreply/.test(mandados[0].replyTo), 'resposta da régua iria para o noreply');
+// Resend recusando (domínio não verificado): a mensagem fica como erro, não como enviada.
+const { blindar } = await imp('config/email.js');
+const recusa = blindar({ emails: { send: async () => ({ data: null, error: { name: 'validation_error', message: 'The anderstech.net domain is not verified.' } }) } });
+await men.agendar(sql, { tipo: 'regua', chave: 'isca-2026-4', refTipo: 'lead', refId: lead.id, email: 'fila@teste.test', quando: Date.now() - 1000 });
+const errOriginal = console.error; console.error = () => {};
+try { await men.processarFila(sql, recusa); } finally { console.error = errOriginal; }
+const [recusada] = await sql`SELECT status, erro FROM mensagens WHERE chave = 'isca-2026-4' AND email = 'fila@teste.test'`;
+assert.equal(recusada.status, 'erro', 'recusa do Resend marcada como enviada');
+assert.match(recusada.erro, /not verified/);
 ok('fila: envia com descadastro em 1 clique e UTM; suprimido não recebe');
 
 // Integrações com APIs simuladas.

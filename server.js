@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import session from 'express-session';
 import pgSession from 'connect-pg-simple';
 import { neon } from '@neondatabase/serverless';
-import { Resend } from 'resend';
+import { criarResend } from './config/email.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync } from 'fs';
@@ -267,7 +267,7 @@ function send404(res) {
 }
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = criarResend(); // recusa do Resend vira erro (config/email.js)
 
 
 // Migrações versionadas (#16). Falha em produção derruba o processo (#74b): é

@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { EMPRESA } from '../config/empresa.js';
 import { neon } from '@neondatabase/serverless';
-import { Resend } from 'resend';
+import { criarResend } from '../config/email.js';
 import { injectShared } from '../inject.js';
 import { codigoParceiroValido } from './atribuicao.js';
 import { csvGoogle, csvMicrosoft, despacharMeta, contatoDaConversao, metaConfigurada } from './conversoes.js';
@@ -26,7 +26,7 @@ import { dados as dadosPbqph } from '../pbqph/dados.js';
 import { readFileSync } from 'node:fs';
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = criarResend(); // recusa do Resend vira erro (config/email.js)
 const IS_PROD = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT === 'production';
 const ADMIN_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'admin');
 

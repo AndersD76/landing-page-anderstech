@@ -18,7 +18,7 @@ import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { neon } from '@neondatabase/serverless';
-import { Resend } from 'resend';
+import { criarResend } from '../config/email.js';
 import * as asaas from '../ead/asaas.js';
 import { calculaPreco, opcoesPagamento, opcaoEscolhida, SERVICOS, DISTANCIA_MAXIMA } from './preco.js';
 import { CONTRATO_VERSAO, contratoHTML, contratoPDF, contratadaCompleta } from './contrato.js';
@@ -33,7 +33,7 @@ import { aoCheckout, aoCobrancaVencida, aoConsultoriaPaga } from '../growth/mens
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_URL = process.env.APP_URL || 'https://anderstech.net';
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = criarResend(); // recusa do Resend vira erro (config/email.js)
 
 const DIST = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'distancias-passo-fundo.json'), 'utf8'));
 const CIDADES = new Map(DIST.municipios.map((m) => [m.ibge, m]));

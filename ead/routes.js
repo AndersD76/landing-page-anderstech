@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import PDFDocument from 'pdfkit';
 import { neon } from '@neondatabase/serverless';
-import { Resend } from 'resend';
+import { criarResend } from '../config/email.js';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, existsSync } from 'fs';
@@ -24,7 +24,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const APP_URL = process.env.APP_URL || 'https://anderstech.net';
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = criarResend(); // recusa do Resend vira erro (config/email.js)
 
 const router = Router();
 

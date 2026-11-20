@@ -8,7 +8,7 @@ import { Router } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { neon } from '@neondatabase/serverless';
-import { Resend } from 'resend';
+import { criarResend } from '../config/email.js';
 import { injectShared } from '../inject.js';
 import { htmlDaPagina, paginasPublicadas, caminho, esc, recarregar, pagina as paginaMotor } from './paginas.js';
 import { pngOg } from './og.js';
@@ -26,7 +26,7 @@ import { producaoAtiva } from './producao.js';
 import { semear } from './jobs.js';
 
 const sql = process.env.DATABASE_URL ? neon(process.env.DATABASE_URL) : null;
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = criarResend(); // recusa do Resend vira erro (config/email.js)
 const ADMIN_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'admin');
 const SITE = 'https://anderstech.net';
 
