@@ -90,6 +90,12 @@ npm run seed
   medido em 19/11/2026). No aceite, `atCarregaGa()` registra a página atual com o referrer
   original. Para testar: servidor local com `NODE_ENV=production` + Playwright
   interceptando `/g/collect`.
+- **E-mail do site depende do domínio "Verified" no Resend.** Até 20/11/2026 ele esteve
+  "Failed" por meses (faltava o TXT `resend._domainkey` no DNS da Hostinger) e nenhum e-mail
+  saía, sem rastro: o SDK devolve `{ error }` em vez de lançar. Hoje todo cliente do Resend
+  nasce em `config/email.js` (recusa vira exceção com `[email]` no log) e um teste barra
+  `new Resend(` fora dele. Mexeu no DNS? Confira `resend._domainkey`, `send` (TXT e MX) e que o
+  MX da raiz aponta só para a Hostinger (`mx1`/`mx2`; o MX do Google foi removido).
 - `sendPage()` **memoriza o HTML em `Map`**: mudou HTML/`inject.js`, tem que reiniciar.
 - Arquivos na raiz só são servidos se estiverem na whitelist `ARQUIVOS_PUBLICOS` (server.js).
   Arquivo novo na raiz responde 404 até ser adicionado lá.
