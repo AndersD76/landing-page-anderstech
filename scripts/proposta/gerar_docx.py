@@ -2,42 +2,41 @@
 
 Uso:  python scripts/proposta/gerar_docx.py <dados.json> [saida.docx]
 
-Criada em 23/11/2026 a pedido do Anders: o PDF é o que vai ao cliente; o .docx é
-para ele mexer no Word. Mesma identidade (CLAUDE.md §5) com o que o Word faz bem:
-tabelas sombreadas em vez de posicionamento absoluto. Fonte Poppins: o Word só a
-mostra se estiver instalada (no Word, Medium e SemiBold aparecem como famílias
-próprias). Requer: pip install python-docx qrcode pillow
+Criada em 23/11/2026 a pedido do Anders: o PDF vai ao cliente; o .docx é para
+ele editar no Word. Mesma ordem do PDF (o que o cliente recebe → como vamos
+trabalhar → cronograma → sistema → investimento → contrato), sem preço no começo
+e sem QR. Usa só o que o Word faz bem: tabelas sombreadas, sem posição absoluta.
+Fonte Poppins: o Word só a mostra se estiver instalada (Medium e SemiBold
+aparecem como famílias próprias). Requer: pip install python-docx
 """
-import io
 import json
 import sys
 from pathlib import Path
 
-import qrcode
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ROW_HEIGHT_RULE, WD_CELL_VERTICAL_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Cm, Pt, RGBColor
+from docx.shared import Cm, Pt, RGBColor, Twips
 
 RAIZ = Path(__file__).resolve().parents[2]
-NAVY, NAVY2, NAVY3 = "0B1730", "12233F", "203864"
-RED, PAPER, INK, SOFT, MUTE, LINE = "FE0000", "F4F6FA", "16233F", "46577A", "8190AC", "DFE5EE"
+NAVY, NAVY3, RED, PAPER = "0B1730", "203864", "FE0000", "F4F6FA"
+INK, SOFT, MUTE, LINE, CLARO = "16233F", "46577A", "8190AC", "DFE5EE", "B9C8E4"
 F, F_MED, F_SEMI = "Poppins", "Poppins Medium", "Poppins SemiBold"
 LARG = 17.0  # cm úteis (A4 com 2 cm de cada lado)
 TIPOS = {"consultoria": "Consultoria", "treinamento": "Treinamento", "auditoria": "Auditoria"}
 MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+J, R_, C_ = WD_ALIGN_PARAGRAPH.JUSTIFY, WD_ALIGN_PARAGRAPH.RIGHT, WD_ALIGN_PARAGRAPH.CENTER
 
 
 def moeda(v):
-    s = f"{v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    return f"R$ {s}"
+    return "R$ " + f"{v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
 def horas(h):
-    return (f"{h:g}".replace(".", ",")) + " h"
+    return f"{h:g}".replace(".", ",") + " h"
 
 
 def data(iso):
@@ -60,13 +59,10 @@ def calcular(d):
     total_h = sum(l["horas"] for l in linhas)
     total = sum(l["valor"] for l in linhas)
     av = d["pagamento"].get("avista")
-    avista = round(total * (1 - av["descontoPct"] / 100), 2) if av else None
-    return linhas, total_h, total, avista
+    return linhas, total_h, total, (round(total * (1 - av["descontoPct"] / 100), 2) if av else None)
 
 
-# ── utilidades de XML ──
-# O Word recusa o arquivo ("conteúdo ilegível") se os filhos de tcPr, rPr, pPr
-# etc. saírem fora da ordem do esquema. Inserção sempre respeitando ORDEM.
+# ── XML na ordem do esquema (fora de ordem, o Word acusa "conteúdo ilegível") ──
 _RPR = ["rStyle", "rFonts", "b", "bCs", "i", "iCs", "caps", "smallCaps", "strike", "dstrike", "outline", "shadow", "emboss", "imprint",
         "noProof", "snapToGrid", "vanish", "webHidden", "color", "spacing", "w", "kern", "position", "sz", "szCs", "highlight", "u",
         "effect", "bdr", "shd", "fitText", "vertAlign", "rtl", "cs", "em", "lang", "eastAsianLayout", "specVanish", "oMath"]
@@ -82,8 +78,7 @@ ORDEM = {
               "tblInd", "tblBorders", "shd", "tblLayout", "tblCellMar", "tblLook", "tblCaption", "tblDescription"],
     "tblBorders": ["top", "left", "start", "bottom", "right", "end", "insideH", "insideV"],
     "pBdr": ["top", "left", "bottom", "right", "between", "bar"],
-    "rPr": _RPR,
-    "pPr": _PPR,
+    "rPr": _RPR, "pPr": _PPR,
 }
 
 
@@ -95,20 +90,11 @@ def _set(el, tag, **attrs):
     sub = el.find(qn(tag))
     if sub is None:
         sub = OxmlElement(tag)
-        ordem = ORDEM.get(_local(el.tag))
-        nome = tag.split(":")[1]
-        antes_de = None
+        ordem, nome, antes = ORDEM.get(_local(el.tag)), tag.split(":")[1], None
         if ordem and nome in ordem:
             pos = ordem.index(nome)
-            for filho in el:
-                n = _local(filho.tag)
-                if n in ordem and ordem.index(n) > pos:
-                    antes_de = filho
-                    break
-        if antes_de is not None:
-            antes_de.addprevious(sub)
-        else:
-            el.append(sub)
+            antes = next((f for f in el if _local(f.tag) in ordem and ordem.index(_local(f.tag)) > pos), None)
+        antes.addprevious(sub) if antes is not None else el.append(sub)
     for k, v in attrs.items():
         sub.set(qn(k), str(v))
     return sub
@@ -118,69 +104,65 @@ def sombra(cell, cor):
     _set(cell._tc.get_or_add_tcPr(), "w:shd", **{"w:val": "clear", "w:color": "auto", "w:fill": cor})
 
 
-def bordas_celula(cell, **lados):
-    tcPr = cell._tc.get_or_add_tcPr()
-    b = tcPr.find(qn("w:tcBorders"))
-    if b is None:
-        b = OxmlElement("w:tcBorders")
-        tcPr.append(b)
+def bordas(cell, **lados):
+    b = _set(cell._tc.get_or_add_tcPr(), "w:tcBorders")
     for lado, (cor, tam) in lados.items():
         _set(b, f"w:{lado}", **{"w:val": "single" if tam else "nil", "w:sz": tam, "w:color": cor, "w:space": 0})
 
 
-def margens_celula(cell, t=0.12, b=0.12, l=0.25, r=0.25):
-    tcPr = cell._tc.get_or_add_tcPr()
-    m = _set(tcPr, "w:tcMar")
+def margens(cell, t=0.12, b=0.12, l=0.25, r=0.25):
+    m = _set(cell._tc.get_or_add_tcPr(), "w:tcMar")
     for lado, v in (("top", t), ("left", l), ("bottom", b), ("right", r)):
         _set(m, f"w:{lado}", **{"w:w": int(v * 567), "w:type": "dxa"})
 
 
-def tabela(doc_ou_cell, linhas, colunas, larguras, bordas="linhas"):
+def tabela(alvo, linhas, colunas, larguras, linhas_h=True, espaco=0):
     try:
-        t = doc_ou_cell.add_table(linhas, colunas)
+        t = alvo.add_table(linhas, colunas)
     except TypeError:  # cabeçalho/rodapé exige largura
-        t = doc_ou_cell.add_table(linhas, colunas, Cm(sum(larguras)))
+        t = alvo.add_table(linhas, colunas, Cm(sum(larguras)))
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
-    for i, col in enumerate(t.columns):
-        col.width = Cm(larguras[i])
     tblPr = t._tbl.tblPr
     _set(tblPr, "w:tblW", **{"w:w": int(sum(larguras) * 567), "w:type": "dxa"})
+    if espaco:
+        _set(tblPr, "w:tblCellSpacing", **{"w:w": int(espaco * 567 / 2), "w:type": "dxa"})
     _set(tblPr, "w:tblLayout", **{"w:type": "fixed"})
     b = _set(tblPr, "w:tblBorders")
     for lado in ("top", "left", "bottom", "right", "insideH", "insideV"):
-        com = bordas == "linhas" and lado in ("insideH", "bottom")
+        com = linhas_h and lado in ("insideH", "bottom")
         _set(b, f"w:{lado}", **{"w:val": "single" if com else "nil", "w:sz": 4, "w:color": LINE, "w:space": 0})
+    for i, col in enumerate(t.columns):
+        col.width = Cm(larguras[i])
     for row in t.rows:
         for i, cell in enumerate(row.cells):
             cell.width = Cm(larguras[i])
-            margens_celula(cell)
+            margens(cell)
     return t
 
 
-def linha_props(row, cabecalho=False, sem_quebra=True, altura=None, exata=False):
+def linha(row, cabecalho=False, altura=None, exata=False):
     trPr = row._tr.get_or_add_trPr()
+    _set(trPr, "w:cantSplit")
     if cabecalho:
         _set(trPr, "w:tblHeader")
-    if sem_quebra:
-        _set(trPr, "w:cantSplit")
     if altura:
         row.height = Cm(altura)
         row.height_rule = WD_ROW_HEIGHT_RULE.EXACTLY if exata else WD_ROW_HEIGHT_RULE.AT_LEAST
 
 
-def par(alvo, texto="", tam=9.2, cor=INK, fonte=F, negrito=False, alinhar=None, antes=0, depois=3, entre=1.15, caixa_alta=False, espacado=0):
-    p = alvo.add_paragraph() if hasattr(alvo, "add_paragraph") else alvo
+def par(alvo, texto="", tam=9.6, cor=INK, fonte=F, negrito=False, alinhar=None, antes=0, depois=4, entre=1.2, **kw):
+    p = alvo.add_paragraph()
     pf = p.paragraph_format
     pf.space_before, pf.space_after, pf.line_spacing = Pt(antes), Pt(depois), entre
-    if alinhar:
+    if alinhar is not None:
         p.alignment = alinhar
     if texto:
-        trecho(p, texto, tam, cor, fonte, negrito, caixa_alta, espacado)
+        trecho(p, texto, tam, cor, fonte, negrito, **kw)
     return p
 
 
-def trecho(p, texto, tam=9.2, cor=INK, fonte=F, negrito=False, caixa_alta=False, espacado=0, fundo=None):
+def trecho(p, texto, tam=9.6, cor=INK, fonte=F, negrito=False, caixa_alta=False, espacado=0, fundo=None):
     r = p.add_run(texto)
     r.font.size, r.font.name, r.font.bold = Pt(tam), fonte, negrito
     r.font.color.rgb = RGBColor.from_string(cor)
@@ -195,460 +177,395 @@ def trecho(p, texto, tam=9.2, cor=INK, fonte=F, negrito=False, caixa_alta=False,
     return r
 
 
+def primeiro(cell):
+    """Primeiro parágrafo da célula, sem espaço extra."""
+    p = cell.paragraphs[0]
+    p.paragraph_format.space_after = Pt(0)
+    p.paragraph_format.line_spacing = 1.2
+    return p
+
+
 def losango(p, cor=RED, tam=8):
-    r = trecho(p, "◆ ", tam, cor, "Segoe UI Symbol")
-    return r
+    return trecho(p, "◆  ", tam, cor, "Segoe UI Symbol")
 
 
-def cabeca_secao(doc, num, rotulo, titulo, quebra=True):
-    p = par(doc, antes=0, depois=1)
-    if quebra:
-        p.paragraph_format.page_break_before = True
+def borda_par(p, lado, cor, tam, espaco=4):
+    _set(_set(p._p.get_or_add_pPr(), "w:pBdr"), f"w:{lado}", **{"w:val": "single", "w:sz": tam, "w:color": cor, "w:space": espaco})
+
+
+def secao(doc, num, rotulo, titulo, quebra=True):
+    p = par(doc, depois=1)
+    p.paragraph_format.page_break_before = quebra
     p.paragraph_format.keep_with_next = True
-    losango(p)
-    trecho(p, f"{num} · {rotulo}", 7.5, RED, F_SEMI, caixa_alta=True, espacado=1.2)
-    par(doc, titulo, 17, NAVY, F_SEMI, depois=10, entre=1.05).paragraph_format.keep_with_next = True
-
-
-def titulo3(alvo, texto, antes=8):
-    return par(alvo, texto, 10, NAVY, F_SEMI, antes=antes, depois=2)
-
-
-def limpar_celula(cell):
-    cell.paragraphs[0].paragraph_format.space_after = Pt(0)
-    return cell.paragraphs[0]
-
-
-def img_bytes(pil):
-    buf = io.BytesIO()
-    pil.save(buf, format="PNG")
-    buf.seek(0)
-    return buf
-
-
-def qr_png(url):
-    q = qrcode.QRCode(version=3, error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=0)
-    q.add_data(url)
-    q.make(fit=False)
-    return img_bytes(q.make_image(fill_color="#0B1730", back_color="white").convert("RGB"))
+    losango(p, tam=7)
+    trecho(p, f"{num} · {rotulo}", 7.6, RED, F_SEMI, caixa_alta=True, espacado=1.2)
+    par(doc, titulo, 18, NAVY, F_SEMI, depois=12, entre=1.05).paragraph_format.keep_with_next = True
 
 
 def campo(p, instr, tam, cor):
-    """Campo do Word (PAGE / NUMPAGES) — atualiza sozinho."""
     r = trecho(p, "", tam, cor)
-    for tipo, texto in (("begin", None), (None, instr), ("separate", None), (None, "1"), ("end", None)):
-        if tipo:
-            fc = OxmlElement("w:fldChar")
-            fc.set(qn("w:fldCharType"), tipo)
-            r._r.append(fc)
-        elif texto == instr:
-            it = OxmlElement("w:instrText")
-            it.set(qn("xml:space"), "preserve")
-            it.text = f" {instr} "
-            r._r.append(it)
+    for tipo in ("begin", "instr", "separate", "texto", "end"):
+        if tipo == "instr":
+            el = OxmlElement("w:instrText")
+            el.set(qn("xml:space"), "preserve")
+            el.text = f" {instr} "
+        elif tipo == "texto":
+            el = OxmlElement("w:t")
+            el.text = "1"
         else:
-            t = OxmlElement("w:t")
-            t.text = texto
-            r._r.append(t)
+            el = OxmlElement("w:fldChar")
+            el.set(qn("w:fldCharType"), tipo)
+        r._r.append(el)
 
 
-# ── blocos ──
-def rodape(secao, d, url, legenda):
-    secao.footer_distance = Cm(0.7)
-    ft = secao.footer
-    p0 = ft.paragraphs[0]
-    p0.paragraph_format.space_after = Pt(0)
-    pPr = p0._p.get_or_add_pPr()
-    b = _set(pPr, "w:pBdr")
-    _set(b, "w:top", **{"w:val": "single", "w:sz": 4, "w:color": "C9D2E0", "w:space": 4})
-    t = tabela(ft, 1, 2, [12.6, 4.4], bordas=None)
-    esq, dir_ = t.rows[0].cells
-    margens_celula(esq, 0.05, 0, 0, 0)
-    margens_celula(dir_, 0.05, 0, 0, 0)
-    p = limpar_celula(esq)
-    losango(p, RED, 7)
-    trecho(p, "ANDERS TECH", 8, NAVY, F_SEMI, espacado=1)
-    par(esq, "Consultoria ISO 9001 · PBQP-H · Sebrae Unio", 7, SOFT, depois=0)
-    p3 = par(esq, f"Passo Fundo/RS · anderstech.net · Proposta {d['numero']} · pág. ", 7, SOFT, depois=0)
-    campo(p3, "PAGE", 7, SOFT)
-    trecho(p3, "/", 7, SOFT)
-    campo(p3, "NUMPAGES", 7, SOFT)
-    inner = tabela(dir_, 1, 2, [2.3, 2.0], bordas=None)
-    a, q = inner.rows[0].cells
-    for c in (a, q):
-        margens_celula(c, 0, 0, 0, 0)
-    a.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    pa = limpar_celula(a)
-    pa.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    trecho(pa, legenda, 6.8, NAVY, F_MED)
-    par(a, "aponte a câmera →", 6.3, SOFT, alinhar=WD_ALIGN_PARAGRAPH.RIGHT, depois=0)
-    par(a, url.replace("https://", ""), 6, MUTE, alinhar=WD_ALIGN_PARAGRAPH.RIGHT, depois=0)
-    pq = limpar_celula(q)
-    pq.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    pq.add_run().add_picture(qr_png(url), width=Cm(1.8))
-    # O Word exige parágrafo como último elemento do rodapé.
-    par(ft, "", tam=2, depois=0, entre=1.0)
-
-
-def capa(doc, d, total_h):
-    t = tabela(doc, 1, 1, [LARG + 1.0], bordas=None)
-    row = t.rows[0]
-    linha_props(row, altura=23.6, exata=True)
-    c = row.cells[0]
-    sombra(c, NAVY)
-    margens_celula(c, 1.2, 0.8, 1.2, 1.2)
-    topo = tabela(c, 1, 2, [9.0, 6.6], bordas=None)
-    lg, nm = topo.rows[0].cells
-    for x in (lg, nm):
-        margens_celula(x, 0, 0, 0, 0)
-    limpar_celula(lg).add_run().add_picture(str(RAIZ / "assets" / "logo-horizontal-white-2x.png"), width=Cm(5.6))
-    pn = limpar_celula(nm)
-    pn.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    trecho(pn, "PROPOSTA Nº", 7, "B9C8E4", espacado=1.5)
-    par(nm, d["numero"], 10, "FFFFFF", F_SEMI, alinhar=WD_ALIGN_PARAGRAPH.RIGHT, depois=0)
-    c.paragraphs[0]._p.getparent().remove(c.paragraphs[0]._p)
-    par(c, "", depois=0, antes=110)
-    pt = par(c, "", depois=12)
-    trecho(pt, "  ◆  ", 8, "FFFFFF", "Segoe UI Symbol", fundo=RED)
-    trecho(pt, "PROPOSTA DE CONSULTORIA  ", 8, "FFFFFF", F_SEMI, espacado=2, fundo=RED)
-    par(c, d["titulo"], 27, "FFFFFF", F_SEMI, depois=8, entre=1.05)
-    pnorma = par(c, d["norma"], 15, "FFFFFF", "Poppins", negrito=True, depois=22)
-    _set(_set(pnorma._p.get_or_add_pPr(), "w:pBdr"), "w:bottom", **{"w:val": "single", "w:sz": 24, "w:color": RED, "w:space": 4})
-    pp = par(c, "Preparada para ", 10, "B9C8E4", depois=0, entre=1.3)
-    trecho(pp, d["contratante"]["razaoSocial"], 10, "FFFFFF", F_SEMI)
-    par(c, d["contratante"]["cidade"], 10, "B9C8E4", depois=0)
-    par(c, "", depois=0, antes=150)
-    meta = tabela(c, 1, 4, [4.15] * 4, bordas=None)
-    itens = [("Data", data(d["data"])), ("Válida até", data(d["validade"])), ("Carga horária", horas(total_h)), ("Consultor", d["consultor"]["nome"])]
-    for cell, (k, v) in zip(meta.rows[0].cells, itens):
-        bordas_celula(cell, top=("4B5A78", 4))
-        margens_celula(cell, 0.3, 0, 0, 0.2)
-        pk = limpar_celula(cell)
-        trecho(pk, k, 7, "B9C8E4", caixa_alta=True, espacado=1.2)
-        par(cell, v, 10, "FFFFFF", F_SEMI, depois=0)
-
-
-def kpis(doc, d, total_h, total, avista):
-    av = d["pagamento"].get("avista")
-    parc = d["pagamento"].get("parcelado")
-    dados = [
-        ("Carga horária", horas(total_h), "presenciais, in company", NAVY),
-        ("Prazo até a certificação", f"{d['resultado']['prazoMeses']} meses", "conforme cronograma", NAVY),
-        ("Investimento", moeda(total), f"ou {len(parc['parcelas'])}× de {moeda(parc['parcelas'][0]['valor'])}" if parc else "", NAVY),
-    ]
-    if av:
-        dados.append((f"À vista até {data(av['ate'])}", moeda(avista), f"{av['descontoPct']}% de {av['rotulo']}", RED))
-    larg = LARG / len(dados)
-    t = tabela(doc, 1, len(dados), [larg] * len(dados), bordas=None)
-    for cell, (k, v, s, cor) in zip(t.rows[0].cells, dados):
-        sombra(cell, cor)
-        bordas_celula(cell, left=("FFFFFF", 36), right=("FFFFFF", 36))
-        margens_celula(cell, 0.3, 0.3, 0.3, 0.2)
-        trecho(limpar_celula(cell), k, 6.8, "FFFFFF" if cor == RED else "B9C8E4", caixa_alta=True, espacado=1)
-        par(cell, v, 14, "FFFFFF", F_SEMI, depois=0, antes=2)
-        par(cell, s, 7.2, "FFFFFF" if cor == RED else "B9C8E4", depois=0)
-    par(doc, depois=6)
-
-
-def partes(doc, d):
-    a, b = d["contratado"], d["contratante"]
-    campos_a = [("Nome fantasia", a.get("fantasia")), ("CNPJ", a["cnpj"]), ("Endereço", f"{a['endereco']}, {a['cidade']}"), ("Consultor", a.get("consultor")), ("Telefone", a.get("telefone")), ("E-mail", a.get("email"))]
-    campos_b = [("CNPJ", b["cnpj"]), ("Endereço", ", ".join(x for x in (b.get("endereco"), b.get("cidade")) if x)), ("Contato", b.get("contato")), ("Telefone", b.get("telefone")), ("E-mail", b.get("email")), ("Atividade", b.get("atividade"))]
-    t = tabela(doc, 1, 2, [8.5, 8.5], bordas=None)
-    for cell, (tit, p, campos) in zip(t.rows[0].cells, (("Contratado", a, campos_a), ("Contratante", b, campos_b))):
-        sombra(cell, PAPER)
-        bordas_celula(cell, left=(NAVY3, 24), right=("FFFFFF", 36))
-        margens_celula(cell, 0.3, 0.3, 0.4, 0.3)
-        trecho(limpar_celula(cell), tit, 7, RED, F_SEMI, caixa_alta=True, espacado=1.4)
-        par(cell, p["razaoSocial"], 9, NAVY, F_SEMI, depois=4, antes=2)
-        for k, v in campos:
-            if not v:
-                continue
-            pk = par(cell, "", depois=1)
-            trecho(pk, f"{k}: ", 7.8, MUTE)
-            trecho(pk, v, 7.8, INK)
-
-
-def resumo(doc, d, linhas, total_h, total, avista):
-    cabeca_secao(doc, "01", "Visão geral", "O que esta proposta entrega")
-    kpis(doc, d, total_h, total, avista)
-    partes(doc, d)
-    t = tabela(doc, 1, 2, [8.5, 8.5], bordas=None)
-    esq, dir_ = t.rows[0].cells
-    margens_celula(esq, 0, 0, 0, 0.4)
-    margens_celula(dir_, 0, 0, 0.4, 0)
-    titulo3(esq, "Escopo", 10).paragraph_format.space_before = Pt(10)
-    esq.paragraphs[0]._p.getparent().remove(esq.paragraphs[0]._p)
-    par(esq, d["escopo"], 9.2)
-    titulo3(esq, "Resultado esperado")
-    par(esq, d["resultado"]["texto"], 9.2)
-    titulo3(dir_, "Solução proposta", 10)
-    dir_.paragraphs[0]._p.getparent().remove(dir_.paragraphs[0]._p)
-    hs = tabela(dir_, len(linhas), 2, [5.6, 2.4], bordas="linhas")
-    for row, l in zip(hs.rows, linhas):
-        trecho(limpar_celula(row.cells[0]), l["descricao"], 8.6, INK)
-        pr = limpar_celula(row.cells[1])
-        pr.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        trecho(pr, horas(l["horas"]), 8.6, NAVY, F_SEMI)
-    par(dir_, f"Distribuição das {horas(total_h)} conforme o cronograma das atividades.", 7.8, SOFT, antes=4)
-    if d.get("nota"):
-        par(doc, depois=4)
-        n = tabela(doc, 1, 1, [LARG], bordas=None)
-        cell = n.rows[0].cells[0]
-        bordas_celula(cell, left=(RED, 36), top=("C9D2E0", 4), right=("C9D2E0", 4), bottom=("C9D2E0", 4))
-        margens_celula(cell, 0.35, 0.35, 0.5, 0.5)
-        p = limpar_celula(cell)
-        losango(p)
-        trecho(p, d["nota"]["titulo"], 9.4, NAVY, F_SEMI)
-        par(cell, d["nota"]["texto"], 8.4, SOFT, depois=0, antes=2)
-
-
-def cronograma(doc, d, total_h):
-    cabeca_secao(doc, "02", "Cronograma das atividades", f"{len(d['cronograma'])} etapas, {horas(total_h)}")
-    n = 1 + sum(1 + len(f["itens"]) for f in d["cronograma"]) + 1
-    t = tabela(doc, n, 3, [11.4, 3.2, 2.4])
-    r = 0
-    cab = t.rows[r]
-    linha_props(cab, cabecalho=True)
-    for cell, txt, al in zip(cab.cells, ("Atividade", "Tipo", "Horas"), (None, None, WD_ALIGN_PARAGRAPH.RIGHT)):
-        sombra(cell, NAVY)
-        p = limpar_celula(cell)
-        if al:
-            p.alignment = al
-        trecho(p, txt, 7, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
-    chip_cor = {"consultoria": ("E6EBF4", NAVY3), "treinamento": (NAVY, "FFFFFF"), "auditoria": ("FFE5E5", "C00000")}
-    for fi, f in enumerate(d["cronograma"], 1):
-        r += 1
-        row = t.rows[r]
-        linha_props(row)
-        _set(row._tr.get_or_add_trPr(), "w:cantSplit")
-        a = row.cells[0].merge(row.cells[1])
-        for cell in (a, row.cells[2]):
-            sombra(cell, PAPER)
-        p = limpar_celula(a)
-        p.paragraph_format.keep_with_next = True
-        trecho(p, f"{fi:02d}   ", 8.4, RED, "Poppins", negrito=True)
-        trecho(p, f["fase"], 8.4, NAVY, F_SEMI)
-        ph = limpar_celula(row.cells[2])
-        ph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        trecho(ph, horas(sum(i["horas"] for i in f["itens"])), 8.4, NAVY, F_SEMI)
-        for i in f["itens"]:
-            r += 1
-            row = t.rows[r]
-            linha_props(row)
-            p = limpar_celula(row.cells[0])
-            trecho(p, i["atividade"], 8.2, INK)
-            fundo, cor = chip_cor[i["tipo"]]
-            trecho(limpar_celula(row.cells[1]), f" {TIPOS[i['tipo']].upper()} ", 6.4, cor, F_SEMI, espacado=0.5, fundo=fundo)
-            ph = limpar_celula(row.cells[2])
-            ph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-            trecho(ph, horas(i["horas"]), 8.2, INK)
-    r += 1
-    row = t.rows[r]
-    a = row.cells[0].merge(row.cells[1])
-    for cell in (a, row.cells[2]):
-        bordas_celula(cell, top=(NAVY, 12))
-    trecho(limpar_celula(a), "Total", 8.6, NAVY, "Poppins", negrito=True)
-    ph = limpar_celula(row.cells[2])
-    ph.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-    trecho(ph, horas(total_h), 8.6, NAVY, "Poppins", negrito=True)
-    par(doc, f"Agenda das assessorias: {d['agenda']}", 7.8, SOFT, antes=4)
-
-
-def investimento(doc, d, linhas, total_h, total, avista):
-    cabeca_secao(doc, "03", "Investimento", "Valores e forma de pagamento")
-    vh = d["investimento"]["valorHora"]
-    t = tabela(doc, len(linhas) + 2, 4, [6.2, 3.4, 2.8, 4.6])
-    for i, (cell, txt) in enumerate(zip(t.rows[0].cells, ("Descrição", "Valor hora", "Horas", "Valor total"))):
-        sombra(cell, NAVY)
-        p = limpar_celula(cell)
-        if i:
-            p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        trecho(p, txt, 7, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
-    corpo = [(l["descricao"], moeda(vh), horas(l["horas"]), moeda(l["valor"]), False) for l in linhas]
-    corpo.append(("Total do investimento", moeda(vh), horas(total_h), moeda(total), True))
-    for row, vals in zip(t.rows[1:], corpo):
-        for i, (cell, v) in enumerate(zip(row.cells, vals[:4])):
-            p = limpar_celula(cell)
-            if i:
-                p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-            trecho(p, v, 9, NAVY if vals[4] else INK, "Poppins", negrito=vals[4])
-            if vals[4]:
-                bordas_celula(cell, top=(NAVY, 12))
-    par(doc, depois=8)
-    pg = d["pagamento"]
-    lay = tabela(doc, 1, 2, [9.6, 7.4], bordas=None)
-    esq, dir_ = lay.rows[0].cells
-    margens_celula(esq, 0, 0, 0, 0.5)
-    pt = limpar_celula(esq)
-    if pg.get("parcelado"):
-        pc = pg["parcelado"]
-        trecho(pt, "a) ", 9.2, RED, "Poppins", negrito=True)
-        trecho(pt, pc["titulo"], 9.2, NAVY, F_SEMI)
-        pr = tabela(esq, len(pc["parcelas"]) + 2, 3, [2.2, 3.6, 3.3])
-        for i, (cell, txt) in enumerate(zip(pr.rows[0].cells, ("Parcela", "Vencimento", "Valor"))):
-            sombra(cell, NAVY)
-            p = limpar_celula(cell)
-            if i == 2:
-                p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-            trecho(p, txt, 7, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
-        for n, (row, x) in enumerate(zip(pr.rows[1:], pc["parcelas"]), 1):
-            vals = (str(n), data(x["vencimento"]), moeda(x["valor"]))
-            for i, (cell, v) in enumerate(zip(row.cells, vals)):
-                p = limpar_celula(cell)
-                if i == 2:
-                    p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-                trecho(p, v, 8.4, INK)
-        last = pr.rows[-1]
-        a = last.cells[0].merge(last.cells[1])
-        trecho(limpar_celula(a), "Total", 8.4, NAVY, "Poppins", negrito=True)
-        p = limpar_celula(last.cells[2])
-        p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
-        trecho(p, moeda(sum(x["valor"] for x in pc["parcelas"])), 8.4, NAVY, "Poppins", negrito=True)
-        for cell in (a, last.cells[2]):
-            bordas_celula(cell, top=(NAVY, 12))
-        if pc.get("observacao"):
-            par(esq, pc["observacao"], 7.8, SOFT, antes=4)
-    av = pg.get("avista")
-    if av:
-        sombra(dir_, NAVY)
-        margens_celula(dir_, 0.5, 0.5, 0.5, 0.5)
-        p = limpar_celula(dir_)
-        trecho(p, "b) ", 9.2, RED, "Poppins", negrito=True)
-        trecho(p, f"À vista, com {av['descontoPct']}% de {av['rotulo']}", 9.2, "FFFFFF", F_SEMI)
-        pde = par(dir_, "", antes=8, depois=0)
-        r = trecho(pde, f"De {moeda(total)}", 9, "B9C8E4")
-        r.font.strike = True
-        par(dir_, moeda(avista), 24, "FFFFFF", "Poppins", negrito=True, depois=8)
-        pa = par(dir_, "", depois=0)
-        trecho(pa, "  ◆ ", 8, "FFFFFF", "Segoe UI Symbol", fundo=RED)
-        trecho(pa, f"Condição válida até {data(av['ate'])}  ", 8.2, "FFFFFF", F_SEMI, fundo=RED)
-    par(doc, depois=6)
-    v = tabela(doc, 1, 1, [LARG], bordas=None)
-    cell = v.rows[0].cells[0]
-    sombra(cell, PAPER)
-    margens_celula(cell, 0.3, 0.3, 0.4, 0.4)
-    p = limpar_celula(cell)
-    losango(p)
-    trecho(p, "Esta proposta é válida até ", 9, INK)
-    trecho(p, data_extenso(d["validade"]), 9, NAVY, F_SEMI)
-    trecho(p, ".", 9, INK)
-
-
-def consultor(doc, d):
-    k = d["consultor"]
-    par(doc, depois=6)
-    cabeca_secao(doc, "04", "Consultor designado", k["nome"], quebra=False)
-    t = tabela(doc, 1, 2, [2.2, LARG - 2.2], bordas=None)
-    av, info = t.rows[0].cells
-    for c in (av, info):
-        sombra(c, PAPER)
-    margens_celula(av, 0.4, 0.4, 0.4, 0.2)
-    margens_celula(info, 0.4, 0.4, 0.3, 0.4)
-    inner = tabela(av, 1, 1, [1.5], bordas=None)
-    ic = inner.rows[0].cells[0]
-    linha_props(inner.rows[0], altura=1.5, exata=True)
-    sombra(ic, NAVY)
-    bordas_celula(ic, bottom=(RED, 24))
-    ic.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    pi = limpar_celula(ic)
-    pi.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    trecho(pi, "".join(x[0] for x in k["nome"].split()[:2]), 12, "FFFFFF", "Poppins", negrito=True)
-    info.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-    trecho(limpar_celula(info), k["nome"], 11, NAVY, F_SEMI)
-    par(info, k["cargo"], 9, SOFT, depois=1)
-    if k.get("cvUrl"):
-        pc = par(info, "Currículo: ", 7.8, SOFT, depois=0)
-        link(pc, k["cvUrl"], "abrir o currículo completo")
-
-
-def link(p, url, texto):
+def link(p, url, texto, tam=9):
     rid = p.part.relate_to(url, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", is_external=True)
     h = OxmlElement("w:hyperlink")
     h.set(qn("r:id"), rid)
-    r = trecho(p, texto, 7.8, NAVY3)
+    r = trecho(p, texto, tam, NAVY3)
     r.font.underline = True
     h.append(r._r)
     p._p.append(h)
+
+
+# ── blocos ──
+def rodape(secao_, d):
+    secao_.footer.is_linked_to_previous = False
+    secao_.footer_distance = Cm(0.9)
+    p = secao_.footer.paragraphs[0]
+    p.paragraph_format.space_after = Pt(0)
+    # O estilo "Footer" traz tabulações em 4680 e 9360 twips; a central capturava
+    # o texto da direita e o colava no da esquerda. Limpa as duas.
+    for pos in (4680, 9360):
+        p.paragraph_format.tab_stops.add_tab_stop(Twips(pos), WD_TAB_ALIGNMENT.CLEAR)
+    p.paragraph_format.tab_stops.add_tab_stop(Cm(LARG), WD_TAB_ALIGNMENT.RIGHT)
+    borda_par(p, "top", "C9D2E0", 4, 6)
+    losango(p, tam=6)
+    trecho(p, "ANDERS TECH", 7.4, MUTE, F_SEMI, espacado=0.8)
+    trecho(p, f" · Proposta {d['numero']}\t", 7.4, MUTE)
+    trecho(p, f"anderstech.net · {d['contratado']['telefone']} · página ", 7.4, MUTE)
+    campo(p, "PAGE", 7.4, MUTE)
+    trecho(p, " de ", 7.4, MUTE)
+    campo(p, "NUMPAGES", 7.4, MUTE)
+
+
+def capa(doc, d):
+    t = tabela(doc, 1, 1, [21.0], linhas_h=False)
+    _set(t._tbl.tblPr, "w:tblInd", **{"w:w": 0, "w:type": "dxa"})
+    linha(t.rows[0], altura=29.3, exata=True)
+    c = t.rows[0].cells[0]
+    sombra(c, NAVY)
+    margens(c, 2.0, 1.0, 2.0, 2.0)
+    topo = tabela(c, 1, 2, [9.0, 8.0], linhas_h=False)
+    lg, nm = topo.rows[0].cells
+    for x in (lg, nm):
+        margens(x, 0, 0, 0, 0)
+    primeiro(lg).add_run().add_picture(str(RAIZ / "assets" / "logo-horizontal-white-2x.png"), width=Cm(5.8))
+    pn = primeiro(nm)
+    pn.alignment = R_
+    trecho(pn, "PROPOSTA Nº", 7, CLARO, espacado=1.5)
+    par(nm, d["numero"], 10, "FFFFFF", F_SEMI, alinhar=R_, depois=0)
+    c.paragraphs[0]._p.getparent().remove(c.paragraphs[0]._p)
+    par(c, "", depois=0, antes=150)
+    pt = par(c, "", depois=14)
+    trecho(pt, "  ◆  ", 8, "FFFFFF", "Segoe UI Symbol", fundo=RED)
+    trecho(pt, "PROPOSTA DE CONSULTORIA  ", 8, "FFFFFF", F_SEMI, espacado=2, fundo=RED)
+    par(c, d["titulo"], 28, "FFFFFF", F_SEMI, depois=10, entre=1.05)
+    pn2 = par(c, "", depois=26)
+    trecho(pn2, d["norma"], 15, "FFFFFF", F, negrito=True)
+    borda_par(pn2, "bottom", RED, 24, 4)
+    pp = par(c, "Preparada para ", 10.5, CLARO, depois=0, entre=1.35)
+    trecho(pp, d["contratante"]["razaoSocial"], 10.5, "FFFFFF", F_SEMI)
+    par(c, d["contratante"]["cidade"], 10.5, CLARO, depois=0)
+    par(c, "", depois=0, antes=170)
+    meta = tabela(c, 1, 3, [17.0 / 3] * 3, linhas_h=False)
+    for cell, (k, v) in zip(meta.rows[0].cells, [("Data", data(d["data"])), ("Válida até", data(d["validade"])), ("Consultor", d["consultor"]["nome"])]):
+        bordas(cell, top=("4B5A78", 4))
+        margens(cell, 0.35, 0, 0, 0.2)
+        trecho(primeiro(cell), k, 7, CLARO, caixa_alta=True, espacado=1.2)
+        par(cell, v, 10.5, "FFFFFF", F_SEMI, depois=0)
+
+
+def resumo(doc, d, total_h):
+    secao(doc, "01", "Resumo", f"O que a {d['contratante'].get('fantasia') or d['contratante']['razaoSocial']} vai receber", quebra=False)
+    tiles = [(horas(total_h), "de trabalho presencial na empresa"), (f"{d['resultado']['prazoMeses']} meses", "até a auditoria de certificação"),
+             (f"{len(d['cronograma'])} etapas", "do treinamento à certificação"), (d["prismabiz"]["nome"] if d.get("prismabiz") else "—", "sistema da qualidade incluído")]
+    t = tabela(doc, 1, 4, [LARG / 4] * 4, linhas_h=False, espaco=0.25)
+    for cell, (v, s) in zip(t.rows[0].cells, tiles):
+        sombra(cell, NAVY)
+        bordas(cell, bottom=(RED, 24))
+        margens(cell, 0.4, 0.4, 0.4, 0.3)
+        trecho(primeiro(cell), v, 15, "FFFFFF", F_SEMI)
+        par(cell, s, 7.8, CLARO, depois=0, antes=2, entre=1.15)
+    par(doc, depois=10)
+    for e in d.get("entregas", []):
+        p = par(doc, "", depois=0, entre=1.35)
+        p.paragraph_format.left_indent = Cm(0.7)
+        p.paragraph_format.first_line_indent = Cm(-0.7)
+        borda_par(p, "bottom", LINE, 4, 8)
+        p.paragraph_format.space_after = Pt(8)
+        losango(p, tam=8)
+        trecho(p, e, 10.4)
+    if d.get("nota"):
+        par(doc, depois=12)
+        n = tabela(doc, 1, 1, [LARG], linhas_h=False)
+        cell = n.rows[0].cells[0]
+        sombra(cell, PAPER)
+        bordas(cell, left=(RED, 36))
+        margens(cell, 0.45, 0.45, 0.6, 0.6)
+        trecho(primeiro(cell), d["nota"]["titulo"], 10, NAVY, F_SEMI)
+        par(cell, d["nota"]["texto"], 9, SOFT, depois=0, antes=3)
+
+
+def etapas(doc, d):
+    secao(doc, "02", "Como vamos trabalhar", f"{len(d['cronograma'])} etapas, do treinamento à certificação")
+    t = tabela(doc, len(d["cronograma"]), 2, [1.8, LARG - 1.8], linhas_h=False, espaco=0.2)
+    for i, (row, f) in enumerate(zip(t.rows, d["cronograma"]), 1):
+        linha(row)
+        n, txt = row.cells
+        sombra(n, NAVY)
+        bordas(n, bottom=(RED, 24))
+        n.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+        pn = primeiro(n)
+        pn.alignment = C_
+        trecho(pn, f"{i:02d}", 12, "FFFFFF", F, negrito=True)
+        sombra(txt, PAPER)
+        margens(txt, 0.35, 0.35, 0.45, 0.45)
+        pt = primeiro(txt)
+        pt.paragraph_format.tab_stops.add_tab_stop(Cm(LARG - 1.8 - 0.95), WD_TAB_ALIGNMENT.RIGHT)
+        trecho(pt, f["fase"], 11, NAVY, F_SEMI)
+        trecho(pt, "\t" + horas(sum(x["horas"] for x in f["itens"])), 9, NAVY3, F_SEMI)
+        par(txt, f.get("descricao", ""), 9.4, SOFT, depois=0, antes=2)
+    par(doc, f"Os encontros são presenciais, na empresa, com agenda {d['agenda']} O cronograma detalhado, atividade por atividade, está nas próximas páginas.", 8.4, SOFT, antes=10)
+
+
+def cronograma(doc, d, total_h):
+    secao(doc, "03", "Cronograma detalhado", "Atividade por atividade")
+    n = 1 + sum(1 + len(f["itens"]) for f in d["cronograma"]) + 1
+    t = tabela(doc, n, 2, [14.6, 2.4])
+    cab = t.rows[0]
+    linha(cab, cabecalho=True)
+    for i, (cell, txt) in enumerate(zip(cab.cells, ("Atividade", "Horas"))):
+        sombra(cell, NAVY)
+        p = primeiro(cell)
+        if i:
+            p.alignment = R_
+        trecho(p, txt, 7.2, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
+    r = 0
+    for fi, f in enumerate(d["cronograma"], 1):
+        r += 1
+        row = t.rows[r]
+        linha(row)
+        for cell in row.cells:
+            sombra(cell, PAPER)
+        p = primeiro(row.cells[0])
+        p.paragraph_format.keep_with_next = True
+        trecho(p, f"{fi:02d}   ", 9, RED, F, negrito=True)
+        trecho(p, f["fase"], 9, NAVY, F_SEMI)
+        ph = primeiro(row.cells[1])
+        ph.alignment = R_
+        trecho(ph, horas(sum(i["horas"] for i in f["itens"])), 9, NAVY, F_SEMI)
+        for i in f["itens"]:
+            r += 1
+            row = t.rows[r]
+            linha(row)
+            p = primeiro(row.cells[0])
+            trecho(p, i["atividade"], 9)
+            if i["tipo"] == "auditoria":
+                trecho(p, " (auditoria)", 9, MUTE)
+            ph = primeiro(row.cells[1])
+            ph.alignment = R_
+            trecho(ph, horas(i["horas"]), 9)
+    row = t.rows[-1]
+    for i, (cell, txt) in enumerate(zip(row.cells, ("Total", horas(total_h)))):
+        bordas(cell, top=(NAVY, 12))
+        p = primeiro(cell)
+        if i:
+            p.alignment = R_
+        trecho(p, txt, 9.2, NAVY, F, negrito=True)
 
 
 def prisma(doc, d):
     x = d.get("prismabiz")
     if not x:
         return
-    cabeca_secao(doc, "05", "Sistema incluído", x["titulo"])
-    par(doc, x["oQueE"], 8.8, depois=4, entre=1.1)
-    titulo3(doc, "Como o sistema apoia cada requisito da ISO 9001", 2).paragraph_format.keep_with_next = True
-    t = tabela(doc, len(x["requisitos"]) + 1, 2, [7.6, 9.4])
-    linha_props(t.rows[0], cabecalho=True)
-    for cell, txt in zip(t.rows[0].cells, ("Requisito", f"Onde fica no {x['nome']}")):
+    secao(doc, "04", "Sistema incluído", x["titulo"])
+    par(doc, x["oQueE"], 8.8, depois=6, entre=1.2)
+    par(doc, "Onde cada requisito da ISO 9001 fica no sistema", 10, NAVY, F_SEMI, depois=3).paragraph_format.keep_with_next = True
+    t = tabela(doc, len(x["requisitos"]) + 1, 2, [7.8, 9.2])
+    linha(t.rows[0], cabecalho=True)
+    for cell, txt in zip(t.rows[0].cells, ("Requisito", f"No {x['nome']}")):
         sombra(cell, NAVY)
-        trecho(limpar_celula(cell), txt, 7, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
+        trecho(primeiro(cell), txt, 7.2, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
     for row, (rq, md) in zip(t.rows[1:], x["requisitos"]):
-        linha_props(row)
+        linha(row)
         for cell in row.cells:
-            margens_celula(cell, 0.02, 0.02, 0.25, 0.25)
-            cell.paragraphs[0].paragraph_format.line_spacing = 1.0
-        trecho(limpar_celula(row.cells[0]), rq, 7.4, NAVY, F_MED)
-        trecho(limpar_celula(row.cells[1]), md, 7.4, INK)
-    par(doc, depois=2, tam=4)
-    lay = tabela(doc, 1, 2, [8.5, 8.5], bordas=None)
-    linha_props(lay.rows[0])
+            margens(cell, 0.02, 0.02, 0.25, 0.25)
+        a, b = primeiro(row.cells[0]), primeiro(row.cells[1])
+        a.paragraph_format.line_spacing = b.paragraph_format.line_spacing = 1.0
+        trecho(a, rq, 7.5, NAVY, F_MED)
+        trecho(b, md, 7.5)
+    par(doc, depois=2)
+    lay = tabela(doc, 1, 2, [8.5, 8.5], linhas_h=False)
+    linha(lay.rows[0])
     esq, dir_ = lay.rows[0].cells
-    margens_celula(esq, 0, 0, 0, 0.5)
-    trecho(limpar_celula(esq), "O que muda na prática", 10, NAVY, F_SEMI)
-    par(esq, x["naPratica"], 9, antes=2)
+    margens(esq, 0, 0, 0, 0.6)
+    trecho(primeiro(esq), "O que muda na prática", 10, NAVY, F_SEMI)
+    par(esq, x["naPratica"], 8.8, antes=2, entre=1.2)
     sombra(dir_, NAVY)
-    margens_celula(dir_, 0.45, 0.45, 0.5, 0.5)
-    trecho(limpar_celula(dir_), "Licença vitalícia incluída", 7, "B9C8E4", caixa_alta=True, espacado=1.2)
+    margens(dir_, 0.4, 0.4, 0.5, 0.5)
+    trecho(primeiro(dir_), "Licença vitalícia incluída", 7, CLARO, caixa_alta=True, espacado=1.2)
     par(dir_, f"Plano {x['licenca']['plano']}", 13, "FFFFFF", F_SEMI, antes=2, depois=4)
-    par(dir_, x["licenca"]["texto"], 8.2, "DFE6F3", depois=6)
-    pr = par(dir_, f"Valor de referência hoje: {moeda(x['licenca']['valorMensal'])} por mês", 8, "FFFFFF", F_SEMI, depois=0)
-    _set(_set(pr._p.get_or_add_pPr(), "w:pBdr"), "w:top", **{"w:val": "single", "w:sz": 4, "w:color": "4B5A78", "w:space": 4})
+    par(dir_, x["licenca"]["texto"], 8.6, "DFE6F3", depois=6)
+    pr = par(dir_, f"Valor de referência hoje: {moeda(x['licenca']['valorMensal'])} por mês", 8.4, "FFFFFF", F_SEMI, depois=0)
+    borda_par(pr, "top", "4B5A78", 4, 4)
+
+
+def investimento(doc, d, linhas, total_h, total, avista):
+    secao(doc, "05", "Investimento", "Valores e forma de pagamento")
+    nome = d["prismabiz"]["nome"] if d.get("prismabiz") else "sistema"
+    par(doc, f"Valor das {horas(total_h)} de trabalho presencial, com o {nome} incluído.", 10, depois=8)
+    vh = d["investimento"]["valorHora"]
+    t = tabela(doc, len(linhas) + 2, 4, [6.4, 3.4, 2.8, 4.4])
+    for i, (cell, txt) in enumerate(zip(t.rows[0].cells, ("Descrição", "Valor hora", "Horas", "Valor total"))):
+        sombra(cell, NAVY)
+        p = primeiro(cell)
+        if i:
+            p.alignment = R_
+        trecho(p, txt, 7.2, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
+    corpo = [(l["descricao"], moeda(vh), horas(l["horas"]), moeda(l["valor"])) for l in linhas]
+    for row, vals in zip(t.rows[1:-1], corpo):
+        for i, (cell, v) in enumerate(zip(row.cells, vals)):
+            p = primeiro(cell)
+            if i:
+                p.alignment = R_
+            trecho(p, v, 9.6)
+    for i, (cell, v) in enumerate(zip(t.rows[-1].cells, ("Total", "", horas(total_h), moeda(total)))):
+        bordas(cell, top=(NAVY, 12))
+        p = primeiro(cell)
+        if i:
+            p.alignment = R_
+        trecho(p, v, 9.6, NAVY, F, negrito=True)
+    par(doc, "Formas de pagamento", 10.5, NAVY, F_SEMI, antes=14, depois=6).paragraph_format.keep_with_next = True
+    pg = d["pagamento"]
+    lay = tabela(doc, 1, 2, [9.4, 7.6], linhas_h=False)
+    linha(lay.rows[0])
+    esq, dir_ = lay.rows[0].cells
+    margens(esq, 0, 0, 0, 0.6)
+    if pg.get("parcelado"):
+        pc = pg["parcelado"]
+        trecho(primeiro(esq), f"a) {pc['titulo']}", 9.6, NAVY, F_SEMI)
+        pr = tabela(esq, len(pc["parcelas"]) + 1, 3, [2.0, 3.6, 3.2])
+        for i, (cell, txt) in enumerate(zip(pr.rows[0].cells, ("Parcela", "Vencimento", "Valor"))):
+            sombra(cell, NAVY)
+            p = primeiro(cell)
+            if i == 2:
+                p.alignment = R_
+            trecho(p, txt, 7.2, "FFFFFF", F_SEMI, caixa_alta=True, espacado=1)
+        for n, (row, x) in enumerate(zip(pr.rows[1:], pc["parcelas"]), 1):
+            for i, (cell, v) in enumerate(zip(row.cells, (f"{n}ª", data(x["vencimento"]), moeda(x["valor"])))):
+                margens(cell, 0.07, 0.07, 0.25, 0.25)
+                p = primeiro(cell)
+                if i == 2:
+                    p.alignment = R_
+                trecho(p, v, 9)
+        if pc.get("observacao"):
+            par(esq, pc["observacao"], 8.2, SOFT, antes=4, depois=0)
+    av = pg.get("avista")
+    if av:
+        sombra(dir_, NAVY)
+        margens(dir_, 0.55, 0.55, 0.6, 0.6)
+        trecho(primeiro(dir_), f"b) À vista, com {av['descontoPct']}% de {av['rotulo']}", 9.6, "FFFFFF", F_SEMI)
+        par(dir_, f"De {moeda(total)} por", 9, CLARO, antes=10, depois=0)
+        par(dir_, moeda(avista), 24, "FFFFFF", F, negrito=True, depois=8)
+        pa = par(dir_, "", depois=0)
+        trecho(pa, f"  Condição válida até {data(av['ate'])}  ", 8.6, "FFFFFF", F_SEMI, fundo=RED)
+    par(doc, depois=12)
+    v = tabela(doc, 1, 1, [LARG], linhas_h=False)
+    cell = v.rows[0].cells[0]
+    sombra(cell, PAPER)
+    margens(cell, 0.35, 0.35, 0.5, 0.5)
+    p = primeiro(cell)
+    losango(p)
+    trecho(p, "Esta proposta é válida até ")
+    trecho(p, data_extenso(d["validade"]), 9.6, NAVY, F_SEMI)
+    trecho(p, ".")
+    k = d["consultor"]
+    par(doc, depois=8)
+    ct = tabela(doc, 1, 2, [1.9, LARG - 1.9], linhas_h=False)
+    linha(ct.rows[0])
+    av_, info = ct.rows[0].cells
+    for x in (av_, info):
+        bordas(x, top=(LINE, 4), bottom=(LINE, 4))
+    sombra(av_, NAVY)
+    bordas(av_, bottom=(RED, 24))
+    av_.vertical_alignment = info.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+    pa = primeiro(av_)
+    pa.alignment = C_
+    trecho(pa, "".join(x[0] for x in k["nome"].split()[:2]), 12, "FFFFFF", F, negrito=True)
+    margens(info, 0.3, 0.3, 0.5, 0.3)
+    trecho(primeiro(info), "Consultor responsável", 7, MUTE, caixa_alta=True, espacado=1.2)
+    par(info, k["nome"], 11, NAVY, F_SEMI, depois=0)
+    pc = par(info, k["cargo"], 9, SOFT, depois=0)
+    if k.get("cvUrl"):
+        trecho(pc, " · ", 9, SOFT)
+        link(pc, k["cvUrl"], "ver currículo")
 
 
 def contrato(doc, d):
-    k = d["contrato"]
-    cabeca_secao(doc, "06", "Contrato", k["titulo"])
-    J = WD_ALIGN_PARAGRAPH.JUSTIFY
-    for p0 in k["preambulo"]:
-        p = par(doc, "", alinhar=J, depois=4)
-        if p0.get("rotulo"):
-            trecho(p, f"{p0['rotulo']}: ", 8.5, NAVY, "Poppins", negrito=True)
-        trecho(p, p0["texto"], 8.5, INK)
+    k, a, b = d["contrato"], d["contratado"], d["contratante"]
+    secao(doc, "06", "Contrato", k["titulo"])
+    t = tabela(doc, 1, 2, [8.5, 8.5], linhas_h=False, espaco=0.3)
+    for cell, (tit, p_, campos) in zip(t.rows[0].cells, (
+            ("Contratante", b, [("CNPJ", b["cnpj"]), ("Endereço", ", ".join(x for x in (b.get("endereco"), b.get("cidade")) if x)), ("Contato", b.get("contato")), ("Telefone", b.get("telefone")), ("E-mail", b.get("email"))]),
+            ("Contratado", a, [("CNPJ", a["cnpj"]), ("Endereço", f"{a['endereco']}, {a['cidade']}"), ("Consultor", a.get("consultor")), ("Telefone", a.get("telefone")), ("E-mail", a.get("email"))]))):
+        sombra(cell, PAPER)
+        bordas(cell, left=(NAVY3, 24))
+        margens(cell, 0.35, 0.35, 0.45, 0.35)
+        trecho(primeiro(cell), tit, 7, RED, F_SEMI, caixa_alta=True, espacado=1.4)
+        par(cell, p_["razaoSocial"], 9, NAVY, F_SEMI, depois=4, antes=2, entre=1.15)
+        for kk, v in campos:
+            if v:
+                pk = par(cell, "", depois=1, entre=1.15)
+                trecho(pk, f"{kk}: ", 8, MUTE)
+                trecho(pk, v, 8)
+    par(doc, depois=4)
+    par(doc, " ".join(p["texto"] for p in k["preambulo"] if not p.get("rotulo")), 8.8, alinhar=J, depois=4)
     for s in k["secoes"]:
-        h = par(doc, s["titulo"], 8.5, NAVY, F_SEMI, antes=8, depois=3, caixa_alta=True, espacado=1)
+        h = par(doc, s["titulo"], 8.6, NAVY, F_SEMI, antes=8, depois=3, caixa_alta=True, espacado=1)
         h.paragraph_format.keep_with_next = True
         for c in s["clausulas"]:
-            p = par(doc, "", alinhar=J, depois=3)
+            p = par(doc, "", alinhar=J, depois=3, entre=1.3)
             p.paragraph_format.keep_together = True
-            trecho(p, f"{c['rotulo']}: ", 8.5, NAVY, "Poppins", negrito=True)
-            trecho(p, c["texto"], 8.5, INK)
-            if c.get("itens"):
+            trecho(p, f"{c['rotulo']}: ", 8.8, NAVY, F, negrito=True)
+            trecho(p, c["texto"], 8.8)
+            itens = c.get("itens") or []
+            if itens:
                 p.paragraph_format.keep_with_next = True
-                for n, it in enumerate(c["itens"]):
-                    pi = par(doc, "", alinhar=J, depois=1)
-                    pi.paragraph_format.left_indent = Cm(0.6)
-                    pi.paragraph_format.keep_with_next = n < len(c["itens"]) - 1
-                    trecho(pi, f"{'abcdefgh'[n]}) ", 8.5, NAVY, "Poppins", negrito=True)
-                    trecho(pi, it, 8.5, INK)
+            for n, it in enumerate(itens):
+                pi = par(doc, "", alinhar=J, depois=1, entre=1.3)
+                pi.paragraph_format.left_indent = Cm(1.0)
+                pi.paragraph_format.first_line_indent = Cm(-0.5)
+                pi.paragraph_format.keep_with_next = n < len(itens) - 1
+                trecho(pi, f"{'abcdefgh'[n]})  ", 8.8, NAVY, F, negrito=True)
+                trecho(pi, it, 8.8)
             if c.get("paragrafo"):
-                pp = par(doc, "", alinhar=J, depois=3)
-                trecho(pp, "Parágrafo único: ", 8.5, NAVY, "Poppins", negrito=True)
-                trecho(pp, c["paragrafo"], 8.5, INK)
-    par(doc, k["fecho"], 8.5, alinhar=J, antes=6)
-    par(doc, k["localData"], 8.5, NAVY, F_SEMI, antes=6, depois=28)
-    t = tabela(doc, 2, 2, [8.0, 8.0], bordas=None)
-    pessoas = [("Contratante", d["contratante"]["razaoSocial"], f"CNPJ {d['contratante']['cnpj']}"), ("Contratado", d["contratado"]["razaoSocial"], f"CNPJ {d['contratado']['cnpj']}"), ("Testemunha 1", "Nome:", "CPF:"), ("Testemunha 2", "Nome:", "CPF:")]
+                pp = par(doc, "", alinhar=J, depois=3, entre=1.3)
+                trecho(pp, "Parágrafo único: ", 8.8, NAVY, F, negrito=True)
+                trecho(pp, c["paragrafo"], 8.8)
+    par(doc, k["fecho"], 8.8, alinhar=J, antes=6, entre=1.3)
+    par(doc, k["localData"], 8.8, NAVY, F_SEMI, antes=6, depois=30).paragraph_format.keep_with_next = True
+    t = tabela(doc, 2, 2, [8.0, 8.0], linhas_h=False)
+    pessoas = [("Contratante", b["razaoSocial"], f"CNPJ {b['cnpj']}"), ("Contratado", a["razaoSocial"], f"CNPJ {a['cnpj']}"), ("Testemunha 1", "Nome:", "CPF:"), ("Testemunha 2", "Nome:", "CPF:")]
     for i, (tit, nome, docu) in enumerate(pessoas):
         row = t.rows[i // 2]
-        linha_props(row, altura=2.4)
+        linha(row, altura=2.6)
         cell = row.cells[i % 2]
-        bordas_celula(cell, top=(NAVY, 8))
-        margens_celula(cell, 0.15, 0.6, 0 if i % 2 == 0 else 0.5, 0.5 if i % 2 == 0 else 0)
-        trecho(limpar_celula(cell), tit, 7.4, NAVY, F_SEMI, caixa_alta=True, espacado=1.2)
-        par(cell, nome, 7.8, SOFT, depois=0)
-        par(cell, docu, 7.8, SOFT, depois=0)
+        bordas(cell, top=(NAVY, 8))
+        margens(cell, 0.15, 0.6, 0 if i % 2 == 0 else 0.5, 0.5 if i % 2 == 0 else 0)
+        trecho(primeiro(cell), tit, 7.4, NAVY, F_SEMI, caixa_alta=True, espacado=1.2)
+        par(cell, nome, 8, SOFT, depois=0, entre=1.15)
+        par(cell, docu, 8, SOFT, depois=0)
 
 
 def main():
@@ -660,31 +577,42 @@ def main():
     linhas, total_h, total, avista = calcular(d)
     if d["investimento"].get("totalEsperado") is not None and abs(total - d["investimento"]["totalEsperado"]) > 0.009:
         sys.exit(f"cronograma soma {total_h} h ({moeda(total)}), diferente do investimento combinado")
-    codigo = (d.get("artefato") or {}).get("codigo")
-    url = f"https://anderstech.net/r/{codigo}" if codigo else "https://anderstech.net"
-    legenda = "Cases, prazos e como trabalho" if codigo else "Conheça a Anders Tech"
 
     doc = Document()
     st = doc.styles["Normal"]
-    st.font.name, st.font.size = F, Pt(9.2)
+    st.font.name, st.font.size = F, Pt(9.6)
     for atr in ("w:cs", "w:eastAsia"):
         st.element.rPr.rFonts.set(qn(atr), F)
-    sec = doc.sections[0]
-    sec.page_width, sec.page_height = Cm(21), Cm(29.7)
-    sec.top_margin, sec.bottom_margin = Cm(1.6), Cm(2.6)
-    sec.left_margin = sec.right_margin = Cm(2.0)
+    st.paragraph_format.space_after = Pt(0)
     doc.core_properties.title = f"Proposta {d['numero']}"
     doc.core_properties.author = "Anders Tech"
-    rodape(sec, d, url, legenda)
-    for vazio in list(doc.paragraphs):  # o modelo em branco pode trazer um parágrafo vazio
+    for vazio in list(doc.paragraphs):
         vazio._p.getparent().remove(vazio._p)
 
-    capa(doc, d, total_h)
-    resumo(doc, d, linhas, total_h, total, avista)
+    # Seção 1: capa navy de ponta a ponta, sem margem e sem rodapé.
+    s1 = doc.sections[0]
+    s1.page_width, s1.page_height = Cm(21), Cm(29.7)
+    s1.top_margin = s1.bottom_margin = s1.left_margin = s1.right_margin = Cm(0)
+    s1.header_distance = s1.footer_distance = Cm(0)
+    capa(doc, d)
+
+    # Seção 2: o resto, com margens normais e rodapé de uma linha.
+    s2 = doc.add_section(WD_SECTION.NEW_PAGE)
+    # O add_section cria o parágrafo que carrega a quebra da seção 1: fica com
+    # 1 pt de altura para caber sob a capa sem empurrar uma página em branco.
+    quebra = doc.paragraphs[-1]
+    quebra.paragraph_format.space_before = quebra.paragraph_format.space_after = Pt(0)
+    quebra.paragraph_format.line_spacing = Pt(1)
+    _set(_set(quebra._p.get_or_add_pPr(), "w:rPr"), "w:sz", **{"w:val": 2})
+    s2.top_margin, s2.bottom_margin = Cm(1.8), Cm(2.4)
+    s2.left_margin = s2.right_margin = Cm(2.0)
+    s2.header_distance = Cm(1.0)
+    rodape(s2, d)
+    resumo(doc, d, total_h)
+    etapas(doc, d)
     cronograma(doc, d, total_h)
-    investimento(doc, d, linhas, total_h, total, avista)
-    consultor(doc, d)
     prisma(doc, d)
+    investimento(doc, d, linhas, total_h, total, avista)
     contrato(doc, d)
     par(doc, "", tam=2, depois=0)
     doc.save(saida)
