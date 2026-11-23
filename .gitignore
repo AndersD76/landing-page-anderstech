@@ -8,3 +8,7 @@ _ul
 _ul-*
 .streamlit/
 uploads/
+
+# Python (scripts/proposta/gerar_docx.py)
+__pycache__/
+*.pyc
