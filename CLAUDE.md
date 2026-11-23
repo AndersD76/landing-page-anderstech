@@ -111,11 +111,14 @@ npm run seed
 - A tabela de telemetria chama **`telemetry_events`**, não `events`: `events` já
   existe desde a `001_baseline` com outro significado (horas de consultoria do
   portal, com FK vinda de `atas.event_id`).
-- **O gerador de propostas em PDF é EXTERNO a este repo** (script Python, ReportLab/
-  Playwright, template da marca). Este site **não** gera proposta: ele só hospeda a rota
-  `/r/<código>` que registra `artifact_scan` e redireciona para a landing com
-  `utm_medium=artifact`. Mudança no layout da proposta é feita no repo Python — aqui só
-  a spec do rodapé assinado.
+- **Proposta comercial em PDF: `scripts/proposta/`** (criado em 23/11/2026; o gerador Python
+  externo que este arquivo citava não existia). `node scripts/proposta/gerar.mjs <dados.json>`
+  monta o PDF com a identidade da §5 e o rodapé da `SPEC-RODAPE-ARTEFATOS.md`, e **recusa**
+  gerar se CNPJ, horas, total ou parcelas não fecharem. O JSON do cliente fica **fora do
+  repo** (pasta de orçamentos no OneDrive, ao lado do PDF). Imprime pelo Edge/Chrome se o
+  Chromium do Playwright não estiver baixado. Versão editável para o Word, do mesmo JSON:
+  `python scripts/proposta/gerar_docx.py <dados.json>` (Poppins instalada no Windows do
+  Anders desde 23/11/2026). Medir o QR (`--registrar`) é opcional: ele não faz questão.
 
 ### Métricas e buscadores (configurado em 19/11/2026, padrão dos 9 apps)
 | O quê | Valor |
