@@ -1,10 +1,12 @@
 // ── Modelo de proposta comercial da Anders Tech (HTML → PDF) ─────────────────
-// Criado em 23/11/2026; identidade do CLAUDE.md §5 (navy, vermelho, Poppins,
-// diamante). Revisado no mesmo dia a pedido do Anders: a primeira versão abria
-// com preço e com uma tabela de 30 linhas e era "difícil de entender".
-// Ordem de leitura agora: o que o cliente recebe → como vamos trabalhar →
-// cronograma → sistema incluído → investimento → partes e contrato.
-// Sem QR: o Anders não quer medir acesso. Dados do cliente ficam FORA do repo.
+// 23/11/2026, terceira versão. O Anders pediu o modelo "baseado no site" e
+// recusou a primeira (identidade de artefato com Poppins: "layout diferente do
+// site, uma bosta"). Agora é o site impresso: Space Grotesk / Inter / Space Mono,
+// tokens do styles.css, capa = hero (degradê, grade, losango, marcas "+"),
+// cabeçalho de seção "01 / NOME" + etiqueta mono com losango, cartões de borda fina.
+// Ordem de leitura: o que o cliente recebe → como vamos trabalhar → cronograma
+// → sistema incluído → investimento → contrato. Preço só na seção de investimento.
+// Sem QR. Dados do cliente ficam FORA do repositório.
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 export const moeda = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -14,7 +16,6 @@ const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julh
 export const dataExtenso = (iso) => { const [a, m, d] = String(iso).split('-').map(Number); return `${d} de ${MESES[m - 1]} de ${a}`; };
 const ROTULO_TIPO = { consultoria: 'Consultoria', treinamento: 'Treinamento', auditoria: 'Auditoria' };
 
-// Totais derivados do cronograma: a tabela de investimento nunca é digitada à mão.
 export function calcular(d) {
   const porTipo = {};
   for (const f of d.cronograma) for (const i of f.itens) porTipo[i.tipo] = (porTipo[i.tipo] || 0) + i.horas;
@@ -28,80 +29,78 @@ export function calcular(d) {
   return { linhas, totalHoras, total, avista };
 }
 
-const losango = (cls = '') => `<span class="losango ${cls}"></span>`;
-const secao = (num, rotulo, titulo) => `<div class="secao">${losango()}<span>${esc(num)} · ${esc(rotulo)}</span></div><h2>${esc(titulo)}</h2>`;
-const nomeCliente = (d) => d.contratante.fantasia || d.contratante.razaoSocial;
+const cliente = (d) => d.contratante.fantasia || d.contratante.razaoSocial;
+const cidadeMono = (d) => String(d.contratante.cidade || '').replace('/', ' · ');
+const tag = (txt, cls = '') => `<span class="tag ${cls}">${esc(txt)}</span>`;
+const cab = (num, indice, rotulo, titulo, sub) => `
+  <header class="sec-head">
+    <div class="sec-index"><b>${esc(num)}</b> / ${esc(indice)}</div>
+    <div class="sec-title">${tag(rotulo)}<h2>${esc(titulo)}</h2>${sub ? `<p>${esc(sub)}</p>` : ''}</div>
+  </header>`;
 
 function capa(d, c, r) {
+  const meta = [['Proposta nº', d.numero], ['Data', data(d.data)], ['Válida até', data(d.validade)], ['Consultor', d.consultor.nome]];
   return `
 <section class="capa">
-  <div class="capa-deco" aria-hidden="true"><i></i><i></i><i></i></div>
-  <header class="capa-topo">
-    <img class="capa-logo" src="${r.logoBranco}" alt="Anders Tech">
-    <div class="capa-num"><small>Proposta nº</small>${esc(d.numero)}</div>
-  </header>
-  <div class="capa-meio">
-    <div class="tag">${losango('branco')} Proposta de consultoria</div>
-    <h1>${esc(d.titulo)}</h1>
-    <div class="capa-norma">${esc(d.norma)}</div>
-    <p class="capa-para">Preparada para <b>${esc(d.contratante.razaoSocial)}</b><br>${esc(d.contratante.cidade)}</p>
+  <div class="capa-bg"><i class="g1"></i><i class="grid"></i><i class="dmd-big"></i></div>
+  <div class="bp"><i class="tk tl"></i><i class="tk tr"></i><i class="tk bl"></i><i class="tk br"></i></div>
+  <img class="capa-logo" src="${r.logoBranco}" alt="Anders Tech">
+  <div class="capa-copy">
+    <div class="hero-meta">${tag('Proposta de consultoria', 'light')}<span class="mrow">${esc(d.norma)}</span><span class="mrow">${esc(cidadeMono(d))}</span></div>
+    <h1><span class="blk">Implantação da</span><em class="blk">${esc(d.norma)}</em><span class="blk red">na ${esc(cliente(d))}</span></h1>
+    <p class="hero-sub">${esc(d.titulo)} para a <b>${esc(d.contratante.razaoSocial)}</b>, da preparação da equipe até a auditoria de certificação.</p>
   </div>
-  <div class="capa-meta">
-    <div><small>Data</small>${data(d.data)}</div>
-    <div><small>Válida até</small>${data(d.validade)}</div>
-    <div><small>Consultor</small>${esc(d.consultor.nome)}</div>
+  <div class="readout">
+    <div class="readout-h"><span>Resumo da proposta</span><span class="dmd"></span></div>
+    <div class="readout-g">${meta.map(([k, v]) => `<div><small>${esc(k)}</small><b>${esc(v)}</b></div>`).join('')}</div>
   </div>
 </section>`;
 }
 
 function resumo(d, c) {
-  const tiles = [
-    [horas(c.totalHoras), 'de trabalho presencial na empresa'],
-    [`${d.resultado.prazoMeses} meses`, 'até a auditoria de certificação'],
-    [`${d.cronograma.length} etapas`, 'do treinamento à certificação'],
-    [d.prismabiz ? d.prismabiz.nome : '—', 'sistema da qualidade incluído'],
+  const stats = [
+    ['Carga horária', horas(c.totalHoras), 'de trabalho presencial na empresa'],
+    ['Prazo', `${d.resultado.prazoMeses} meses`, 'até a auditoria de certificação'],
+    ['Método', `${d.cronograma.length} etapas`, 'do treinamento à certificação'],
+    ['Sistema', d.prismabiz ? d.prismabiz.nome : '—', 'licença vitalícia incluída'],
   ];
   return `
-<section class="pagina">
-  ${secao('01', 'Resumo', `O que a ${nomeCliente(d)} vai receber`)}
-  <div class="tiles">${tiles.map(([v, s]) => `<div class="tile"><b>${esc(v)}</b><span>${esc(s)}</span></div>`).join('')}</div>
-  <ul class="entregas">${(d.entregas || []).map((e) => `<li>${losango()}<span>${esc(e)}</span></li>`).join('')}</ul>
-  ${d.nota ? `<div class="nota"><b>${esc(d.nota.titulo)}</b><p>${esc(d.nota.texto)}</p></div>` : ''}
+<section class="pg">
+  ${cab('01', 'Resumo', 'O que vocês recebem', `O que a ${cliente(d)} vai receber`)}
+  <div class="stats">${stats.map(([k, v, s]) => `<div class="stat">${tag(k, 'muted')}<b>${esc(v)}</b><span>${esc(s)}</span></div>`).join('')}</div>
+  <ul class="lista">${(d.entregas || []).map((e) => `<li><span class="dmd"></span><span>${esc(e)}</span></li>`).join('')}</ul>
+  ${d.nota ? `<div class="callout"><b>${esc(d.nota.titulo)}</b><p>${esc(d.nota.texto)}</p></div>` : ''}
 </section>`;
 }
 
 function etapas(d) {
   return `
-<section class="pagina quebra">
-  ${secao('02', 'Como vamos trabalhar', `${d.cronograma.length} etapas, do treinamento à certificação`)}
-  <div class="etapas">${d.cronograma.map((f, i) => `
-    <div class="etapa">
-      <div class="etapa-n">${String(i + 1).padStart(2, '0')}</div>
-      <div class="etapa-txt">
-        <div class="etapa-tit">${esc(f.fase)} <span>${horas(f.itens.reduce((s, x) => s + x.horas, 0))}</span></div>
+<section class="pg quebra">
+  ${cab('02', 'Como funciona', 'Do treinamento à certificação', `${d.cronograma.length} etapas, no ritmo da produção`)}
+  <div class="escuro">
+    <div class="steps">${d.cronograma.map((f, i) => `
+      <article class="step${i === d.cronograma.length - 1 && d.cronograma.length % 2 ? ' wide' : ''}">
+        <span class="step-n">${String(i + 1).padStart(2, '0')}</span>
+        <h3>${esc(f.fase)}</h3>
         <p>${esc(f.descricao || '')}</p>
-      </div>
-    </div>`).join('')}
+        <div class="step-out">Carga: ${horas(f.itens.reduce((s, x) => s + x.horas, 0))}</div>
+      </article>`).join('')}
+    </div>
   </div>
-  <p class="mini">Os encontros são presenciais, na empresa, com agenda ${esc(d.agenda)} O cronograma detalhado, atividade por atividade, está nas próximas páginas.</p>
+  <p class="nota-rodape">Encontros presenciais na empresa, com agenda ${esc(d.agenda)} O cronograma detalhado, atividade por atividade, vem a seguir.</p>
 </section>`;
 }
 
 function cronograma(d, c) {
-  const blocos = d.cronograma.map((f, fi) => {
-    const sub = f.itens.reduce((s, i) => s + i.horas, 0);
-    return `<tbody class="fase"><tr class="fase-tit"><td><span class="fase-n">${String(fi + 1).padStart(2, '0')}</span>${esc(f.fase)}</td><td class="h">${horas(sub)}</td></tr>
-      ${f.itens.map((i) => `<tr><td>${esc(i.atividade)}${i.tipo === 'auditoria' ? ' <em>(auditoria)</em>' : ''}</td><td class="h">${horas(i.horas)}</td></tr>`).join('')}
-    </tbody>`;
-  }).join('');
+  const blocos = d.cronograma.map((f, fi) => `
+    <tbody class="fase"><tr class="fase-tit"><td><span class="fase-n">${String(fi + 1).padStart(2, '0')}</span>${esc(f.fase)}</td><td class="h">${horas(f.itens.reduce((s, i) => s + i.horas, 0))}</td></tr>
+      ${f.itens.map((i) => `<tr><td>${esc(i.atividade)}${i.tipo === 'auditoria' ? ' <em>· auditoria</em>' : ''}</td><td class="h">${horas(i.horas)}</td></tr>`).join('')}
+    </tbody>`).join('');
   return `
-<section class="pagina quebra">
-  ${secao('03', 'Cronograma detalhado', 'Atividade por atividade')}
-  <table class="crono">
-    <thead><tr><th>Atividade</th><th class="h">Horas</th></tr></thead>
-    ${blocos}
-    <tfoot><tr><td>Total</td><td class="h">${horas(c.totalHoras)}</td></tr></tfoot>
-  </table>
+<section class="pg quebra">
+  ${cab('03', 'Cronograma', 'Atividade por atividade', 'Cronograma detalhado')}
+  <table class="tb crono"><thead><tr><th>Atividade</th><th class="h">Horas</th></tr></thead>${blocos}
+    <tfoot><tr><td>Total</td><td class="h">${horas(c.totalHoras)}</td></tr></tfoot></table>
 </section>`;
 }
 
@@ -109,15 +108,14 @@ function prisma(d) {
   const x = d.prismabiz;
   if (!x) return '';
   return `
-<section class="pagina quebra">
-  ${secao('04', 'Sistema incluído', x.titulo)}
-  <p class="prisma-lead">${esc(x.oQueE)}</p>
-  <h3>Onde cada requisito da ISO 9001 fica no sistema</h3>
-  <table class="req"><thead><tr><th>Requisito</th><th>No ${esc(x.nome)}</th></tr></thead>
+<section class="pg quebra">
+  ${cab('04', 'Sistema', 'Incluído na proposta', x.titulo)}
+  <p class="lead lead-prisma">${esc(x.oQueE)}</p>
+  <table class="tb req"><thead><tr><th>Requisito da ISO 9001</th><th>Onde fica no ${esc(x.nome)}</th></tr></thead>
     <tbody>${x.requisitos.map(([r, m]) => `<tr><td>${esc(r)}</td><td>${esc(m)}</td></tr>`).join('')}</tbody></table>
   <div class="duas prisma-fim">
-    <div><h3>O que muda na prática</h3><p>${esc(x.naPratica)}</p></div>
-    <div class="licenca"><small>Licença vitalícia incluída</small><b>Plano ${esc(x.licenca.plano)}</b><p>${esc(x.licenca.texto)}</p>
+    <div class="card">${tag('Na prática', 'muted')}<p>${esc(x.naPratica)}</p></div>
+    <div class="card navy">${tag('Licença vitalícia', 'light')}<b>Plano ${esc(x.licenca.plano)}</b><p>${esc(x.licenca.texto)}</p>
       <div class="ref">Valor de referência hoje: ${moeda(x.licenca.valorMensal)} por mês</div></div>
   </div>
 </section>`;
@@ -126,52 +124,47 @@ function prisma(d) {
 function investimento(d, c) {
   const p = d.pagamento, av = p.avista, k = d.consultor;
   return `
-<section class="pagina quebra">
-  ${secao('05', 'Investimento', 'Valores e forma de pagamento')}
-  <p class="lead">Valor das ${horas(c.totalHoras)} de trabalho presencial, com o ${esc(d.prismabiz ? d.prismabiz.nome : 'sistema')} incluído.</p>
-  <table class="inv">
-    <thead><tr><th>Descrição</th><th class="n">Valor hora</th><th class="n">Horas</th><th class="n">Valor total</th></tr></thead>
+<section class="pg quebra">
+  ${cab('05', 'Investimento', 'Valores e pagamento', 'Investimento', `${horas(c.totalHoras)} de trabalho presencial, com o ${d.prismabiz ? d.prismabiz.nome : 'sistema'} incluído.`)}
+  <table class="tb inv"><thead><tr><th>Descrição</th><th class="n">Valor hora</th><th class="n">Horas</th><th class="n">Valor total</th></tr></thead>
     <tbody>${c.linhas.map((l) => `<tr><td>${esc(l.descricao)}</td><td class="n">${moeda(d.investimento.valorHora)}</td><td class="n">${horas(l.horas)}</td><td class="n">${moeda(l.valor)}</td></tr>`).join('')}</tbody>
-    <tfoot><tr><td>Total</td><td></td><td class="n">${horas(c.totalHoras)}</td><td class="n">${moeda(c.total)}</td></tr></tfoot>
-  </table>
-  <h3>Formas de pagamento</h3>
-  <div class="pag">
-    ${p.parcelado ? `<div class="pag-op">
-      <div class="pag-tit">a) ${esc(p.parcelado.titulo)}</div>
-      <table class="parc"><thead><tr><th>Parcela</th><th>Vencimento</th><th class="n">Valor</th></tr></thead>
-      <tbody>${p.parcelado.parcelas.map((x, i) => `<tr><td>${i + 1}ª</td><td>${data(x.vencimento)}</td><td class="n">${moeda(x.valor)}</td></tr>`).join('')}</tbody></table>
+    <tfoot><tr><td>Total</td><td></td><td class="n">${horas(c.totalHoras)}</td><td class="n">${moeda(c.total)}</td></tr></tfoot></table>
+  <div class="opcoes">
+    ${p.parcelado ? `<div class="card op">
+      <div class="op-h"><span class="num">1</span><b>${esc(p.parcelado.titulo)}</b></div>
+      <table class="tb parc"><thead><tr><th>Parcela</th><th>Vencimento</th><th class="n">Valor</th></tr></thead>
+        <tbody>${p.parcelado.parcelas.map((x, i) => `<tr><td>${i + 1}ª</td><td>${data(x.vencimento)}</td><td class="n">${moeda(x.valor)}</td></tr>`).join('')}</tbody></table>
       ${p.parcelado.observacao ? `<p class="mini">${esc(p.parcelado.observacao)}</p>` : ''}
     </div>` : ''}
-    ${av ? `<div class="pag-op pag-avista">
-      <div class="pag-tit">b) À vista, com ${esc(av.descontoPct)}% de ${esc(av.rotulo)}</div>
+    ${av ? `<div class="card navy op">
+      <div class="op-h"><span class="num">2</span><b>À vista, com ${esc(av.descontoPct)}% de ${esc(av.rotulo)}</b></div>
       <div class="de">De ${moeda(c.total)} por</div>
       <div class="por">${moeda(c.avista)}</div>
-      <div class="ate">Condição válida até ${data(av.ate)}</div>
+      <span class="ate">Condição válida até ${data(av.ate)}</span>
     </div>` : ''}
   </div>
-  <div class="validade">${losango()}<span>Esta proposta é válida até <b>${dataExtenso(d.validade)}</b>.</span></div>
-  <div class="consultor">
+  <div class="validade">${tag('Validade', 'muted')}<span>Esta proposta vale até <b>${dataExtenso(d.validade)}</b>.</span></div>
+  <div class="card consultor">
     <div class="cons-av">${esc(k.nome.split(' ').map((x) => x[0]).slice(0, 2).join(''))}</div>
-    <div><small>Consultor responsável</small><b>${esc(k.nome)}</b><p>${esc(k.cargo)}${k.cvUrl ? ` · <a href="${esc(k.cvUrl)}">ver currículo</a>` : ''}</p></div>
+    <div>${tag('Consultor responsável', 'muted')}<b>${esc(k.nome)}</b><p>${esc(k.cargo)}${k.cvUrl ? ` · <a href="${esc(k.cvUrl)}">ver currículo</a>` : ''}</p></div>
   </div>
 </section>`;
 }
 
 function contrato(d) {
   const k = d.contrato, a = d.contratado, b = d.contratante;
-  const card = (titulo, p, campos) => `<div class="parte"><div class="parte-tit">${esc(titulo)}</div>
-    <div class="parte-nome">${esc(p.razaoSocial)}</div>
+  const parte = (titulo, p, campos) => `<div class="card parte">${tag(titulo)}<b>${esc(p.razaoSocial)}</b>
     <dl>${campos.filter(([, v]) => v).map(([kk, v]) => `<dt>${esc(kk)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>`;
-  const cl = (c) => `<div class="cl"><p><b>${esc(c.rotulo)}:</b> ${esc(c.texto)}</p>
+  const cl = (c) => `<div class="cl"><p><b>${esc(c.rotulo)}.</b> ${esc(c.texto)}</p>
     ${c.itens ? `<ol class="alin">${c.itens.map((i) => `<li>${esc(i)}</li>`).join('')}</ol>` : ''}
-    ${c.paragrafo ? `<p><b>Parágrafo único:</b> ${esc(c.paragrafo)}</p>` : ''}</div>`;
-  const assin = (titulo, nome, doc) => `<div class="assin"><div class="linha"></div><b>${esc(titulo)}</b><span>${esc(nome || 'Nome:')}</span><span>${esc(doc || 'CPF:')}</span></div>`;
+    ${c.paragrafo ? `<p><b>Parágrafo único.</b> ${esc(c.paragrafo)}</p>` : ''}</div>`;
+  const assin = (titulo, nome, doc) => `<div class="assin"><i></i>${tag(titulo, 'muted')}<span>${esc(nome || 'Nome:')}</span><span>${esc(doc || 'CPF:')}</span></div>`;
   return `
-<section class="pagina quebra contrato">
-  ${secao('06', 'Contrato', k.titulo)}
-  <div class="partes">
-    ${card('Contratante', b, [['CNPJ', b.cnpj], ['Endereço', [b.endereco, b.cidade].filter(Boolean).join(', ')], ['Contato', b.contato], ['Telefone', b.telefone], ['E-mail', b.email]])}
-    ${card('Contratado', a, [['CNPJ', a.cnpj], ['Endereço', `${a.endereco}, ${a.cidade}`], ['Consultor', a.consultor], ['Telefone', a.telefone], ['E-mail', a.email]])}
+<section class="pg quebra contrato">
+  ${cab('06', 'Contrato', 'Prestação de serviços', k.titulo)}
+  <div class="duas partes">
+    ${parte('Contratante', b, [['CNPJ', b.cnpj], ['Endereço', [b.endereco, b.cidade].filter(Boolean).join(', ')], ['Contato', b.contato], ['Telefone', b.telefone], ['E-mail', b.email]])}
+    ${parte('Contratado', a, [['CNPJ', a.cnpj], ['Endereço', `${a.endereco}, ${a.cidade}`], ['Consultor', a.consultor], ['Telefone', a.telefone], ['E-mail', a.email]])}
   </div>
   <p>${esc(k.preambulo.filter((p) => !p.rotulo).map((p) => p.texto).join(' '))}</p>
   ${k.secoes.map((s) => `<div class="sec-contrato"><h4>${esc(s.titulo)}</h4>${s.clausulas.map(cl).join('')}</div>`).join('')}
@@ -183,133 +176,158 @@ function contrato(d) {
     ${assin('Testemunha 1')}
     ${assin('Testemunha 2')}
   </div>
+  <div class="assinatura-marca"><div class="wm">anders<b>tech</b></div><div class="wm-tag">Gestão com tecnologia · Qualidade &amp; conformidade para a indústria</div></div>
 </section>`;
 }
 
+// Tokens e componentes copiados do styles.css do site (nomes iguais onde dá).
 const CSS = `
-@page{size:A4;margin:18mm 20mm 24mm 20mm}
+@page{size:A4;margin:20mm 20mm 24mm 20mm}
 @page:first{margin:0}
+:root{--navy:#203864;--navy-700:#2b4a82;--navy-900:#12233f;--navy-950:#0b1730;--red:#FE0000;--red-accent:#ff6a6a;
+--paper:#F4F6FA;--ink:#16233f;--ink-soft:#46577a;--ink-mute:#8190ac;--line:rgba(32,56,100,.14);--line-soft:rgba(32,56,100,.08);
+--on-navy-soft:#b9c8e4;--on-navy-mute:#7589ad;--line-navy:rgba(255,255,255,.14);
+--ff-display:"Space Grotesk",sans-serif;--ff-body:"Inter",sans-serif;--ff-mono:"Space Mono",monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-body{font-family:'Poppins';font-size:9.6pt;line-height:1.55;color:#16233f}
+body{font-family:var(--ff-body);font-size:9.6pt;line-height:1.6;color:var(--ink)}
 b,strong{font-weight:600}
-em{font-style:normal;color:#8190ac}
-a{color:#203864}
-.losango{display:inline-block;width:2.1mm;height:2.1mm;background:#FE0000;transform:rotate(45deg);flex:none}
-.losango.branco{background:#fff}
+em{font-style:normal}
+a{color:var(--navy)}
+h1,h2,h3,h4{font-family:var(--ff-display);font-weight:600;line-height:1.04;letter-spacing:-.025em;color:var(--navy)}
+.tag{display:inline-flex;align-items:center;gap:2.4mm;font-family:var(--ff-mono);font-size:7pt;letter-spacing:.18em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+.tag::before{content:"";width:1.8mm;height:1.8mm;background:var(--red);transform:rotate(45deg);flex:none}
+.tag.muted{color:var(--ink-mute)}.tag.muted::before{background:var(--ink-mute)}
+.tag.light{color:var(--red-accent)}.tag.light::before{background:var(--red-accent)}
+.dmd{display:inline-block;width:2mm;height:2mm;background:var(--red);transform:rotate(45deg);flex:none}
 
-/* Capa */
-.capa{position:relative;width:210mm;height:297mm;background:#0b1730;color:#fff;overflow:hidden;page-break-after:always}
-.capa-deco i{position:absolute;border:1.2pt solid rgba(185,200,228,.13);transform:rotate(45deg)}
-.capa-deco i:nth-child(1){width:150mm;height:150mm;right:-62mm;top:52mm}
-.capa-deco i:nth-child(2){width:96mm;height:96mm;right:-20mm;top:80mm;border-color:rgba(254,0,0,.55)}
-.capa-deco i:nth-child(3){width:40mm;height:40mm;right:38mm;top:212mm;background:#12233f;border:0}
-.capa-topo{position:absolute;left:20mm;right:20mm;top:20mm;display:flex;justify-content:space-between;align-items:flex-start}
-.capa-logo{width:58mm}
-.capa-num{text-align:right;font-weight:600;font-size:10pt}
-.capa-num small{display:block;font-weight:400;font-size:7.5pt;color:#b9c8e4;letter-spacing:.12em;text-transform:uppercase}
-.capa-meio{position:absolute;left:20mm;width:130mm;top:88mm}
-.tag{display:inline-flex;align-items:center;gap:3mm;font-size:8pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:#FE0000;padding:2mm 4mm}
-.capa h1{font-size:28pt;line-height:1.14;font-weight:600;margin-top:9mm}
-.capa-norma{display:inline-block;margin-top:6mm;font-size:15pt;font-weight:700;border-bottom:2.5pt solid #FE0000;padding-bottom:1.5mm}
-.capa-para{margin-top:12mm;font-size:10.5pt;line-height:1.55;color:#b9c8e4}
-.capa-para b{color:#fff;font-weight:600}
-.capa-meta{position:absolute;left:20mm;right:20mm;bottom:36mm;display:grid;grid-template-columns:repeat(3,1fr);border-top:.6pt solid rgba(185,200,228,.3);padding-top:5mm}
-.capa-meta div{font-size:10.5pt;font-weight:600}
-.capa-meta small{display:block;font-size:7pt;font-weight:400;color:#b9c8e4;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1mm}
+/* Capa = hero do site */
+.capa{position:relative;width:210mm;height:297mm;overflow:hidden;color:#fff;background:var(--navy-950);page-break-after:always}
+.capa-bg i{position:absolute;inset:0}
+.capa-bg .g1{background:radial-gradient(80% 70% at 8% 4%,#2c4d8c 0%,rgba(44,77,140,0) 52%),radial-gradient(70% 90% at 102% 102%,#16294c 0%,rgba(22,41,76,0) 55%),linear-gradient(160deg,var(--navy) 0%,var(--navy-900) 58%,var(--navy-950) 100%)}
+.capa-bg .grid{opacity:.5;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:12mm 12mm;-webkit-mask-image:radial-gradient(120% 100% at 30% 0%,#000 30%,transparent 78%);mask-image:radial-gradient(120% 100% at 30% 0%,#000 30%,transparent 78%)}
+.capa-bg .dmd-big{inset:auto;top:118mm;right:-34mm;width:132mm;height:132mm;transform:translateY(-50%) rotate(45deg);border:1px solid rgba(185,200,228,.14)}
+.capa-bg .dmd-big::before{content:"";position:absolute;inset:12%;border:1px solid rgba(254,0,0,.28)}
+.capa-bg .dmd-big::after{content:"";position:absolute;inset:30%;border:1px solid rgba(185,200,228,.1)}
+.bp{position:absolute;left:8mm;right:8mm;top:8mm;bottom:28mm;border:1px solid var(--line-navy)}
+.tk{position:absolute;width:3mm;height:3mm}
+.tk::before,.tk::after{content:"";position:absolute;background:var(--red)}
+.tk::before{left:50%;top:0;width:1px;height:100%}.tk::after{top:50%;left:0;height:1px;width:100%}
+.tk.tl{top:-1.5mm;left:-1.5mm}.tk.tr{top:-1.5mm;right:-1.5mm}.tk.bl{bottom:-1.5mm;left:-1.5mm}.tk.br{bottom:-1.5mm;right:-1.5mm}
+.capa-logo{position:absolute;left:20mm;top:22mm;width:50mm}
+.capa-copy{position:absolute;left:20mm;right:20mm;top:76mm}
+.hero-meta{display:flex;gap:5mm;align-items:center;flex-wrap:wrap;margin-bottom:9mm}
+.hero-meta .mrow{font-family:var(--ff-mono);font-size:6.8pt;letter-spacing:.14em;color:var(--on-navy-mute);text-transform:uppercase;display:flex;align-items:center;gap:2.4mm}
+.hero-meta .mrow::before{content:"";width:5mm;height:1px;background:var(--line-navy)}
+.capa h1{color:#fff;font-size:44pt;font-weight:500;line-height:.98;letter-spacing:-.04em}
+.capa h1 .blk{display:block}
+.capa h1 em{color:transparent;-webkit-text-stroke:1.2px rgba(255,255,255,.6)}
+.capa h1 .red{color:var(--red)}
+.hero-sub{margin-top:9mm;max-width:128mm;font-size:12pt;line-height:1.55;color:var(--on-navy-soft)}
+.hero-sub b{color:#fff;font-weight:600}
+.readout{position:absolute;left:20mm;right:20mm;bottom:40mm;border:1px solid var(--line-navy);background:rgba(255,255,255,.03);padding:5mm 6mm 5.5mm}
+.readout-h{display:flex;align-items:center;justify-content:space-between;font-family:var(--ff-mono);font-size:6.8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-mute);padding-bottom:3.5mm;border-bottom:1px solid var(--line-navy)}
+.readout-g{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:5mm;padding-top:4mm}
+.readout-g small{display:block;font-family:var(--ff-mono);font-size:6.4pt;letter-spacing:.14em;text-transform:uppercase;color:var(--on-navy-mute);margin-bottom:1.2mm}
+.readout-g b{font-family:var(--ff-display);font-size:11pt;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
 
-/* Estrutura */
+/* Páginas internas */
 .quebra{page-break-before:always}
-.secao{display:flex;align-items:center;gap:3mm;font-size:7.6pt;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#FE0000}
-h2{font-size:18pt;line-height:1.2;font-weight:600;color:#0b1730;margin:2mm 0 7mm}
-h3{font-size:10.5pt;font-weight:600;color:#0b1730;margin:7mm 0 2.5mm}
-h4{font-size:8.6pt;font-weight:600;color:#0b1730;letter-spacing:.08em;text-transform:uppercase;margin:4.5mm 0 1.5mm}
-p{margin-bottom:2.2mm}
-.mini{font-size:8.2pt;color:#46577a;margin-top:5mm}
-.lead{font-size:10pt;color:#16233f;margin-bottom:4mm}
-.duas{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:8mm;align-items:end;margin-bottom:9mm;text-align:left}
+.sec-index{font-family:var(--ff-mono);font-size:7.4pt;color:var(--ink-mute);letter-spacing:.1em;text-transform:uppercase;padding-bottom:1.5mm;white-space:nowrap}
+.sec-index b{color:var(--red);font-weight:700}
+.sec-title .tag{margin-bottom:3.5mm}
+.sec-title h2{font-size:25pt}
+.sec-title p{margin-top:3mm;font-size:10.5pt;color:var(--ink-soft)}
+.lead{font-size:9.8pt;color:var(--ink-soft);margin-bottom:6mm}
+.mini{font-size:7.8pt;color:var(--ink-mute);margin-top:3mm}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.card{background:#fff;border:1px solid var(--line);padding:6mm}
+.card.navy{background:var(--navy-950);border-color:var(--navy-950);color:#fff}
 
-/* 01 Resumo */
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin-bottom:8mm}
-.tile{background:#0b1730;color:#fff;padding:5mm 4.5mm;border-bottom:1.2mm solid #FE0000}
-.tile b{display:block;font-size:16pt;line-height:1.15;font-weight:600}
-.tile span{display:block;font-size:7.8pt;color:#b9c8e4;margin-top:1.5mm;line-height:1.35}
-.entregas{list-style:none}
-.entregas li{display:flex;gap:4mm;align-items:flex-start;font-size:10.6pt;line-height:1.5;padding:3.4mm 0;border-bottom:.5pt solid #dfe5ee}
-.entregas li .losango{margin-top:2.2mm}
-.nota{margin-top:9mm;background:#F4F6FA;border-left:1.2mm solid #FE0000;padding:5mm 6mm}
-.nota b{color:#0b1730;font-size:10pt}
-.nota p{font-size:9pt;color:#46577a;margin:1.5mm 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-bottom:8mm}
+.stat{padding:5mm 4.5mm;border-right:1px solid var(--line)}
+.stat:last-child{border-right:0}
+.stat b{display:block;font-family:var(--ff-display);font-size:19pt;font-weight:600;letter-spacing:-.03em;color:var(--navy);margin:3mm 0 1mm;white-space:nowrap}
+.stat span{display:block;font-size:8pt;color:var(--ink-soft);line-height:1.4}
+.lista{list-style:none}
+.lista li{display:flex;gap:4mm;align-items:flex-start;font-size:10.4pt;color:var(--ink-soft);padding:3.2mm 0;border-bottom:1px solid var(--line-soft)}
+.lista li .dmd{margin-top:2.2mm}
+.callout{margin-top:9mm;border-left:3px solid var(--navy);padding:1mm 0 1mm 6mm}
+.callout b{font-family:var(--ff-display);font-size:12pt;color:var(--navy)}
+.callout p{font-size:9.2pt;color:var(--ink-soft);margin-top:1.5mm}
 
-/* 02 Etapas */
-.etapas{display:flex;flex-direction:column;gap:3.5mm}
-.etapa{display:flex;gap:5mm;align-items:stretch;background:#F4F6FA;padding:4.5mm 5mm;break-inside:avoid}
-.etapa-n{flex:none;width:12mm;height:12mm;display:flex;align-items:center;justify-content:center;background:#0b1730;color:#fff;font-weight:700;font-size:11pt;border-bottom:1mm solid #FE0000}
-.etapa-tit{font-weight:600;font-size:11pt;color:#0b1730;display:flex;justify-content:space-between;gap:4mm}
-.etapa-tit span{font-size:9pt;color:#203864;white-space:nowrap}
-.etapa p{font-size:9.4pt;color:#46577a;margin:1mm 0 0}
+.escuro{background:var(--navy-950);padding:7mm}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.step{border:1px solid var(--line-navy);background:rgba(255,255,255,.03);padding:5.5mm 5.5mm 4.5mm;break-inside:avoid;display:flex;flex-direction:column}
+.step.wide{grid-column:1/-1}
+.step-n{font-family:var(--ff-mono);font-size:8pt;color:var(--red-accent);letter-spacing:.1em}
+.step h3{color:#fff;font-size:13pt;margin:2.5mm 0 2mm}
+.step p{font-size:8.8pt;color:var(--on-navy-soft);line-height:1.55;flex:1}
+.step-out{margin-top:4mm;padding-top:3mm;border-top:1px solid var(--line-navy);font-family:var(--ff-mono);font-size:7pt;letter-spacing:.06em;color:var(--on-navy-mute)}
+.nota-rodape{font-size:8.4pt;color:var(--ink-mute);margin-top:5mm}
 
-/* Tabelas */
-table{width:100%;border-collapse:collapse}
-th{font-size:7.2pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:#0b1730;text-align:left;padding:2.2mm 3.5mm}
-td{padding:1.9mm 3.5mm;border-bottom:.5pt solid #dfe5ee;vertical-align:top}
-thead{display:table-header-group}
-tr{break-inside:avoid}
-.h,.n{text-align:right;white-space:nowrap}
+.tb{width:100%;border-collapse:collapse}
+.tb th{font-family:var(--ff-mono);font-size:6.6pt;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);text-align:left;padding:2.4mm 3mm;border-bottom:1px solid var(--navy);background:var(--paper)}
+.tb td{padding:2mm 3mm;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.tb thead{display:table-header-group}
+.tb tr{break-inside:avoid}
+.tb .h,.tb .n{text-align:right;white-space:nowrap}
+.tb tfoot td{font-family:var(--ff-display);font-weight:600;font-size:10.5pt;color:var(--navy);border-top:1px solid var(--navy);border-bottom:0;padding-top:3mm}
 .crono{font-size:9pt}
 .crono .fase{break-inside:avoid}
-.fase-tit td{background:#F4F6FA;font-weight:600;color:#0b1730;border-bottom:.6pt solid #C9D2E0;padding-top:2.6mm}
-.fase-n{display:inline-block;width:8mm;color:#FE0000;font-weight:700}
-tfoot td{font-weight:700;color:#0b1730;border-top:1.2pt solid #0b1730;border-bottom:0;padding-top:2.4mm}
-
-/* 04 PrismaBiz */
-.req{font-size:7.8pt;line-height:1.3;margin-bottom:1mm}
-.req td:first-child{width:46%;font-weight:500;color:#0b1730}
-.req td{padding:.75mm 3.5mm}
+.crono em{color:var(--ink-mute)}
+.fase-tit td{font-family:var(--ff-display);font-weight:600;font-size:10.2pt;color:var(--navy);padding-top:4mm;border-bottom:1px solid var(--line)}
+.fase-n{display:inline-block;width:9mm;font-family:var(--ff-mono);font-size:7.6pt;font-weight:700;color:var(--red)}
+.req{font-size:7.7pt;line-height:1.3;margin-bottom:5mm}
+.req td{padding:.85mm 3mm}
+.req th{padding:1.8mm 3mm}
+.req td:first-child{width:46%;color:var(--navy);font-weight:500}
+.lead-prisma{font-size:9pt;line-height:1.5;margin-bottom:5mm}
 .prisma-fim{break-inside:avoid}
-.prisma-fim h3{margin-top:4mm}
-.prisma-lead{font-size:9.2pt;margin-bottom:2mm}
-.licenca{background:#0b1730;color:#fff;padding:4.5mm 5mm;margin-top:4mm}
-.licenca small{display:block;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:#b9c8e4}
-.licenca b{display:block;font-size:13pt;margin:1mm 0 2mm}
-.licenca p{font-size:8.6pt;color:#dfe6f3}
-.licenca .ref{font-size:8.4pt;font-weight:600;border-top:.6pt solid rgba(185,200,228,.3);padding-top:2mm;margin-top:2mm}
+.prisma-fim .card{padding:5mm}
+.prisma-fim .card p{font-size:8.4pt;line-height:1.5;color:var(--ink-soft);margin-top:2.5mm}
+.card.navy b{display:block;font-family:var(--ff-display);font-size:15pt;margin:3mm 0 1.5mm}
+.card.navy p{color:var(--on-navy-soft) !important;margin-top:0 !important}
+.card.navy .ref{margin-top:3.5mm;padding-top:3mm;border-top:1px solid var(--line-navy);font-family:var(--ff-mono);font-size:7pt;letter-spacing:.04em;color:#fff}
 
-/* 05 Investimento */
-.inv{font-size:9.6pt}
-.pag{display:grid;grid-template-columns:1.2fr 1fr;gap:7mm;align-items:start}
-.pag-tit{font-weight:600;color:#0b1730;margin-bottom:2.5mm}
-.parc{font-size:8.8pt}
-.parc td{padding:1.3mm 3.5mm}
-.pag-avista{background:#0b1730;color:#fff;padding:6mm}
-.pag-avista .pag-tit{color:#fff}
-.de{font-size:9pt;color:#b9c8e4;margin-top:3mm}
-.por{font-size:24pt;font-weight:700;line-height:1.15;margin:1mm 0 4mm}
-.ate{display:inline-block;font-size:8.4pt;font-weight:600;background:#FE0000;padding:1.8mm 3.5mm}
-.validade{display:flex;align-items:center;gap:3mm;margin-top:8mm;font-size:9.6pt;padding:3.5mm 5mm;background:#F4F6FA}
-.consultor{display:flex;gap:5mm;align-items:center;margin-top:5mm;border:.6pt solid #dfe5ee;padding:4.5mm 5mm;break-inside:avoid}
-.cons-av{width:13mm;height:13mm;flex:none;display:flex;align-items:center;justify-content:center;background:#0b1730;color:#fff;font-weight:700;font-size:11pt;border-bottom:1mm solid #FE0000}
-.consultor small{display:block;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:#8190ac}
-.consultor b{display:block;font-size:11pt;color:#0b1730}
-.consultor p{margin:0;color:#46577a;font-size:9pt}
+.inv{font-size:9.6pt;margin-bottom:7mm}
+.opcoes{display:grid;grid-template-columns:1.15fr 1fr;gap:5mm;align-items:start}
+.op-h{display:flex;align-items:center;gap:3mm;margin-bottom:4mm}
+.op-h b{font-family:var(--ff-display);font-size:11pt;color:var(--navy);line-height:1.2}
+.card.navy .op-h b{color:#fff;margin:0;font-size:11pt}
+.num{width:6.5mm;height:6.5mm;border-radius:50%;background:var(--navy);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-weight:700;font-size:8.5pt;flex:none}
+.card.navy .num{background:var(--red)}
+.parc{font-size:8.6pt}
+.parc td{padding:1.3mm 3mm}
+.de{font-size:9pt;color:var(--on-navy-soft);margin-top:2mm}
+.por{font-family:var(--ff-display);font-size:28pt;font-weight:600;letter-spacing:-.03em;line-height:1.1;margin:1mm 0 5mm}
+.ate{display:inline-block;font-family:var(--ff-mono);font-size:7pt;letter-spacing:.08em;text-transform:uppercase;background:var(--red);padding:2mm 3.5mm}
+.validade{display:flex;align-items:center;gap:5mm;margin-top:7mm;padding:4mm 5mm;background:var(--paper);font-size:9.6pt}
+.consultor{display:flex;gap:5mm;align-items:center;margin-top:5mm;break-inside:avoid}
+.cons-av{width:14mm;height:14mm;flex:none;display:flex;align-items:center;justify-content:center;background:var(--navy-950);color:#fff;font-family:var(--ff-display);font-weight:700;font-size:12pt;border-bottom:1mm solid var(--red)}
+.consultor b{display:block;font-family:var(--ff-display);font-size:12pt;color:var(--navy);margin-top:1.5mm}
+.consultor p{font-size:8.8pt;color:var(--ink-soft)}
 
-/* 06 Contrato */
-.partes{display:grid;grid-template-columns:1fr 1fr;gap:4mm;margin-bottom:6mm;text-align:left}
-.parte{background:#F4F6FA;padding:4mm 5mm;border-left:1.2mm solid #203864}
-.parte-tit{font-size:7pt;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#FE0000}
-.parte-nome{font-weight:600;font-size:9pt;line-height:1.3;color:#0b1730;margin:1mm 0 2mm}
-.parte dl{display:grid;grid-template-columns:17mm 1fr;gap:.6mm 2mm;font-size:7.8pt}
-.parte dt{color:#8190ac}
-.parte dd{overflow-wrap:anywhere}
-.contrato{font-size:8.8pt;text-align:justify}
+.contrato{font-size:8.8pt;color:var(--ink);text-align:justify}
+.partes{margin-bottom:7mm;text-align:left}
+.parte b{display:block;font-family:var(--ff-display);font-size:10pt;color:var(--navy);line-height:1.25;margin:3mm 0 2.5mm}
+.parte dl{display:grid;grid-template-columns:17mm 1fr;gap:.8mm 2mm;font-size:7.8pt}
+.parte dt{font-family:var(--ff-mono);font-size:6.6pt;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute);padding-top:.3mm}
+.parte dd{color:var(--ink-soft);overflow-wrap:anywhere}
+.contrato p{margin-bottom:2.2mm}
+.contrato h4{font-family:var(--ff-mono);font-size:7.2pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin:5mm 0 2mm}
 .contrato .cl,.sec-contrato{break-inside:avoid}
-.alin{list-style:lower-alpha;padding-left:6mm;margin:-1mm 0 2mm}
-.alin li{margin-bottom:.6mm}
-.local{margin-top:4mm;font-weight:600;color:#0b1730}
-.assinaturas{display:grid;grid-template-columns:1fr 1fr;gap:13mm 10mm;margin-top:15mm;break-inside:avoid;text-align:left}
-.assin .linha{border-top:.7pt solid #0b1730;margin-bottom:1.5mm}
-.assin b{display:block;font-size:7.4pt;letter-spacing:.12em;text-transform:uppercase;color:#0b1730}
-.assin span{display:block;font-size:7.8pt;color:#46577a}
+.alin{list-style:lower-alpha;padding-left:6mm;margin:-1mm 0 2.2mm}
+.alin li{margin-bottom:.7mm}
+.local{margin-top:4mm;font-family:var(--ff-display);font-weight:600;color:var(--navy)}
+.assinaturas{display:grid;grid-template-columns:1fr 1fr;gap:14mm 10mm;margin-top:16mm;break-inside:avoid;text-align:left}
+.assin i{display:block;border-top:1px solid var(--navy);margin-bottom:2mm}
+.assin span{display:block;font-size:7.8pt;color:var(--ink-soft);margin-top:.5mm}
+.assinatura-marca{margin-top:14mm;padding-top:6mm;border-top:1px solid var(--line);break-inside:avoid;text-align:left}
+.wm{font-family:var(--ff-display);font-weight:700;font-size:26pt;letter-spacing:-.05em;line-height:.9;color:var(--navy-950)}
+.wm b{color:var(--red);font-weight:700}
+.wm-tag{font-family:var(--ff-mono);font-size:6.8pt;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);margin-top:2.5mm}
 `;
 
 export function htmlProposta(d, r) {
@@ -326,19 +344,23 @@ ${contrato(d)}
 </body></html>`;
 }
 
-// Rodapé de uma linha, desenhado pelo Chromium em toda página (também sobre a
-// capa navy, por isso a cor cinza-azulada, que lê nos dois fundos).
+// Rodapé como a barra inferior do site (.footer-bot): Space Mono, marcas "+"
+// vermelhas nas pontas da linha. Sai em toda página, também sobre a capa
+// navy — por isso a cor é a "mute", que lê nos dois fundos.
 export function rodapeTemplate(d, r) {
   return `<style>${r.fontesCssRodape}
 html,body{margin:0;padding:0}
-.rod{position:relative;width:210mm;height:24mm;font-family:'Poppins';font-size:7.4pt;color:#8190ac;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.fil{position:absolute;left:20mm;right:20mm;bottom:15mm;border-top:.5pt solid #C9D2E0}
-.l,.r{position:absolute;bottom:9.5mm;white-space:nowrap;line-height:1}
+.rod{position:relative;width:210mm;height:24mm;font-family:'Space Mono',monospace;font-size:6.4pt;letter-spacing:.1em;text-transform:uppercase;color:#8190ac;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.fil{position:absolute;left:20mm;right:20mm;bottom:14.5mm;height:0;border-top:1px solid rgba(129,144,172,.35)}
+.tk{position:absolute;bottom:13.4mm;width:2.4mm;height:2.4mm}
+.tk::before,.tk::after{content:"";position:absolute;background:#FE0000}
+.tk::before{left:50%;top:0;width:1px;height:100%}.tk::after{top:50%;left:0;height:1px;width:100%}
+.tl{left:18.8mm}.tr{right:18.8mm}
+.l,.r{position:absolute;bottom:9mm;white-space:nowrap;line-height:1}
 .l{left:20mm}.r{right:20mm}
-.los{display:inline-block;width:1.7mm;height:1.7mm;background:#FE0000;transform:rotate(45deg);margin-right:2mm;position:relative;top:-.2mm}
-b{font-weight:600;letter-spacing:.08em}
+b{color:#FE0000;font-weight:700}
 </style>
-<div class="rod"><div class="fil"></div>
-<div class="l"><span class="los"></span><b>ANDERS TECH</b> · Proposta ${esc(d.numero)}</div>
-<div class="r">anderstech.net · ${esc(d.contratado.telefone)} · página <span class="pageNumber"></span> de <span class="totalPages"></span></div></div>`;
+<div class="rod"><div class="fil"></div><i class="tk tl"></i><i class="tk tr"></i>
+<div class="l">Anders <b>Tech</b> · Proposta ${esc(d.numero)}</div>
+<div class="r">anderstech.net · ${esc(d.contratado.telefone)} · <span class="pageNumber"></span>/<span class="totalPages"></span></div></div>`;
 }

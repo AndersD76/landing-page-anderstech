@@ -117,8 +117,10 @@ npm run seed
   gerar se CNPJ, horas, total ou parcelas não fecharem. O JSON do cliente fica **fora do
   repo** (pasta de orçamentos no OneDrive, ao lado do PDF). Imprime pelo Edge/Chrome se o
   Chromium do Playwright não estiver baixado. Versão editável para o Word, do mesmo JSON:
-  `python scripts/proposta/gerar_docx.py <dados.json>` (Poppins instalada no Windows do
-  Anders desde 23/11/2026). Medir o QR (`--registrar`) é opcional: ele não faz questão.
+  `python scripts/proposta/gerar_docx.py <dados.json>`; as fontes do site entram no Windows
+  com `python scripts/proposta/fontes_word.py`. **A proposta segue o visual do SITE**
+  (Space Grotesk/Inter/Space Mono, capa = hero), não a identidade de artefato da §5: o
+  Anders recusou a versão em Poppins em 23/11/2026. Preço só na seção de investimento; sem QR.
 
 ### Métricas e buscadores (configurado em 19/11/2026, padrão dos 9 apps)
 | O quê | Valor |
@@ -202,6 +204,8 @@ externo quanto para o que sai do `pdfkit` daqui.
 **Atenção — o site diverge do artefato de propósito**: `styles.css` usa Space Grotesk
 (display), Inter (corpo) e Space Mono (mono). **Poppins é a fonte dos artefatos**, não do
 site. Não "corrigir" um pelo outro sem decisão do Anders.
+**Exceção decidida pelo Anders em 23/11/2026: a proposta comercial (`scripts/proposta/`)
+segue o visual do site**, não esta tabela.
 
 > O bug da auto-referência em `--red-accent` (`styles.css`) já foi corrigido: hoje vale
 > `#ff6a6a`, com comentário explicando a origem.

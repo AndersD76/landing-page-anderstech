@@ -63,11 +63,15 @@ if (erros.length) {
 }
 
 // ── Recursos embutidos (o PDF não depende de nada instalado em quem abre) ──
+// As fontes saem do styles.css do site (mesmos @font-face, arquivo embutido):
+// se o site trocar de fonte, a proposta acompanha.
 const b64 = (p) => readFileSync(join(RAIZ, p)).toString('base64');
-const fonte = (peso, arq) => `@font-face{font-family:'Poppins';font-weight:${peso};src:url(data:font/ttf;base64,${b64('assets/fonts/' + arq)}) format('truetype')}`;
+const fontesDoSite = (readFileSync(join(RAIZ, 'styles.css'), 'utf8').match(/@font-face\s*\{[^}]*\}/g) || [])
+  .map((bloco) => bloco.replace(/url\('\/(assets\/fonts\/[^'?]+)(\?[^']*)?'\)/, (_, arq) => `url(data:font/woff2;base64,${b64(arq)})`));
+if (fontesDoSite.length < 6) throw new Error('styles.css sem os @font-face esperados (Space Grotesk, Inter, Space Mono)');
 const recursos = {
-  fontesCss: [fonte(400, 'Poppins-Regular.ttf'), fonte(500, 'Poppins-Medium.ttf'), fonte(600, 'Poppins-SemiBold.ttf'), fonte(700, 'Poppins-Bold.ttf')].join(''),
-  fontesCssRodape: [fonte(400, 'Poppins-Regular.ttf'), fonte(600, 'Poppins-SemiBold.ttf')].join(''),
+  fontesCss: fontesDoSite.join('\n'),
+  fontesCssRodape: fontesDoSite.filter((f) => f.includes('Space Mono')).join('\n'),
   logoBranco: 'data:image/png;base64,' + b64('assets/logo-horizontal-white-2x.png'),
 };
 
